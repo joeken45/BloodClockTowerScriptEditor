@@ -5,8 +5,350 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BloodClockTowerScriptEditor"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="Blood on the Clocktower 劇本編輯器" 
+        Height="700" Width="1200"
+        WindowStartupLocation="CenterScreen">
 
+    <Window.Resources>
+        <!-- 陣營顏色 -->
+        <SolidColorBrush x:Key="TownsfolkBrush" Color="#368CE1"/>
+        <SolidColorBrush x:Key="OutsiderBrush" Color="#71A8D6"/>
+        <SolidColorBrush x:Key="MinionBrush" Color="#DC3545"/>
+        <SolidColorBrush x:Key="DemonBrush" Color="#8B0000"/>
+        <SolidColorBrush x:Key="TravelerBrush" Color="#808080"/>
+        <SolidColorBrush x:Key="FabledBrush" Color="#FFC107"/>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- 選單列 -->
+        <Menu Grid.Row="0">
+            <MenuItem Header="檔案(_F)">
+                <MenuItem Header="開啟(_O)" Command="{Binding LoadJsonCommand}"/>
+                <MenuItem Header="儲存(_S)" Command="{Binding SaveJsonCommand}"/>
+                <MenuItem Header="另存新檔(_A)" Command="{Binding SaveAsJsonCommand}"/>
+                <Separator/>
+                <MenuItem Header="結束(_X)" Click="Exit_Click"/>
+            </MenuItem>
+            <MenuItem Header="說明(_H)">
+                <MenuItem Header="關於(_A)" Click="About_Click"/>
+            </MenuItem>
+        </Menu>
+
+        <!-- 主要內容區 -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250"/>
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- 左側面板: 篩選 + 角色列表 -->
+            <Border Grid.Column="0" BorderBrush="#DDD" BorderThickness="0,0,1,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- 劇本資訊 -->
+                    <Border Grid.Row="0" Margin="10" Background="#F5F5F5" Padding="10">
+                        <StackPanel>
+                            <TextBlock Text="劇本資訊" FontWeight="Bold" FontSize="14" Margin="0,0,0,5"/>
+                            <TextBlock>
+                                <Run Text="名稱: " FontWeight="Bold"/>
+                                <Run Text="{Binding CurrentScript.Meta.Name, Mode=OneWay}"/>
+                            </TextBlock>
+                            <TextBlock>
+                                <Run Text="作者: " FontWeight="Bold"/>
+                                <Run Text="{Binding CurrentScript.Meta.Author, Mode=OneWay}"/>
+                            </TextBlock>
+                            <TextBlock Margin="0,5,0,0">
+                                <Run Text="角色總數: " FontWeight="Bold"/>
+                                <Run Text="{Binding CurrentScript.TotalRoleCount, Mode=OneWay}"/>
+                            </TextBlock>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- 陣營篩選 -->
+                    <StackPanel Grid.Row="1" Margin="10">
+                        <TextBlock Text="顯示陣營" FontWeight="Bold" Margin="0,0,0,5"/>
+                        <CheckBox Content="鎮民" IsChecked="{Binding ShowTownsfolk}" Margin="0,2"/>
+                        <CheckBox Content="外來者" IsChecked="{Binding ShowOutsiders}" Margin="0,2"/>
+                        <CheckBox Content="爪牙" IsChecked="{Binding ShowMinions}" Margin="0,2"/>
+                        <CheckBox Content="惡魔" IsChecked="{Binding ShowDemons}" Margin="0,2"/>
+                        <CheckBox Content="旅行者" IsChecked="{Binding ShowTravelers}" Margin="0,2"/>
+                        <CheckBox Content="傳奇/其他" IsChecked="{Binding ShowFabled}" Margin="0,2"/>
+                    </StackPanel>
+
+                    <!-- 角色列表 -->
+                    <ListBox Grid.Row="2" 
+                             ItemsSource="{Binding FilteredRoles}"
+                             SelectedItem="{Binding SelectedRole}"
+                             Margin="10,0,10,10">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" Margin="0,5">
+                                    <!-- 陣營色塊 -->
+                                    <Border Width="4" Height="40" VerticalAlignment="Center" Margin="0,0,8,0">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Team}" Value="Townsfolk">
+                                                        <Setter Property="Background" Value="{StaticResource TownsfolkBrush}"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Team}" Value="Outsider">
+                                                        <Setter Property="Background" Value="{StaticResource OutsiderBrush}"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Team}" Value="Minion">
+                                                        <Setter Property="Background" Value="{StaticResource MinionBrush}"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Team}" Value="Demon">
+                                                        <Setter Property="Background" Value="{StaticResource DemonBrush}"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Team}" Value="Traveler">
+                                                        <Setter Property="Background" Value="{StaticResource TravelerBrush}"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Team}" Value="Fabled">
+                                                        <Setter Property="Background" Value="{StaticResource FabledBrush}"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                    </Border>
+
+                                    <!-- 角色資訊 -->
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="13"/>
+                                        <TextBlock Text="{Binding TeamDisplayName}" 
+                                                   FontSize="11" Foreground="Gray"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </Border>
+
+            <!-- 分隔線 -->
+            <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch" 
+                          Background="#DDD"/>
+
+            <!-- 右側面板: 角色詳細資訊 -->
+            <Grid Grid.Column="2">
+                <!-- 角色詳細資訊 (有選擇時顯示) -->
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ScrollViewer.Style>
+                        <Style TargetType="ScrollViewer">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding SelectedRole}" Value="{x:Null}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ScrollViewer.Style>
+
+                    <StackPanel Margin="20">
+                        <!-- 角色標題 -->
+                        <TextBlock Text="{Binding SelectedRole.Name, Mode=OneWay}" 
+                                   FontSize="24" FontWeight="Bold" Margin="0,0,0,10"/>
+
+                        <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Margin="0,0,0,15"/>
+
+                        <!-- 基本資訊 -->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="ID:" 
+                                       FontWeight="Bold" Margin="0,5,15,5"/>
+                            <TextBlock Grid.Row="0" Grid.Column="1" 
+                                       Text="{Binding SelectedRole.Id, Mode=OneWay}" Margin="0,5"/>
+
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="陣營:" 
+                                       FontWeight="Bold" Margin="0,5,15,5"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" 
+                                       Text="{Binding SelectedRole.TeamDisplayName, Mode=OneWay}" Margin="0,5"/>
+
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="夜晚行動:" 
+                                       FontWeight="Bold" Margin="0,5,15,5"/>
+                            <TextBlock Grid.Row="2" Grid.Column="1" 
+                                       Text="{Binding SelectedRole.NightOrderDisplay, Mode=OneWay}" Margin="0,5"/>
+
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="影響設置:" 
+                                       FontWeight="Bold" Margin="0,5,15,5"/>
+                            <TextBlock Grid.Row="3" Grid.Column="1" Margin="0,5">
+                                <Run Text="{Binding SelectedRole.Setup, Mode=OneWay}"/>
+                            </TextBlock>
+
+                            <TextBlock Grid.Row="4" Grid.Column="0" Text="圖片:" 
+                                       FontWeight="Bold" Margin="0,5,15,5" 
+                                       VerticalAlignment="Top"/>
+                            <TextBlock Grid.Row="4" Grid.Column="1" 
+                                       Text="{Binding SelectedRole.Image, Mode=OneWay}" 
+                                       TextWrapping="Wrap" Margin="0,5"
+                                       Foreground="Blue" TextDecorations="Underline"
+                                       Cursor="Hand"/>
+                        </Grid>
+
+                        <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Margin="0,15"/>
+
+                        <!-- 能力描述 -->
+                        <TextBlock Text="能力描述" FontSize="16" FontWeight="Bold" 
+                                   Margin="0,15,0,10"/>
+                        <Border Background="#F9F9F9" Padding="15" CornerRadius="5">
+                            <TextBlock Text="{Binding SelectedRole.Ability, Mode=OneWay}" 
+                                       TextWrapping="Wrap" FontSize="13"/>
+                        </Border>
+
+                        <!-- 首夜提示 -->
+                        <StackPanel>
+                            <StackPanel.Style>
+                                <Style TargetType="StackPanel">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding SelectedRole.FirstNightReminder, Converter={x:Null}}" Value="False">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </StackPanel.Style>
+
+                            <TextBlock Text="首夜說書人提示" FontSize="16" FontWeight="Bold" 
+                                       Margin="0,20,0,10"/>
+                            <Border Background="#FFF8E1" Padding="15" CornerRadius="5">
+                                <TextBlock Text="{Binding SelectedRole.FirstNightReminder, Mode=OneWay}" 
+                                           TextWrapping="Wrap" FontSize="12"/>
+                            </Border>
+                        </StackPanel>
+
+                        <!-- 其他夜晚提示 -->
+                        <StackPanel>
+                            <StackPanel.Style>
+                                <Style TargetType="StackPanel">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding SelectedRole.OtherNightReminder, Converter={x:Null}}" Value="False">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </StackPanel.Style>
+
+                            <TextBlock Text="其他夜晚說書人提示" FontSize="16" FontWeight="Bold" 
+                                       Margin="0,20,0,10"/>
+                            <Border Background="#E3F2FD" Padding="15" CornerRadius="5">
+                                <TextBlock Text="{Binding SelectedRole.OtherNightReminder, Mode=OneWay}" 
+                                           TextWrapping="Wrap" FontSize="12"/>
+                            </Border>
+                        </StackPanel>
+
+                        <!-- 提示標記 -->
+                        <StackPanel>
+                            <StackPanel.Style>
+                                <Style TargetType="StackPanel">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding SelectedRole.Reminders.Count}" Value="0">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding SelectedRole.Reminders.Count, Converter={x:Null}}" Value="False">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </StackPanel.Style>
+
+                            <TextBlock Text="提示標記 (Reminders)" FontSize="16" FontWeight="Bold" 
+                                       Margin="0,20,0,10"/>
+                            <ItemsControl ItemsSource="{Binding SelectedRole.Reminders}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Background="#E8F5E9" Padding="8,5" Margin="0,3" 
+                                                CornerRadius="3" BorderBrush="#4CAF50" BorderThickness="1">
+                                            <TextBlock Text="{Binding}" FontSize="12"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+
+                        <!-- 全局標記 -->
+                        <StackPanel>
+                            <StackPanel.Style>
+                                <Style TargetType="StackPanel">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding SelectedRole.RemindersGlobal.Count}" Value="0">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding SelectedRole.RemindersGlobal.Count, Converter={x:Null}}" Value="False">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </StackPanel.Style>
+
+                            <TextBlock Text="全局標記 (Reminders Global)" FontSize="16" FontWeight="Bold" 
+                                       Margin="0,20,0,10"/>
+                            <ItemsControl ItemsSource="{Binding SelectedRole.RemindersGlobal}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Background="#FFF3E0" Padding="8,5" Margin="0,3" 
+                                                CornerRadius="3" BorderBrush="#FF9800" BorderThickness="1">
+                                            <TextBlock Text="{Binding}" FontSize="12"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
+
+                <!-- 未選擇角色時的提示 -->
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <StackPanel.Style>
+                        <Style TargetType="StackPanel">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding SelectedRole}" Value="{x:Null}">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Style>
+                    <TextBlock Text="📋" FontSize="72" HorizontalAlignment="Center" Opacity="0.3"/>
+                    <TextBlock Text="請從左側選擇一個角色" 
+                               FontSize="16" Foreground="Gray" 
+                               HorizontalAlignment="Center" Margin="0,10,0,0"/>
+                    <TextBlock Text="或點擊「檔案 > 開啟」載入劇本" 
+                               FontSize="13" Foreground="Gray" 
+                               HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                </StackPanel>
+            </Grid>
+        </Grid>
+
+        <!-- 狀態列 -->
+        <StatusBar Grid.Row="2" Background="#F0F0F0">
+            <StatusBarItem>
+                <TextBlock Text="{Binding StatusMessage, Mode=OneWay}"/>
+            </StatusBarItem>
+        </StatusBar>
     </Grid>
 </Window>
