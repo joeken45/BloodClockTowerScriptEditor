@@ -6,75 +6,160 @@ using System.Collections.Generic;
 namespace BloodClockTowerScriptEditor.Models
 {
     /// <summary>
-    /// 角色模型
+    /// 角色模型 - 完全手動實作避免序列化衝突
     /// </summary>
-    public partial class Role : ObservableObject
+    public class Role : ObservableObject
     {
-        [ObservableProperty]
+        // ==================== 私有欄位 ====================
+        private string _id = string.Empty;
+        private string _name = string.Empty;
+        private TeamType _team;
+        private string _ability = string.Empty;
+        private string _image = string.Empty;
+        private string _edition = "custom";
+        private double _firstNight = 0;
+        private double _otherNight = 0;
+        private bool _setup = false;
+        private List<string> _reminders = new();
+        private List<string> _remindersGlobal = new();
+        private string? _nameEng;
+        private string? _flavor;
+        private string? _firstNightReminder;
+        private string? _otherNightReminder;
+
+        // ==================== 必填屬性 ====================
+
         [JsonProperty("id")]
-        private string id = string.Empty;
+        public string Id
+        {
+            get => _id;
+            set => SetProperty(ref _id, value);
+        }
 
-        [ObservableProperty]
         [JsonProperty("name")]
-        private string name = string.Empty;
+        public string Name
+        {
+            get => _name;
+            set => SetProperty(ref _name, value);
+        }
 
-        [ObservableProperty]
         [JsonProperty("team")]
         [JsonConverter(typeof(StringEnumConverter))]
-        private TeamType team;
+        public TeamType Team
+        {
+            get => _team;
+            set
+            {
+                if (SetProperty(ref _team, value))
+                {
+                    // 當陣營變更時，通知 UI 輔助屬性更新
+                    OnPropertyChanged(nameof(TeamDisplayName));
+                }
+            }
+        }
 
-        [ObservableProperty]
         [JsonProperty("ability")]
-        private string ability = string.Empty;
+        public string Ability
+        {
+            get => _ability;
+            set => SetProperty(ref _ability, value);
+        }
 
-        [ObservableProperty]
         [JsonProperty("image")]
-        private string image = string.Empty;
+        public string Image
+        {
+            get => _image;
+            set => SetProperty(ref _image, value);
+        }
 
-        [ObservableProperty]
         [JsonProperty("edition")]
-        private string edition = "custom";
+        public string Edition
+        {
+            get => _edition;
+            set => SetProperty(ref _edition, value);
+        }
 
-        [ObservableProperty]
         [JsonProperty("firstNight")]
-        private double firstNight = 0;
+        public double FirstNight
+        {
+            get => _firstNight;
+            set
+            {
+                if (SetProperty(ref _firstNight, value))
+                {
+                    OnPropertyChanged(nameof(NightOrderDisplay));
+                }
+            }
+        }
 
-        [ObservableProperty]
         [JsonProperty("otherNight")]
-        private double otherNight = 0;
+        public double OtherNight
+        {
+            get => _otherNight;
+            set
+            {
+                if (SetProperty(ref _otherNight, value))
+                {
+                    OnPropertyChanged(nameof(NightOrderDisplay));
+                }
+            }
+        }
 
-        [ObservableProperty]
         [JsonProperty("setup")]
-        private bool setup = false;
+        public bool Setup
+        {
+            get => _setup;
+            set => SetProperty(ref _setup, value);
+        }
 
-        [ObservableProperty]
         [JsonProperty("reminders")]
-        private List<string> reminders = new();
+        public List<string> Reminders
+        {
+            get => _reminders;
+            set => SetProperty(ref _reminders, value);
+        }
 
-        [ObservableProperty]
         [JsonProperty("remindersGlobal")]
-        private List<string> remindersGlobal = new();
+        public List<string> RemindersGlobal
+        {
+            get => _remindersGlobal;
+            set => SetProperty(ref _remindersGlobal, value);
+        }
 
-        // 可選欄位
-        [ObservableProperty]
+        // ==================== 可選屬性 ====================
+
         [JsonProperty("name_eng")]
-        private string? nameEng;
+        public string? NameEng
+        {
+            get => _nameEng;
+            set => SetProperty(ref _nameEng, value);
+        }
 
-        [ObservableProperty]
         [JsonProperty("flavor")]
-        private string? flavor;
+        public string? Flavor
+        {
+            get => _flavor;
+            set => SetProperty(ref _flavor, value);
+        }
 
-        [ObservableProperty]
         [JsonProperty("firstNightReminder")]
-        private string? firstNightReminder;
+        public string? FirstNightReminder
+        {
+            get => _firstNightReminder;
+            set => SetProperty(ref _firstNightReminder, value);
+        }
 
-        [ObservableProperty]
         [JsonProperty("otherNightReminder")]
-        private string? otherNightReminder;
+        public string? OtherNightReminder
+        {
+            get => _otherNightReminder;
+            set => SetProperty(ref _otherNightReminder, value);
+        }
 
-        // UI 輔助屬性 (不序列化)
+        // ==================== UI 輔助屬性 (不序列化) ====================
+
         [JsonIgnore]
-        public string TeamDisplayName => team switch
+        public string TeamDisplayName => Team switch
         {
             TeamType.Townsfolk => "鎮民",
             TeamType.Outsider => "外來者",
@@ -91,12 +176,12 @@ namespace BloodClockTowerScriptEditor.Models
         {
             get
             {
-                if (firstNight > 0 && otherNight > 0)
-                    return $"首夜:{firstNight} | 其他:{otherNight}";
-                if (firstNight > 0)
-                    return $"首夜:{firstNight}";
-                if (otherNight > 0)
-                    return $"其他夜晚:{otherNight}";
+                if (FirstNight > 0 && OtherNight > 0)
+                    return $"首夜:{FirstNight} | 其他:{OtherNight}";
+                if (FirstNight > 0)
+                    return $"首夜:{FirstNight}";
+                if (OtherNight > 0)
+                    return $"其他夜晚:{OtherNight}";
                 return "不行動";
             }
         }
