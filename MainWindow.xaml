@@ -83,10 +83,6 @@
                         </MenuItem.ToolTip>
                     </MenuItem>
                 </MenuItem>
-                <MenuItem Header="複製角色(_C)" Command="{Binding DuplicateRoleCommand}"
-                          IsEnabled="{Binding SelectedRole, Converter={StaticResource NullToBooleanConverter}}"/>
-                <MenuItem Header="刪除角色(_D)" Command="{Binding DeleteRoleCommand}" 
-                          IsEnabled="{Binding SelectedRole, Converter={StaticResource NullToBooleanConverter}}"/>
                 <Separator/>
                 <MenuItem Header="復原(_U)" IsEnabled="False"/>
                 <MenuItem Header="重做(_R)" IsEnabled="False"/>
@@ -148,6 +144,24 @@
                              ItemsSource="{Binding FilteredRoles}"
                              SelectedItem="{Binding SelectedRole}"
                              Margin="10,0,10,10">
+
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="ContextMenu">
+                                    <Setter.Value>
+                                        <ContextMenu>
+                                            <MenuItem Header="📋 複製此角色" 
+                                                      Command="{Binding DataContext.DuplicateRoleCommand, RelativeSource={RelativeSource AncestorType=Window}}"/>
+                                            <Separator/>
+                                            <MenuItem Header="🗑️ 刪除此角色" 
+                                                      Command="{Binding DataContext.DeleteRoleCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                      Foreground="Red"/>
+                                        </ContextMenu>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" Margin="0,5">

@@ -11,7 +11,8 @@ using System.Windows;
 namespace BloodClockTowerScriptEditor.ViewModels
 {
     /// <summary>
-    /// 主視窗視圖模型 - Phase 2 版本
+    /// 主視窗視圖模型 - Phase 2 修正版
+    /// 修正：AddCustomRoleCommand 現在可以正常運作
     /// </summary>
     public partial class MainViewModel : ObservableObject
     {
@@ -254,15 +255,40 @@ namespace BloodClockTowerScriptEditor.ViewModels
         // ==================== 角色編輯命令 (Phase 2 新增) ====================
 
         /// <summary>
-        /// 新增自訂角色
+        /// 新增自訂空白角色 (直接綁定到選單)
         /// </summary>
         [RelayCommand]
-        private void AddRole()
+        private void AddCustomRole()
         {
             try
             {
-                // TODO: Phase 2.3 - 改為顯示範本選擇對話框
-                AddCustomRole();
+                // 生成新的唯一 ID
+                string newId = GenerateUniqueId();
+
+                // 建立新角色
+                var newRole = new Role
+                {
+                    Id = newId,
+                    Name = "新角色",
+                    Team = TeamType.Townsfolk,
+                    Ability = "請輸入能力描述...",
+                    Image = "https://",
+                    Edition = "custom",
+                    FirstNight = 0,
+                    OtherNight = 0,
+                    Setup = false,
+                    Reminders = new System.Collections.Generic.List<string>(),
+                    RemindersGlobal = new System.Collections.Generic.List<string>()
+                };
+
+                // 加入劇本
+                CurrentScript.Roles.Add(newRole);
+                UpdateFilteredRoles();
+
+                // 自動選中新角色
+                SelectedRole = newRole;
+
+                StatusMessage = $"已新增自訂角色: {newRole.Name}";
             }
             catch (Exception ex)
             {
@@ -272,85 +298,37 @@ namespace BloodClockTowerScriptEditor.ViewModels
         }
 
         /// <summary>
-        /// 新增自訂空白角色
+        /// 從官方範本新增角色 (未實作)
         /// </summary>
-        private void AddCustomRole()
+        [RelayCommand]
+        private void AddFromOfficialTemplate()
         {
-            // 生成新的唯一 ID
-            string newId = GenerateUniqueId();
-
-            // 建立新角色
-            var newRole = new Role
-            {
-                Id = newId,
-                Name = "新角色",
-                Team = TeamType.Townsfolk,
-                Ability = "請輸入能力描述...",
-                Image = "https://",
-                Edition = "custom",
-                FirstNight = 0,
-                OtherNight = 0,
-                Setup = false,
-                Reminders = new System.Collections.Generic.List<string>(),
-                RemindersGlobal = new System.Collections.Generic.List<string>()
-            };
-
-            // 加入劇本
-            CurrentScript.Roles.Add(newRole);
-            UpdateFilteredRoles();
-
-            // 自動選中新角色
-            SelectedRole = newRole;
-
-            StatusMessage = $"已新增自訂角色: {newRole.Name}";
+            // TODO: Phase 2.4 實作官方角色範本選擇
+            MessageBox.Show("官方角色範本功能開發中...", "提示",
+                MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         /// <summary>
-        /// 從範本新增角色 (Phase 2.3 將實作)
+        /// 從自訂範本新增角色 (未實作)
         /// </summary>
-        /// <param name="template">角色範本</param>
-        private void AddRoleFromTemplate(Role template)
+        [RelayCommand]
+        private void AddFromCustomTemplate()
         {
-            // 生成新的唯一 ID
-            string newId = GenerateUniqueId();
-
-            // 建立角色副本
-            var newRole = new Role
-            {
-                Id = newId,
-                Name = template.Name,
-                Team = template.Team,
-                Ability = template.Ability,
-                Image = template.Image,
-                Edition = template.Edition,
-                FirstNight = template.FirstNight,
-                OtherNight = template.OtherNight,
-                Setup = template.Setup,
-                Reminders = new System.Collections.Generic.List<string>(template.Reminders),
-                RemindersGlobal = new System.Collections.Generic.List<string>(template.RemindersGlobal),
-                NameEng = template.NameEng,
-                Flavor = template.Flavor,
-                FirstNightReminder = template.FirstNightReminder,
-                OtherNightReminder = template.OtherNightReminder
-            };
-
-            // 加入劇本
-            CurrentScript.Roles.Add(newRole);
-            UpdateFilteredRoles();
-
-            // 自動選中新角色
-            SelectedRole = newRole;
-
-            StatusMessage = $"已從範本新增角色: {newRole.Name}";
+            // TODO: 未來功能 - 從自訂範本新增
+            MessageBox.Show("自訂範本功能開發中...", "提示",
+                MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         /// <summary>
         /// 刪除角色
         /// </summary>
         [RelayCommand]
-        private void DeleteRole()
+        private void DeleteRole(object? parameter = null)
         {
-            if (SelectedRole == null)
+            // 如果有傳入參數，使用參數；否則使用 SelectedRole
+            var roleToDelete = parameter as Role ?? SelectedRole;
+
+            if (roleToDelete == null)
             {
                 MessageBox.Show("請先選擇要刪除的角色", "提示",
                     MessageBoxButton.OK, MessageBoxImage.Information);
@@ -360,17 +338,22 @@ namespace BloodClockTowerScriptEditor.ViewModels
             try
             {
                 var result = MessageBox.Show(
-                    $"確定要刪除角色「{SelectedRole.Name}」嗎？\n此操作無法復原。",
+                    $"確定要刪除角色「{roleToDelete.Name}」嗎？\n此操作無法復原。",
                     "確認刪除",
                     MessageBoxButton.YesNo,
                     MessageBoxImage.Warning);
 
                 if (result == MessageBoxResult.Yes)
                 {
-                    string deletedName = SelectedRole.Name;
-                    CurrentScript.Roles.Remove(SelectedRole);
+                    string deletedName = roleToDelete.Name;
+                    CurrentScript.Roles.Remove(roleToDelete);
                     UpdateFilteredRoles();
-                    SelectedRole = null;
+
+                    // 如果刪除的是當前選中的角色，清空選擇
+                    if (SelectedRole == roleToDelete)
+                    {
+                        SelectedRole = null;
+                    }
 
                     StatusMessage = $"已刪除角色: {deletedName}";
                 }
@@ -386,9 +369,12 @@ namespace BloodClockTowerScriptEditor.ViewModels
         /// 複製角色
         /// </summary>
         [RelayCommand]
-        private void DuplicateRole()
+        private void DuplicateRole(object? parameter = null)
         {
-            if (SelectedRole == null)
+            // 如果有傳入參數，使用參數；否則使用 SelectedRole
+            var roleToDuplicate = parameter as Role ?? SelectedRole;
+
+            if (roleToDuplicate == null)
             {
                 MessageBox.Show("請先選擇要複製的角色", "提示",
                     MessageBoxButton.OK, MessageBoxImage.Information);
@@ -401,20 +387,20 @@ namespace BloodClockTowerScriptEditor.ViewModels
                 var duplicatedRole = new Role
                 {
                     Id = GenerateUniqueId(),
-                    Name = SelectedRole.Name + " (副本)",
-                    Team = SelectedRole.Team,
-                    Ability = SelectedRole.Ability,
-                    Image = SelectedRole.Image,
-                    Edition = SelectedRole.Edition,
-                    FirstNight = SelectedRole.FirstNight,
-                    OtherNight = SelectedRole.OtherNight,
-                    Setup = SelectedRole.Setup,
-                    Reminders = new System.Collections.Generic.List<string>(SelectedRole.Reminders),
-                    RemindersGlobal = new System.Collections.Generic.List<string>(SelectedRole.RemindersGlobal),
-                    NameEng = SelectedRole.NameEng,
-                    Flavor = SelectedRole.Flavor,
-                    FirstNightReminder = SelectedRole.FirstNightReminder,
-                    OtherNightReminder = SelectedRole.OtherNightReminder
+                    Name = roleToDuplicate.Name + " (副本)",
+                    Team = roleToDuplicate.Team,
+                    Ability = roleToDuplicate.Ability,
+                    Image = roleToDuplicate.Image,
+                    Edition = roleToDuplicate.Edition,
+                    FirstNight = roleToDuplicate.FirstNight,
+                    OtherNight = roleToDuplicate.OtherNight,
+                    Setup = roleToDuplicate.Setup,
+                    Reminders = new System.Collections.Generic.List<string>(roleToDuplicate.Reminders),
+                    RemindersGlobal = new System.Collections.Generic.List<string>(roleToDuplicate.RemindersGlobal),
+                    NameEng = roleToDuplicate.NameEng,
+                    Flavor = roleToDuplicate.Flavor,
+                    FirstNightReminder = roleToDuplicate.FirstNightReminder,
+                    OtherNightReminder = roleToDuplicate.OtherNightReminder
                 };
 
                 // 加入劇本
