@@ -298,14 +298,64 @@ namespace BloodClockTowerScriptEditor.ViewModels
         }
 
         /// <summary>
-        /// 從官方範本新增角色 (未實作)
+        /// 從官方角色範本新增
         /// </summary>
         [RelayCommand]
         private void AddFromOfficialTemplate()
         {
-            // TODO: Phase 2.4 實作官方角色範本選擇
-            MessageBox.Show("官方角色範本功能開發中...", "提示",
-                MessageBoxButton.OK, MessageBoxImage.Information);
+            try
+            {
+                // 檢查當前劇本是否存在
+                if (CurrentScript == null)
+                {
+                    MessageBox.Show(
+                        "請先載入或建立一個劇本",
+                        "提示",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Information
+                    );
+                    return;
+                }
+
+                System.Diagnostics.Debug.WriteLine("開啟角色選擇對話框...");
+
+                var dialog = new Views.SelectRoleDialog
+                {
+                    Owner = Application.Current.MainWindow
+                };
+
+                System.Diagnostics.Debug.WriteLine("對話框已建立，準備顯示...");
+
+                bool? result = dialog.ShowDialog();
+
+                System.Diagnostics.Debug.WriteLine($"對話框已關閉，結果：{result}");
+
+                if (result == true && dialog.SelectedRole != null)
+                {
+                    // 加入選擇的角色
+                    CurrentScript.Roles.Add(dialog.SelectedRole);
+                    UpdateFilteredRoles();
+
+                    // 自動選中新角色
+                    SelectedRole = dialog.SelectedRole;
+
+                    StatusMessage = $"已新增角色: {dialog.SelectedRole.Name}";
+
+                    System.Diagnostics.Debug.WriteLine($"成功新增角色：{dialog.SelectedRole.Name}");
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"發生錯誤：{ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"堆疊追蹤：{ex.StackTrace}");
+
+                MessageBox.Show(
+                    $"新增角色失敗:\n{ex.Message}\n\n詳細資訊請查看輸出視窗",
+                    "錯誤",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                );
+            }
         }
 
         /// <summary>

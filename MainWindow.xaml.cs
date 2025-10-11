@@ -13,7 +13,17 @@ namespace BloodClockTowerScriptEditor
             InitializeComponent();
             DataContext = new MainViewModel();
         }
-
+        /// <summary>
+        /// 匯入角色範本
+        /// </summary>
+        private void ImportRoleTemplates_Click(object sender, RoutedEventArgs e)
+        {
+            var importWindow = new Views.ImportRolesWindow
+            {
+                Owner = this
+            };
+            importWindow.ShowDialog();
+        }
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();

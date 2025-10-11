@@ -1,119 +1,88 @@
 ﻿using BloodClockTowerScriptEditor.Models;
-using Newtonsoft.Json;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace BloodClockTowerScriptEditor.Services
 {
     /// <summary>
-    /// 角色範本服務 - Phase 2.3 將完整實作
-    /// 用於載入和管理官方/自訂角色範本
+    /// 角色範本服務 - 從 SQLite 資料庫讀取
     /// </summary>
     public class RoleTemplateService
     {
-        private List<Role> _templates = new();
-
         /// <summary>
-        /// 所有可用的角色範本
+        /// 取得所有角色範本
         /// </summary>
-        public IReadOnlyList<Role> Templates => _templates.AsReadOnly();
-
-        /// <summary>
-        /// 從 JSON 檔案載入角色範本
-        /// </summary>
-        /// <param name="filePath">範本 JSON 檔案路徑</param>
-        public void LoadTemplates(string filePath)
+        public async Task<List<RoleTemplate>> GetAllTemplatesAsync()
         {
-            try
-            {
-                if (!File.Exists(filePath))
-                {
-                    throw new FileNotFoundException($"找不到範本檔案: {filePath}");
-                }
-
-                string json = File.ReadAllText(filePath);
-                var settings = new JsonSerializerSettings
-                {
-                    NullValueHandling = NullValueHandling.Ignore
-                };
-
-                var templates = JsonConvert.DeserializeObject<List<Role>>(json, settings);
-                if (templates != null)
-                {
-                    _templates.AddRange(templates);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new InvalidOperationException($"載入範本失敗: {ex.Message}", ex);
-            }
+            using var context = new RoleTemplateContext();
+            return await context.RoleTemplates
+                .Include(r => r.Reminders)
+                .OrderBy(r => r.Team)
+                .ThenBy(r => r.Name)
+                .ToListAsync();
         }
 
         /// <summary>
-        /// 載入多個範本檔案
+        /// 根據類型取得角色範本
         /// </summary>
-        public void LoadMultipleTemplates(params string[] filePaths)
+        public async Task<List<RoleTemplate>> GetTemplatesByTeamAsync(string team)
         {
-            foreach (var path in filePaths)
-            {
-                LoadTemplates(path);
-            }
+            using var context = new RoleTemplateContext();
+            return await context.RoleTemplates
+                .Include(r => r.Reminders)
+                .Where(r => r.Team == team)
+                .OrderBy(r => r.Name)
+                .ToListAsync();
         }
 
         /// <summary>
-        /// 清空所有範本
+        /// 搜尋角色範本
         /// </summary>
-        public void ClearTemplates()
-        {
-            _templates.Clear();
-        }
-
-        /// <summary>
-        /// 根據類型篩選範本
-        /// </summary>
-        public IEnumerable<Role> GetTemplatesByTeam(TeamType team)
-        {
-            return _templates.Where(r => r.Team == team);
-        }
-
-        /// <summary>
-        /// 搜尋範本 (根據名稱)
-        /// </summary>
-        public IEnumerable<Role> SearchTemplates(string keyword)
+        public async Task<List<RoleTemplate>> SearchTemplatesAsync(string keyword)
         {
             if (string.IsNullOrWhiteSpace(keyword))
             {
-                return _templates;
+                return await GetAllTemplatesAsync();
             }
 
             keyword = keyword.ToLower();
-            return _templates.Where(r =>
-                r.Name.ToLower().Contains(keyword) ||
-                (r.NameEng?.ToLower().Contains(keyword) ?? false) ||
-                r.Ability.ToLower().Contains(keyword)
-            );
+
+            using var context = new RoleTemplateContext();
+            return await context.RoleTemplates
+                .Include(r => r.Reminders)
+                .Where(r =>
+                    r.Name.ToLower().Contains(keyword) ||
+                    (r.NameEng != null && r.NameEng.ToLower().Contains(keyword)) ||
+                    (r.Ability != null && r.Ability.ToLower().Contains(keyword)))
+                .OrderBy(r => r.Team)
+                .ThenBy(r => r.Name)
+                .ToListAsync();
         }
 
         /// <summary>
-        /// 取得範本統計
+        /// 根據 ID 取得角色範本
         /// </summary>
-        public Dictionary<TeamType, int> GetTemplateStatistics()
+        public async Task<RoleTemplate?> GetTemplateByIdAsync(string id)
         {
-            return _templates
-                .GroupBy(r => r.Team)
-                .ToDictionary(g => g.Key, g => g.Count());
+            using var context = new RoleTemplateContext();
+            return await context.RoleTemplates
+                .Include(r => r.Reminders)
+                .FirstOrDefaultAsync(r => r.Id == id);
         }
-    }
 
-    /// <summary>
-    /// 角色範本分類
-    /// </summary>
-    public class RoleTemplateCategory
-    {
-        public string Name { get; set; } = string.Empty;
-        public TeamType Team { get; set; }
-        public List<Role> Roles { get; set; } = new();
+        /// <summary>
+        /// 取得角色統計資訊
+        /// </summary>
+        public async Task<Dictionary<string, int>> GetStatisticsAsync()
+        {
+            using var context = new RoleTemplateContext();
+            return await context.RoleTemplates
+                .GroupBy(r => r.Team)
+                .Select(g => new { Team = g.Key, Count = g.Count() })
+                .ToDictionaryAsync(x => x.Team, x => x.Count);
+        }
     }
 }
