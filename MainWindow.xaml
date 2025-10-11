@@ -144,24 +144,7 @@
                              ItemsSource="{Binding FilteredRoles}"
                              SelectedItem="{Binding SelectedRole}"
                              Margin="10,0,10,10">
-
-                        <ListBox.ItemContainerStyle>
-                            <Style TargetType="ListBoxItem">
-                                <Setter Property="ContextMenu">
-                                    <Setter.Value>
-                                        <ContextMenu>
-                                            <MenuItem Header="📋 複製此角色" 
-                                                      Command="{Binding DataContext.DuplicateRoleCommand, RelativeSource={RelativeSource AncestorType=Window}}"/>
-                                            <Separator/>
-                                            <MenuItem Header="🗑️ 刪除此角色" 
-                                                      Command="{Binding DataContext.DeleteRoleCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                      Foreground="Red"/>
-                                        </ContextMenu>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </ListBox.ItemContainerStyle>
-
+                        
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" Margin="0,5">
