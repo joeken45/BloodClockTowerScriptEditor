@@ -1,29 +1,120 @@
 ﻿using BloodClockTowerScriptEditor.ViewModels;
+using BloodClockTowerScriptEditor.Services;
 using System.Windows;
+using System.IO;
+using System.Reflection;
+using System.Threading.Tasks;
+using System;
 
 namespace BloodClockTowerScriptEditor
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
             DataContext = new MainViewModel();
+
+            // 註冊載入事件
+            Loaded += MainWindow_Loaded;
         }
+
         /// <summary>
-        /// 匯入角色範本
+        /// 視窗載入完成後執行
         /// </summary>
-        private void ImportRoleTemplates_Click(object sender, RoutedEventArgs e)
+        private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            var importWindow = new Views.ImportRolesWindow
-            {
-                Owner = this
-            };
-            importWindow.ShowDialog();
+            await InitializeDefaultRolesAsync();
         }
+
+        /// <summary>
+        /// 初始化預設角色資料（每次啟動都執行）
+        /// </summary>
+        private async Task InitializeDefaultRolesAsync()
+        {
+            try
+            {
+                System.Diagnostics.Debug.WriteLine("🚀 開始同步角色資料...");
+
+                // 取得程式資料夾路徑
+                string appFolder = AppDomain.CurrentDomain.BaseDirectory;
+                string roleJsonPath = Path.Combine(appFolder, "角色總表.json");
+
+                System.Diagnostics.Debug.WriteLine($"📂 程式資料夾: {appFolder}");
+                System.Diagnostics.Debug.WriteLine($"📄 檢查檔案: {roleJsonPath}");
+
+                // 檢查程式資料夾中是否有 角色總表.json
+                if (!File.Exists(roleJsonPath))
+                {
+                    System.Diagnostics.Debug.WriteLine("📥 程式資料夾中沒有角色總表.json，從內嵌資源建立...");
+
+                    // 從內嵌資源讀取
+                    string embeddedContent = LoadEmbeddedResource("BloodClockTowerScriptEditor.Resources.角色總表.json");
+
+                    if (string.IsNullOrEmpty(embeddedContent))
+                    {
+                        System.Diagnostics.Debug.WriteLine("❌ 無法載入內嵌資源：角色總表.json");
+                        return;
+                    }
+
+                    // 寫入到程式資料夾
+                    await File.WriteAllTextAsync(roleJsonPath, embeddedContent);
+                    System.Diagnostics.Debug.WriteLine($"✅ 已建立角色總表.json 到程式資料夾");
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine("✅ 程式資料夾中已有角色總表.json，使用現有檔案");
+                }
+
+                // 從程式資料夾匯入資料庫
+                var importService = new RoleImportService();
+                int importedCount = await importService.ImportFromJsonAsync(roleJsonPath, "官方", true);
+
+                System.Diagnostics.Debug.WriteLine($"✅ 角色資料同步完成！處理了 {importedCount} 個角色");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"❌ 同步角色資料失敗：{ex.Message}");
+                System.Diagnostics.Debug.WriteLine(ex.StackTrace);
+
+                // 靜默失敗，不干擾使用者操作
+            }
+        }
+
+        /// <summary>
+        /// 載入內嵌資源
+        /// </summary>
+        private string LoadEmbeddedResource(string resourceName)
+        {
+            try
+            {
+                var assembly = Assembly.GetExecutingAssembly();
+
+                using var stream = assembly.GetManifestResourceStream(resourceName);
+
+                if (stream == null)
+                {
+                    System.Diagnostics.Debug.WriteLine($"❌ 找不到內嵌資源: {resourceName}");
+                    System.Diagnostics.Debug.WriteLine("可用的資源:");
+                    foreach (var name in assembly.GetManifestResourceNames())
+                    {
+                        System.Diagnostics.Debug.WriteLine($"  - {name}");
+                    }
+                    return string.Empty;
+                }
+
+                using var reader = new StreamReader(stream);
+                return reader.ReadToEnd();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"❌ 讀取內嵌資源失敗: {ex.Message}");
+                return string.Empty;
+            }
+        }
+
+        // ❌ 刪除：ImportRoleTemplates_Click 方法
+
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();

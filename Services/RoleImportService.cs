@@ -22,9 +22,6 @@ namespace BloodClockTowerScriptEditor.Services
         /// <param name="category">分類標籤（如：官方、社群等）</param>
         /// <param name="isOfficial">是否為官方角色</param>
         /// <returns>匯入的角色數量</returns>
-        /// <summary>
-        /// 從 JSON 檔案匯入角色到資料庫
-        /// </summary>
         public async Task<int> ImportFromJsonAsync(string jsonFilePath, string category = "官方", bool isOfficial = true)
         {
             if (!File.Exists(jsonFilePath))
@@ -33,13 +30,15 @@ namespace BloodClockTowerScriptEditor.Services
             }
 
             int importCount = 0;
+            int updatedCount = 0;
+            int addedCount = 0;
 
             try
             {
                 // 讀取 JSON 內容
                 string jsonContent = await File.ReadAllTextAsync(jsonFilePath);
 
-                // 🆕 預處理 JSON 內容
+                // 預處理 JSON 內容
                 jsonContent = PreprocessJsonContent(jsonContent);
 
                 JArray jArray;
@@ -51,7 +50,6 @@ namespace BloodClockTowerScriptEditor.Services
                 }
                 catch (JsonReaderException)
                 {
-                    // 如果解析失敗，可能是因為格式問題
                     throw new InvalidOperationException(
                         "JSON 格式錯誤。請確認檔案是有效的 JSON 陣列格式 [...]"
                     );
@@ -86,21 +84,25 @@ namespace BloodClockTowerScriptEditor.Services
                             continue; // 跳過無效資料
                         }
 
-                        // 檢查是否已存在
+                        // 🆕 檢查是否已存在 (用 Id 和 Name 雙重判斷)
                         var existing = await context.RoleTemplates
                             .Include(r => r.Reminders)
-                            .FirstOrDefaultAsync(r => r.Id == id);
+                            .FirstOrDefaultAsync(r => r.Id == id && r.Name == name);
 
                         if (existing != null)
                         {
-                            // 更新現有角色
+                            // 🔄 更新現有角色
                             UpdateRoleTemplate(existing, item, category, isOfficial);
+                            updatedCount++;
+                            System.Diagnostics.Debug.WriteLine($"✏️ 更新角色: {name} ({id})");
                         }
                         else
                         {
-                            // 建立新角色
+                            // ➕ 建立新角色
                             var roleTemplate = CreateRoleTemplate(item, category, isOfficial);
                             context.RoleTemplates.Add(roleTemplate);
+                            addedCount++;
+                            System.Diagnostics.Debug.WriteLine($"➕ 新增角色: {name} ({id})");
                         }
 
                         importCount++;
@@ -108,12 +110,14 @@ namespace BloodClockTowerScriptEditor.Services
                     catch (Exception ex)
                     {
                         // 記錄錯誤但繼續處理其他角色
-                        System.Diagnostics.Debug.WriteLine($"匯入角色時發生錯誤：{ex.Message}");
+                        System.Diagnostics.Debug.WriteLine($"❌ 匯入角色時發生錯誤：{ex.Message}");
                     }
                 }
 
                 // 儲存變更
                 await context.SaveChangesAsync();
+
+                System.Diagnostics.Debug.WriteLine($"📊 匯入統計: 總計 {importCount} 個 (新增 {addedCount} / 更新 {updatedCount})");
 
                 return importCount;
             }
@@ -142,14 +146,16 @@ namespace BloodClockTowerScriptEditor.Services
 
                 // 跳過說明行
                 if (trimmedLine.StartsWith("範例") ||
+                    trimmedLine.StartsWith("說明") ||
+                    trimmedLine.StartsWith("注意") ||
                     trimmedLine.StartsWith("//") ||
-                    trimmedLine.StartsWith("/*"))
+                    trimmedLine.StartsWith("#"))
                 {
                     continue;
                 }
 
-                // 如果這行開始有 JSON 資料
-                if (!foundStart && (trimmedLine.StartsWith("[") || trimmedLine.StartsWith(",")))
+                // 找到 JSON 陣列的開始
+                if (!foundStart && trimmedLine.StartsWith("["))
                 {
                     foundStart = true;
                 }
@@ -160,31 +166,11 @@ namespace BloodClockTowerScriptEditor.Services
                 }
             }
 
-            jsonContent = validLines.ToString().Trim();
-
-            // 如果內容以逗號開頭，去掉第一個逗號並加上 [
-            if (jsonContent.StartsWith(","))
-            {
-                jsonContent = "[" + jsonContent.Substring(1);
-            }
-
-            // 如果內容沒有以 [ 開頭，加上它
-            if (!jsonContent.StartsWith("["))
-            {
-                jsonContent = "[" + jsonContent;
-            }
-
-            // 如果內容沒有以 ] 結尾，加上它
-            if (!jsonContent.EndsWith("]"))
-            {
-                jsonContent = jsonContent + "]";
-            }
-
-            return jsonContent;
+            return validLines.ToString();
         }
 
         /// <summary>
-        /// 從 JSON 物件建立 RoleTemplate
+        /// 建立新的 RoleTemplate
         /// </summary>
         private RoleTemplate CreateRoleTemplate(JToken item, string category, bool isOfficial)
         {
@@ -243,10 +229,11 @@ namespace BloodClockTowerScriptEditor.Services
         }
 
         /// <summary>
-        /// 更新現有 RoleTemplate
+        /// 更新現有 RoleTemplate (覆蓋所有欄位)
         /// </summary>
         private void UpdateRoleTemplate(RoleTemplate existing, JToken item, string category, bool isOfficial)
         {
+            // 🔄 覆蓋所有欄位
             existing.Name = item["name"]?.ToString() ?? existing.Name;
             existing.NameEng = item["name_eng"]?.ToString();
             existing.Team = item["team"]?.ToString() ?? existing.Team;
@@ -261,12 +248,12 @@ namespace BloodClockTowerScriptEditor.Services
             existing.OtherNightReminder = item["otherNightReminder"]?.ToString();
             existing.Category = category;
             existing.IsOfficial = isOfficial;
-            existing.UpdatedDate = DateTime.Now;
+            existing.UpdatedDate = DateTime.Now; // 🕒 更新時間
 
-            // 清除舊的提示標記（會由 Cascade Delete 處理）
+            // 🗑️ 清除舊的提示標記
             existing.Reminders.Clear();
 
-            // 重新加入提示標記
+            // ➕ 重新加入提示標記
             var reminders = item["reminders"]?.ToObject<List<string>>();
             if (reminders != null)
             {

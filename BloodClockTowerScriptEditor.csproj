@@ -9,9 +9,26 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Resources\Data\**" />
+    <Compile Remove="Resources\Images\**" />
+    <EmbeddedResource Remove="Resources\Data\**" />
+    <EmbeddedResource Remove="Resources\Images\**" />
+    <None Remove="Resources\Data\**" />
+    <None Remove="Resources\Images\**" />
+    <Page Remove="Resources\Data\**" />
+    <Page Remove="Resources\Images\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\角色總表.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\角色總表.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Assets\" />
-    <Folder Include="Resources\Images\" />
-    <Folder Include="Resources\Data\" />
   </ItemGroup>
 
   <ItemGroup>

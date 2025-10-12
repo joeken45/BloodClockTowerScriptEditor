@@ -61,7 +61,6 @@
                 <MenuItem Header="開啟(_O)" Command="{Binding LoadJsonCommand}"/>
                 <MenuItem Header="儲存(_S)" Command="{Binding SaveJsonCommand}"/>
                 <MenuItem Header="另存新檔(_A)" Command="{Binding SaveAsJsonCommand}"/>
-                <MenuItem Header="匯入角色範本(_I)..." Click="ImportRoleTemplates_Click"/>
                 <Separator/>
                 <MenuItem Header="結束(_X)" Click="Exit_Click"/>
             </MenuItem>
