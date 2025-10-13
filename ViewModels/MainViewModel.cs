@@ -515,5 +515,34 @@ namespace BloodClockTowerScriptEditor.ViewModels
 
             return $"{baseId}{counter}";
         }
+
+        // ==================== 劇本資訊編輯命令 (Phase 2.7 新增) ====================
+
+        /// <summary>
+        /// 開啟劇本資訊編輯視窗
+        /// </summary>
+        [RelayCommand]
+        private void EditScriptMeta()
+        {
+            try
+            {
+                var dialog = new Views.EditScriptMetaWindow(CurrentScript.Meta)
+                {
+                    Owner = Application.Current.MainWindow
+                };
+
+                if (dialog.ShowDialog() == true)
+                {
+                    // 編輯完成後更新顯示
+                    OnPropertyChanged(nameof(CurrentScript));
+                    StatusMessage = "已更新劇本資訊";
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"開啟編輯視窗失敗:\n{ex.Message}", "錯誤",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
     }
 }

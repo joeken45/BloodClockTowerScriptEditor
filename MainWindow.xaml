@@ -110,22 +110,33 @@
                     </Grid.RowDefinitions>
 
                     <!-- 劇本資訊 -->
-                    <Border Grid.Row="0" Margin="10" Background="#F5F5F5" Padding="10">
-                        <StackPanel>
-                            <TextBlock Text="劇本資訊" FontWeight="Bold" FontSize="14" Margin="0,0,0,5"/>
-                            <TextBlock>
-                                <Run Text="名稱: " FontWeight="Bold"/>
-                                <Run Text="{Binding CurrentScript.Meta.Name, Mode=OneWay}"/>
-                            </TextBlock>
-                            <TextBlock>
-                                <Run Text="作者: " FontWeight="Bold"/>
-                                <Run Text="{Binding CurrentScript.Meta.Author, Mode=OneWay}"/>
-                            </TextBlock>
-                            <TextBlock Margin="0,5,0,0">
-                                <Run Text="角色總數: " FontWeight="Bold"/>
-                                <Run Text="{Binding CurrentScript.TotalRoleCount, Mode=OneWay}"/>
-                            </TextBlock>
-                        </StackPanel>
+                    <Border Grid.Row="0" Margin="10" Background="#F5F5F5" Padding="10" BorderBrush="#CCC" BorderThickness="1">
+                        <DockPanel>
+                            <!-- 標題和按鈕 -->
+                            <DockPanel DockPanel.Dock="Top" Margin="0,0,0,10">
+                                <TextBlock Text="劇本資訊" FontWeight="Bold" FontSize="14" 
+                       DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                                <Button Content="✏️ 編輯" Padding="6,3" FontSize="11"
+                    HorizontalAlignment="Right"
+                    Command="{Binding EditScriptMetaCommand}"
+                    Background="#4CAF50" Foreground="White" BorderThickness="0"/>
+                            </DockPanel>
+
+                            <!-- Logo 預覽和名稱 -->
+                            <StackPanel HorizontalAlignment="Center">
+                                <Border BorderBrush="#CCC" BorderThickness="1" Background="White" 
+                    Height="80" Width="160" Margin="0,0,0,8">
+                                    <Image Source="{Binding CurrentScript.Meta.Logo}" 
+                       Stretch="Uniform" Margin="4"/>
+                                </Border>
+
+                                <TextBlock HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap">
+                <Run Text="{Binding CurrentScript.Meta.Name, Mode=OneWay}" FontWeight="SemiBold"/>
+                <Run Text=" by "/>
+                <Run Text="{Binding CurrentScript.Meta.Author, Mode=OneWay}"/>
+                                </TextBlock>
+                            </StackPanel>
+                        </DockPanel>
                     </Border>
 
                     <!-- 陣營篩選 -->
