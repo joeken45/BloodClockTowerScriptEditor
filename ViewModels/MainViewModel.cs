@@ -255,50 +255,7 @@ namespace BloodClockTowerScriptEditor.ViewModels
         // ==================== 角色編輯命令 (Phase 2 新增) ====================
 
         /// <summary>
-        /// 新增自訂空白角色 (直接綁定到選單)
-        /// </summary>
-        [RelayCommand]
-        private void AddCustomRole()
-        {
-            try
-            {
-                // 生成新的唯一 ID
-                string newId = GenerateUniqueId();
-
-                // 建立新角色
-                var newRole = new Role
-                {
-                    Id = newId,
-                    Name = "新角色",
-                    Team = TeamType.Townsfolk,
-                    Ability = "請輸入能力描述...",
-                    Image = "https://",
-                    Edition = "custom",
-                    FirstNight = 0,
-                    OtherNight = 0,
-                    Setup = false,
-                    Reminders = new System.Collections.Generic.List<string>(),
-                    RemindersGlobal = new System.Collections.Generic.List<string>()
-                };
-
-                // 加入劇本
-                CurrentScript.Roles.Add(newRole);
-                UpdateFilteredRoles();
-
-                // 自動選中新角色
-                SelectedRole = newRole;
-
-                StatusMessage = $"已新增自訂角色: {newRole.Name}";
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"新增角色失敗:\n{ex.Message}", "錯誤",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-        /// <summary>
-        /// 從官方角色範本新增
+        /// 從官方角色範本新增（支援多選）
         /// </summary>
         [RelayCommand]
         private void AddFromOfficialTemplate()
@@ -330,18 +287,24 @@ namespace BloodClockTowerScriptEditor.ViewModels
 
                 System.Diagnostics.Debug.WriteLine($"對話框已關閉，結果：{result}");
 
-                if (result == true && dialog.SelectedRole != null)
+                if (result == true && dialog.SelectedRoles != null && dialog.SelectedRoles.Count > 0)
                 {
-                    // 加入選擇的角色
-                    CurrentScript.Roles.Add(dialog.SelectedRole);
+                    // 批次加入選擇的角色
+                    int addedCount = 0;
+                    foreach (var role in dialog.SelectedRoles)
+                    {
+                        CurrentScript.Roles.Add(role);
+                        addedCount++;
+                    }
+
                     UpdateFilteredRoles();
 
-                    // 自動選中新角色
-                    SelectedRole = dialog.SelectedRole;
+                    // 自動選中最後一個新增的角色
+                    SelectedRole = dialog.SelectedRoles.Last();
 
-                    StatusMessage = $"已新增角色: {dialog.SelectedRole.Name}";
+                    StatusMessage = $"已新增 {addedCount} 個角色";
 
-                    System.Diagnostics.Debug.WriteLine($"成功新增角色：{dialog.SelectedRole.Name}");
+                    System.Diagnostics.Debug.WriteLine($"成功新增 {addedCount} 個角色");
                 }
             }
             catch (Exception ex)
@@ -414,61 +377,7 @@ namespace BloodClockTowerScriptEditor.ViewModels
                     MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
-        /// <summary>
-        /// 複製角色
-        /// </summary>
-        [RelayCommand]
-        private void DuplicateRole(object? parameter = null)
-        {
-            // 如果有傳入參數，使用參數；否則使用 SelectedRole
-            var roleToDuplicate = parameter as Role ?? SelectedRole;
-
-            if (roleToDuplicate == null)
-            {
-                MessageBox.Show("請先選擇要複製的角色", "提示",
-                    MessageBoxButton.OK, MessageBoxImage.Information);
-                return;
-            }
-
-            try
-            {
-                // 建立副本
-                var duplicatedRole = new Role
-                {
-                    Id = GenerateUniqueId(),
-                    Name = roleToDuplicate.Name + " (副本)",
-                    Team = roleToDuplicate.Team,
-                    Ability = roleToDuplicate.Ability,
-                    Image = roleToDuplicate.Image,
-                    Edition = roleToDuplicate.Edition,
-                    FirstNight = roleToDuplicate.FirstNight,
-                    OtherNight = roleToDuplicate.OtherNight,
-                    Setup = roleToDuplicate.Setup,
-                    Reminders = new System.Collections.Generic.List<string>(roleToDuplicate.Reminders),
-                    RemindersGlobal = new System.Collections.Generic.List<string>(roleToDuplicate.RemindersGlobal),
-                    NameEng = roleToDuplicate.NameEng,
-                    Flavor = roleToDuplicate.Flavor,
-                    FirstNightReminder = roleToDuplicate.FirstNightReminder,
-                    OtherNightReminder = roleToDuplicate.OtherNightReminder
-                };
-
-                // 加入劇本
-                CurrentScript.Roles.Add(duplicatedRole);
-                UpdateFilteredRoles();
-
-                // 自動選中新角色
-                SelectedRole = duplicatedRole;
-
-                StatusMessage = $"已複製角色: {duplicatedRole.Name}";
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"複製角色失敗:\n{ex.Message}", "錯誤",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
+             
         // ==================== 私有方法 ====================
 
         /// <summary>

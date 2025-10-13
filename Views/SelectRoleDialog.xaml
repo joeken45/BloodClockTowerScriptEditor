@@ -2,61 +2,60 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:converters="clr-namespace:BloodClockTowerScriptEditor.Converters"
-        Title="從官方角色選擇" 
+        Title="選擇角色" 
         Height="600" Width="900"
         WindowStartupLocation="CenterOwner"
-        ResizeMode="CanResize">
+        ResizeMode="CanResize"
+        Loaded="Window_Loaded">
 
     <Window.Resources>
         <converters:TeamTypeConverter x:Key="TeamTypeConverter"/>
 
-        <!-- 角色卡片樣式 -->
-        <Style x:Key="RoleCardStyle" TargetType="Border">
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="BorderBrush" Value="#DDD"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="CornerRadius" Value="5"/>
-            <Setter Property="Padding" Value="10"/>
-            <Setter Property="Margin" Value="5"/>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#F0F8FF"/>
-                    <Setter Property="BorderBrush" Value="#4A90E2"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
+        <!-- 陣營顏色 -->
+        <SolidColorBrush x:Key="TownsfolkBrush" Color="#368CE1"/>
+        <SolidColorBrush x:Key="OutsiderBrush" Color="#71A8D6"/>
+        <SolidColorBrush x:Key="MinionBrush" Color="#DC3545"/>
+        <SolidColorBrush x:Key="DemonBrush" Color="#8B0000"/>
+        <SolidColorBrush x:Key="TravelerBrush" Color="#808080"/>
+        <SolidColorBrush x:Key="FabledBrush" Color="#FFC107"/>
     </Window.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <!-- 搜尋與篩選 -->
             <RowDefinition Height="*"/>
+            <!-- 角色列表 -->
             <RowDefinition Height="Auto"/>
+            <!-- 底部按鈕 -->
         </Grid.RowDefinitions>
 
         <!-- 搜尋與篩選區 -->
-        <Border Grid.Row="0" Background="#F5F5F5" Padding="15">
+        <Border Grid.Row="0" Background="#F5F5F5" Padding="15" BorderBrush="#DDD" BorderThickness="0,0,0,1">
             <Grid>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
                 <!-- 搜尋框 -->
                 <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
-                    <TextBlock Text="搜尋：" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <TextBlock Text="🔍" VerticalAlignment="Center" Margin="0,0,5,0" FontSize="16"/>
                     <TextBox x:Name="txtSearch" 
-                             Width="300" 
-                             Padding="5"
-                             TextChanged="Search_TextChanged"/>
-                    <TextBlock Text="（可搜尋中英文名稱、能力描述）" 
+                             Width="400" 
+                             Padding="8,5"
+                             TextChanged="Search_TextChanged"
+                             VerticalAlignment="Center"/>
+                    <TextBlock Text="（輸入後自動搜尋）" 
                                VerticalAlignment="Center" 
                                Foreground="Gray"
+                               FontSize="11"
                                Margin="10,0,0,0"/>
                 </StackPanel>
 
                 <!-- 類型篩選 -->
-                <WrapPanel Grid.Row="1">
+                <WrapPanel Grid.Row="1" Margin="0,0,0,10">
                     <CheckBox x:Name="chkTownsfolk" Content="鎮民" IsChecked="True" 
                               Checked="Filter_Changed" Unchecked="Filter_Changed" Margin="0,0,15,0"/>
                     <CheckBox x:Name="chkOutsider" Content="外來者" IsChecked="True" 
@@ -70,90 +69,228 @@
                     <CheckBox x:Name="chkFabled" Content="傳奇" IsChecked="True" 
                               Checked="Filter_Changed" Unchecked="Filter_Changed" Margin="0,0,15,0"/>
                 </WrapPanel>
+
+                <!-- 來源篩選 -->
+                <StackPanel Grid.Row="2" Orientation="Horizontal">
+                    <RadioButton x:Name="rbAll" Content="全部" IsChecked="True" 
+                                 Checked="Source_Changed" Margin="0,0,15,0" GroupName="Source"/>
+                    <RadioButton x:Name="rbOfficial" Content="官方角色" 
+                                 Checked="Source_Changed" Margin="0,0,15,0" GroupName="Source"/>
+                    <RadioButton x:Name="rbCustom" Content="自訂角色" 
+                                 Checked="Source_Changed" GroupName="Source"/>
+                </StackPanel>
             </Grid>
         </Border>
 
         <!-- 角色列表 -->
-        <Border Grid.Row="1" BorderBrush="#DDD" BorderThickness="1,0,1,1">
+        <Border Grid.Row="1" Background="White">
             <ScrollViewer VerticalScrollBarVisibility="Auto">
-                <ItemsControl x:Name="rolesList" Padding="10">
-                    <ItemsControl.ItemTemplate>
+                <ListBox x:Name="rolesList" 
+                         BorderThickness="0"
+                         SelectionMode="Multiple">
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="Padding" Value="0"/>
+                            <Setter Property="Margin" Value="0"/>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+
+                    <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Border Style="{StaticResource RoleCardStyle}" 
-                                    MouseLeftButtonDown="RoleCard_Click"
-                                    Cursor="Hand"
-                                    Tag="{Binding}">
+                            <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Padding="10,8">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="80"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <!-- Checkbox -->
+                                        <ColumnDefinition Width="4"/>
+                                        <!-- 色塊 -->
+                                        <ColumnDefinition Width="10"/>
+                                        <!-- 間距 -->
+                                        <ColumnDefinition Width="120"/>
+                                        <!-- 名稱 -->
                                         <ColumnDefinition Width="*"/>
+                                        <!-- 能力描述 -->
+                                        <ColumnDefinition Width="80"/>
+                                        <!-- 類型標籤 -->
+                                        <ColumnDefinition Width="Auto"/>
+                                        <!-- 操作按鈕 -->
                                     </Grid.ColumnDefinitions>
 
-                                    <!-- 角色圖片 -->
-                                    <Border Grid.Column="0" 
-                                            Width="70" Height="70"
-                                            CornerRadius="5"
-                                            Background="#F0F0F0"
-                                            Margin="0,0,10,0">
-                                        <Image Source="{Binding Image}" 
-                                               Stretch="UniformToFill"
-                                               VerticalAlignment="Center"
-                                               HorizontalAlignment="Center"/>
+                                    <!-- CheckBox -->
+                                    <CheckBox Grid.Column="0" 
+                                              IsChecked="{Binding IsSelected}"
+                                              VerticalAlignment="Center"
+                                              Margin="0,0,10,0"/>
+
+                                    <!-- 陣營色塊 -->
+                                    <Border Grid.Column="1" Width="4" Height="30" VerticalAlignment="Center">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Team}" Value="townsfolk">
+                                                        <Setter Property="Background" Value="{StaticResource TownsfolkBrush}"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Team}" Value="outsider">
+                                                        <Setter Property="Background" Value="{StaticResource OutsiderBrush}"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Team}" Value="minion">
+                                                        <Setter Property="Background" Value="{StaticResource MinionBrush}"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Team}" Value="demon">
+                                                        <Setter Property="Background" Value="{StaticResource DemonBrush}"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Team}" Value="traveler">
+                                                        <Setter Property="Background" Value="{StaticResource TravelerBrush}"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Team}" Value="fabled">
+                                                        <Setter Property="Background" Value="{StaticResource FabledBrush}"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
                                     </Border>
 
-                                    <!-- 角色資訊 -->
-                                    <StackPanel Grid.Column="1">
-                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                            <TextBlock Text="{Binding Name}" 
-                                                       FontSize="16" 
-                                                       FontWeight="Bold"
-                                                       Margin="0,0,10,0"/>
-                                            <TextBlock Text="{Binding Team, Converter={StaticResource TeamTypeConverter}}" 
-                                                       FontSize="12"
-                                                       Foreground="White"
-                                                       Background="#4A90E2"
-                                                       Padding="5,2"
-                                                       VerticalAlignment="Center"/>
-                                        </StackPanel>
+                                    <!-- 角色名稱 -->
+                                    <StackPanel Grid.Column="3" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding Name}" 
+                                                   FontWeight="SemiBold" 
+                                                   FontSize="13"/>
+                                        <TextBlock Text="{Binding NameEng}" 
+                                                   FontSize="10" 
+                                                   Foreground="Gray"
+                                                   FontStyle="Italic"/>
+                                    </StackPanel>
 
-                                        <TextBlock Text="{Binding Ability}" 
-                                                   TextWrapping="Wrap"
-                                                   Foreground="#555"
-                                                   MaxHeight="60"
-                                                   TextTrimming="CharacterEllipsis"/>
+                                    <!-- 能力描述 -->
+                                    <TextBlock Grid.Column="4" 
+                                               Text="{Binding Ability}" 
+                                               TextWrapping="Wrap"
+                                               VerticalAlignment="Center"
+                                               Margin="15,0,15,0"
+                                               FontSize="12"
+                                               Foreground="#555"
+                                               MaxHeight="40"
+                                               TextTrimming="CharacterEllipsis"/>
 
-                                        <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                                            <TextBlock Text="{Binding Edition}" 
-                                                       FontSize="10"
-                                                       Foreground="Gray"
-                                                       Margin="0,0,10,0"/>
-                                            <TextBlock Text="{Binding NameEng}" 
-                                                       FontSize="10"
-                                                       Foreground="Gray"
-                                                       FontStyle="Italic"/>
-                                        </StackPanel>
+                                    <!-- 類型標籤 -->
+                                    <Border Grid.Column="5" 
+                                            Background="#F0F0F0"
+                                            CornerRadius="3"
+                                            Padding="8,3"
+                                            HorizontalAlignment="Right"
+                                            VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding TeamDisplayName}" 
+                                                   FontSize="11"
+                                                   Foreground="#666"/>
+                                    </Border>
+
+                                    <!-- 操作按鈕（僅自訂角色顯示） -->
+                                    <StackPanel Grid.Column="6" 
+                                                Orientation="Horizontal" 
+                                                Margin="10,0,0,0"
+                                                VerticalAlignment="Center">
+                                        <StackPanel.Style>
+                                            <Style TargetType="StackPanel">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsOfficial}" Value="False">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </StackPanel.Style>
+
+                                        <Button Content="✏️" 
+                                                Width="28" Height="28"
+                                                Margin="0,0,5,0"
+                                                ToolTip="編輯此角色"
+                                                Tag="{Binding}"
+                                                Click="EditRole_Click"
+                                                Background="#4A90E2" 
+                                                Foreground="White"
+                                                BorderThickness="0"
+                                                Cursor="Hand"/>
+
+                                        <Button Content="🗑️" 
+                                                Width="28" Height="28"
+                                                ToolTip="刪除此角色"
+                                                Tag="{Binding}"
+                                                Click="DeleteRole_Click"
+                                                Background="#DC3545" 
+                                                Foreground="White"
+                                                BorderThickness="0"
+                                                Cursor="Hand"/>
                                     </StackPanel>
                                 </Grid>
                             </Border>
                         </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </ScrollViewer>
         </Border>
 
-        <!-- 底部按鈕 -->
-        <Border Grid.Row="2" Background="#F5F5F5" Padding="15">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <TextBlock x:Name="txtResultCount" 
-                           Text="共 0 個角色"
-                           VerticalAlignment="Center"
-                           Margin="0,0,20,0"
-                           Foreground="Gray"/>
+        <!-- 底部按鈕區 -->
+        <Border Grid.Row="2" Background="#F5F5F5" Padding="15" BorderBrush="#DDD" BorderThickness="0,1,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
 
-                <Button Content="取消" 
-                        Width="80" Height="35"
-                        Click="Cancel_Click"/>
-            </StackPanel>
+                <!-- 左側：新增按鈕與統計 -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button Content="➕ 新增自訂角色"
+                            Width="120" Height="32"
+                            Background="#FF9800" 
+                            Foreground="White"
+                            BorderThickness="0"
+                            FontWeight="SemiBold"
+                            Margin="0,0,20,0"
+                            Click="CreateCustomRole_Click"/>
+
+                    <TextBlock x:Name="txtSelectedCount" 
+                               Text="已選擇: 0 個"
+                               FontWeight="SemiBold"
+                               Foreground="#4A90E2"
+                               Margin="0,0,20,0"
+                               VerticalAlignment="Center"/>
+                    <TextBlock x:Name="txtResultCount" 
+                               Text="共 0 個角色"
+                               Foreground="Gray"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <!-- 右側：操作按鈕 -->
+                <StackPanel Grid.Column="2" Orientation="Horizontal">
+                    <Button x:Name="btnSelectAll"
+                            Content="全選"
+                            Width="60" Height="32"
+                            Margin="0,0,8,0"
+                            Click="SelectAll_Click"/>
+
+                    <Button x:Name="btnDeselectAll"
+                            Content="取消全選"
+                            Width="70" Height="32"
+                            Margin="0,0,15,0"
+                            Click="DeselectAll_Click"/>
+
+                    <Button x:Name="btnConfirm"
+                            Content="新增到劇本"
+                            Width="90" Height="32"
+                            Background="#4CAF50" 
+                            Foreground="White"
+                            BorderThickness="0"
+                            FontWeight="SemiBold"
+                            Margin="0,0,8,0"
+                            Click="Confirm_Click"/>
+
+                    <Button Content="取消" 
+                            Width="60" Height="32"
+                            Click="Cancel_Click"/>
+                </StackPanel>
+            </Grid>
         </Border>
     </Grid>
 </Window>

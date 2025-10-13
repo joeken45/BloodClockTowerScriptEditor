@@ -64,29 +64,6 @@
                 <Separator/>
                 <MenuItem Header="結束(_X)" Click="Exit_Click"/>
             </MenuItem>
-            <MenuItem Header="編輯(_E)">
-                <MenuItem Header="新增角色(_N)">
-                    <MenuItem Header="➕ 空白角色" Command="{Binding AddCustomRoleCommand}"/>
-                    <Separator/>
-                    <MenuItem Header="📋 從官方角色..." Command="{Binding AddFromOfficialTemplateCommand}">
-                        <MenuItem.ToolTip>
-                            <ToolTip>
-                                <TextBlock>官方角色範本載入中...</TextBlock>
-                            </ToolTip>
-                        </MenuItem.ToolTip>
-                    </MenuItem>
-                    <MenuItem Header="📁 從自訂範本..." Command="{Binding AddFromCustomTemplateCommand}" IsEnabled="False">
-                        <MenuItem.ToolTip>
-                            <ToolTip>
-                                <TextBlock>功能開發中</TextBlock>
-                            </ToolTip>
-                        </MenuItem.ToolTip>
-                    </MenuItem>
-                </MenuItem>
-                <Separator/>
-                <MenuItem Header="復原(_U)" IsEnabled="False"/>
-                <MenuItem Header="重做(_R)" IsEnabled="False"/>
-            </MenuItem>
             <MenuItem Header="說明(_H)">
                 <MenuItem Header="關於(_A)" Click="About_Click"/>
             </MenuItem>
@@ -100,13 +77,18 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <!-- 左側面板: 篩選 + 角色列表 -->
+            <!-- 左側面板: 篩選 + 按鈕 + 角色列表 -->
             <Border Grid.Column="0" BorderBrush="#DDD" BorderThickness="0,0,1,0">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
+                        <!-- 劇本資訊 -->
                         <RowDefinition Height="Auto"/>
+                        <!-- 陣營篩選 -->
+                        <RowDefinition Height="Auto"/>
+                        <!-- 按鈕區 (新增) -->
                         <RowDefinition Height="*"/>
+                        <!-- 角色列表 -->
                     </Grid.RowDefinitions>
 
                     <!-- 劇本資訊 -->
@@ -115,25 +97,25 @@
                             <!-- 標題和按鈕 -->
                             <DockPanel DockPanel.Dock="Top" Margin="0,0,0,10">
                                 <TextBlock Text="劇本資訊" FontWeight="Bold" FontSize="14" 
-                       DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                               DockPanel.Dock="Left" VerticalAlignment="Center"/>
                                 <Button Content="✏️ 編輯" Padding="6,3" FontSize="11"
-                    HorizontalAlignment="Right"
-                    Command="{Binding EditScriptMetaCommand}"
-                    Background="#4CAF50" Foreground="White" BorderThickness="0"/>
+                            HorizontalAlignment="Right"
+                            Command="{Binding EditScriptMetaCommand}"
+                            Background="#FF4A90E2" Foreground="White" BorderThickness="0"/>
                             </DockPanel>
 
                             <!-- Logo 預覽和名稱 -->
                             <StackPanel HorizontalAlignment="Center">
                                 <Border BorderBrush="#CCC" BorderThickness="1" Background="White" 
-                    Height="80" Width="160" Margin="0,0,0,8">
+                            Height="80" Width="160" Margin="0,0,0,8">
                                     <Image Source="{Binding CurrentScript.Meta.Logo}" 
-                       Stretch="Uniform" Margin="4"/>
+                               Stretch="Uniform" Margin="4"/>
                                 </Border>
 
                                 <TextBlock HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap">
-                <Run Text="{Binding CurrentScript.Meta.Name, Mode=OneWay}" FontWeight="SemiBold"/>
-                <Run Text=" by "/>
-                <Run Text="{Binding CurrentScript.Meta.Author, Mode=OneWay}"/>
+                        <Run Text="{Binding CurrentScript.Meta.Name, Mode=OneWay}" FontWeight="SemiBold"/>
+                        <Run Text=" by "/>
+                        <Run Text="{Binding CurrentScript.Meta.Author, Mode=OneWay}"/>
                                 </TextBlock>
                             </StackPanel>
                         </DockPanel>
@@ -142,20 +124,49 @@
                     <!-- 陣營篩選 -->
                     <StackPanel Grid.Row="1" Margin="10">
                         <TextBlock Text="顯示類型" FontWeight="Bold" Margin="0,0,0,5"/>
-                        <CheckBox Content="鎮民" IsChecked="{Binding ShowTownsfolk}" Margin="0,2"/>
-                        <CheckBox Content="外來者" IsChecked="{Binding ShowOutsiders}" Margin="0,2"/>
-                        <CheckBox Content="爪牙" IsChecked="{Binding ShowMinions}" Margin="0,2"/>
-                        <CheckBox Content="惡魔" IsChecked="{Binding ShowDemons}" Margin="0,2"/>
-                        <CheckBox Content="旅行者" IsChecked="{Binding ShowTravelers}" Margin="0,2"/>
-                        <CheckBox Content="傳奇/其他" IsChecked="{Binding ShowFabled}" Margin="0,2"/>
+
+                        <!-- 第一行 -->
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                            <CheckBox Content="鎮民" IsChecked="{Binding ShowTownsfolk}" Margin="0,0,15,0"/>
+                            <CheckBox Content="外來者" IsChecked="{Binding ShowOutsiders}" Margin="0,0,15,0"/>
+                            <CheckBox Content="爪牙" IsChecked="{Binding ShowMinions}" Margin="0,0,0,0"/>
+                        </StackPanel>
+
+                        <!-- 第二行 -->
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Content="惡魔" IsChecked="{Binding ShowDemons}" Margin="0,0,15,0"/>
+                            <CheckBox Content="旅行者" IsChecked="{Binding ShowTravelers}" Margin="0,0,15,0"/>
+                            <CheckBox Content="傳奇/其他" IsChecked="{Binding ShowFabled}" Margin="0,0,0,0"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <!-- 按鈕區 (新增) -->
+                    <StackPanel Grid.Row="2" Orientation="Horizontal" 
+                    Margin="10,5,10,10" HorizontalAlignment="Right">
+                        <Button Content="➕" 
+                    Command="{Binding AddFromOfficialTemplateCommand}"
+                    Width="30" Height="30"
+                    Background="#28A745" Foreground="White"
+                    BorderThickness="0" Cursor="Hand"
+                    FontSize="16" FontWeight="Bold"
+                    Margin="0,0,5,0"
+                    ToolTip="新增角色"/>
+
+                        <Button Content="🗑️" 
+                    Command="{Binding DeleteRoleCommand}"
+                    Width="30" Height="30"
+                    Background="#DC3545" Foreground="White"
+                    BorderThickness="0" Cursor="Hand"
+                    FontSize="16" FontWeight="Bold"
+                    ToolTip="刪除角色"/>
                     </StackPanel>
 
                     <!-- 角色列表 -->
-                    <ListBox Grid.Row="2" 
-                             ItemsSource="{Binding FilteredRoles}"
-                             SelectedItem="{Binding SelectedRole}"
-                             Margin="10,0,10,10">
-                        
+                    <ListBox Grid.Row="3" 
+                 ItemsSource="{Binding FilteredRoles}"
+                 SelectedItem="{Binding SelectedRole}"
+                 Margin="10,0,10,10">
+
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" Margin="0,5">
@@ -191,7 +202,7 @@
                                     <StackPanel>
                                         <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="13"/>
                                         <TextBlock Text="{Binding TeamDisplayName}" 
-                                                   FontSize="11" Foreground="Gray"/>
+                                       FontSize="11" Foreground="Gray"/>
                                     </StackPanel>
                                 </StackPanel>
                             </DataTemplate>
@@ -199,7 +210,7 @@
                     </ListBox>
                 </Grid>
             </Border>
-
+            
             <!-- 分隔線 -->
             <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch" 
                           Background="#DDD"/>
@@ -254,22 +265,6 @@
                             <models:TeamType>Fabled</models:TeamType>
                             <models:TeamType>Jinxed</models:TeamType>
                         </ComboBox>
-
-                        <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Margin="0,15"/>
-
-                        <!-- 操作按鈕 -->
-                        <StackPanel Orientation="Horizontal" Margin="0,10,0,15">
-                            <Button Content="🗑️ 刪除此角色" 
-                                    Command="{Binding DeleteRoleCommand}"
-                                    Padding="10,5" Margin="0,0,10,0"
-                                    Background="#DC3545" Foreground="White"
-                                    BorderThickness="0" Cursor="Hand"/>
-                            <Button Content="📋 複製此角色" 
-                                    Command="{Binding DuplicateRoleCommand}"
-                                    Padding="10,5"
-                                    Background="#28A745" Foreground="White"
-                                    BorderThickness="0" Cursor="Hand"/>
-                        </StackPanel>
 
                         <!-- 能力描述 -->
                         <TextBlock Text="能力描述" Style="{StaticResource LabelStyle}" FontSize="16"/>
@@ -369,7 +364,7 @@
                     <TextBlock Text="請從左側選擇一個角色進行編輯" 
                                FontSize="16" Foreground="Gray" 
                                HorizontalAlignment="Center" Margin="0,10,0,0"/>
-                    <TextBlock Text="或點擊「編輯 > 新增角色」建立新角色" 
+                    <TextBlock Text="或點擊左側的 ➕ 按鈕新增角色"
                                FontSize="13" Foreground="Gray" 
                                HorizontalAlignment="Center" Margin="0,5,0,0"/>
                 </StackPanel>

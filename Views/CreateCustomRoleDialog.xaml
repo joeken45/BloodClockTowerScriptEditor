@@ -1,0 +1,216 @@
+﻿<Window x:Class="BloodClockTowerScriptEditor.Views.CreateCustomRoleDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:converters="clr-namespace:BloodClockTowerScriptEditor.Converters"
+        Title="新增自訂角色" 
+        Height="650" Width="600"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="CanResize">
+
+    <Window.Resources>
+        <converters:TeamTypeConverter x:Key="TeamTypeConverter"/>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>      <!-- 表單區 -->
+            <RowDefinition Height="Auto"/>   <!-- 底部按鈕 -->
+        </Grid.RowDefinitions>
+
+        <!-- 表單區 -->
+        <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="20">
+                
+                <!-- 標題 -->
+                <TextBlock Text="✨ 建立自訂角色" 
+                           FontSize="20" 
+                           FontWeight="Bold" 
+                           Margin="0,0,0,20"/>
+
+                <!-- 基本資訊 -->
+                <TextBlock Text="基本資訊" 
+                           FontSize="14" 
+                           FontWeight="SemiBold" 
+                           Margin="0,0,0,10"/>
+                
+                <Border Background="#F9F9F9" 
+                        Padding="15" 
+                        CornerRadius="5" 
+                        Margin="0,0,0,20">
+                    <StackPanel>
+                        <!-- 角色名稱 -->
+                        <TextBlock Text="角色名稱 *" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                        <TextBox x:Name="txtName" 
+                                 Padding="8,5" 
+                                 FontSize="13"
+                                 TextChanged="ValidateForm"/>
+
+                        <!-- 角色 ID -->
+                        <TextBlock Text="角色 ID *" FontWeight="SemiBold" Margin="0,10,0,5"/>
+                        <TextBox x:Name="txtId" 
+                                 Padding="8,5" 
+                                 FontSize="13"
+                                 TextChanged="ValidateForm"/>
+                        <TextBlock Text="（用於識別角色的唯一代碼，建議使用英文小寫）" 
+                                   FontSize="10" 
+                                   Foreground="Gray" 
+                                   Margin="0,2,0,0"/>
+
+                        <!-- 英文名稱 -->
+                        <TextBlock Text="英文名稱" FontWeight="SemiBold" Margin="0,10,0,5"/>
+                        <TextBox x:Name="txtNameEng" 
+                                 Padding="8,5" 
+                                 FontSize="13"/>
+
+                        <!-- 角色類型 -->
+                        <TextBlock Text="角色類型 *" FontWeight="SemiBold" Margin="0,10,0,5"/>
+                        <ComboBox x:Name="cmbTeam" 
+                                  Padding="8,5" 
+                                  FontSize="13"
+                                  SelectedIndex="0"
+                                  SelectionChanged="ValidateForm">
+                            <ComboBoxItem Content="鎮民" Tag="townsfolk"/>
+                            <ComboBoxItem Content="外來者" Tag="outsider"/>
+                            <ComboBoxItem Content="爪牙" Tag="minion"/>
+                            <ComboBoxItem Content="惡魔" Tag="demon"/>
+                            <ComboBoxItem Content="旅行者" Tag="traveler"/>
+                            <ComboBoxItem Content="傳奇" Tag="fabled"/>
+                        </ComboBox>
+                    </StackPanel>
+                </Border>
+
+                <!-- 能力描述 -->
+                <TextBlock Text="能力描述" 
+                           FontSize="14" 
+                           FontWeight="SemiBold" 
+                           Margin="0,0,0,10"/>
+                
+                <Border Background="#F9F9F9" 
+                        Padding="15" 
+                        CornerRadius="5" 
+                        Margin="0,0,0,20">
+                    <StackPanel>
+                        <TextBlock Text="能力描述 *" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                        <TextBox x:Name="txtAbility" 
+                                 TextWrapping="Wrap" 
+                                 AcceptsReturn="True"
+                                 MinHeight="80" 
+                                 MaxHeight="150"
+                                 Padding="8,5"
+                                 FontSize="13"
+                                 VerticalScrollBarVisibility="Auto"
+                                 TextChanged="ValidateForm"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- 進階設定 -->
+                <TextBlock Text="進階設定（選填）" 
+                           FontSize="14" 
+                           FontWeight="SemiBold" 
+                           Margin="0,0,0,10"/>
+                
+                <Border Background="#F9F9F9" 
+                        Padding="15" 
+                        CornerRadius="5" 
+                        Margin="0,0,0,20">
+                    <StackPanel>
+                        <!-- 圖片 URL -->
+                        <TextBlock Text="圖片 URL" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                        <TextBox x:Name="txtImage" 
+                                 Padding="8,5" 
+                                 FontSize="13"/>
+
+                        <!-- 所屬劇本 -->
+                        <TextBlock Text="所屬劇本" FontWeight="SemiBold" Margin="0,10,0,5"/>
+                        <TextBox x:Name="txtEdition" 
+                                 Text="custom"
+                                 Padding="8,5" 
+                                 FontSize="13"/>
+
+                        <!-- 夜晚順序 -->
+                        <Grid Margin="0,10,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="15"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="首夜順序" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                                <TextBox x:Name="txtFirstNight" 
+                                         Text="0"
+                                         Padding="8,5" 
+                                         FontSize="13"/>
+                                <TextBlock Text="（0 = 不行動）" 
+                                           FontSize="10" 
+                                           Foreground="Gray" 
+                                           Margin="0,2,0,0"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="其他夜晚順序" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                                <TextBox x:Name="txtOtherNight" 
+                                         Text="0"
+                                         Padding="8,5" 
+                                         FontSize="13"/>
+                                <TextBlock Text="（0 = 不行動）" 
+                                           FontSize="10" 
+                                           Foreground="Gray" 
+                                           Margin="0,2,0,0"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <!-- 影響設置 -->
+                        <CheckBox x:Name="chkSetup" 
+                                  Content="此角色影響劇本設置" 
+                                  Margin="0,15,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- 提示 -->
+                <Border Background="#FFF9E6" 
+                        BorderBrush="#FFD700" 
+                        BorderThickness="1"
+                        Padding="10" 
+                        CornerRadius="3">
+                    <StackPanel>
+                        <TextBlock Text="💡 提示" FontWeight="Bold" Margin="0,0,0,5"/>
+                        <TextBlock TextWrapping="Wrap" FontSize="11">
+                            • 標記 * 的欄位為必填<LineBreak/>
+                            • 角色 ID 必須是唯一的，不能與其他角色重複<LineBreak/>
+                            • 儲存後，此角色會出現在角色選擇列表中<LineBreak/>
+                            • 自訂角色可以隨時編輯或刪除
+                        </TextBlock>
+                    </StackPanel>
+                </Border>
+
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- 底部按鈕 -->
+        <Border Grid.Row="1" 
+                Background="#F5F5F5" 
+                Padding="20,15" 
+                BorderBrush="#DDD" 
+                BorderThickness="0,1,0,0">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button x:Name="btnSave"
+                        Content="💾 儲存到資料庫" 
+                        Width="120" 
+                        Height="35"
+                        Background="#4CAF50" 
+                        Foreground="White"
+                        BorderThickness="0"
+                        FontWeight="SemiBold"
+                        Margin="0,0,10,0"
+                        Click="Save_Click"
+                        IsEnabled="False"/>
+                
+                <Button Content="取消" 
+                        Width="80" 
+                        Height="35"
+                        Click="Cancel_Click"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

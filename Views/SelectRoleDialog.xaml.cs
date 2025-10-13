@@ -7,7 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace BloodClockTowerScriptEditor.Views
 {
@@ -15,42 +15,36 @@ namespace BloodClockTowerScriptEditor.Views
     {
         private List<RoleTemplate> _allRoles = new();
         private List<RoleTemplate> _filteredRoles = new();
+        private DispatcherTimer? _searchTimer;
 
         /// <summary>
-        /// 使用者選擇的角色
+        /// 使用者選擇的角色列表（多選）
         /// </summary>
-        public Role? SelectedRole { get; private set; }
+        public List<Role> SelectedRoles { get; private set; } = new();
 
         public SelectRoleDialog()
         {
             InitializeComponent();
-
-            // 🆕 延遲載入，避免在建構函式中執行非同步操作
-            this.Loaded += SelectRoleDialog_Loaded;
         }
 
         /// <summary>
         /// 視窗載入時執行
         /// </summary>
-        private async void SelectRoleDialog_Loaded(object sender, RoutedEventArgs e)
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             try
             {
-                // 顯示載入訊息
                 txtResultCount.Text = "載入中...";
-
                 await LoadRolesAsync();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(
-                    $"初始化對話框失敗：\n{ex.Message}\n\n堆疊追蹤：\n{ex.StackTrace}",
+                    $"初始化對話框失敗：\n{ex.Message}",
                     "錯誤",
                     MessageBoxButton.OK,
                     MessageBoxImage.Error
                 );
-
-                // 關閉對話框
                 this.Close();
             }
         }
@@ -62,13 +56,9 @@ namespace BloodClockTowerScriptEditor.Views
         {
             try
             {
-                System.Diagnostics.Debug.WriteLine("開始載入角色...");
-
                 using var context = new RoleTemplateContext();
 
-                // 🆕 先檢查資料庫是否有資料
                 var count = await context.RoleTemplates.CountAsync();
-                System.Diagnostics.Debug.WriteLine($"資料庫中有 {count} 個角色");
 
                 if (count == 0)
                 {
@@ -82,37 +72,25 @@ namespace BloodClockTowerScriptEditor.Views
                     return;
                 }
 
-                // 載入所有角色及其提示標記
+                // 載入所有角色
                 _allRoles = await context.RoleTemplates
                     .Include(r => r.Reminders)
                     .OrderBy(r => r.Team)
                     .ThenBy(r => r.Name)
                     .ToListAsync();
 
-                System.Diagnostics.Debug.WriteLine($"成功載入 {_allRoles.Count} 個角色");
-
-                // 🆕 檢查並過濾無效資料
-                var validRoles = _allRoles.Where(r =>
-                    !string.IsNullOrEmpty(r.Id) &&
-                    !string.IsNullOrEmpty(r.Name) &&
-                    !string.IsNullOrEmpty(r.Team)
-                ).ToList();
-
-                if (validRoles.Count < _allRoles.Count)
+                // 初始化 IsSelected 屬性
+                foreach (var role in _allRoles)
                 {
-                    System.Diagnostics.Debug.WriteLine($"過濾掉 {_allRoles.Count - validRoles.Count} 個無效角色");
-                    _allRoles = validRoles;
+                    role.IsSelected = false;
                 }
 
-                // 套用篩選
+                // 套用初始篩選
                 ApplyFilter();
-
-                System.Diagnostics.Debug.WriteLine("角色載入完成");
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"載入角色失敗：{ex.Message}");
-                throw; // 重新拋出例外，由上層處理
+                throw new Exception($"載入角色失敗: {ex.Message}", ex);
             }
         }
 
@@ -123,50 +101,65 @@ namespace BloodClockTowerScriptEditor.Views
         {
             try
             {
-                // 🆕 安全地取得搜尋文字
-                var searchText = txtSearch?.Text?.Trim().ToLower() ?? string.Empty;
+                if (_allRoles == null || _allRoles.Count == 0)
+                    return;
 
+                // 取得篩選條件
+                bool showTownsfolk = chkTownsfolk?.IsChecked ?? true;
+                bool showOutsider = chkOutsider?.IsChecked ?? true;
+                bool showMinion = chkMinion?.IsChecked ?? true;
+                bool showDemon = chkDemon?.IsChecked ?? true;
+                bool showTraveler = chkTraveler?.IsChecked ?? true;
+                bool showFabled = chkFabled?.IsChecked ?? true;
+
+                // 來源篩選
+                bool? showOfficial = null;
+                if (rbOfficial?.IsChecked == true)
+                    showOfficial = true;
+                else if (rbCustom?.IsChecked == true)
+                    showOfficial = false;
+
+                string searchText = txtSearch?.Text?.ToLower()?.Trim() ?? "";
+
+                // 篩選角色
                 _filteredRoles = _allRoles.Where(r =>
                 {
+                    // 來源篩選
+                    if (showOfficial.HasValue && r.IsOfficial != showOfficial.Value)
+                        return false;
+
                     // 類型篩選
-                    bool teamMatch = r.Team switch
+                    bool teamMatch = r.Team?.ToLower() switch
                     {
-                        "townsfolk" => chkTownsfolk?.IsChecked == true,
-                        "outsider" => chkOutsider?.IsChecked == true,
-                        "minion" => chkMinion?.IsChecked == true,
-                        "demon" => chkDemon?.IsChecked == true,
-                        "traveler" => chkTraveler?.IsChecked == true,
-                        "fabled" => chkFabled?.IsChecked == true,
-                        _ => false
+                        "townsfolk" => showTownsfolk,
+                        "outsider" => showOutsider,
+                        "minion" => showMinion,
+                        "demon" => showDemon,
+                        "traveler" => showTraveler,
+                        "fabled" => showFabled,
+                        _ => true
                     };
 
                     if (!teamMatch) return false;
 
-                    // 搜尋篩選
+                    // 搜尋文字篩選
                     if (string.IsNullOrEmpty(searchText)) return true;
 
-                    return r.Name.ToLower().Contains(searchText) ||
+                    return (r.Name?.ToLower().Contains(searchText) ?? false) ||
                            (r.NameEng?.ToLower().Contains(searchText) ?? false) ||
                            (r.Ability?.ToLower().Contains(searchText) ?? false);
 
                 }).ToList();
 
                 // 更新顯示
-                if (rolesList != null)
-                {
-                    rolesList.ItemsSource = _filteredRoles;
-                }
+                rolesList.ItemsSource = null;
+                rolesList.ItemsSource = _filteredRoles;
 
-                if (txtResultCount != null)
-                {
-                    txtResultCount.Text = $"共 {_filteredRoles.Count} 個角色";
-                }
-
-                System.Diagnostics.Debug.WriteLine($"篩選後顯示 {_filteredRoles.Count} 個角色");
+                // 更新統計
+                UpdateStatistics();
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"套用篩選時發生錯誤：{ex.Message}");
                 MessageBox.Show(
                     $"套用篩選失敗：{ex.Message}",
                     "錯誤",
@@ -177,15 +170,39 @@ namespace BloodClockTowerScriptEditor.Views
         }
 
         /// <summary>
-        /// 搜尋文字變更
+        /// 更新統計資訊
+        /// </summary>
+        private void UpdateStatistics()
+        {
+            int selectedCount = _filteredRoles.Count(r => r.IsSelected);
+            txtSelectedCount.Text = $"已選擇: {selectedCount} 個";
+            txtResultCount.Text = $"共 {_filteredRoles.Count} 個角色";
+        }
+
+        /// <summary>
+        /// 搜尋文字變更（延遲搜尋）
         /// </summary>
         private void Search_TextChanged(object sender, TextChangedEventArgs e)
         {
-            // 🆕 確保已載入資料
-            if (_allRoles != null && _allRoles.Count > 0)
+            if (_allRoles == null || _allRoles.Count == 0)
+                return;
+
+            // 停止現有的計時器
+            _searchTimer?.Stop();
+
+            // 建立新的計時器（延遲 300ms）
+            _searchTimer = new DispatcherTimer
             {
+                Interval = TimeSpan.FromMilliseconds(300)
+            };
+
+            _searchTimer.Tick += (s, args) =>
+            {
+                _searchTimer.Stop();
                 ApplyFilter();
-            }
+            };
+
+            _searchTimer.Start();
         }
 
         /// <summary>
@@ -193,7 +210,6 @@ namespace BloodClockTowerScriptEditor.Views
         /// </summary>
         private void Filter_Changed(object sender, RoutedEventArgs e)
         {
-            // 🆕 確保已載入資料
             if (_allRoles != null && _allRoles.Count > 0)
             {
                 ApplyFilter();
@@ -201,60 +217,82 @@ namespace BloodClockTowerScriptEditor.Views
         }
 
         /// <summary>
-        /// 角色卡片點擊
+        /// 全選
         /// </summary>
-        private void RoleCard_Click(object sender, MouseButtonEventArgs e)
+        private void SelectAll_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (var role in _filteredRoles)
+            {
+                role.IsSelected = true;
+            }
+            rolesList.Items.Refresh();
+            UpdateStatistics();
+        }
+
+        /// <summary>
+        /// 取消全選
+        /// </summary>
+        private void DeselectAll_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (var role in _filteredRoles)
+            {
+                role.IsSelected = false;
+            }
+            rolesList.Items.Refresh();
+            UpdateStatistics();
+        }
+
+        /// <summary>
+        /// 確認新增
+        /// </summary>
+        private void Confirm_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                if (sender is Border border && border.Tag is RoleTemplate roleTemplate)
+                // 取得所有選中的角色
+                var selectedTemplates = _allRoles.Where(r => r.IsSelected).ToList();
+
+                if (selectedTemplates.Count == 0)
                 {
-                    if (roleTemplate == null)
-                    {
-                        MessageBox.Show("角色資料無效", "錯誤", MessageBoxButton.OK, MessageBoxImage.Error);
-                        return;
-                    }
-
-                    // 確認對話框
-                    var result = MessageBox.Show(
-                        $"確定要新增「{roleTemplate.Name}」到劇本中嗎？",
-                        "確認新增",
-                        MessageBoxButton.YesNo,
-                        MessageBoxImage.Question
+                    MessageBox.Show(
+                        "請至少選擇一個角色",
+                        "提示",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Information
                     );
+                    return;
+                }
 
-                    if (result == MessageBoxResult.Yes)
+                // 轉換為 Role 物件
+                SelectedRoles.Clear();
+                foreach (var template in selectedTemplates)
+                {
+                    var role = template.ToRole();
+                    if (role != null)
                     {
-                        try
-                        {
-                            // 轉換為 Role 並設定結果
-                            SelectedRole = roleTemplate.ToRole();
-
-                            if (SelectedRole == null)
-                            {
-                                MessageBox.Show("角色轉換失敗", "錯誤", MessageBoxButton.OK, MessageBoxImage.Error);
-                                return;
-                            }
-
-                            this.DialogResult = true;
-                            this.Close();
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show(
-                                $"轉換角色時發生錯誤:\n{ex.Message}",
-                                "錯誤",
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Error
-                            );
-                        }
+                        SelectedRoles.Add(role);
                     }
+                }
+
+                if (SelectedRoles.Count > 0)
+                {
+                    DialogResult = true;
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show(
+                        "角色轉換失敗",
+                        "錯誤",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error
+                    );
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(
-                    $"處理點擊事件時發生錯誤:\n{ex.Message}",
+                    $"新增角色失敗：{ex.Message}",
                     "錯誤",
                     MessageBoxButton.OK,
                     MessageBoxImage.Error
@@ -263,12 +301,145 @@ namespace BloodClockTowerScriptEditor.Views
         }
 
         /// <summary>
-        /// 取消按鈕
+        /// 取消
         /// </summary>
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            this.DialogResult = false;
+            DialogResult = false;
             this.Close();
+        }
+
+        /// <summary>
+        /// 來源篩選變更
+        /// </summary>
+        private void Source_Changed(object sender, RoutedEventArgs e)
+        {
+            if (_allRoles != null && _allRoles.Count > 0)
+            {
+                ApplyFilter();
+            }
+        }
+
+        /// <summary>
+        /// 新增自訂角色
+        /// </summary>
+        private async void CreateCustomRole_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var dialog = new CreateCustomRoleDialog
+                {
+                    Owner = this
+                };
+
+                bool? result = dialog.ShowDialog();
+
+                if (result == true)
+                {
+                    // 重新載入角色列表
+                    await LoadRolesAsync();
+
+                    // 切換到「自訂角色」篩選
+                    if (rbCustom != null)
+                        rbCustom.IsChecked = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"新增自訂角色失敗：{ex.Message}",
+                    "錯誤",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                );
+            }
+        }
+
+        /// <summary>
+        /// 編輯自訂角色
+        /// </summary>
+        private async void EditRole_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender is Button button && button.Tag is RoleTemplate role)
+                {
+                    var dialog = new CreateCustomRoleDialog(role)
+                    {
+                        Owner = this
+                    };
+
+                    bool? result = dialog.ShowDialog();
+
+                    if (result == true)
+                    {
+                        // 重新載入角色列表
+                        await LoadRolesAsync();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"編輯角色失敗：{ex.Message}",
+                    "錯誤",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                );
+            }
+        }
+
+        /// <summary>
+        /// 刪除自訂角色
+        /// </summary>
+        private async void DeleteRole_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender is Button button && button.Tag is RoleTemplate role)
+                {
+                    var result = MessageBox.Show(
+                        $"確定要刪除自訂角色「{role.Name}」嗎？\n\n" +
+                        "此操作無法復原，角色將從資料庫中永久刪除。",
+                        "確認刪除",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Warning
+                    );
+
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        using var context = new RoleTemplateContext();
+                        var roleToDelete = await context.RoleTemplates
+                            .Include(r => r.Reminders)
+                            .FirstOrDefaultAsync(r => r.Id == role.Id);
+
+                        if (roleToDelete != null)
+                        {
+                            context.RoleTemplates.Remove(roleToDelete);
+                            await context.SaveChangesAsync();
+
+                            MessageBox.Show(
+                                $"已刪除自訂角色「{role.Name}」",
+                                "刪除成功",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Information
+                            );
+
+                            // 重新載入角色列表
+                            await LoadRolesAsync();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"刪除角色失敗：{ex.Message}",
+                    "錯誤",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                );
+            }
         }
     }
 }
