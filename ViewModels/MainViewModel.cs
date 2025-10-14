@@ -186,6 +186,8 @@ namespace BloodClockTowerScriptEditor.ViewModels
                 if (dialog.ShowDialog() == true)
                 {
                     CurrentScript = _jsonService.LoadScript(dialog.FileName);
+                    // 🆕 載入後自動排序
+                    SortRoles();
                     CurrentFilePath = dialog.FileName;
                     UpdateFilteredRoles();
                     StatusMessage = $"已載入: {CurrentScript.Meta.Name} (共 {CurrentScript.TotalRoleCount} 個角色)";
@@ -204,6 +206,8 @@ namespace BloodClockTowerScriptEditor.ViewModels
         {
             try
             {
+                // 🆕 儲存前先排序
+                SortRoles();
                 if (string.IsNullOrEmpty(CurrentFilePath))
                 {
                     SaveAsJson();
@@ -297,6 +301,8 @@ namespace BloodClockTowerScriptEditor.ViewModels
                         addedCount++;
                     }
 
+                    // 🆕 新增後自動排序
+                    SortRoles();
                     UpdateFilteredRoles();
 
                     // 自動選中最後一個新增的角色
@@ -350,26 +356,17 @@ namespace BloodClockTowerScriptEditor.ViewModels
 
             try
             {
-                var result = MessageBox.Show(
-                    $"確定要刪除角色「{roleToDelete.Name}」嗎？\n此操作無法復原。",
-                    "確認刪除",
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Warning);
+                string deletedName = roleToDelete.Name;
+                CurrentScript.Roles.Remove(roleToDelete);
+                UpdateFilteredRoles();
 
-                if (result == MessageBoxResult.Yes)
+                // 如果刪除的是當前選中的角色，清空選擇
+                if (SelectedRole == roleToDelete)
                 {
-                    string deletedName = roleToDelete.Name;
-                    CurrentScript.Roles.Remove(roleToDelete);
-                    UpdateFilteredRoles();
-
-                    // 如果刪除的是當前選中的角色，清空選擇
-                    if (SelectedRole == roleToDelete)
-                    {
-                        SelectedRole = null;
-                    }
-
-                    StatusMessage = $"已刪除角色: {deletedName}";
+                    SelectedRole = null;
                 }
+
+                StatusMessage = $"已刪除角色: {deletedName}";
             }
             catch (Exception ex)
             {
@@ -377,7 +374,7 @@ namespace BloodClockTowerScriptEditor.ViewModels
                     MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-             
+
         // ==================== 私有方法 ====================
 
         /// <summary>
@@ -406,6 +403,48 @@ namespace BloodClockTowerScriptEditor.ViewModels
                     FilteredRoles.Add(role);
                 }
             }
+        }
+
+        // ==================== 🆕 排序功能 (Phase 3.1) ====================
+
+        /// <summary>
+        /// 定義角色類型的排序優先級
+        /// 鎮民(1) > 外來者(2) > 爪牙(3) > 惡魔(4) > 旅行者(5) > 傳奇(6) > 相剋(7)
+        /// </summary>
+        private int GetTeamSortOrder(TeamType team)
+        {
+            return team switch
+            {
+                TeamType.Townsfolk => 1,
+                TeamType.Outsider => 2,
+                TeamType.Minion => 3,
+                TeamType.Demon => 4,
+                TeamType.Traveler => 5,
+                TeamType.Fabled => 6,
+                TeamType.Jinxed => 7,
+                _ => 99
+            };
+        }
+
+        /// <summary>
+        /// 對當前劇本的角色列表進行排序
+        /// </summary>
+        private void SortRoles()
+        {
+            if (CurrentScript?.Roles == null || CurrentScript.Roles.Count == 0)
+                return;
+
+            var sortedRoles = CurrentScript.Roles
+                .OrderBy(r => GetTeamSortOrder(r.Team))
+                .ToList();
+
+            CurrentScript.Roles.Clear();
+            foreach (var role in sortedRoles)
+            {
+                CurrentScript.Roles.Add(role);
+            }
+
+            System.Diagnostics.Debug.WriteLine($"✅ 角色已自動排序，共 {sortedRoles.Count} 個角色");
         }
 
         /// <summary>

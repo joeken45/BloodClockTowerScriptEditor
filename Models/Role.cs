@@ -6,20 +6,19 @@ using System.Collections.Generic;
 namespace BloodClockTowerScriptEditor.Models
 {
     /// <summary>
-    /// 角色模型 - 完全手動實作避免序列化衝突
+    /// 角色資料模型
     /// </summary>
     public class Role : ObservableObject
     {
-        // ==================== 私有欄位 ====================
         private string _id = string.Empty;
         private string _name = string.Empty;
-        private TeamType _team;
+        private TeamType _team = TeamType.Townsfolk;
         private string _ability = string.Empty;
-        private string _image = string.Empty;
-        private string _edition = "custom";
-        private double _firstNight = 0;
-        private double _otherNight = 0;
-        private bool _setup = false;
+        private string? _image;
+        private string? _edition;
+        private bool _setup;
+        private double _firstNight;
+        private double _otherNight;
         private List<string> _reminders = new();
         private List<string> _remindersGlobal = new();
         private string? _nameEng;
@@ -27,7 +26,7 @@ namespace BloodClockTowerScriptEditor.Models
         private string? _firstNightReminder;
         private string? _otherNightReminder;
 
-        // ==================== 必填屬性 ====================
+        // ==================== JSON 序列化屬性 ====================
 
         [JsonProperty("id")]
         public string Id
@@ -52,8 +51,11 @@ namespace BloodClockTowerScriptEditor.Models
             {
                 if (SetProperty(ref _team, value))
                 {
-                    // 當陣營變更時，通知 UI 輔助屬性更新
+                    // 🆕 類型變更時通知 UI 更新
                     OnPropertyChanged(nameof(TeamDisplayName));
+
+                    // 🆕 觸發自訂事件，通知 ViewModel 需要重新排序
+                    TeamChanged?.Invoke(this, System.EventArgs.Empty);
                 }
             }
         }
@@ -65,44 +67,18 @@ namespace BloodClockTowerScriptEditor.Models
             set => SetProperty(ref _ability, value);
         }
 
-        [JsonProperty("image")]
-        public string Image
+        [JsonProperty("image", NullValueHandling = NullValueHandling.Ignore)]
+        public string? Image
         {
             get => _image;
             set => SetProperty(ref _image, value);
         }
 
-        [JsonProperty("edition")]
-        public string Edition
+        [JsonProperty("edition", NullValueHandling = NullValueHandling.Ignore)]
+        public string? Edition
         {
             get => _edition;
             set => SetProperty(ref _edition, value);
-        }
-
-        [JsonProperty("firstNight")]
-        public double FirstNight
-        {
-            get => _firstNight;
-            set
-            {
-                if (SetProperty(ref _firstNight, value))
-                {
-                    OnPropertyChanged(nameof(NightOrderDisplay));
-                }
-            }
-        }
-
-        [JsonProperty("otherNight")]
-        public double OtherNight
-        {
-            get => _otherNight;
-            set
-            {
-                if (SetProperty(ref _otherNight, value))
-                {
-                    OnPropertyChanged(nameof(NightOrderDisplay));
-                }
-            }
         }
 
         [JsonProperty("setup")]
@@ -110,6 +86,20 @@ namespace BloodClockTowerScriptEditor.Models
         {
             get => _setup;
             set => SetProperty(ref _setup, value);
+        }
+
+        [JsonProperty("firstNight")]
+        public double FirstNight
+        {
+            get => _firstNight;
+            set => SetProperty(ref _firstNight, value);
+        }
+
+        [JsonProperty("otherNight")]
+        public double OtherNight
+        {
+            get => _otherNight;
+            set => SetProperty(ref _otherNight, value);
         }
 
         [JsonProperty("reminders")]
@@ -126,30 +116,28 @@ namespace BloodClockTowerScriptEditor.Models
             set => SetProperty(ref _remindersGlobal, value);
         }
 
-        // ==================== 可選屬性 ====================
-
-        [JsonProperty("name_eng")]
+        [JsonProperty("name_eng", NullValueHandling = NullValueHandling.Ignore)]
         public string? NameEng
         {
             get => _nameEng;
             set => SetProperty(ref _nameEng, value);
         }
 
-        [JsonProperty("flavor")]
+        [JsonProperty("flavor", NullValueHandling = NullValueHandling.Ignore)]
         public string? Flavor
         {
             get => _flavor;
             set => SetProperty(ref _flavor, value);
         }
 
-        [JsonProperty("firstNightReminder")]
+        [JsonProperty("firstNightReminder", NullValueHandling = NullValueHandling.Ignore)]
         public string? FirstNightReminder
         {
             get => _firstNightReminder;
             set => SetProperty(ref _firstNightReminder, value);
         }
 
-        [JsonProperty("otherNightReminder")]
+        [JsonProperty("otherNightReminder", NullValueHandling = NullValueHandling.Ignore)]
         public string? OtherNightReminder
         {
             get => _otherNightReminder;
@@ -157,6 +145,12 @@ namespace BloodClockTowerScriptEditor.Models
         }
 
         // ==================== UI 輔助屬性 (不序列化) ====================
+
+        /// <summary>
+        /// 🆕 類型變更事件（用於通知 ViewModel 重新排序）
+        /// 注意：事件不會被序列化，不需要 JsonIgnore 屬性
+        /// </summary>
+        public event System.EventHandler? TeamChanged;
 
         [JsonIgnore]
         public string TeamDisplayName => Team switch

@@ -364,7 +364,7 @@
                     <TextBlock Text="請從左側選擇一個角色進行編輯" 
                                FontSize="16" Foreground="Gray" 
                                HorizontalAlignment="Center" Margin="0,10,0,0"/>
-                    <TextBlock Text="或點擊左側的 ➕ 按鈕新增角色"
+                    <TextBlock Text="或點擊「編輯 > 新增角色」建立新角色" 
                                FontSize="13" Foreground="Gray" 
                                HorizontalAlignment="Center" Margin="0,5,0,0"/>
                 </StackPanel>
