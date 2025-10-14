@@ -204,113 +204,184 @@
                             </Grid>
                         </TabItem>
 
-                        <!-- Tab 2: 夜晚順序 (只有左右兩欄列表) -->
-                        <TabItem Header="夜晚順序">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="5"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
+                        <!-- Tab 2: 首夜順序 -->
+                        <TabItem Header="首夜順序">
+                            <Border BorderBrush="#DDD" BorderThickness="0">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
 
-                                <!-- 左側: 首個夜晚 -->
-                                <Border Grid.Column="0" BorderBrush="#DDD" BorderThickness="0,0,1,0">
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="*"/>
-                                        </Grid.RowDefinitions>
+                                    <!-- 標題 -->
+                                    <Border Grid.Row="0" Background="#F5F5F5" BorderBrush="#DDD" 
+                    BorderThickness="0,0,0,1" Padding="8">
+                                        <TextBlock Text="首個夜晚" FontSize="12" FontWeight="Bold" 
+                       HorizontalAlignment="Center"/>
+                                    </Border>
 
-                                        <!-- 標題 -->
-                                        <Border Grid.Row="0" Background="#F5F5F5" BorderBrush="#DDD" 
-                                    BorderThickness="0,0,0,1" Padding="8">
-                                            <TextBlock Text="首個夜晚" FontSize="12" FontWeight="Bold" 
-                                           HorizontalAlignment="Center"/>
-                                        </Border>
+                                    <!-- 角色列表 -->
+                                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                                        <ItemsControl ItemsSource="{Binding FirstNightRoles}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" 
+                                    Padding="10,8" 
+                                    Background="White"
+                                    Tag="{Binding}"
+                                    MouseLeftButtonDown="NightRole_Click"
+                                    Cursor="Hand">
+                                                        <Border.Style>
+                                                            <Style TargetType="Border">
+                                                                <Style.Triggers>
+                                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                                        <Setter Property="Background" Value="#F0F0F0"/>
+                                                                    </Trigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </Border.Style>
 
-                                        <!-- 角色列表 -->
-                                        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-                                            <ItemsControl ItemsSource="{Binding FirstNightRoles}">
-                                                <ItemsControl.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" 
-                                                    Padding="10,8" 
-                                                    Background="White"
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="Auto"/>
+                                                            </Grid.ColumnDefinitions>
+
+                                                            <TextBlock Grid.Column="0"
+                                                   Text="{Binding Name}" 
+                                                   FontWeight="Bold" 
+                                                   FontSize="12"
+                                                   Foreground="Black"
+                                                   VerticalAlignment="Center"/>
+
+                                                            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                                                <StackPanel.Style>
+                                                                    <Style TargetType="StackPanel">
+                                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                                        <Style.Triggers>
+                                                                            <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Border}}" Value="True">
+                                                                                <Setter Property="Visibility" Value="Visible"/>
+                                                                            </DataTrigger>
+                                                                        </Style.Triggers>
+                                                                    </Style>
+                                                                </StackPanel.Style>
+
+                                                                <Button Content="▲" 
+                                                    Width="24" Height="24"
+                                                    FontSize="10"
+                                                    Margin="2,0,0,0"
+                                                    Padding="0"
+                                                    Click="MoveUpFirstNight_Click"
                                                     Tag="{Binding}"
-                                                    MouseLeftButtonDown="NightRole_Click"
-                                                    Cursor="Hand">
-                                                            <Border.Style>
-                                                                <Style TargetType="Border">
-                                                                    <Style.Triggers>
-                                                                        <Trigger Property="IsMouseOver" Value="True">
-                                                                            <Setter Property="Background" Value="#F0F0F0"/>
-                                                                        </Trigger>
-                                                                    </Style.Triggers>
-                                                                </Style>
-                                                            </Border.Style>
-                                                            <TextBlock Text="{Binding Name}" 
-                                                           FontWeight="Bold" 
-                                                           FontSize="12"
-                                                           Foreground="Black"/>
-                                                        </Border>
-                                                    </DataTemplate>
-                                                </ItemsControl.ItemTemplate>
-                                            </ItemsControl>
-                                        </ScrollViewer>
-                                    </Grid>
-                                </Border>
+                                                    ToolTip="上移"/>
 
-                                <!-- 分隔線 -->
-                                <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch" 
-                                  Background="#DDD"/>
-
-                                <!-- 右側: 其他夜晚 -->
-                                <Border Grid.Column="2">
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="*"/>
-                                        </Grid.RowDefinitions>
-
-                                        <!-- 標題 -->
-                                        <Border Grid.Row="0" Background="#F5F5F5" BorderBrush="#DDD" 
-                                    BorderThickness="0,0,0,1" Padding="8">
-                                            <TextBlock Text="其他夜晚" FontSize="12" FontWeight="Bold" 
-                                           HorizontalAlignment="Center"/>
-                                        </Border>
-
-                                        <!-- 角色列表 -->
-                                        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-                                            <ItemsControl ItemsSource="{Binding OtherNightRoles}">
-                                                <ItemsControl.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" 
-                                                    Padding="10,8" 
-                                                    Background="White"
+                                                                <Button Content="▼" 
+                                                    Width="24" Height="24"
+                                                    FontSize="10"
+                                                    Margin="2,0,0,0"
+                                                    Padding="0"
+                                                    Click="MoveDownFirstNight_Click"
                                                     Tag="{Binding}"
-                                                    MouseLeftButtonDown="NightRole_Click"
-                                                    Cursor="Hand">
-                                                            <Border.Style>
-                                                                <Style TargetType="Border">
-                                                                    <Style.Triggers>
-                                                                        <Trigger Property="IsMouseOver" Value="True">
-                                                                            <Setter Property="Background" Value="#F0F0F0"/>
-                                                                        </Trigger>
-                                                                    </Style.Triggers>
-                                                                </Style>
-                                                            </Border.Style>
-                                                            <TextBlock Text="{Binding Name}" 
-                                                           FontWeight="Bold" 
-                                                           FontSize="12"
-                                                           Foreground="Black"/>
-                                                        </Border>
-                                                    </DataTemplate>
-                                                </ItemsControl.ItemTemplate>
-                                            </ItemsControl>
-                                        </ScrollViewer>
-                                    </Grid>
-                                </Border>
-                            </Grid>
+                                                    ToolTip="下移"/>
+                                                            </StackPanel>
+                                                        </Grid>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </ScrollViewer>
+                                </Grid>
+                            </Border>
+                        </TabItem>
+
+                        <!-- Tab 3: 其他夜順序 -->
+                        <TabItem Header="其他夜順序">
+                            <Border BorderBrush="#DDD" BorderThickness="0">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+
+                                    <!-- 標題 -->
+                                    <Border Grid.Row="0" Background="#F5F5F5" BorderBrush="#DDD" 
+                    BorderThickness="0,0,0,1" Padding="8">
+                                        <TextBlock Text="其他夜晚" FontSize="12" FontWeight="Bold" 
+                       HorizontalAlignment="Center"/>
+                                    </Border>
+
+                                    <!-- 角色列表 -->
+                                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                                        <ItemsControl ItemsSource="{Binding OtherNightRoles}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" 
+                                    Padding="10,8" 
+                                    Background="White"
+                                    Tag="{Binding}"
+                                    MouseLeftButtonDown="NightRole_Click"
+                                    Cursor="Hand">
+                                                        <Border.Style>
+                                                            <Style TargetType="Border">
+                                                                <Style.Triggers>
+                                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                                        <Setter Property="Background" Value="#F0F0F0"/>
+                                                                    </Trigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </Border.Style>
+
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="Auto"/>
+                                                            </Grid.ColumnDefinitions>
+
+                                                            <TextBlock Grid.Column="0"
+                                                   Text="{Binding Name}" 
+                                                   FontWeight="Bold" 
+                                                   FontSize="12"
+                                                   Foreground="Black"
+                                                   VerticalAlignment="Center"/>
+
+                                                            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                                                <StackPanel.Style>
+                                                                    <Style TargetType="StackPanel">
+                                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                                        <Style.Triggers>
+                                                                            <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Border}}" Value="True">
+                                                                                <Setter Property="Visibility" Value="Visible"/>
+                                                                            </DataTrigger>
+                                                                        </Style.Triggers>
+                                                                    </Style>
+                                                                </StackPanel.Style>
+
+                                                                <Button Content="▲" 
+                                                    Width="24" Height="24"
+                                                    FontSize="10"
+                                                    Margin="2,0,0,0"
+                                                    Padding="0"
+                                                    Click="MoveUpOtherNight_Click"
+                                                    Tag="{Binding}"
+                                                    ToolTip="上移"/>
+
+                                                                <Button Content="▼" 
+                                                    Width="24" Height="24"
+                                                    FontSize="10"
+                                                    Margin="2,0,0,0"
+                                                    Padding="0"
+                                                    Click="MoveDownOtherNight_Click"
+                                                    Tag="{Binding}"
+                                                    ToolTip="下移"/>
+                                                            </StackPanel>
+                                                        </Grid>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </ScrollViewer>
+                                </Grid>
+                            </Border>
                         </TabItem>
                     </TabControl>
                 </Grid>

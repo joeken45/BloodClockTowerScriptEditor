@@ -376,5 +376,60 @@ namespace BloodClockTowerScriptEditor.ViewModels
                 OtherNightRoles.Add(role);
             }
         }
+
+        /// <summary>
+        /// 上移角色在夜晚順序中的位置
+        /// </summary>
+        public void MoveRoleUp(Role role, bool isFirstNight)
+        {
+            var list = isFirstNight ? FirstNightRoles : OtherNightRoles;
+            var index = list.IndexOf(role);
+
+            if (index <= 0) return; // 已在頂部
+
+            double newOrder;
+
+            if (index == 1)
+            {
+                // 第二個 → 第一個 - 0.1
+                var first = list[0];
+                var firstOrder = isFirstNight ? first.FirstNight : first.OtherNight;
+                newOrder = firstOrder - 0.1;
+            }
+            else
+            {
+                // 其他 → 上上個 + 0.1
+                var target = list[index - 2];
+                var targetOrder = isFirstNight ? target.FirstNight : target.OtherNight;
+                newOrder = targetOrder + 0.1;
+            }
+
+            if (isFirstNight)
+                role.FirstNight = (int)(newOrder * 10) / 10.0; // 保留一位小數
+            else
+                role.OtherNight = (int)(newOrder * 10) / 10.0;
+        }
+
+        /// <summary>
+        /// 下移角色在夜晚順序中的位置
+        /// </summary>
+        public void MoveRoleDown(Role role, bool isFirstNight)
+        {
+            var list = isFirstNight ? FirstNightRoles : OtherNightRoles;
+            var index = list.IndexOf(role);
+
+            if (index >= list.Count - 1) return; // 已在底部
+
+            var below = list[index + 1];
+            var belowOrder = isFirstNight ? below.FirstNight : below.OtherNight;
+
+            // 下移 = 下一個 + 0.1
+            var newOrder = belowOrder + 0.1;
+
+            if (isFirstNight)
+                role.FirstNight = (int)(newOrder * 10) / 10.0;
+            else
+                role.OtherNight = (int)(newOrder * 10) / 10.0;
+        }
     }
 }

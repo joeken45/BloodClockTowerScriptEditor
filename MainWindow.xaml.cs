@@ -167,5 +167,61 @@ namespace BloodClockTowerScriptEditor
                 }
             }
         }
+
+        // 首個夜晚 - 上移
+        private void MoveUpFirstNight_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && button.Tag is Role role)
+            {
+                var viewModel = DataContext as MainViewModel;
+                if (viewModel != null)
+                {
+                    viewModel.MoveRoleUp(role, isFirstNight: true);
+                    e.Handled = true; // 防止觸發 Border 的點擊事件
+                }
+            }
+        }
+
+        // 首個夜晚 - 下移
+        private void MoveDownFirstNight_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && button.Tag is Role role)
+            {
+                var viewModel = DataContext as MainViewModel;
+                if (viewModel != null)
+                {
+                    viewModel.MoveRoleDown(role, isFirstNight: true);
+                    e.Handled = true;
+                }
+            }
+        }
+
+        // 其他夜晚 - 上移
+        private void MoveUpOtherNight_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && button.Tag is Role role)
+            {
+                var viewModel = DataContext as MainViewModel;
+                if (viewModel != null)
+                {
+                    viewModel.MoveRoleUp(role, isFirstNight: false);
+                    e.Handled = true;
+                }
+            }
+        }
+
+        // 其他夜晚 - 下移
+        private void MoveDownOtherNight_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && button.Tag is Role role)
+            {
+                var viewModel = DataContext as MainViewModel;
+                if (viewModel != null)
+                {
+                    viewModel.MoveRoleDown(role, isFirstNight: false);
+                    e.Handled = true;
+                }
+            }
+        }
     }
 }
