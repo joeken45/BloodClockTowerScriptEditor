@@ -15,6 +15,8 @@
         <!-- 轉換器 -->
         <converters:TeamTypeConverter x:Key="TeamTypeConverter"/>
         <converters:NullToBooleanConverter x:Key="NullToBooleanConverter"/>
+        <converters:IdFormatValidationConverter x:Key="IdFormatValidationConverter"/>
+        <converters:StringNotEmptyConverter x:Key="StringNotEmptyConverter"/>
 
         <!-- 陣營顏色 -->
         <SolidColorBrush x:Key="TownsfolkBrush" Color="#368CE1"/>
@@ -45,6 +47,17 @@
             <Setter Property="AcceptsReturn" Value="True"/>
             <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
             <Setter Property="MinHeight" Value="80"/>
+        </Style>
+
+        <!-- 驗證錯誤樣式 -->
+        <Style x:Key="ValidatedTextBoxStyle" TargetType="TextBox" BasedOn="{StaticResource TextBoxStyle}">
+            <Style.Triggers>
+                <!-- 當驗證失敗時顯示紅色邊框 -->
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="BorderBrush" Value="#F44336"/>
+                    <Setter Property="BorderThickness" Value="2"/>
+                </Trigger>
+            </Style.Triggers>
         </Style>
     </Window.Resources>
 
@@ -144,25 +157,69 @@
                                 <!-- 按鈕區 -->
                                 <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,10">
                                     <Button Content="➕" Width="30" Height="30" Margin="0,0,5,0"
-                                Command="{Binding AddFromOfficialTemplateCommand}"
-                                Background="#4CAF50" Foreground="White" BorderThickness="0"
-                                FontSize="16" FontWeight="Bold"
-                                ToolTip="新增角色"/>
+                    Command="{Binding AddFromOfficialTemplateCommand}"
+                    Background="#4CAF50" Foreground="White" BorderThickness="0"
+                    FontSize="16" FontWeight="Bold"
+                    ToolTip="新增角色"/>
                                     <Button Content="🗑️" Width="30" Height="30"
-                                Command="{Binding RemoveRoleCommand}"
-                                Background="#F44336" Foreground="White" BorderThickness="0"
-                                FontSize="14" FontWeight="Bold"
-                                ToolTip="刪除角色"/>
+                    Command="{Binding RemoveRoleCommand}"
+                    Background="#F44336" Foreground="White" BorderThickness="0"
+                    FontSize="14" FontWeight="Bold"
+                    ToolTip="刪除角色"/>
                                 </StackPanel>
 
                                 <!-- 角色列表 -->
                                 <ListBox Grid.Row="2" 
-                             ItemsSource="{Binding FilteredRoles}"
-                             SelectedItem="{Binding SelectedRole}"
-                             BorderThickness="0">
+                 ItemsSource="{Binding FilteredRoles}"
+                 SelectedItem="{Binding SelectedRole}"
+                 BorderThickness="0">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal" Margin="0,5">
+                                                <!-- 角色圖片縮圖 -->
+                                                <Border Width="40" Height="40" 
+                    BorderBrush="#DDD" 
+                    BorderThickness="1"
+                    Background="White"
+                    Margin="0,0,10,0"
+                    VerticalAlignment="Center">
+                                                    <Grid>
+                                                        <Image Source="{Binding Image}" 
+                           Stretch="Uniform"
+                           Margin="2">
+                                                            <Image.Style>
+                                                                <Style TargetType="Image">
+                                                                    <Style.Triggers>
+                                                                        <Trigger Property="Source" Value="{x:Null}">
+                                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                                        </Trigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </Image.Style>
+                                                        </Image>
+
+                                                        <TextBlock Text="🎭" 
+                               FontSize="24"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Foreground="#999">
+                                                            <TextBlock.Style>
+                                                                <Style TargetType="TextBlock">
+                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding Image}" Value="{x:Null}">
+                                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding Image}" Value="">
+                                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </TextBlock.Style>
+                                                        </TextBlock>
+                                                    </Grid>
+                                                </Border>
+
                                                 <!-- 陣營色塊 -->
                                                 <Border Width="4" Height="40" VerticalAlignment="Center" Margin="0,0,8,0">
                                                     <Border.Style>
@@ -192,10 +249,10 @@
                                                 </Border>
 
                                                 <!-- 角色資訊 -->
-                                                <StackPanel>
+                                                <StackPanel VerticalAlignment="Center">
                                                     <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="13"/>
                                                     <TextBlock Text="{Binding TeamDisplayName}" 
-                                                   FontSize="11" Foreground="Gray"/>
+                           FontSize="11" Foreground="Gray"/>
                                                 </StackPanel>
                                             </StackPanel>
                                         </DataTemplate>
@@ -217,79 +274,73 @@
                                     <Border Grid.Row="0" Background="#F5F5F5" BorderBrush="#DDD" 
                     BorderThickness="0,0,0,1" Padding="8">
                                         <TextBlock Text="首個夜晚" FontSize="12" FontWeight="Bold" 
-                       HorizontalAlignment="Center"/>
+                           HorizontalAlignment="Center"/>
                                     </Border>
 
                                     <!-- 角色列表 -->
-                                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-                                        <ItemsControl ItemsSource="{Binding FirstNightRoles}">
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" 
-                                    Padding="10,8" 
-                                    Background="White"
-                                    Tag="{Binding}"
-                                    MouseLeftButtonDown="NightRole_Click"
-                                    Cursor="Hand">
-                                                        <Border.Style>
-                                                            <Style TargetType="Border">
-                                                                <Style.Triggers>
-                                                                    <Trigger Property="IsMouseOver" Value="True">
-                                                                        <Setter Property="Background" Value="#F0F0F0"/>
-                                                                    </Trigger>
-                                                                </Style.Triggers>
-                                                            </Style>
-                                                        </Border.Style>
+                                    <ListBox Grid.Row="1" 
+                     ItemsSource="{Binding FirstNightRoles}"
+                     SelectedItem="{Binding SelectedRole}"
+                     BorderThickness="0">
+                                        <ListBox.ItemContainerStyle>
+                                            <Style TargetType="ListBoxItem">
+                                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                                <Setter Property="Padding" Value="0"/>
+                                                <Setter Property="Margin" Value="0"/>
+                                            </Style>
+                                        </ListBox.ItemContainerStyle>
 
-                                                        <Grid>
-                                                            <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="*"/>
-                                                                <ColumnDefinition Width="Auto"/>
-                                                            </Grid.ColumnDefinitions>
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Padding="10,8">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
 
-                                                            <TextBlock Grid.Column="0"
-                                                   Text="{Binding Name}" 
-                                                   FontWeight="Bold" 
-                                                   FontSize="12"
-                                                   Foreground="Black"
-                                                   VerticalAlignment="Center"/>
+                                                        <TextBlock Grid.Column="0"
+                                           Text="{Binding Name}" 
+                                           FontWeight="Bold" 
+                                           FontSize="12"
+                                           Foreground="Black"
+                                           VerticalAlignment="Center"/>
 
-                                                            <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                                                <StackPanel.Style>
-                                                                    <Style TargetType="StackPanel">
-                                                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                                                        <Style.Triggers>
-                                                                            <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Border}}" Value="True">
-                                                                                <Setter Property="Visibility" Value="Visible"/>
-                                                                            </DataTrigger>
-                                                                        </Style.Triggers>
-                                                                    </Style>
-                                                                </StackPanel.Style>
+                                                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                                            <StackPanel.Style>
+                                                                <Style TargetType="StackPanel">
+                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True">
+                                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </StackPanel.Style>
 
-                                                                <Button Content="▲" 
-                                                    Width="24" Height="24"
-                                                    FontSize="10"
-                                                    Margin="2,0,0,0"
-                                                    Padding="0"
-                                                    Click="MoveUpFirstNight_Click"
-                                                    Tag="{Binding}"
-                                                    ToolTip="上移"/>
+                                                            <Button Content="▲" 
+                                            Width="24" Height="24"
+                                            FontSize="10"
+                                            Margin="2,0,0,0"
+                                            Padding="0"
+                                            Click="MoveUpFirstNight_Click"
+                                            Tag="{Binding}"
+                                            ToolTip="上移"/>
 
-                                                                <Button Content="▼" 
-                                                    Width="24" Height="24"
-                                                    FontSize="10"
-                                                    Margin="2,0,0,0"
-                                                    Padding="0"
-                                                    Click="MoveDownFirstNight_Click"
-                                                    Tag="{Binding}"
-                                                    ToolTip="下移"/>
-                                                            </StackPanel>
-                                                        </Grid>
-                                                    </Border>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                    </ScrollViewer>
+                                                            <Button Content="▼" 
+                                            Width="24" Height="24"
+                                            FontSize="10"
+                                            Margin="2,0,0,0"
+                                            Padding="0"
+                                            Click="MoveDownFirstNight_Click"
+                                            Tag="{Binding}"
+                                            ToolTip="下移"/>
+                                                        </StackPanel>
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
                                 </Grid>
                             </Border>
                         </TabItem>
@@ -307,79 +358,73 @@
                                     <Border Grid.Row="0" Background="#F5F5F5" BorderBrush="#DDD" 
                     BorderThickness="0,0,0,1" Padding="8">
                                         <TextBlock Text="其他夜晚" FontSize="12" FontWeight="Bold" 
-                       HorizontalAlignment="Center"/>
+                           HorizontalAlignment="Center"/>
                                     </Border>
 
                                     <!-- 角色列表 -->
-                                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-                                        <ItemsControl ItemsSource="{Binding OtherNightRoles}">
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" 
-                                    Padding="10,8" 
-                                    Background="White"
-                                    Tag="{Binding}"
-                                    MouseLeftButtonDown="NightRole_Click"
-                                    Cursor="Hand">
-                                                        <Border.Style>
-                                                            <Style TargetType="Border">
-                                                                <Style.Triggers>
-                                                                    <Trigger Property="IsMouseOver" Value="True">
-                                                                        <Setter Property="Background" Value="#F0F0F0"/>
-                                                                    </Trigger>
-                                                                </Style.Triggers>
-                                                            </Style>
-                                                        </Border.Style>
+                                    <ListBox Grid.Row="1" 
+                     ItemsSource="{Binding OtherNightRoles}"
+                     SelectedItem="{Binding SelectedRole}"
+                     BorderThickness="0">
+                                        <ListBox.ItemContainerStyle>
+                                            <Style TargetType="ListBoxItem">
+                                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                                <Setter Property="Padding" Value="0"/>
+                                                <Setter Property="Margin" Value="0"/>
+                                            </Style>
+                                        </ListBox.ItemContainerStyle>
 
-                                                        <Grid>
-                                                            <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="*"/>
-                                                                <ColumnDefinition Width="Auto"/>
-                                                            </Grid.ColumnDefinitions>
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Padding="10,8">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
 
-                                                            <TextBlock Grid.Column="0"
-                                                   Text="{Binding Name}" 
-                                                   FontWeight="Bold" 
-                                                   FontSize="12"
-                                                   Foreground="Black"
-                                                   VerticalAlignment="Center"/>
+                                                        <TextBlock Grid.Column="0"
+                                           Text="{Binding Name}" 
+                                           FontWeight="Bold" 
+                                           FontSize="12"
+                                           Foreground="Black"
+                                           VerticalAlignment="Center"/>
 
-                                                            <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                                                <StackPanel.Style>
-                                                                    <Style TargetType="StackPanel">
-                                                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                                                        <Style.Triggers>
-                                                                            <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Border}}" Value="True">
-                                                                                <Setter Property="Visibility" Value="Visible"/>
-                                                                            </DataTrigger>
-                                                                        </Style.Triggers>
-                                                                    </Style>
-                                                                </StackPanel.Style>
+                                                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                                            <StackPanel.Style>
+                                                                <Style TargetType="StackPanel">
+                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True">
+                                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </StackPanel.Style>
 
-                                                                <Button Content="▲" 
-                                                    Width="24" Height="24"
-                                                    FontSize="10"
-                                                    Margin="2,0,0,0"
-                                                    Padding="0"
-                                                    Click="MoveUpOtherNight_Click"
-                                                    Tag="{Binding}"
-                                                    ToolTip="上移"/>
+                                                            <Button Content="▲" 
+                                            Width="24" Height="24"
+                                            FontSize="10"
+                                            Margin="2,0,0,0"
+                                            Padding="0"
+                                            Click="MoveUpOtherNight_Click"
+                                            Tag="{Binding}"
+                                            ToolTip="上移"/>
 
-                                                                <Button Content="▼" 
-                                                    Width="24" Height="24"
-                                                    FontSize="10"
-                                                    Margin="2,0,0,0"
-                                                    Padding="0"
-                                                    Click="MoveDownOtherNight_Click"
-                                                    Tag="{Binding}"
-                                                    ToolTip="下移"/>
-                                                            </StackPanel>
-                                                        </Grid>
-                                                    </Border>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                    </ScrollViewer>
+                                                            <Button Content="▼" 
+                                            Width="24" Height="24"
+                                            FontSize="10"
+                                            Margin="2,0,0,0"
+                                            Padding="0"
+                                            Click="MoveDownOtherNight_Click"
+                                            Tag="{Binding}"
+                                            ToolTip="下移"/>
+                                                        </StackPanel>
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
                                 </Grid>
                             </Border>
                         </TabItem>
@@ -414,110 +459,189 @@
                         <!-- 基本資訊 -->
                         <TextBlock Text="基本資訊" Style="{StaticResource LabelStyle}" FontSize="16"/>
 
-                        <!-- 角色名稱 -->
-                        <TextBlock Text="角色名稱" Style="{StaticResource LabelStyle}"/>
-                        <TextBox Text="{Binding SelectedRole.Name, UpdateSourceTrigger=PropertyChanged}" 
-                                 Style="{StaticResource TextBoxStyle}"/>
-
-                        <!-- 角色 ID -->
-                        <TextBlock Text="角色 ID" Style="{StaticResource LabelStyle}"/>
-                        <TextBox Text="{Binding SelectedRole.Id, UpdateSourceTrigger=PropertyChanged}" 
-                                 Style="{StaticResource TextBoxStyle}"/>
-
-                        <!-- 角色類型選擇 -->
-                        <TextBlock Text="角色類型" Style="{StaticResource LabelStyle}"/>
-                        <ComboBox SelectedItem="{Binding SelectedRole.Team}" 
-                                  FontSize="13" Padding="8,5">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Converter={StaticResource TeamTypeConverter}}"/>
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                            <models:TeamType>Townsfolk</models:TeamType>
-                            <models:TeamType>Outsider</models:TeamType>
-                            <models:TeamType>Minion</models:TeamType>
-                            <models:TeamType>Demon</models:TeamType>
-                            <models:TeamType>Traveler</models:TeamType>
-                            <models:TeamType>Fabled</models:TeamType>
-                            <models:TeamType>Jinxed</models:TeamType>
-                        </ComboBox>
-
-                        <!-- 能力描述 -->
-                        <TextBlock Text="能力描述" Style="{StaticResource LabelStyle}" FontSize="16"/>
-                        <TextBox Text="{Binding SelectedRole.Ability, UpdateSourceTrigger=PropertyChanged}" 
-                                 Style="{StaticResource MultiLineTextBoxStyle}"
-                                 Height="100"/>
-
-                        <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Margin="0,15"/>
-
-                        <!-- 夜晚行動 -->
-                        <TextBlock Text="夜晚行動順序" Style="{StaticResource LabelStyle}" FontSize="16"/>
-
-                        <Grid>
+                        <!-- 第一行: 角色名稱 + 角色 ID -->
+                        <Grid Margin="0,0,0,10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="15"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
                             <StackPanel Grid.Column="0">
-                                <TextBlock Text="首夜順序 (0=不行動)" Style="{StaticResource LabelStyle}"/>
-                                <TextBox Text="{Binding SelectedRole.FirstNight, UpdateSourceTrigger=PropertyChanged}" 
-                                         Style="{StaticResource TextBoxStyle}"/>
+                                <TextBlock Text="角色名稱 *" Style="{StaticResource LabelStyle}" Margin="0,0,0,5"/>
+                                <TextBox Text="{Binding SelectedRole.Name, UpdateSourceTrigger=PropertyChanged}">
+                                    <TextBox.Style>
+                                        <Style TargetType="TextBox" BasedOn="{StaticResource TextBoxStyle}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding SelectedRole.Name, Converter={StaticResource StringNotEmptyConverter}}" Value="False">
+                                                    <Setter Property="BorderBrush" Value="#F44336"/>
+                                                    <Setter Property="BorderThickness" Value="2"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBox.Style>
+                                </TextBox>
                             </StackPanel>
 
                             <StackPanel Grid.Column="2">
-                                <TextBlock Text="其他夜晚順序" Style="{StaticResource LabelStyle}"/>
-                                <TextBox Text="{Binding SelectedRole.OtherNight, UpdateSourceTrigger=PropertyChanged}" 
-                                         Style="{StaticResource TextBoxStyle}"/>
+                                <TextBlock Text="角色 ID *" Style="{StaticResource LabelStyle}" Margin="0,0,0,5"/>
+                                <TextBox Text="{Binding SelectedRole.Id, UpdateSourceTrigger=PropertyChanged}">
+                                    <TextBox.Style>
+                                        <Style TargetType="TextBox" BasedOn="{StaticResource TextBoxStyle}">
+                                            <Style.Triggers>
+                                                <!-- 必填驗證：紅框 -->
+                                                <DataTrigger Binding="{Binding SelectedRole.Id, Converter={StaticResource StringNotEmptyConverter}}" Value="False">
+                                                    <Setter Property="BorderBrush" Value="#F44336"/>
+                                                    <Setter Property="BorderThickness" Value="2"/>
+                                                </DataTrigger>
+                                                <!-- ID 格式驗證：橙框 -->
+                                                <DataTrigger Binding="{Binding SelectedRole.Id, Converter={StaticResource IdFormatValidationConverter}}" Value="False">
+                                                    <Setter Property="BorderBrush" Value="#FF9800"/>
+                                                    <Setter Property="BorderThickness" Value="2"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBox.Style>
+                                </TextBox>
+                                <TextBlock Text="（只允許英文、數字、底線、連字號）" 
+               FontSize="10" Foreground="Gray" Margin="0,2,0,0"/>
                             </StackPanel>
                         </Grid>
 
-                        <!-- 影響設置 -->
-                        <CheckBox Content="影響設置 (Setup)" 
-                                  IsChecked="{Binding SelectedRole.Setup}" 
-                                  Margin="0,15,0,0" FontSize="13"/>
+                        <!-- 第二行: 角色類型 + 影響設置 -->
+                        <Grid Margin="0,0,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="15"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
 
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="角色類型 *" Style="{StaticResource LabelStyle}" Margin="0,0,0,5"/>
+                                <ComboBox SelectedItem="{Binding SelectedRole.Team}" 
+                              FontSize="13" Padding="8,5">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Converter={StaticResource TeamTypeConverter}}"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                    <models:TeamType>Townsfolk</models:TeamType>
+                                    <models:TeamType>Outsider</models:TeamType>
+                                    <models:TeamType>Minion</models:TeamType>
+                                    <models:TeamType>Demon</models:TeamType>
+                                    <models:TeamType>Traveler</models:TeamType>
+                                    <models:TeamType>Fabled</models:TeamType>
+                                    <models:TeamType>Jinxed</models:TeamType>
+                                </ComboBox>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2" VerticalAlignment="Bottom">
+                                <CheckBox Content="影響設置 (Setup)" 
+                              IsChecked="{Binding SelectedRole.Setup}" 
+                              FontSize="13"
+                              Margin="0,0,0,8"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <TextBlock Text="能力描述 *" Style="{StaticResource LabelStyle}" FontSize="16" Margin="0,5,0,5"/>
+                        <TextBox Text="{Binding SelectedRole.Ability, UpdateSourceTrigger=PropertyChanged}" 
+         Height="100">
+                            <TextBox.Style>
+                                <Style TargetType="TextBox" BasedOn="{StaticResource MultiLineTextBoxStyle}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding SelectedRole.Ability, Converter={StaticResource StringNotEmptyConverter}}" Value="False">
+                                            <Setter Property="BorderBrush" Value="#F44336"/>
+                                            <Setter Property="BorderThickness" Value="2"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBox.Style>
+                        </TextBox>
+                        
                         <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Margin="0,15"/>
+
+                        <!-- 夜晚行動順序 -->
+                        <TextBlock Text="夜晚行動順序" Style="{StaticResource LabelStyle}" FontSize="16"/>
+
+                        <Grid Margin="0,0,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="15"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="首夜順序 (0=不行動)" Style="{StaticResource LabelStyle}" Margin="0,0,0,5"/>
+                                <TextBox Text="{Binding SelectedRole.FirstNight, UpdateSourceTrigger=PropertyChanged}" 
+                             Style="{StaticResource TextBoxStyle}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="其他夜晚順序" Style="{StaticResource LabelStyle}" Margin="0,0,0,5"/>
+                                <TextBox Text="{Binding SelectedRole.OtherNight, UpdateSourceTrigger=PropertyChanged}" 
+                             Style="{StaticResource TextBoxStyle}"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Margin="0,10,0,15"/>
 
                         <!-- 說書人提示 -->
                         <TextBlock Text="說書人提示" Style="{StaticResource LabelStyle}" FontSize="16"/>
 
-                        <TextBlock Text="首夜提示" Style="{StaticResource LabelStyle}"/>
+                        <TextBlock Text="首夜提示" Style="{StaticResource LabelStyle}" Margin="0,5,0,5"/>
                         <TextBox Text="{Binding SelectedRole.FirstNightReminder, UpdateSourceTrigger=PropertyChanged}" 
-                                 Style="{StaticResource MultiLineTextBoxStyle}"/>
+                     Style="{StaticResource MultiLineTextBoxStyle}"
+                     Height="80"/>
 
-                        <TextBlock Text="其他夜晚提示" Style="{StaticResource LabelStyle}"/>
+                        <TextBlock Text="其他夜晚提示" Style="{StaticResource LabelStyle}" Margin="0,10,0,5"/>
                         <TextBox Text="{Binding SelectedRole.OtherNightReminder, UpdateSourceTrigger=PropertyChanged}" 
-                                 Style="{StaticResource MultiLineTextBoxStyle}"/>
+                     Style="{StaticResource MultiLineTextBoxStyle}"
+                     Height="80"/>
 
                         <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Margin="0,15"/>
 
                         <!-- 其他資訊 -->
                         <TextBlock Text="其他資訊" Style="{StaticResource LabelStyle}" FontSize="16"/>
 
-                        <TextBlock Text="圖片 URL" Style="{StaticResource LabelStyle}"/>
+                        <!-- 第三行: 英文名稱 + 所屬版本 -->
+                        <Grid Margin="0,0,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="15"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="英文名稱 (選填)" Style="{StaticResource LabelStyle}" Margin="0,0,0,5"/>
+                                <TextBox Text="{Binding SelectedRole.NameEng, UpdateSourceTrigger=PropertyChanged}" 
+                             Style="{StaticResource TextBoxStyle}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="所屬版本 (選填)" Style="{StaticResource LabelStyle}" Margin="0,0,0,5"/>
+                                <TextBox Text="{Binding SelectedRole.Edition, UpdateSourceTrigger=PropertyChanged}" 
+                             Style="{StaticResource TextBoxStyle}"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <TextBlock Text="圖片 URL" Style="{StaticResource LabelStyle}" Margin="0,5,0,5"/>
                         <TextBox Text="{Binding SelectedRole.Image, UpdateSourceTrigger=PropertyChanged}" 
-                                 Style="{StaticResource TextBoxStyle}"/>
+                     Style="{StaticResource TextBoxStyle}"/>
 
-                        <TextBlock Text="英文名稱 (選填)" Style="{StaticResource LabelStyle}"/>
-                        <TextBox Text="{Binding SelectedRole.NameEng, UpdateSourceTrigger=PropertyChanged}" 
-                                 Style="{StaticResource TextBoxStyle}"/>
-
-                        <TextBlock Text="風味文字 (選填)" Style="{StaticResource LabelStyle}"/>
+                        <TextBlock Text="風味文字 (選填)" Style="{StaticResource LabelStyle}" Margin="0,10,0,5"/>
                         <TextBox Text="{Binding SelectedRole.Flavor, UpdateSourceTrigger=PropertyChanged}" 
-                                 Style="{StaticResource MultiLineTextBoxStyle}"
-                                 Height="60"/>
+                     Style="{StaticResource MultiLineTextBoxStyle}"
+                     Height="60"/>
 
                         <!-- 底部說明 -->
                         <Border Background="#F0F8FF" Padding="15" Margin="0,20,0,0" CornerRadius="5">
                             <StackPanel>
                                 <TextBlock Text="💡 編輯提示" FontWeight="Bold" Margin="0,0,0,5"/>
                                 <TextBlock TextWrapping="Wrap" FontSize="12" Foreground="#333">
-                                    • 所有變更會即時儲存到記憶體中<LineBreak/>
-                                    • 請記得點擊「檔案 > 儲存」將變更寫入檔案<LineBreak/>
-                                    • 夜晚順序可使用小數 (如 3.5, 0.1)<LineBreak/>
-                                    • 提示標記功能將在下個版本加入
+                        • 標記 * 的欄位為必填，空白時會顯示紅色邊框<LineBreak/>
+                        • 角色 ID 格式錯誤時會顯示橙色邊框<LineBreak/>
+                        • 所有變更會即時儲存到記憶體中<LineBreak/>
+                        • 請記得點擊「檔案 > 儲存」將變更寫入檔案
                                 </TextBlock>
                             </StackPanel>
                         </Border>
@@ -538,11 +662,11 @@
                     </StackPanel.Style>
                     <TextBlock Text="📋" FontSize="72" HorizontalAlignment="Center" Opacity="0.3"/>
                     <TextBlock Text="請從左側選擇一個角色進行編輯" 
-                               FontSize="16" Foreground="Gray" 
-                               HorizontalAlignment="Center" Margin="0,10,0,0"/>
-                    <TextBlock Text="或點擊「編輯 > 新增角色」建立新角色" 
-                               FontSize="13" Foreground="Gray" 
-                               HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                   FontSize="16" Foreground="Gray" 
+                   HorizontalAlignment="Center" Margin="0,10,0,0"/>
+                    <TextBlock Text="或點擊「➕」建立新角色" 
+                   FontSize="13" Foreground="Gray" 
+                   HorizontalAlignment="Center" Margin="0,5,0,0"/>
                 </StackPanel>
             </Grid>
         </Grid>

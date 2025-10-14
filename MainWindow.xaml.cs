@@ -149,25 +149,7 @@ namespace BloodClockTowerScriptEditor
                 viewModel.SelectedRole = null;
             }
         }
-
-        /// <summary>
-        /// 🆕 夜晚順序中的角色被點擊
-        /// </summary>
-        private void NightRole_Click(object sender, MouseButtonEventArgs e)
-        {
-            if (sender is Border border && border.Tag is Role role)
-            {
-                if (DataContext is MainViewModel viewModel)
-                {
-                    // 設定選中的角色
-                    viewModel.SelectedRole = role;
-
-                    // 除錯輸出
-                    System.Diagnostics.Debug.WriteLine($"🖱️ 點擊夜晚順序角色: {role.Name}");
-                }
-            }
-        }
-
+               
         // 首個夜晚 - 上移
         private void MoveUpFirstNight_Click(object sender, RoutedEventArgs e)
         {
