@@ -92,14 +92,30 @@ namespace BloodClockTowerScriptEditor.Models
         public double FirstNight
         {
             get => _firstNight;
-            set => SetProperty(ref _firstNight, value);
+            set
+            {
+                if (SetProperty(ref _firstNight, value))
+                {
+                    // 🆕 夜晚順序變更時通知 ViewModel
+                    NightOrderChanged?.Invoke(this, System.EventArgs.Empty);
+                    OnPropertyChanged(nameof(NightOrderDisplay));
+                }
+            }
         }
 
         [JsonProperty("otherNight")]
         public double OtherNight
         {
             get => _otherNight;
-            set => SetProperty(ref _otherNight, value);
+            set
+            {
+                if (SetProperty(ref _otherNight, value))
+                {
+                    // 🆕 夜晚順序變更時通知 ViewModel
+                    NightOrderChanged?.Invoke(this, System.EventArgs.Empty);
+                    OnPropertyChanged(nameof(NightOrderDisplay));
+                }
+            }
         }
 
         [JsonProperty("reminders")]
@@ -148,9 +164,13 @@ namespace BloodClockTowerScriptEditor.Models
 
         /// <summary>
         /// 🆕 類型變更事件（用於通知 ViewModel 重新排序）
-        /// 注意：事件不會被序列化，不需要 JsonIgnore 屬性
         /// </summary>
         public event System.EventHandler? TeamChanged;
+
+        /// <summary>
+        /// 🆕 夜晚順序變更事件（用於通知 ViewModel 重新排序）
+        /// </summary>
+        public event System.EventHandler? NightOrderChanged;
 
         [JsonIgnore]
         public string TeamDisplayName => Team switch

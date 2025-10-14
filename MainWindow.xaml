@@ -77,18 +77,14 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <!-- 左側面板: 篩選 + 按鈕 + 角色列表 -->
+            <!-- 左側面板: 篩選 + 按鈕 + 角色列表/夜晚順序 -->
             <Border Grid.Column="0" BorderBrush="#DDD" BorderThickness="0,0,1,0">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <!-- 劇本資訊 -->
-                        <RowDefinition Height="Auto"/>
-                        <!-- 陣營篩選 -->
-                        <RowDefinition Height="Auto"/>
-                        <!-- 按鈕區 (新增) -->
                         <RowDefinition Height="*"/>
-                        <!-- 角色列表 -->
+                        <!-- TabControl (包含篩選+按鈕+列表) -->
                     </Grid.RowDefinitions>
 
                     <!-- 劇本資訊 -->
@@ -111,106 +107,215 @@
                                     <Image Source="{Binding CurrentScript.Meta.Logo}" 
                                Stretch="Uniform" Margin="4"/>
                                 </Border>
-
-                                <TextBlock HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap">
-                        <Run Text="{Binding CurrentScript.Meta.Name, Mode=OneWay}" FontWeight="SemiBold"/>
-                        <Run Text=" by "/>
-                        <Run Text="{Binding CurrentScript.Meta.Author, Mode=OneWay}"/>
-                                </TextBlock>
+                                <TextBlock Text="{Binding CurrentScript.Meta.Name}" 
+                               FontWeight="Bold" FontSize="13"
+                               TextAlignment="Center" TextWrapping="Wrap"/>
                             </StackPanel>
                         </DockPanel>
                     </Border>
 
-                    <!-- 陣營篩選 -->
-                    <StackPanel Grid.Row="1" Margin="10">
-                        <TextBlock Text="顯示類型" FontWeight="Bold" Margin="0,0,0,5"/>
+                    <!-- TabControl -->
+                    <TabControl Grid.Row="1" Margin="10,0,10,10" SelectionChanged="TabControl_SelectionChanged">
+                        <!-- Tab 1: 角色列表 (含篩選和按鈕) -->
+                        <TabItem Header="角色列表">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <!-- 陣營篩選 -->
+                                    <RowDefinition Height="Auto"/>
+                                    <!-- 按鈕區 -->
+                                    <RowDefinition Height="*"/>
+                                    <!-- 角色列表 -->
+                                </Grid.RowDefinitions>
 
-                        <!-- 第一行 -->
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                            <CheckBox Content="鎮民" IsChecked="{Binding ShowTownsfolk}" Margin="0,0,15,0"/>
-                            <CheckBox Content="外來者" IsChecked="{Binding ShowOutsiders}" Margin="0,0,15,0"/>
-                            <CheckBox Content="爪牙" IsChecked="{Binding ShowMinions}" Margin="0,0,0,0"/>
-                        </StackPanel>
-
-                        <!-- 第二行 -->
-                        <StackPanel Orientation="Horizontal">
-                            <CheckBox Content="惡魔" IsChecked="{Binding ShowDemons}" Margin="0,0,15,0"/>
-                            <CheckBox Content="旅行者" IsChecked="{Binding ShowTravelers}" Margin="0,0,15,0"/>
-                            <CheckBox Content="傳奇/其他" IsChecked="{Binding ShowFabled}" Margin="0,0,0,0"/>
-                        </StackPanel>
-                    </StackPanel>
-
-                    <!-- 按鈕區 (新增) -->
-                    <StackPanel Grid.Row="2" Orientation="Horizontal" 
-                    Margin="10,5,10,10" HorizontalAlignment="Right">
-                        <Button Content="➕" 
-                    Command="{Binding AddFromOfficialTemplateCommand}"
-                    Width="30" Height="30"
-                    Background="#28A745" Foreground="White"
-                    BorderThickness="0" Cursor="Hand"
-                    FontSize="16" FontWeight="Bold"
-                    Margin="0,0,5,0"
-                    ToolTip="新增角色"/>
-
-                        <Button Content="🗑️" 
-                    Command="{Binding DeleteRoleCommand}"
-                    Width="30" Height="30"
-                    Background="#DC3545" Foreground="White"
-                    BorderThickness="0" Cursor="Hand"
-                    FontSize="16" FontWeight="Bold"
-                    ToolTip="刪除角色"/>
-                    </StackPanel>
-
-                    <!-- 角色列表 -->
-                    <ListBox Grid.Row="3" 
-                 ItemsSource="{Binding FilteredRoles}"
-                 SelectedItem="{Binding SelectedRole}"
-                 Margin="10,0,10,10">
-
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal" Margin="0,5">
-                                    <!-- 陣營色塊 -->
-                                    <Border Width="4" Height="40" VerticalAlignment="Center" Margin="0,0,8,0">
-                                        <Border.Style>
-                                            <Style TargetType="Border">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Team}" Value="Townsfolk">
-                                                        <Setter Property="Background" Value="{StaticResource TownsfolkBrush}"/>
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding Team}" Value="Outsider">
-                                                        <Setter Property="Background" Value="{StaticResource OutsiderBrush}"/>
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding Team}" Value="Minion">
-                                                        <Setter Property="Background" Value="{StaticResource MinionBrush}"/>
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding Team}" Value="Demon">
-                                                        <Setter Property="Background" Value="{StaticResource DemonBrush}"/>
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding Team}" Value="Traveler">
-                                                        <Setter Property="Background" Value="{StaticResource TravelerBrush}"/>
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding Team}" Value="Fabled">
-                                                        <Setter Property="Background" Value="{StaticResource FabledBrush}"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Border.Style>
-                                    </Border>
-
-                                    <!-- 角色資訊 -->
-                                    <StackPanel>
-                                        <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="13"/>
-                                        <TextBlock Text="{Binding TeamDisplayName}" 
-                                       FontSize="11" Foreground="Gray"/>
-                                    </StackPanel>
+                                <!-- 陣營篩選 -->
+                                <StackPanel Grid.Row="0" Margin="0,10,0,10">
+                                    <TextBlock Text="陣營篩選" FontWeight="Bold" FontSize="12" Margin="0,0,0,5"/>
+                                    <WrapPanel>
+                                        <CheckBox Content="鎮民" IsChecked="{Binding ShowTownsfolk}" Margin="0,0,10,5"/>
+                                        <CheckBox Content="外來者" IsChecked="{Binding ShowOutsiders}" Margin="0,0,10,5"/>
+                                        <CheckBox Content="爪牙" IsChecked="{Binding ShowMinions}" Margin="0,0,10,5"/>
+                                        <CheckBox Content="惡魔" IsChecked="{Binding ShowDemons}" Margin="0,0,10,5"/>
+                                        <CheckBox Content="旅行者" IsChecked="{Binding ShowTravelers}" Margin="0,0,10,5"/>
+                                        <CheckBox Content="傳奇" IsChecked="{Binding ShowFabled}" Margin="0,0,0,5"/>
+                                    </WrapPanel>
                                 </StackPanel>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
+
+                                <!-- 按鈕區 -->
+                                <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,10">
+                                    <Button Content="➕" Width="30" Height="30" Margin="0,0,5,0"
+                                Command="{Binding AddFromOfficialTemplateCommand}"
+                                Background="#4CAF50" Foreground="White" BorderThickness="0"
+                                FontSize="16" FontWeight="Bold"
+                                ToolTip="新增角色"/>
+                                    <Button Content="🗑️" Width="30" Height="30"
+                                Command="{Binding RemoveRoleCommand}"
+                                Background="#F44336" Foreground="White" BorderThickness="0"
+                                FontSize="14" FontWeight="Bold"
+                                ToolTip="刪除角色"/>
+                                </StackPanel>
+
+                                <!-- 角色列表 -->
+                                <ListBox Grid.Row="2" 
+                             ItemsSource="{Binding FilteredRoles}"
+                             SelectedItem="{Binding SelectedRole}"
+                             BorderThickness="0">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" Margin="0,5">
+                                                <!-- 陣營色塊 -->
+                                                <Border Width="4" Height="40" VerticalAlignment="Center" Margin="0,0,8,0">
+                                                    <Border.Style>
+                                                        <Style TargetType="Border">
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Team}" Value="Townsfolk">
+                                                                    <Setter Property="Background" Value="{StaticResource TownsfolkBrush}"/>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding Team}" Value="Outsider">
+                                                                    <Setter Property="Background" Value="{StaticResource OutsiderBrush}"/>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding Team}" Value="Minion">
+                                                                    <Setter Property="Background" Value="{StaticResource MinionBrush}"/>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding Team}" Value="Demon">
+                                                                    <Setter Property="Background" Value="{StaticResource DemonBrush}"/>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding Team}" Value="Traveler">
+                                                                    <Setter Property="Background" Value="{StaticResource TravelerBrush}"/>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding Team}" Value="Fabled">
+                                                                    <Setter Property="Background" Value="{StaticResource FabledBrush}"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Border.Style>
+                                                </Border>
+
+                                                <!-- 角色資訊 -->
+                                                <StackPanel>
+                                                    <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="13"/>
+                                                    <TextBlock Text="{Binding TeamDisplayName}" 
+                                                   FontSize="11" Foreground="Gray"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </Grid>
+                        </TabItem>
+
+                        <!-- Tab 2: 夜晚順序 (只有左右兩欄列表) -->
+                        <TabItem Header="夜晚順序">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="5"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- 左側: 首個夜晚 -->
+                                <Border Grid.Column="0" BorderBrush="#DDD" BorderThickness="0,0,1,0">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+
+                                        <!-- 標題 -->
+                                        <Border Grid.Row="0" Background="#F5F5F5" BorderBrush="#DDD" 
+                                    BorderThickness="0,0,0,1" Padding="8">
+                                            <TextBlock Text="首個夜晚" FontSize="12" FontWeight="Bold" 
+                                           HorizontalAlignment="Center"/>
+                                        </Border>
+
+                                        <!-- 角色列表 -->
+                                        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                                            <ItemsControl ItemsSource="{Binding FirstNightRoles}">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" 
+                                                    Padding="10,8" 
+                                                    Background="White"
+                                                    Tag="{Binding}"
+                                                    MouseLeftButtonDown="NightRole_Click"
+                                                    Cursor="Hand">
+                                                            <Border.Style>
+                                                                <Style TargetType="Border">
+                                                                    <Style.Triggers>
+                                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                                            <Setter Property="Background" Value="#F0F0F0"/>
+                                                                        </Trigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </Border.Style>
+                                                            <TextBlock Text="{Binding Name}" 
+                                                           FontWeight="Bold" 
+                                                           FontSize="12"
+                                                           Foreground="Black"/>
+                                                        </Border>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </ScrollViewer>
+                                    </Grid>
+                                </Border>
+
+                                <!-- 分隔線 -->
+                                <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch" 
+                                  Background="#DDD"/>
+
+                                <!-- 右側: 其他夜晚 -->
+                                <Border Grid.Column="2">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+
+                                        <!-- 標題 -->
+                                        <Border Grid.Row="0" Background="#F5F5F5" BorderBrush="#DDD" 
+                                    BorderThickness="0,0,0,1" Padding="8">
+                                            <TextBlock Text="其他夜晚" FontSize="12" FontWeight="Bold" 
+                                           HorizontalAlignment="Center"/>
+                                        </Border>
+
+                                        <!-- 角色列表 -->
+                                        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                                            <ItemsControl ItemsSource="{Binding OtherNightRoles}">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" 
+                                                    Padding="10,8" 
+                                                    Background="White"
+                                                    Tag="{Binding}"
+                                                    MouseLeftButtonDown="NightRole_Click"
+                                                    Cursor="Hand">
+                                                            <Border.Style>
+                                                                <Style TargetType="Border">
+                                                                    <Style.Triggers>
+                                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                                            <Setter Property="Background" Value="#F0F0F0"/>
+                                                                        </Trigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </Border.Style>
+                                                            <TextBlock Text="{Binding Name}" 
+                                                           FontWeight="Bold" 
+                                                           FontSize="12"
+                                                           Foreground="Black"/>
+                                                        </Border>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </ScrollViewer>
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </TabItem>
+                    </TabControl>
                 </Grid>
             </Border>
-            
+
             <!-- 分隔線 -->
             <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch" 
                           Background="#DDD"/>

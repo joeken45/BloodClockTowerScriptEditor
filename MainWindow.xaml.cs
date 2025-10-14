@@ -1,10 +1,13 @@
 ﻿using BloodClockTowerScriptEditor.ViewModels;
 using BloodClockTowerScriptEditor.Services;
+using BloodClockTowerScriptEditor.Models;
 using System.Windows;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using System;
+using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace BloodClockTowerScriptEditor
 {
@@ -48,7 +51,7 @@ namespace BloodClockTowerScriptEditor
                 {
                     System.Diagnostics.Debug.WriteLine("📥 程式資料夾中沒有角色總表.json，從內嵌資源建立...");
 
-                    // 從內嵌資源讀取
+                    // 載入內嵌資源
                     string embeddedContent = LoadEmbeddedResource("BloodClockTowerScriptEditor.Resources.角色總表.json");
 
                     if (string.IsNullOrEmpty(embeddedContent))
@@ -113,8 +116,6 @@ namespace BloodClockTowerScriptEditor
             }
         }
 
-        // ❌ 刪除：ImportRoleTemplates_Click 方法
-
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
@@ -135,6 +136,36 @@ namespace BloodClockTowerScriptEditor
                 MessageBoxButton.OK,
                 MessageBoxImage.Information
             );
+        }
+
+        /// <summary>
+        /// 🆕 TabControl 切換時清空選擇
+        /// </summary>
+        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (DataContext is MainViewModel viewModel && e.Source is TabControl)
+            {
+                // 切換分頁時清空選中的角色
+                viewModel.SelectedRole = null;
+            }
+        }
+
+        /// <summary>
+        /// 🆕 夜晚順序中的角色被點擊
+        /// </summary>
+        private void NightRole_Click(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is Border border && border.Tag is Role role)
+            {
+                if (DataContext is MainViewModel viewModel)
+                {
+                    // 設定選中的角色
+                    viewModel.SelectedRole = role;
+
+                    // 除錯輸出
+                    System.Diagnostics.Debug.WriteLine($"🖱️ 點擊夜晚順序角色: {role.Name}");
+                }
+            }
         }
     }
 }
