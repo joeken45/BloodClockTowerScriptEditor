@@ -72,12 +72,6 @@ namespace BloodClockTowerScriptEditor.Services
                             continue;
                         }
 
-                        // 跳過特殊標記（爪牙訊息、惡魔訊息等）
-                        if (name != null && (name.Contains("訊息") || id == "M" || id == "D"))
-                        {
-                            continue;
-                        }
-
                         // 基本驗證
                         if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(name) || string.IsNullOrEmpty(team))
                         {

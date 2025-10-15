@@ -2,6 +2,7 @@
 using BloodClockTowerScriptEditor.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Win32;
 using System;
 using System.Collections.ObjectModel;
@@ -182,7 +183,7 @@ namespace BloodClockTowerScriptEditor.ViewModels
         // ==================== 命令 ====================
 
         [RelayCommand]
-        private void NewFile()
+        private async Task NewFile()
         {
             // 檢查未儲存的變更
             if (!CheckUnsavedChanges())
@@ -190,6 +191,10 @@ namespace BloodClockTowerScriptEditor.ViewModels
 
             // 建立新劇本
             CurrentScript = new Script();
+
+            // 🆕 自動加入爪牙/惡魔訊息
+            await LoadMinionDemonInfoAsync();
+
             CurrentFilePath = string.Empty;
             SelectedRole = null;
             IsDirty = false;
@@ -545,6 +550,51 @@ namespace BloodClockTowerScriptEditor.ViewModels
                 default:
                     return false;
             }
+        }
+
+        /// <summary>
+        /// 載入爪牙/惡魔訊息（私有，內部使用）
+        /// </summary>
+        private async Task LoadMinionDemonInfoAsync()
+        {
+            try
+            {
+                using var context = new RoleTemplateContext();
+
+                var minionInfo = await context.RoleTemplates
+                    .Include(r => r.Reminders)
+                    .FirstOrDefaultAsync(r => r.Id == "M");
+
+                var demonInfo = await context.RoleTemplates
+                    .Include(r => r.Reminders)
+                    .FirstOrDefaultAsync(r => r.Id == "D");
+
+                if (minionInfo != null)
+                {
+                    CurrentScript.Roles.Add(minionInfo.ToRole());
+                }
+
+                if (demonInfo != null)
+                {
+                    CurrentScript.Roles.Add(demonInfo.ToRole());
+                }
+
+                // 🆕 更新顯示
+                UpdateFilteredRoles();
+                UpdateNightOrderLists();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"❌ 載入爪牙/惡魔訊息失敗：{ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 初始化爪牙/惡魔訊息（公開方法，供程式啟動時調用）
+        /// </summary>
+        public async Task InitializeMinionDemonInfoAsync()
+        {
+            await LoadMinionDemonInfoAsync();
         }
     }
 }

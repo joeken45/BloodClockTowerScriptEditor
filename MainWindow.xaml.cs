@@ -30,6 +30,12 @@ namespace BloodClockTowerScriptEditor
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             await InitializeDefaultRolesAsync();
+
+            // 🆕 為初始空白劇本加入爪牙/惡魔訊息
+            if (DataContext is MainViewModel viewModel)
+            {
+                await viewModel.InitializeMinionDemonInfoAsync();
+            }
         }
 
         /// <summary>
