@@ -16,6 +16,7 @@ namespace BloodClockTowerScriptEditor.ViewModels
     public partial class MainViewModel : ObservableObject
     {
         // ==================== 私有欄位 ====================
+        private bool _isDirty; // 檔案是否有未儲存的變更
         private readonly JsonService _jsonService;
         private Script _currentScript;
         private Role? _selectedRole;
@@ -53,17 +54,44 @@ namespace BloodClockTowerScriptEditor.ViewModels
 
         // ==================== 公開屬性 ====================
 
+        /// <summary>
+        /// 檔案是否有未儲存的變更
+        /// </summary>
+        public bool IsDirty
+        {
+            get => _isDirty;
+            set => SetProperty(ref _isDirty, value);
+        }
+
         public Script CurrentScript
         {
             get => _currentScript;
             set
             {
+                // 取消訂閱舊腳本的事件
+                if (_currentScript != null)
+                {
+                    _currentScript.Roles.CollectionChanged -= OnRolesCollectionChanged;
+                }
+
                 if (SetProperty(ref _currentScript, value))
                 {
+                    // 訂閱新腳本的事件
+                    if (_currentScript != null)
+                    {
+                        _currentScript.Roles.CollectionChanged += OnRolesCollectionChanged;
+                    }
+
                     UpdateFilteredRoles();
-                    UpdateNightOrderLists(); // 🆕 同時更新夜晚順序
+                    UpdateNightOrderLists();
                 }
             }
+        }
+
+        // 【4. 新增角色集合變更事件處理】
+        private void OnRolesCollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            IsDirty = true;
         }
 
         public Role? SelectedRole
@@ -154,10 +182,29 @@ namespace BloodClockTowerScriptEditor.ViewModels
         // ==================== 命令 ====================
 
         [RelayCommand]
+        private void NewFile()
+        {
+            // 檢查未儲存的變更
+            if (!CheckUnsavedChanges())
+                return;
+
+            // 建立新劇本
+            CurrentScript = new Script();
+            CurrentFilePath = string.Empty;
+            SelectedRole = null;
+            IsDirty = false;
+            StatusMessage = "已建立新檔案";
+        }
+
+        [RelayCommand]
         private void LoadJson()
         {
             try
             {
+                // 檢查未儲存的變更
+                if (!CheckUnsavedChanges())
+                    return;
+
                 var dialog = new OpenFileDialog
                 {
                     Filter = "JSON 檔案 (*.json)|*.json|所有檔案 (*.*)|*.*",
@@ -170,6 +217,7 @@ namespace BloodClockTowerScriptEditor.ViewModels
                     CurrentFilePath = dialog.FileName;
                     StatusMessage = $"已載入: {dialog.FileName}";
                     SelectedRole = null;
+                    IsDirty = false; // 載入後重置標記
                 }
             }
             catch (Exception ex)
@@ -191,6 +239,7 @@ namespace BloodClockTowerScriptEditor.ViewModels
                 }
 
                 _jsonService.SaveScript(CurrentScript, CurrentFilePath);
+                IsDirty = false; // 儲存後清除標記
                 StatusMessage = $"已儲存: {CurrentFilePath}";
                 MessageBox.Show("儲存成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
             }
@@ -217,6 +266,7 @@ namespace BloodClockTowerScriptEditor.ViewModels
                 {
                     _jsonService.SaveScript(CurrentScript, dialog.FileName);
                     CurrentFilePath = dialog.FileName;
+                    IsDirty = false; // 儲存後清除標記
                     StatusMessage = $"已儲存: {dialog.FileName}";
                     MessageBox.Show("儲存成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
@@ -244,8 +294,9 @@ namespace BloodClockTowerScriptEditor.ViewModels
                     }
 
                     UpdateFilteredRoles();
-                    UpdateNightOrderLists(); // 🆕 更新夜晚順序
+                    UpdateNightOrderLists();
                     StatusMessage = $"已新增 {addedCount} 個角色";
+                    // IsDirty 會自動被 OnRolesCollectionChanged 設置,所以這裡不用再加
                 }
             }
             catch (Exception ex)
@@ -290,6 +341,7 @@ namespace BloodClockTowerScriptEditor.ViewModels
                 if (dialog.ShowDialog() == true)
                 {
                     OnPropertyChanged(nameof(CurrentScript));
+                    IsDirty = true; // 加上這行
                     StatusMessage = "劇本資訊已更新";
                 }
             }
@@ -320,13 +372,17 @@ namespace BloodClockTowerScriptEditor.ViewModels
 
             foreach (var role in filtered)
             {
-                // 🆕 訂閱角色的類型變更事件
+                // 訂閱角色的類型變更事件
                 role.TeamChanged -= OnRoleTeamChanged;
                 role.TeamChanged += OnRoleTeamChanged;
 
-                // 🆕 訂閱角色的夜晚順序變更事件
+                // 訂閱角色的夜晚順序變更事件
                 role.NightOrderChanged -= OnRoleNightOrderChanged;
                 role.NightOrderChanged += OnRoleNightOrderChanged;
+
+                // 🆕 訂閱角色的屬性變更事件 (追蹤 IsDirty)
+                role.PropertyChanged -= OnRolePropertyChanged;
+                role.PropertyChanged += OnRolePropertyChanged;
 
                 FilteredRoles.Add(role);
             }
@@ -346,10 +402,13 @@ namespace BloodClockTowerScriptEditor.ViewModels
         }
 
         /// <summary>
-        /// 🆕 更新夜晚順序列表
+        /// 更新夜晚順序列表
         /// </summary>
         private void UpdateNightOrderLists()
         {
+            // 🆕 保存當前選中的角色
+            var currentSelected = SelectedRole;
+
             // 清空現有列表
             FirstNightRoles.Clear();
             OtherNightRoles.Clear();
@@ -374,6 +433,12 @@ namespace BloodClockTowerScriptEditor.ViewModels
             foreach (var role in otherNight)
             {
                 OtherNightRoles.Add(role);
+            }
+
+            // 🆕 恢復選中的角色 (如果還在列表中)
+            if (currentSelected != null)
+            {
+                SelectedRole = currentSelected;
             }
         }
 
@@ -430,6 +495,56 @@ namespace BloodClockTowerScriptEditor.ViewModels
                 role.FirstNight = (int)(newOrder * 10) / 10.0;
             else
                 role.OtherNight = (int)(newOrder * 10) / 10.0;
+        }
+
+        // 【步驟14: 新增角色屬性變更處理 - 放在私有方法區塊】
+        private void OnRolePropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            // 任何角色屬性變更都標記為需要儲存
+            IsDirty = true;
+        }
+
+        /// <summary>
+        /// 檢查是否有未儲存的變更,詢問使用者是否儲存
+        /// </summary>
+        /// <returns>true: 繼續操作, false: 取消操作</returns>
+        public bool CheckUnsavedChanges()
+        {
+            if (!IsDirty)
+                return true;
+
+            var result = MessageBox.Show(
+                "檔案尚未儲存,是否要儲存變更?",
+                "未儲存的變更",
+                MessageBoxButton.YesNoCancel,
+                MessageBoxImage.Question
+            );
+
+            switch (result)
+            {
+                case MessageBoxResult.Yes:
+                    // 儲存檔案
+                    if (string.IsNullOrEmpty(CurrentFilePath))
+                    {
+                        SaveAsJson();
+                    }
+                    else
+                    {
+                        SaveJson();
+                    }
+                    return true;
+
+                case MessageBoxResult.No:
+                    // 不儲存,繼續操作
+                    return true;
+
+                case MessageBoxResult.Cancel:
+                    // 取消操作
+                    return false;
+
+                default:
+                    return false;
+            }
         }
     }
 }

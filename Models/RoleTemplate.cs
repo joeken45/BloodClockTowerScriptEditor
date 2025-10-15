@@ -149,7 +149,7 @@ namespace BloodClockTowerScriptEditor.Models
                 Name = this.Name,
                 NameEng = this.NameEng,
                 Team = Enum.Parse<TeamType>(this.Team, true),
-                Ability = this.Ability,
+                Ability = this.Ability ?? string.Empty,
                 Image = this.Image,
                 Edition = this.Edition,
                 Flavor = this.Flavor,
@@ -165,11 +165,11 @@ namespace BloodClockTowerScriptEditor.Models
             {
                 if (reminder.IsGlobal)
                 {
-                    role.RemindersGlobal.Add(reminder.ReminderText);
+                    role.RemindersGlobal.Add(new ReminderItem(reminder.ReminderText));
                 }
                 else
                 {
-                    role.Reminders.Add(reminder.ReminderText);
+                    role.Reminders.Add(new ReminderItem(reminder.ReminderText));
                 }
             }
 

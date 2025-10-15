@@ -17,6 +17,7 @@
         <converters:NullToBooleanConverter x:Key="NullToBooleanConverter"/>
         <converters:IdFormatValidationConverter x:Key="IdFormatValidationConverter"/>
         <converters:StringNotEmptyConverter x:Key="StringNotEmptyConverter"/>
+        <converters:StringToImageSourceConverter x:Key="StringToImageSourceConverter"/>
 
         <!-- 陣營顏色 -->
         <SolidColorBrush x:Key="TownsfolkBrush" Color="#368CE1"/>
@@ -71,11 +72,54 @@
         <!-- 選單列 -->
         <Menu Grid.Row="0">
             <MenuItem Header="檔案(_F)">
-                <MenuItem Header="開啟(_O)" Command="{Binding LoadJsonCommand}"/>
-                <MenuItem Header="儲存(_S)" Command="{Binding SaveJsonCommand}"/>
-                <MenuItem Header="另存新檔(_A)" Command="{Binding SaveAsJsonCommand}"/>
+                <!-- 🆕 新增: 新增檔案 -->
+                <MenuItem Header="新增檔案(_N)" 
+                  Command="{Binding NewFileCommand}"
+                  InputGestureText="Ctrl+N">
+                    <MenuItem.Icon>
+                        <TextBlock Text="📄" FontSize="14"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+
                 <Separator/>
-                <MenuItem Header="結束(_X)" Click="Exit_Click"/>
+
+                <!-- 原有的開啟舊檔 -->
+                <MenuItem Header="開啟舊檔(_O)" 
+                  Command="{Binding LoadJsonCommand}"
+                  InputGestureText="Ctrl+O">
+                    <MenuItem.Icon>
+                        <TextBlock Text="📂" FontSize="14"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+
+                <Separator/>
+
+                <!-- 原有的儲存檔案 -->
+                <MenuItem Header="儲存檔案(_S)" 
+                  Command="{Binding SaveJsonCommand}"
+                  InputGestureText="Ctrl+S">
+                    <MenuItem.Icon>
+                        <TextBlock Text="💾" FontSize="14"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+
+                <!-- 原有的另存新檔 -->
+                <MenuItem Header="另存新檔(_A)" 
+                  Command="{Binding SaveAsJsonCommand}"
+                  InputGestureText="Ctrl+Shift+S">
+                    <MenuItem.Icon>
+                        <TextBlock Text="📝" FontSize="14"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+
+                <Separator/>
+
+                <!-- 原有的結束 -->
+                <MenuItem Header="結束(_X)" Click="Exit_Click">
+                    <MenuItem.Icon>
+                        <TextBlock Text="❌" FontSize="14"/>
+                    </MenuItem.Icon>
+                </MenuItem>
             </MenuItem>
             <MenuItem Header="說明(_H)">
                 <MenuItem Header="關於(_A)" Click="About_Click"/>
@@ -117,7 +161,7 @@
                             <StackPanel HorizontalAlignment="Center">
                                 <Border BorderBrush="#CCC" BorderThickness="1" Background="White" 
                             Height="80" Width="160" Margin="0,0,0,8">
-                                    <Image Source="{Binding CurrentScript.Meta.Logo}" 
+                                    <Image Source="{Binding CurrentScript.Meta.Logo, Converter={StaticResource StringToImageSourceConverter}}"  
                                Stretch="Uniform" Margin="4"/>
                                 </Border>
                                 <TextBlock Text="{Binding CurrentScript.Meta.Name}" 
@@ -128,7 +172,7 @@
                     </Border>
 
                     <!-- TabControl -->
-                    <TabControl Grid.Row="1" Margin="10,0,10,10" SelectionChanged="TabControl_SelectionChanged">
+                    <TabControl Grid.Row="1" Margin="10,0,10,10" >
                         <!-- Tab 1: 角色列表 (含篩選和按鈕) -->
                         <TabItem Header="角色列表">
                             <Grid>
@@ -155,8 +199,9 @@
                                 </StackPanel>
 
                                 <!-- 按鈕區 -->
-                                <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,10">
-                                    <Button Content="➕" Width="30" Height="30" Margin="0,0,5,0"
+                                <Border Grid.Row="1" Background="#F5F5F5" Padding="8,10" Margin="0,0,0,10">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                        <Button Content="➕" Width="30" Height="30" Margin="0,0,5,0"
                     Command="{Binding AddFromOfficialTemplateCommand}"
                     Background="#4CAF50" Foreground="White" BorderThickness="0"
                     FontSize="16" FontWeight="Bold"
@@ -166,7 +211,8 @@
                     Background="#F44336" Foreground="White" BorderThickness="0"
                     FontSize="14" FontWeight="Bold"
                     ToolTip="刪除角色"/>
-                                </StackPanel>
+                                    </StackPanel>
+                                </Border>
 
                                 <!-- 角色列表 -->
                                 <ListBox Grid.Row="2" 
@@ -627,7 +673,7 @@
                                     <TextBlock Text="首夜提示" FontWeight="SemiBold" FontSize="11" DockPanel.Dock="Left" 
                                    VerticalAlignment="Top" Margin="0,4,8,0" Width="70"/>
                                     <TextBox Text="{Binding SelectedRole.FirstNightReminder, UpdateSourceTrigger=PropertyChanged}" 
-                                 TextWrapping="Wrap" AcceptsReturn="True" Height="70"
+                                 TextWrapping="Wrap" AcceptsReturn="True" Height="90"
                                  Padding="6,4" BorderBrush="#CCC" BorderThickness="1" 
                                  FontSize="11" VerticalScrollBarVisibility="Auto"/>
                                 </DockPanel>
@@ -654,7 +700,7 @@
                                     <TextBlock Text="其他夜提示" FontWeight="SemiBold" FontSize="11" DockPanel.Dock="Left" 
                                    VerticalAlignment="Top" Margin="0,4,8,0" Width="70"/>
                                     <TextBox Text="{Binding SelectedRole.OtherNightReminder, UpdateSourceTrigger=PropertyChanged}" 
-                                 TextWrapping="Wrap" AcceptsReturn="True" Height="70"
+                                 TextWrapping="Wrap" AcceptsReturn="True" Height="90"
                                  Padding="6,4" BorderBrush="#CCC" BorderThickness="1" 
                                  FontSize="11" VerticalScrollBarVisibility="Auto"/>
                                 </DockPanel>
@@ -686,7 +732,8 @@
                                 Background="#F44336" Foreground="White" BorderThickness="0"/>
                                 </StackPanel>
 
-                                <Border BorderBrush="#DDD" BorderThickness="1" MaxHeight="180">
+                                <Border BorderBrush="#DDD" BorderThickness="1" 
+        Height="100">
                                     <ScrollViewer VerticalScrollBarVisibility="Auto">
                                         <ItemsControl x:Name="remindersList" ItemsSource="{Binding SelectedRole.Reminders}">
                                             <ItemsControl.ItemTemplate>
@@ -699,15 +746,19 @@
                                                                 <ColumnDefinition Width="*"/>
                                                             </Grid.ColumnDefinitions>
 
-                                                            <CheckBox Grid.Column="0" VerticalAlignment="Center"/>
+                                                            <!-- 綁定到 ReminderItem.IsSelected -->
+                                                            <CheckBox Grid.Column="0" 
+                              IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}"
+                              VerticalAlignment="Center"/>
 
+                                                            <!-- 綁定到 ReminderItem.Text -->
                                                             <TextBox Grid.Column="2" 
-                                                         Text="{Binding ., UpdateSourceTrigger=PropertyChanged}" 
-                                                         BorderThickness="0" 
-                                                         Background="Transparent"
-                                                         Padding="4,2"
-                                                         FontSize="11"
-                                                         VerticalAlignment="Center"/>
+                             Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}" 
+                             BorderThickness="0" 
+                             Background="Transparent"
+                             Padding="4,2"
+                             FontSize="11"
+                             VerticalAlignment="Center"/>
                                                         </Grid>
                                                     </Border>
                                                 </DataTemplate>
@@ -730,7 +781,8 @@
                                 Background="#F44336" Foreground="White" BorderThickness="0"/>
                                 </StackPanel>
 
-                                <Border BorderBrush="#DDD" BorderThickness="1" MaxHeight="180">
+                                <Border BorderBrush="#DDD" BorderThickness="1" 
+        Height="100">
                                     <ScrollViewer VerticalScrollBarVisibility="Auto">
                                         <ItemsControl x:Name="globalRemindersList" ItemsSource="{Binding SelectedRole.RemindersGlobal}">
                                             <ItemsControl.ItemTemplate>
@@ -743,15 +795,19 @@
                                                                 <ColumnDefinition Width="*"/>
                                                             </Grid.ColumnDefinitions>
 
-                                                            <CheckBox Grid.Column="0" VerticalAlignment="Center"/>
+                                                            <!-- 綁定到 ReminderItem.IsSelected -->
+                                                            <CheckBox Grid.Column="0" 
+                              IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}"
+                              VerticalAlignment="Center"/>
 
+                                                            <!-- 綁定到 ReminderItem.Text -->
                                                             <TextBox Grid.Column="2" 
-                                                         Text="{Binding ., UpdateSourceTrigger=PropertyChanged}" 
-                                                         BorderThickness="0" 
-                                                         Background="Transparent"
-                                                         Padding="4,2"
-                                                         FontSize="11"
-                                                         VerticalAlignment="Center"/>
+                             Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}" 
+                             BorderThickness="0" 
+                             Background="Transparent"
+                             Padding="4,2"
+                             FontSize="11"
+                             VerticalAlignment="Center"/>
                                                         </Grid>
                                                     </Border>
                                                 </DataTemplate>

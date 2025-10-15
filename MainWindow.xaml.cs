@@ -20,6 +20,8 @@ namespace BloodClockTowerScriptEditor
 
             // 註冊載入事件
             Loaded += MainWindow_Loaded;
+            // 🆕 註冊關閉事件
+            Closing += MainWindow_Closing;
         }
 
         /// <summary>
@@ -28,6 +30,22 @@ namespace BloodClockTowerScriptEditor
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             await InitializeDefaultRolesAsync();
+        }
+
+        /// <summary>
+        /// 視窗關閉前檢查未儲存的變更
+        /// </summary>
+        private void MainWindow_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (DataContext is MainViewModel viewModel)
+            {
+                // 檢查未儲存的變更
+                if (!viewModel.CheckUnsavedChanges())
+                {
+                    // 使用者選擇取消,阻止視窗關閉
+                    e.Cancel = true;
+                }
+            }
         }
 
         /// <summary>
@@ -138,18 +156,6 @@ namespace BloodClockTowerScriptEditor
             );
         }
 
-        /// <summary>
-        /// 🆕 TabControl 切換時清空選擇
-        /// </summary>
-        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (DataContext is MainViewModel viewModel && e.Source is TabControl)
-            {
-                // 切換分頁時清空選中的角色
-                viewModel.SelectedRole = null;
-            }
-        }
-               
         // 首個夜晚 - 上移
         private void MoveUpFirstNight_Click(object sender, RoutedEventArgs e)
         {
@@ -205,6 +211,7 @@ namespace BloodClockTowerScriptEditor
                 }
             }
         }
+
         /// <summary>
         /// 新增一般提示標記
         /// </summary>
@@ -212,8 +219,7 @@ namespace BloodClockTowerScriptEditor
         {
             if (DataContext is MainViewModel viewModel && viewModel.SelectedRole != null)
             {
-                viewModel.SelectedRole.Reminders.Add("新標記");
-                remindersList.Items.Refresh();
+                viewModel.SelectedRole.Reminders.Add(new ReminderItem("新標記"));
             }
         }
 
@@ -224,35 +230,66 @@ namespace BloodClockTowerScriptEditor
         {
             if (DataContext is MainViewModel viewModel && viewModel.SelectedRole != null)
             {
-                viewModel.SelectedRole.RemindersGlobal.Add("新全局標記");
-                remindersList.Items.Refresh();
+                viewModel.SelectedRole.RemindersGlobal.Add(new ReminderItem("新全局標記"));
             }
         }
 
         /// <summary>
-        /// 刪除勾選的提示標記（暫時未實作）
+        /// 刪除勾選的一般提示標記
         /// </summary>
         private void RemoveSelectedReminders_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(
-                "刪除功能開發中...\n\n目前請手動清空文字框內容來刪除標記。",
-                "提示",
-                MessageBoxButton.OK,
-                MessageBoxImage.Information
-            );
+            if (DataContext is MainViewModel viewModel && viewModel.SelectedRole != null)
+            {
+                var toRemove = viewModel.SelectedRole.Reminders
+                    .Where(r => r.IsSelected)
+                    .ToList();
+
+                if (toRemove.Count == 0)
+                {
+                    MessageBox.Show(
+                        "請先勾選要刪除的標記",
+                        "提示",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Information
+                    );
+                    return;
+                }
+
+                foreach (var item in toRemove)
+                {
+                    viewModel.SelectedRole.Reminders.Remove(item);
+                }
+            }
         }
 
         /// <summary>
-        /// 刪除勾選的全局提示標記（暫時未實作）
+        /// 刪除勾選的全局提示標記
         /// </summary>
         private void RemoveSelectedGlobalReminders_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(
-                "刪除功能開發中...\n\n目前請手動清空文字框內容來刪除標記。",
-                "提示",
-                MessageBoxButton.OK,
-                MessageBoxImage.Information
-            );
+            if (DataContext is MainViewModel viewModel && viewModel.SelectedRole != null)
+            {
+                var toRemove = viewModel.SelectedRole.RemindersGlobal
+                    .Where(r => r.IsSelected)
+                    .ToList();
+
+                if (toRemove.Count == 0)
+                {
+                    MessageBox.Show(
+                        "請先勾選要刪除的標記",
+                        "提示",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Information
+                    );
+                    return;
+                }
+
+                foreach (var item in toRemove)
+                {
+                    viewModel.SelectedRole.RemindersGlobal.Remove(item);
+                }
+            }
         }
     }
 }

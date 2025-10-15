@@ -1,7 +1,9 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using BloodClockTowerScriptEditor.Converters;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace BloodClockTowerScriptEditor.Models
 {
@@ -19,8 +21,8 @@ namespace BloodClockTowerScriptEditor.Models
         private bool _setup;
         private double _firstNight;
         private double _otherNight;
-        private List<string> _reminders = new();
-        private List<string> _remindersGlobal = new();
+        private ObservableCollection<ReminderItem> _reminders = new();
+        private ObservableCollection<ReminderItem> _remindersGlobal = new();
         private string? _nameEng;
         private string? _flavor;
         private string? _firstNightReminder;
@@ -119,14 +121,16 @@ namespace BloodClockTowerScriptEditor.Models
         }
 
         [JsonProperty("reminders")]
-        public List<string> Reminders
+        [JsonConverter(typeof(ReminderItemListConverter))]
+        public ObservableCollection<ReminderItem> Reminders
         {
             get => _reminders;
             set => SetProperty(ref _reminders, value);
         }
 
         [JsonProperty("remindersGlobal")]
-        public List<string> RemindersGlobal
+        [JsonConverter(typeof(ReminderItemListConverter))]
+        public ObservableCollection<ReminderItem> RemindersGlobal
         {
             get => _remindersGlobal;
             set => SetProperty(ref _remindersGlobal, value);
