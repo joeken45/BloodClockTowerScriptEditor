@@ -205,5 +205,54 @@ namespace BloodClockTowerScriptEditor
                 }
             }
         }
+        /// <summary>
+        /// 新增一般提示標記
+        /// </summary>
+        private void AddReminder_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is MainViewModel viewModel && viewModel.SelectedRole != null)
+            {
+                viewModel.SelectedRole.Reminders.Add("新標記");
+                remindersList.Items.Refresh();
+            }
+        }
+
+        /// <summary>
+        /// 新增全局提示標記
+        /// </summary>
+        private void AddGlobalReminder_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is MainViewModel viewModel && viewModel.SelectedRole != null)
+            {
+                viewModel.SelectedRole.RemindersGlobal.Add("新全局標記");
+                remindersList.Items.Refresh();
+            }
+        }
+
+        /// <summary>
+        /// 刪除勾選的提示標記（暫時未實作）
+        /// </summary>
+        private void RemoveSelectedReminders_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show(
+                "刪除功能開發中...\n\n目前請手動清空文字框內容來刪除標記。",
+                "提示",
+                MessageBoxButton.OK,
+                MessageBoxImage.Information
+            );
+        }
+
+        /// <summary>
+        /// 刪除勾選的全局提示標記（暫時未實作）
+        /// </summary>
+        private void RemoveSelectedGlobalReminders_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show(
+                "刪除功能開發中...\n\n目前請手動清空文字框內容來刪除標記。",
+                "提示",
+                MessageBoxButton.OK,
+                MessageBoxImage.Information
+            );
+        }
     }
 }

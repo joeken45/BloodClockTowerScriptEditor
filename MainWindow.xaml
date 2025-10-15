@@ -453,25 +453,50 @@
 
                     <StackPanel Margin="20">
                         <!-- 標題 -->
-                        <TextBlock Text="角色編輯" FontSize="24" FontWeight="Bold" Margin="0,0,0,10"/>
-                        <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Margin="0,0,0,15"/>
+                        <TextBlock Text="角色編輯" FontSize="20" FontWeight="Bold" Margin="0,0,0,8"/>
+                        <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Margin="0,0,0,12"/>
 
-                        <!-- 基本資訊 -->
-                        <TextBlock Text="基本資訊" Style="{StaticResource LabelStyle}" FontSize="16"/>
-
-                        <!-- 第一行: 角色名稱 + 角色 ID -->
-                        <Grid Margin="0,0,0,10">
+                        <!-- 第一行: 角色 ID + 角色名稱 -->
+                        <Grid Margin="0,0,0,8">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="15"/>
+                                <ColumnDefinition Width="12"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <StackPanel Grid.Column="0">
-                                <TextBlock Text="角色名稱 *" Style="{StaticResource LabelStyle}" Margin="0,0,0,5"/>
-                                <TextBox Text="{Binding SelectedRole.Name, UpdateSourceTrigger=PropertyChanged}">
+                            <DockPanel Grid.Column="0">
+                                <TextBlock Text="角色 ID *" FontWeight="SemiBold" DockPanel.Dock="Left" 
+                               VerticalAlignment="Center" Margin="0,0,8,0" Width="80"/>
+                                <TextBox Text="{Binding SelectedRole.Id, UpdateSourceTrigger=PropertyChanged}" 
+                             Padding="6,4" VerticalAlignment="Center">
                                     <TextBox.Style>
-                                        <Style TargetType="TextBox" BasedOn="{StaticResource TextBoxStyle}">
+                                        <Style TargetType="TextBox">
+                                            <Setter Property="BorderBrush" Value="#CCC"/>
+                                            <Setter Property="BorderThickness" Value="1"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding SelectedRole.Id, Converter={StaticResource StringNotEmptyConverter}}" Value="False">
+                                                    <Setter Property="BorderBrush" Value="#F44336"/>
+                                                    <Setter Property="BorderThickness" Value="2"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding SelectedRole.Id, Converter={StaticResource IdFormatValidationConverter}}" Value="False">
+                                                    <Setter Property="BorderBrush" Value="#FF9800"/>
+                                                    <Setter Property="BorderThickness" Value="2"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBox.Style>
+                                </TextBox>
+                            </DockPanel>
+
+                            <DockPanel Grid.Column="2">
+                                <TextBlock Text="角色名稱 *" FontWeight="SemiBold" DockPanel.Dock="Left" 
+                               VerticalAlignment="Center" Margin="0,0,8,0" Width="80"/>
+                                <TextBox Text="{Binding SelectedRole.Name, UpdateSourceTrigger=PropertyChanged}" 
+                             Padding="6,4" VerticalAlignment="Center">
+                                    <TextBox.Style>
+                                        <Style TargetType="TextBox">
+                                            <Setter Property="BorderBrush" Value="#CCC"/>
+                                            <Setter Property="BorderThickness" Value="1"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding SelectedRole.Name, Converter={StaticResource StringNotEmptyConverter}}" Value="False">
                                                     <Setter Property="BorderBrush" Value="#F44336"/>
@@ -481,45 +506,22 @@
                                         </Style>
                                     </TextBox.Style>
                                 </TextBox>
-                            </StackPanel>
-
-                            <StackPanel Grid.Column="2">
-                                <TextBlock Text="角色 ID *" Style="{StaticResource LabelStyle}" Margin="0,0,0,5"/>
-                                <TextBox Text="{Binding SelectedRole.Id, UpdateSourceTrigger=PropertyChanged}">
-                                    <TextBox.Style>
-                                        <Style TargetType="TextBox" BasedOn="{StaticResource TextBoxStyle}">
-                                            <Style.Triggers>
-                                                <!-- 必填驗證：紅框 -->
-                                                <DataTrigger Binding="{Binding SelectedRole.Id, Converter={StaticResource StringNotEmptyConverter}}" Value="False">
-                                                    <Setter Property="BorderBrush" Value="#F44336"/>
-                                                    <Setter Property="BorderThickness" Value="2"/>
-                                                </DataTrigger>
-                                                <!-- ID 格式驗證：橙框 -->
-                                                <DataTrigger Binding="{Binding SelectedRole.Id, Converter={StaticResource IdFormatValidationConverter}}" Value="False">
-                                                    <Setter Property="BorderBrush" Value="#FF9800"/>
-                                                    <Setter Property="BorderThickness" Value="2"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBox.Style>
-                                </TextBox>
-                                <TextBlock Text="（只允許英文、數字、底線、連字號）" 
-               FontSize="10" Foreground="Gray" Margin="0,2,0,0"/>
-                            </StackPanel>
+                            </DockPanel>
                         </Grid>
 
-                        <!-- 第二行: 角色類型 + 影響設置 -->
-                        <Grid Margin="0,0,0,10">
+                        <!-- 第二行: 角色類型 + 英文名稱 -->
+                        <Grid Margin="0,0,0,8">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="15"/>
+                                <ColumnDefinition Width="12"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <StackPanel Grid.Column="0">
-                                <TextBlock Text="角色類型 *" Style="{StaticResource LabelStyle}" Margin="0,0,0,5"/>
+                            <DockPanel Grid.Column="0">
+                                <TextBlock Text="角色類型 *" FontWeight="SemiBold" DockPanel.Dock="Left" 
+                               VerticalAlignment="Center" Margin="0,0,8,0" Width="80"/>
                                 <ComboBox SelectedItem="{Binding SelectedRole.Team}" 
-                              FontSize="13" Padding="8,5">
+                              Padding="6,4" BorderBrush="#CCC" BorderThickness="1" VerticalAlignment="Center">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding Converter={StaticResource TeamTypeConverter}}"/>
@@ -533,21 +535,57 @@
                                     <models:TeamType>Fabled</models:TeamType>
                                     <models:TeamType>Jinxed</models:TeamType>
                                 </ComboBox>
-                            </StackPanel>
+                            </DockPanel>
 
-                            <StackPanel Grid.Column="2" VerticalAlignment="Bottom">
-                                <CheckBox Content="影響設置 (Setup)" 
-                              IsChecked="{Binding SelectedRole.Setup}" 
-                              FontSize="13"
-                              Margin="0,0,0,8"/>
-                            </StackPanel>
+                            <DockPanel Grid.Column="2">
+                                <TextBlock Text="英文名稱" FontWeight="SemiBold" DockPanel.Dock="Left" 
+                               VerticalAlignment="Center" Margin="0,0,8,0" Width="80"/>
+                                <TextBox Text="{Binding SelectedRole.NameEng, UpdateSourceTrigger=PropertyChanged}" 
+                             Padding="6,4" BorderBrush="#CCC" BorderThickness="1" VerticalAlignment="Center"/>
+                            </DockPanel>
                         </Grid>
 
-                        <TextBlock Text="能力描述 *" Style="{StaticResource LabelStyle}" FontSize="16" Margin="0,5,0,5"/>
+                        <!-- 第三行: 圖片 URL (獨立一列) -->
+                        <DockPanel Margin="0,0,0,8">
+                            <TextBlock Text="圖片 URL" FontWeight="SemiBold" DockPanel.Dock="Left" 
+                           VerticalAlignment="Center" Margin="0,0,8,0" Width="80"/>
+                            <TextBox Text="{Binding SelectedRole.Image, UpdateSourceTrigger=PropertyChanged}" 
+                         Padding="6,4" BorderBrush="#CCC" BorderThickness="1" VerticalAlignment="Center"/>
+                        </DockPanel>
+
+                        <!-- 第四行: 所屬版本 + 影響設置 -->
+                        <Grid Margin="0,0,0,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="12"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <DockPanel Grid.Column="0">
+                                <TextBlock Text="所屬版本" FontWeight="SemiBold" DockPanel.Dock="Left" 
+                               VerticalAlignment="Center" Margin="0,0,8,0" Width="80"/>
+                                <TextBox Text="{Binding SelectedRole.Edition, UpdateSourceTrigger=PropertyChanged}" 
+                             Padding="6,4" BorderBrush="#CCC" BorderThickness="1" VerticalAlignment="Center"/>
+                            </DockPanel>
+
+                            <CheckBox Grid.Column="2" 
+                          Content="影響設置 (Setup)" 
+                          IsChecked="{Binding SelectedRole.Setup}" 
+                          FontSize="12" 
+                          VerticalAlignment="Center"/>
+                        </Grid>
+
+                        <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Margin="0,4,0,10"/>
+
+                        <!-- 能力描述 -->
+                        <TextBlock Text="能力描述 *" FontWeight="SemiBold" Margin="0,0,0,4"/>
                         <TextBox Text="{Binding SelectedRole.Ability, UpdateSourceTrigger=PropertyChanged}" 
-         Height="100">
+                     TextWrapping="Wrap" AcceptsReturn="True" Height="80"
+                     Padding="6,4" VerticalScrollBarVisibility="Auto">
                             <TextBox.Style>
-                                <Style TargetType="TextBox" BasedOn="{StaticResource MultiLineTextBoxStyle}">
+                                <Style TargetType="TextBox">
+                                    <Setter Property="BorderBrush" Value="#CCC"/>
+                                    <Setter Property="BorderThickness" Value="1"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding SelectedRole.Ability, Converter={StaticResource StringNotEmptyConverter}}" Value="False">
                                             <Setter Property="BorderBrush" Value="#F44336"/>
@@ -557,91 +595,189 @@
                                 </Style>
                             </TextBox.Style>
                         </TextBox>
-                        
-                        <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Margin="0,15"/>
 
-                        <!-- 夜晚行動順序 -->
-                        <TextBlock Text="夜晚行動順序" Style="{StaticResource LabelStyle}" FontSize="16"/>
+                        <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Margin="0,10"/>
 
-                        <Grid Margin="0,0,0,10">
+                        <!-- 夜晚行動與說書人提示 -->
+                        <Grid Margin="0,0,0,8">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="15"/>
+                                <ColumnDefinition Width="12"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <StackPanel Grid.Column="0">
-                                <TextBlock Text="首夜順序 (0=不行動)" Style="{StaticResource LabelStyle}" Margin="0,0,0,5"/>
-                                <TextBox Text="{Binding SelectedRole.FirstNight, UpdateSourceTrigger=PropertyChanged}" 
-                             Style="{StaticResource TextBoxStyle}"/>
-                            </StackPanel>
+                            <!-- 左側：首個夜晚 -->
+                            <Grid Grid.Column="0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="8"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
 
-                            <StackPanel Grid.Column="2">
-                                <TextBlock Text="其他夜晚順序" Style="{StaticResource LabelStyle}" Margin="0,0,0,5"/>
-                                <TextBox Text="{Binding SelectedRole.OtherNight, UpdateSourceTrigger=PropertyChanged}" 
-                             Style="{StaticResource TextBoxStyle}"/>
-                            </StackPanel>
+                                <!-- 首夜順序 -->
+                                <DockPanel Grid.Row="0">
+                                    <TextBlock Text="首夜順序" FontWeight="SemiBold" DockPanel.Dock="Left" 
+                                   VerticalAlignment="Center" Margin="0,0,8,0" Width="70"/>
+                                    <TextBox Text="{Binding SelectedRole.FirstNight, UpdateSourceTrigger=PropertyChanged}" 
+                                 Padding="6,4" BorderBrush="#CCC" BorderThickness="1" VerticalAlignment="Center"/>
+                                </DockPanel>
+
+                                <!-- 首夜提示 -->
+                                <DockPanel Grid.Row="2">
+                                    <TextBlock Text="首夜提示" FontWeight="SemiBold" FontSize="11" DockPanel.Dock="Left" 
+                                   VerticalAlignment="Top" Margin="0,4,8,0" Width="70"/>
+                                    <TextBox Text="{Binding SelectedRole.FirstNightReminder, UpdateSourceTrigger=PropertyChanged}" 
+                                 TextWrapping="Wrap" AcceptsReturn="True" Height="70"
+                                 Padding="6,4" BorderBrush="#CCC" BorderThickness="1" 
+                                 FontSize="11" VerticalScrollBarVisibility="Auto"/>
+                                </DockPanel>
+                            </Grid>
+
+                            <!-- 右側：其他夜晚 -->
+                            <Grid Grid.Column="2">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="8"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <!-- 其他夜晚順序 -->
+                                <DockPanel Grid.Row="0">
+                                    <TextBlock Text="其他夜晚" FontWeight="SemiBold" DockPanel.Dock="Left" 
+                                   VerticalAlignment="Center" Margin="0,0,8,0" Width="70"/>
+                                    <TextBox Text="{Binding SelectedRole.OtherNight, UpdateSourceTrigger=PropertyChanged}" 
+                                 Padding="6,4" BorderBrush="#CCC" BorderThickness="1" VerticalAlignment="Center"/>
+                                </DockPanel>
+
+                                <!-- 其他夜提示 -->
+                                <DockPanel Grid.Row="2">
+                                    <TextBlock Text="其他夜提示" FontWeight="SemiBold" FontSize="11" DockPanel.Dock="Left" 
+                                   VerticalAlignment="Top" Margin="0,4,8,0" Width="70"/>
+                                    <TextBox Text="{Binding SelectedRole.OtherNightReminder, UpdateSourceTrigger=PropertyChanged}" 
+                                 TextWrapping="Wrap" AcceptsReturn="True" Height="70"
+                                 Padding="6,4" BorderBrush="#CCC" BorderThickness="1" 
+                                 FontSize="11" VerticalScrollBarVisibility="Auto"/>
+                                </DockPanel>
+                            </Grid>
                         </Grid>
 
-                        <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Margin="0,10,0,15"/>
+                        <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Margin="0,10"/>
 
-                        <!-- 說書人提示 -->
-                        <TextBlock Text="說書人提示" Style="{StaticResource LabelStyle}" FontSize="16"/>
+                        <!-- 🆕 提示標記編輯器 -->
+                        <TextBlock Text="提示標記" FontWeight="SemiBold" Margin="0,10,0,8"/>
 
-                        <TextBlock Text="首夜提示" Style="{StaticResource LabelStyle}" Margin="0,5,0,5"/>
-                        <TextBox Text="{Binding SelectedRole.FirstNightReminder, UpdateSourceTrigger=PropertyChanged}" 
-                     Style="{StaticResource MultiLineTextBoxStyle}"
-                     Height="80"/>
-
-                        <TextBlock Text="其他夜晚提示" Style="{StaticResource LabelStyle}" Margin="0,10,0,5"/>
-                        <TextBox Text="{Binding SelectedRole.OtherNightReminder, UpdateSourceTrigger=PropertyChanged}" 
-                     Style="{StaticResource MultiLineTextBoxStyle}"
-                     Height="80"/>
-
-                        <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Margin="0,15"/>
-
-                        <!-- 其他資訊 -->
-                        <TextBlock Text="其他資訊" Style="{StaticResource LabelStyle}" FontSize="16"/>
-
-                        <!-- 第三行: 英文名稱 + 所屬版本 -->
-                        <Grid Margin="0,0,0,10">
+                        <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="15"/>
+                                <ColumnDefinition Width="12"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
+                            <!-- 左側：一般標記 -->
                             <StackPanel Grid.Column="0">
-                                <TextBlock Text="英文名稱 (選填)" Style="{StaticResource LabelStyle}" Margin="0,0,0,5"/>
-                                <TextBox Text="{Binding SelectedRole.NameEng, UpdateSourceTrigger=PropertyChanged}" 
-                             Style="{StaticResource TextBoxStyle}"/>
+                                <TextBlock Text="一般標記" FontWeight="SemiBold" FontSize="12" Margin="0,0,0,4"/>
+
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                    <Button Content="➕ 新增" Padding="6,3" FontSize="11"
+                                Click="AddReminder_Click"
+                                Background="#4CAF50" Foreground="White" BorderThickness="0" Margin="0,0,6,0"/>
+                                    <Button Content="🗑️ 刪除" Padding="6,3" FontSize="11"
+                                Click="RemoveSelectedReminders_Click"
+                                Background="#F44336" Foreground="White" BorderThickness="0"/>
+                                </StackPanel>
+
+                                <Border BorderBrush="#DDD" BorderThickness="1" MaxHeight="180">
+                                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                        <ItemsControl x:Name="remindersList" ItemsSource="{Binding SelectedRole.Reminders}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border BorderBrush="#EEE" BorderThickness="0,0,0,1" Padding="6,4" Background="White">
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="Auto"/>
+                                                                <ColumnDefinition Width="6"/>
+                                                                <ColumnDefinition Width="*"/>
+                                                            </Grid.ColumnDefinitions>
+
+                                                            <CheckBox Grid.Column="0" VerticalAlignment="Center"/>
+
+                                                            <TextBox Grid.Column="2" 
+                                                         Text="{Binding ., UpdateSourceTrigger=PropertyChanged}" 
+                                                         BorderThickness="0" 
+                                                         Background="Transparent"
+                                                         Padding="4,2"
+                                                         FontSize="11"
+                                                         VerticalAlignment="Center"/>
+                                                        </Grid>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </ScrollViewer>
+                                </Border>
                             </StackPanel>
 
+                            <!-- 右側：全局標記 -->
                             <StackPanel Grid.Column="2">
-                                <TextBlock Text="所屬版本 (選填)" Style="{StaticResource LabelStyle}" Margin="0,0,0,5"/>
-                                <TextBox Text="{Binding SelectedRole.Edition, UpdateSourceTrigger=PropertyChanged}" 
-                             Style="{StaticResource TextBoxStyle}"/>
+                                <TextBlock Text="全局標記" FontWeight="SemiBold" FontSize="12" Margin="0,0,0,4"/>
+
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                    <Button Content="➕ 新增" Padding="6,3" FontSize="11"
+                                Click="AddGlobalReminder_Click"
+                                Background="#4CAF50" Foreground="White" BorderThickness="0" Margin="0,0,6,0"/>
+                                    <Button Content="🗑️ 刪除" Padding="6,3" FontSize="11"
+                                Click="RemoveSelectedGlobalReminders_Click"
+                                Background="#F44336" Foreground="White" BorderThickness="0"/>
+                                </StackPanel>
+
+                                <Border BorderBrush="#DDD" BorderThickness="1" MaxHeight="180">
+                                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                        <ItemsControl x:Name="globalRemindersList" ItemsSource="{Binding SelectedRole.RemindersGlobal}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border BorderBrush="#EEE" BorderThickness="0,0,0,1" Padding="6,4" Background="White">
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="Auto"/>
+                                                                <ColumnDefinition Width="6"/>
+                                                                <ColumnDefinition Width="*"/>
+                                                            </Grid.ColumnDefinitions>
+
+                                                            <CheckBox Grid.Column="0" VerticalAlignment="Center"/>
+
+                                                            <TextBox Grid.Column="2" 
+                                                         Text="{Binding ., UpdateSourceTrigger=PropertyChanged}" 
+                                                         BorderThickness="0" 
+                                                         Background="Transparent"
+                                                         Padding="4,2"
+                                                         FontSize="11"
+                                                         VerticalAlignment="Center"/>
+                                                        </Grid>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </ScrollViewer>
+                                </Border>
                             </StackPanel>
                         </Grid>
 
-                        <TextBlock Text="圖片 URL" Style="{StaticResource LabelStyle}" Margin="0,5,0,5"/>
-                        <TextBox Text="{Binding SelectedRole.Image, UpdateSourceTrigger=PropertyChanged}" 
-                     Style="{StaticResource TextBoxStyle}"/>
+                        <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Margin="0,10"/>
 
-                        <TextBlock Text="風味文字 (選填)" Style="{StaticResource LabelStyle}" Margin="0,10,0,5"/>
+                        <!-- 備註（原風味文字） -->
+                        <TextBlock Text="備註" FontWeight="SemiBold" Margin="0,10,0,4"/>
                         <TextBox Text="{Binding SelectedRole.Flavor, UpdateSourceTrigger=PropertyChanged}" 
-                     Style="{StaticResource MultiLineTextBoxStyle}"
-                     Height="60"/>
+                     TextWrapping="Wrap" AcceptsReturn="True" Height="60"
+                     Padding="6,4" BorderBrush="#CCC" BorderThickness="1" 
+                     FontSize="11" VerticalScrollBarVisibility="Auto"/>
 
                         <!-- 底部說明 -->
-                        <Border Background="#F0F8FF" Padding="15" Margin="0,20,0,0" CornerRadius="5">
+                        <Border Background="#F0F8FF" Padding="12" Margin="0,15,0,0" CornerRadius="3">
                             <StackPanel>
-                                <TextBlock Text="💡 編輯提示" FontWeight="Bold" Margin="0,0,0,5"/>
-                                <TextBlock TextWrapping="Wrap" FontSize="12" Foreground="#333">
+                                <TextBlock Text="💡 編輯提示" FontWeight="Bold" FontSize="11" Margin="0,0,0,4"/>
+                                <TextBlock TextWrapping="Wrap" FontSize="10" Foreground="#333">
                         • 標記 * 的欄位為必填，空白時會顯示紅色邊框<LineBreak/>
-                        • 角色 ID 格式錯誤時會顯示橙色邊框<LineBreak/>
-                        • 所有變更會即時儲存到記憶體中<LineBreak/>
-                        • 請記得點擊「檔案 > 儲存」將變更寫入檔案
+                        • 所有變更即時儲存，記得按「檔案 > 儲存」寫入檔案
                                 </TextBlock>
                             </StackPanel>
                         </Border>
@@ -664,9 +800,6 @@
                     <TextBlock Text="請從左側選擇一個角色進行編輯" 
                    FontSize="16" Foreground="Gray" 
                    HorizontalAlignment="Center" Margin="0,10,0,0"/>
-                    <TextBlock Text="或點擊「➕」建立新角色" 
-                   FontSize="13" Foreground="Gray" 
-                   HorizontalAlignment="Center" Margin="0,5,0,0"/>
                 </StackPanel>
             </Grid>
         </Grid>
