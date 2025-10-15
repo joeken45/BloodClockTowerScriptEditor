@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:converters="clr-namespace:BloodClockTowerScriptEditor.Converters"
         Title="新增自訂角色" 
-        Height="650" Width="600"
+        Height="700" 
+        Width="600"
         WindowStartupLocation="CenterOwner"
         ResizeMode="CanResize">
 
@@ -13,60 +14,68 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>      <!-- 表單區 -->
-            <RowDefinition Height="Auto"/>   <!-- 底部按鈕 -->
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <!-- 表單區 -->
         <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
             <StackPanel Margin="20">
-                
+
                 <!-- 標題 -->
-                <TextBlock Text="✨ 建立自訂角色" 
+                <TextBlock Text="角色編輯" 
                            FontSize="20" 
                            FontWeight="Bold" 
-                           Margin="0,0,0,20"/>
+                           Margin="0,0,0,8"/>
+                <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Margin="0,0,0,12"/>
 
-                <!-- 基本資訊 -->
-                <TextBlock Text="基本資訊" 
-                           FontSize="14" 
-                           FontWeight="SemiBold" 
-                           Margin="0,0,0,10"/>
-                
-                <Border Background="#F9F9F9" 
-                        Padding="15" 
-                        CornerRadius="5" 
-                        Margin="0,0,0,20">
-                    <StackPanel>
-                        <!-- 角色名稱 -->
-                        <TextBlock Text="角色名稱 *" FontWeight="SemiBold" Margin="0,0,0,5"/>
-                        <TextBox x:Name="txtName" 
-                                 Padding="8,5" 
-                                 FontSize="13"
-                                 TextChanged="ValidateForm"/>
+                <!-- 第一行: 角色 ID + 角色名稱 -->
+                <Grid Margin="0,0,0,8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="12"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-                        <!-- 角色 ID -->
-                        <TextBlock Text="角色 ID *" FontWeight="SemiBold" Margin="0,10,0,5"/>
+                    <DockPanel Grid.Column="0">
+                        <TextBlock Text="角色 ID *" FontWeight="SemiBold" DockPanel.Dock="Left" 
+                                   VerticalAlignment="Center" Margin="0,0,8,0" Width="80"/>
                         <TextBox x:Name="txtId" 
-                                 Padding="8,5" 
-                                 FontSize="13"
+                                 Padding="6,4" 
+                                 BorderBrush="#CCC" 
+                                 BorderThickness="1" 
+                                 VerticalAlignment="Center"
                                  TextChanged="ValidateForm"/>
-                        <TextBlock Text="（用於識別角色的唯一代碼，建議使用英文小寫）" 
-                                   FontSize="10" 
-                                   Foreground="Gray" 
-                                   Margin="0,2,0,0"/>
+                    </DockPanel>
 
-                        <!-- 英文名稱 -->
-                        <TextBlock Text="英文名稱" FontWeight="SemiBold" Margin="0,10,0,5"/>
-                        <TextBox x:Name="txtNameEng" 
-                                 Padding="8,5" 
-                                 FontSize="13"/>
+                    <DockPanel Grid.Column="2">
+                        <TextBlock Text="角色名稱 *" FontWeight="SemiBold" DockPanel.Dock="Left" 
+                                   VerticalAlignment="Center" Margin="0,0,8,0" Width="80"/>
+                        <TextBox x:Name="txtName" 
+                                 Padding="6,4" 
+                                 BorderBrush="#CCC" 
+                                 BorderThickness="1" 
+                                 VerticalAlignment="Center"
+                                 TextChanged="ValidateForm"/>
+                    </DockPanel>
+                </Grid>
 
-                        <!-- 角色類型 -->
-                        <TextBlock Text="角色類型 *" FontWeight="SemiBold" Margin="0,10,0,5"/>
+                <!-- 第二行: 角色類型 + 英文名稱 -->
+                <Grid Margin="0,0,0,8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="12"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <DockPanel Grid.Column="0">
+                        <TextBlock Text="角色類型 *" FontWeight="SemiBold" DockPanel.Dock="Left" 
+                                   VerticalAlignment="Center" Margin="0,0,8,0" Width="80"/>
                         <ComboBox x:Name="cmbTeam" 
-                                  Padding="8,5" 
-                                  FontSize="13"
+                                  Padding="6,4" 
+                                  BorderBrush="#CCC" 
+                                  BorderThickness="1" 
+                                  VerticalAlignment="Center"
                                   SelectedIndex="0"
                                   SelectionChanged="ValidateForm">
                             <ComboBoxItem Content="鎮民" Tag="townsfolk"/>
@@ -76,113 +85,328 @@
                             <ComboBoxItem Content="旅行者" Tag="traveler"/>
                             <ComboBoxItem Content="傳奇" Tag="fabled"/>
                         </ComboBox>
-                    </StackPanel>
-                </Border>
+                    </DockPanel>
+
+                    <DockPanel Grid.Column="2">
+                        <TextBlock Text="英文名稱" FontWeight="SemiBold" DockPanel.Dock="Left" 
+                                   VerticalAlignment="Center" Margin="0,0,8,0" Width="80"/>
+                        <TextBox x:Name="txtNameEng" 
+                                 Padding="6,4" 
+                                 BorderBrush="#CCC" 
+                                 BorderThickness="1" 
+                                 VerticalAlignment="Center"/>
+                    </DockPanel>
+                </Grid>
+
+                <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Margin="0,8"/>
+
+                <!-- 第三行: 圖片 URL + 預覽 -->
+                <Grid Margin="0,8,0,8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="8"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="8"/>
+                        <ColumnDefinition Width="50"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" 
+                               Text="圖片 URL" 
+                               FontWeight="SemiBold" 
+                               VerticalAlignment="Center"/>
+
+                    <TextBox Grid.Column="2" 
+                             x:Name="txtImage" 
+                             Padding="6,4" 
+                             BorderBrush="#CCC" 
+                             BorderThickness="1" 
+                             VerticalAlignment="Center"
+                             TextChanged="ImageUrl_TextChanged"/>
+
+                    <Border Grid.Column="4" 
+                            Width="50" 
+                            Height="50" 
+                            BorderBrush="#CCC" 
+                            BorderThickness="1"
+                            Background="#F9F9F9">
+                        <Image x:Name="imgPreview" 
+                               Stretch="Uniform"/>
+                    </Border>
+                </Grid>
+
+                <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Margin="0,8"/>
 
                 <!-- 能力描述 -->
-                <TextBlock Text="能力描述" 
-                           FontSize="14" 
-                           FontWeight="SemiBold" 
-                           Margin="0,0,0,10"/>
-                
-                <Border Background="#F9F9F9" 
-                        Padding="15" 
-                        CornerRadius="5" 
-                        Margin="0,0,0,20">
-                    <StackPanel>
-                        <TextBlock Text="能力描述 *" FontWeight="SemiBold" Margin="0,0,0,5"/>
-                        <TextBox x:Name="txtAbility" 
-                                 TextWrapping="Wrap" 
-                                 AcceptsReturn="True"
-                                 MinHeight="80" 
-                                 MaxHeight="150"
-                                 Padding="8,5"
-                                 FontSize="13"
-                                 VerticalScrollBarVisibility="Auto"
-                                 TextChanged="ValidateForm"/>
+                <DockPanel Margin="0,8,0,8">
+                    <TextBlock Text="能力 *" 
+                               FontWeight="SemiBold" 
+                               DockPanel.Dock="Left" 
+                               VerticalAlignment="Top" 
+                               Margin="0,4,8,0" 
+                               Width="80"/>
+                    <TextBox x:Name="txtAbility" 
+                             TextWrapping="Wrap" 
+                             AcceptsReturn="True" 
+                             Height="80"
+                             Padding="6,4" 
+                             BorderBrush="#CCC" 
+                             BorderThickness="1" 
+                             FontSize="11" 
+                             VerticalScrollBarVisibility="Auto"
+                             TextChanged="ValidateForm"/>
+                </DockPanel>
+
+                <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Margin="0,8"/>
+
+                <!-- 所屬劇本 + 影響設置 -->
+                <Grid Margin="0,8,0,8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="8"/>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" 
+                               Text="所屬劇本" 
+                               FontWeight="SemiBold" 
+                               VerticalAlignment="Center"/>
+
+                    <TextBox Grid.Column="2" 
+                             x:Name="txtEdition" 
+                             Text="custom"
+                             Padding="6,4" 
+                             BorderBrush="#CCC" 
+                             BorderThickness="1" 
+                             VerticalAlignment="Center"/>
+
+                    <CheckBox Grid.Column="3" 
+                              x:Name="chkSetup" 
+                              Content="影響劇本設置" 
+                              VerticalAlignment="Center" 
+                              Margin="12,0,0,0"/>
+                </Grid>
+
+                <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Margin="0,8"/>
+
+                <!-- 夜晚順序 + 提示 -->
+                <Grid Margin="0,8,0,8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="12"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- 左側：首夜 -->
+                    <Grid Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="8"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <DockPanel Grid.Row="0">
+                            <TextBlock Text="首夜順序" 
+                                       FontWeight="SemiBold" 
+                                       DockPanel.Dock="Left" 
+                                       VerticalAlignment="Center" 
+                                       Margin="0,0,8,0" 
+                                       Width="70"/>
+                            <TextBox x:Name="txtFirstNight" 
+                                     Text="0"
+                                     Padding="6,4" 
+                                     BorderBrush="#CCC" 
+                                     BorderThickness="1" 
+                                     VerticalAlignment="Center"/>
+                        </DockPanel>
+
+                        <DockPanel Grid.Row="2">
+                            <TextBlock Text="首夜提示" 
+                                       FontWeight="SemiBold" 
+                                       DockPanel.Dock="Left" 
+                                       VerticalAlignment="Top" 
+                                       Margin="0,4,8,0" 
+                                       Width="70"/>
+                            <TextBox x:Name="txtFirstNightReminder" 
+                                     TextWrapping="Wrap" 
+                                     AcceptsReturn="True" 
+                                     Height="80"
+                                     Padding="6,4" 
+                                     BorderBrush="#CCC" 
+                                     BorderThickness="1" 
+                                     FontSize="11" 
+                                     VerticalScrollBarVisibility="Auto"/>
+                        </DockPanel>
+                    </Grid>
+
+                    <!-- 右側：其他夜 -->
+                    <Grid Grid.Column="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="8"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <DockPanel Grid.Row="0">
+                            <TextBlock Text="其他夜順序" 
+                                       FontWeight="SemiBold" 
+                                       DockPanel.Dock="Left" 
+                                       VerticalAlignment="Center" 
+                                       Margin="0,0,8,0" 
+                                       Width="80"/>
+                            <TextBox x:Name="txtOtherNight" 
+                                     Text="0"
+                                     Padding="6,4" 
+                                     BorderBrush="#CCC" 
+                                     BorderThickness="1" 
+                                     VerticalAlignment="Center"/>
+                        </DockPanel>
+
+                        <DockPanel Grid.Row="2">
+                            <TextBlock Text="其他夜提示" 
+                                       FontWeight="SemiBold" 
+                                       DockPanel.Dock="Left" 
+                                       VerticalAlignment="Top" 
+                                       Margin="0,4,8,0" 
+                                       Width="80"/>
+                            <TextBox x:Name="txtOtherNightReminder" 
+                                     TextWrapping="Wrap" 
+                                     AcceptsReturn="True" 
+                                     Height="80"
+                                     Padding="6,4" 
+                                     BorderBrush="#CCC" 
+                                     BorderThickness="1" 
+                                     FontSize="11" 
+                                     VerticalScrollBarVisibility="Auto"/>
+                        </DockPanel>
+                    </Grid>
+                </Grid>
+
+                <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Margin="0,8"/>
+
+                <!-- 提示標記 -->
+                <TextBlock Text="提示標記" FontWeight="SemiBold" Margin="0,8,0,8"/>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="12"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- 左側：一般標記 -->
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="一般標記" FontWeight="SemiBold" FontSize="12" Margin="0,0,0,4"/>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                            <Button Content="➕ 新增" Padding="6,3" FontSize="11"
+                                    Click="AddReminder_Click"
+                                    Background="#4CAF50" Foreground="White" BorderThickness="0" Margin="0,0,6,0"/>
+                            <Button Content="🗑️ 刪除" Padding="6,3" FontSize="11"
+                                    Click="RemoveSelectedReminders_Click"
+                                    Background="#F44336" Foreground="White" BorderThickness="0"/>
+                        </StackPanel>
+
+                        <Border BorderBrush="#DDD" BorderThickness="1" Height="100" Background="White">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <ItemsControl x:Name="remindersList">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border BorderBrush="#EEE" BorderThickness="0,0,0,1" Padding="6,4" Background="White">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="6"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <CheckBox Grid.Column="0" 
+                                                              IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}"
+                                                              VerticalAlignment="Center"/>
+
+                                                    <TextBox Grid.Column="2" 
+                                                             Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}" 
+                                                             BorderThickness="0" 
+                                                             Background="Transparent"
+                                                             Padding="4,2"
+                                                             FontSize="11"
+                                                             VerticalAlignment="Center"/>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+                        </Border>
                     </StackPanel>
-                </Border>
 
-                <!-- 進階設定 -->
-                <TextBlock Text="進階設定（選填）" 
-                           FontSize="14" 
-                           FontWeight="SemiBold" 
-                           Margin="0,0,0,10"/>
-                
-                <Border Background="#F9F9F9" 
-                        Padding="15" 
-                        CornerRadius="5" 
-                        Margin="0,0,0,20">
-                    <StackPanel>
-                        <!-- 圖片 URL -->
-                        <TextBlock Text="圖片 URL" FontWeight="SemiBold" Margin="0,0,0,5"/>
-                        <TextBox x:Name="txtImage" 
-                                 Padding="8,5" 
-                                 FontSize="13"/>
+                    <!-- 右側：全局標記 -->
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="全局標記" FontWeight="SemiBold" FontSize="12" Margin="0,0,0,4"/>
 
-                        <!-- 所屬劇本 -->
-                        <TextBlock Text="所屬劇本" FontWeight="SemiBold" Margin="0,10,0,5"/>
-                        <TextBox x:Name="txtEdition" 
-                                 Text="custom"
-                                 Padding="8,5" 
-                                 FontSize="13"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                            <Button Content="➕ 新增" Padding="6,3" FontSize="11"
+                                    Click="AddGlobalReminder_Click"
+                                    Background="#4CAF50" Foreground="White" BorderThickness="0" Margin="0,0,6,0"/>
+                            <Button Content="🗑️ 刪除" Padding="6,3" FontSize="11"
+                                    Click="RemoveSelectedGlobalReminders_Click"
+                                    Background="#F44336" Foreground="White" BorderThickness="0"/>
+                        </StackPanel>
 
-                        <!-- 夜晚順序 -->
-                        <Grid Margin="0,10,0,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="15"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
+                        <Border BorderBrush="#DDD" BorderThickness="1" Height="100" Background="White">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <ItemsControl x:Name="globalRemindersList">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border BorderBrush="#EEE" BorderThickness="0,0,0,1" Padding="6,4" Background="White">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="6"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
 
-                            <StackPanel Grid.Column="0">
-                                <TextBlock Text="首夜順序" FontWeight="SemiBold" Margin="0,0,0,5"/>
-                                <TextBox x:Name="txtFirstNight" 
-                                         Text="0"
-                                         Padding="8,5" 
-                                         FontSize="13"/>
-                                <TextBlock Text="（0 = 不行動）" 
-                                           FontSize="10" 
-                                           Foreground="Gray" 
-                                           Margin="0,2,0,0"/>
-                            </StackPanel>
+                                                    <CheckBox Grid.Column="0" 
+                                                              IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}"
+                                                              VerticalAlignment="Center"/>
 
-                            <StackPanel Grid.Column="2">
-                                <TextBlock Text="其他夜晚順序" FontWeight="SemiBold" Margin="0,0,0,5"/>
-                                <TextBox x:Name="txtOtherNight" 
-                                         Text="0"
-                                         Padding="8,5" 
-                                         FontSize="13"/>
-                                <TextBlock Text="（0 = 不行動）" 
-                                           FontSize="10" 
-                                           Foreground="Gray" 
-                                           Margin="0,2,0,0"/>
-                            </StackPanel>
-                        </Grid>
-
-                        <!-- 影響設置 -->
-                        <CheckBox x:Name="chkSetup" 
-                                  Content="此角色影響劇本設置" 
-                                  Margin="0,15,0,0"/>
+                                                    <TextBox Grid.Column="2" 
+                                                             Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}" 
+                                                             BorderThickness="0" 
+                                                             Background="Transparent"
+                                                             Padding="4,2"
+                                                             FontSize="11"
+                                                             VerticalAlignment="Center"/>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+                        </Border>
                     </StackPanel>
-                </Border>
+                </Grid>
 
-                <!-- 提示 -->
-                <Border Background="#FFF9E6" 
-                        BorderBrush="#FFD700" 
-                        BorderThickness="1"
-                        Padding="10" 
-                        CornerRadius="3">
-                    <StackPanel>
-                        <TextBlock Text="💡 提示" FontWeight="Bold" Margin="0,0,0,5"/>
-                        <TextBlock TextWrapping="Wrap" FontSize="11">
-                            • 標記 * 的欄位為必填<LineBreak/>
-                            • 角色 ID 必須是唯一的，不能與其他角色重複<LineBreak/>
-                            • 儲存後，此角色會出現在角色選擇列表中<LineBreak/>
-                            • 自訂角色可以隨時編輯或刪除
-                        </TextBlock>
-                    </StackPanel>
-                </Border>
+                <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Margin="0,10"/>
+
+                <!-- 備註 -->
+                <DockPanel Margin="0,8,0,0">
+                    <TextBlock Text="備註" 
+                               FontWeight="SemiBold" 
+                               DockPanel.Dock="Left" 
+                               VerticalAlignment="Top" 
+                               Margin="0,4,8,0" 
+                               Width="80"/>
+                    <TextBox x:Name="txtFlavor" 
+                             TextWrapping="Wrap" 
+                             AcceptsReturn="True" 
+                             Height="60"
+                             Padding="6,4" 
+                             BorderBrush="#CCC" 
+                             BorderThickness="1" 
+                             FontSize="11" 
+                             VerticalScrollBarVisibility="Auto"/>
+                </DockPanel>
 
             </StackPanel>
         </ScrollViewer>
@@ -205,7 +429,7 @@
                         Margin="0,0,10,0"
                         Click="Save_Click"
                         IsEnabled="False"/>
-                
+
                 <Button Content="取消" 
                         Width="80" 
                         Height="35"

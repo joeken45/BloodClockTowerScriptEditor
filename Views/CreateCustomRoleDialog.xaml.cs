@@ -2,15 +2,19 @@
 using BloodClockTowerScriptEditor.Services;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 
 namespace BloodClockTowerScriptEditor.Views
 {
     public partial class CreateCustomRoleDialog : Window
     {
-        private RoleTemplate? _editingRole; // 如果是編輯模式，這裡會有值
+        private RoleTemplate? _editingRole;
+        private ObservableCollection<ReminderItem> _reminders = new();
+        private ObservableCollection<ReminderItem> _remindersGlobal = new();
 
         /// <summary>
         /// 建立的角色（供外部取用）
@@ -25,6 +29,10 @@ namespace BloodClockTowerScriptEditor.Views
             InitializeComponent();
             Title = "新增自訂角色";
             _editingRole = null;
+
+            // 綁定標記列表
+            remindersList.ItemsSource = _reminders;
+            globalRemindersList.ItemsSource = _remindersGlobal;
         }
 
         /// <summary>
@@ -36,6 +44,10 @@ namespace BloodClockTowerScriptEditor.Views
             Title = "編輯自訂角色";
             _editingRole = roleToEdit;
 
+            // 綁定標記列表
+            remindersList.ItemsSource = _reminders;
+            globalRemindersList.ItemsSource = _remindersGlobal;
+
             // 載入現有資料
             LoadRoleData(roleToEdit);
         }
@@ -45,15 +57,18 @@ namespace BloodClockTowerScriptEditor.Views
         /// </summary>
         private void LoadRoleData(RoleTemplate role)
         {
-            txtName.Text = role.Name;
             txtId.Text = role.Id;
             txtId.IsEnabled = false; // 編輯時不允許修改 ID
+            txtName.Text = role.Name;
             txtNameEng.Text = role.NameEng ?? "";
-            txtAbility.Text = role.Ability ?? "";
             txtImage.Text = role.Image ?? "";
+            txtAbility.Text = role.Ability ?? "";
             txtEdition.Text = role.Edition ?? "custom";
             txtFirstNight.Text = role.FirstNight.ToString();
             txtOtherNight.Text = role.OtherNight.ToString();
+            txtFirstNightReminder.Text = role.FirstNightReminder ?? "";
+            txtOtherNightReminder.Text = role.OtherNightReminder ?? "";
+            txtFlavor.Text = role.Flavor ?? "";
             chkSetup.IsChecked = role.Setup;
 
             // 設定類型
@@ -67,7 +82,43 @@ namespace BloodClockTowerScriptEditor.Views
                 }
             }
 
+            // 載入標記
+            _reminders.Clear();
+            _remindersGlobal.Clear();
+
+            foreach (var reminder in role.Reminders)
+            {
+                if (reminder.IsGlobal)
+                {
+                    _remindersGlobal.Add(new ReminderItem(reminder.ReminderText));
+                }
+                else
+                {
+                    _reminders.Add(new ReminderItem(reminder.ReminderText));
+                }
+            }
+
             ValidateForm(null, null);
+        }
+
+        /// <summary>
+        /// 圖片 URL 變更時更新預覽
+        /// </summary>
+        private void ImageUrl_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            imgPreview.Source = null;
+
+            if (!string.IsNullOrWhiteSpace(txtImage.Text))
+            {
+                try
+                {
+                    imgPreview.Source = new BitmapImage(new Uri(txtImage.Text));
+                }
+                catch
+                {
+                    // 圖片載入失敗，保持空白
+                }
+            }
         }
 
         /// <summary>
@@ -75,16 +126,95 @@ namespace BloodClockTowerScriptEditor.Views
         /// </summary>
         private void ValidateForm(object? sender, EventArgs? e)
         {
-            // 防止在初始化時 btnSave 還沒建立
-            if (btnSave == null)
+            // 檢查控制項是否已初始化
+            if (txtId == null || txtName == null || txtAbility == null || btnSave == null)
                 return;
 
-            bool isValid = !string.IsNullOrWhiteSpace(txtName.Text) &&
-                          !string.IsNullOrWhiteSpace(txtId.Text) &&
-                          !string.IsNullOrWhiteSpace(txtAbility.Text) &&
-                          cmbTeam.SelectedItem != null;
+            bool isValid = true;
+
+            // 驗證角色 ID
+            if (string.IsNullOrWhiteSpace(txtId.Text))
+            {
+                isValid = false;
+            }
+
+            // 驗證角色名稱
+            if (string.IsNullOrWhiteSpace(txtName.Text))
+            {
+                isValid = false;
+            }
+
+            // 驗證能力
+            if (string.IsNullOrWhiteSpace(txtAbility.Text))
+            {
+                isValid = false;
+            }
 
             btnSave.IsEnabled = isValid;
+        }
+
+        /// <summary>
+        /// 新增一般提示標記
+        /// </summary>
+        private void AddReminder_Click(object sender, RoutedEventArgs e)
+        {
+            _reminders.Add(new ReminderItem("新標記"));
+        }
+
+        /// <summary>
+        /// 新增全局提示標記
+        /// </summary>
+        private void AddGlobalReminder_Click(object sender, RoutedEventArgs e)
+        {
+            _remindersGlobal.Add(new ReminderItem("新全局標記"));
+        }
+
+        /// <summary>
+        /// 刪除勾選的一般提示標記
+        /// </summary>
+        private void RemoveSelectedReminders_Click(object sender, RoutedEventArgs e)
+        {
+            var toRemove = _reminders.Where(r => r.IsSelected).ToList();
+
+            if (toRemove.Count == 0)
+            {
+                MessageBox.Show(
+                    "請先勾選要刪除的標記",
+                    "提示",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information
+                );
+                return;
+            }
+
+            foreach (var item in toRemove)
+            {
+                _reminders.Remove(item);
+            }
+        }
+
+        /// <summary>
+        /// 刪除勾選的全局提示標記
+        /// </summary>
+        private void RemoveSelectedGlobalReminders_Click(object sender, RoutedEventArgs e)
+        {
+            var toRemove = _remindersGlobal.Where(r => r.IsSelected).ToList();
+
+            if (toRemove.Count == 0)
+            {
+                MessageBox.Show(
+                    "請先勾選要刪除的標記",
+                    "提示",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information
+                );
+                return;
+            }
+
+            foreach (var item in toRemove)
+            {
+                _remindersGlobal.Remove(item);
+            }
         }
 
         /// <summary>
@@ -94,30 +224,41 @@ namespace BloodClockTowerScriptEditor.Views
         {
             try
             {
-                // 取得表單資料
-                string name = txtName.Text.Trim();
                 string id = txtId.Text.Trim();
+                string name = txtName.Text.Trim();
                 string nameEng = txtNameEng.Text.Trim();
                 string ability = txtAbility.Text.Trim();
                 string image = txtImage.Text.Trim();
                 string edition = txtEdition.Text.Trim();
-                string team = (cmbTeam.SelectedItem as ComboBoxItem)?.Tag?.ToString() ?? "townsfolk";
-
-                // 解析數字
-                if (!int.TryParse(txtFirstNight.Text, out int firstNight))
-                    firstNight = 0;
-                if (!int.TryParse(txtOtherNight.Text, out int otherNight))
-                    otherNight = 0;
-
                 bool setup = chkSetup.IsChecked ?? false;
+
+                // 取得類型
+                string team = ((ComboBoxItem)cmbTeam.SelectedItem).Tag?.ToString() ?? "townsfolk";
+
+                // 解析夜晚順序
+                if (!int.TryParse(txtFirstNight.Text, out int firstNight))
+                {
+                    firstNight = 0;
+                }
+
+                if (!int.TryParse(txtOtherNight.Text, out int otherNight))
+                {
+                    otherNight = 0;
+                }
+
+                string firstNightReminder = txtFirstNightReminder.Text.Trim();
+                string otherNightReminder = txtOtherNightReminder.Text.Trim();
+                string flavor = txtFlavor.Text.Trim();
 
                 using var context = new RoleTemplateContext();
 
                 if (_editingRole == null)
                 {
                     // 新增模式：檢查 ID 是否重複
-                    bool idExists = await context.RoleTemplates.AnyAsync(r => r.Id == id);
-                    if (idExists)
+                    var existingRole = await context.RoleTemplates
+                        .FirstOrDefaultAsync(r => r.Id == id);
+
+                    if (existingRole != null)
                     {
                         MessageBox.Show(
                             $"角色 ID「{id}」已存在，請使用其他 ID。",
@@ -138,14 +279,38 @@ namespace BloodClockTowerScriptEditor.Views
                         Ability = ability,
                         Image = string.IsNullOrEmpty(image) ? null : image,
                         Edition = edition,
+                        Flavor = string.IsNullOrEmpty(flavor) ? null : flavor,
                         Setup = setup,
                         FirstNight = firstNight,
                         OtherNight = otherNight,
-                        IsOfficial = false, // 自訂角色
+                        FirstNightReminder = string.IsNullOrEmpty(firstNightReminder) ? null : firstNightReminder,
+                        OtherNightReminder = string.IsNullOrEmpty(otherNightReminder) ? null : otherNightReminder,
+                        IsOfficial = false,
                         Category = "custom",
                         CreatedDate = DateTime.Now,
                         UpdatedDate = DateTime.Now
                     };
+
+                    // 加入標記
+                    foreach (var reminder in _reminders)
+                    {
+                        CreatedRole.Reminders.Add(new RoleReminder
+                        {
+                            RoleId = id,
+                            ReminderText = reminder.Text,
+                            IsGlobal = false
+                        });
+                    }
+
+                    foreach (var reminder in _remindersGlobal)
+                    {
+                        CreatedRole.Reminders.Add(new RoleReminder
+                        {
+                            RoleId = id,
+                            ReminderText = reminder.Text,
+                            IsGlobal = true
+                        });
+                    }
 
                     context.RoleTemplates.Add(CreatedRole);
                     await context.SaveChangesAsync();
@@ -161,6 +326,7 @@ namespace BloodClockTowerScriptEditor.Views
                 {
                     // 編輯模式：更新現有角色
                     var roleToUpdate = await context.RoleTemplates
+                        .Include(r => r.Reminders)
                         .FirstOrDefaultAsync(r => r.Id == _editingRole.Id);
 
                     if (roleToUpdate == null)
@@ -175,10 +341,36 @@ namespace BloodClockTowerScriptEditor.Views
                     roleToUpdate.Ability = ability;
                     roleToUpdate.Image = string.IsNullOrEmpty(image) ? null : image;
                     roleToUpdate.Edition = edition;
+                    roleToUpdate.Flavor = string.IsNullOrEmpty(flavor) ? null : flavor;
                     roleToUpdate.Setup = setup;
                     roleToUpdate.FirstNight = firstNight;
                     roleToUpdate.OtherNight = otherNight;
+                    roleToUpdate.FirstNightReminder = string.IsNullOrEmpty(firstNightReminder) ? null : firstNightReminder;
+                    roleToUpdate.OtherNightReminder = string.IsNullOrEmpty(otherNightReminder) ? null : otherNightReminder;
                     roleToUpdate.UpdatedDate = DateTime.Now;
+
+                    // 更新標記
+                    roleToUpdate.Reminders.Clear();
+
+                    foreach (var reminder in _reminders)
+                    {
+                        roleToUpdate.Reminders.Add(new RoleReminder
+                        {
+                            RoleId = roleToUpdate.Id,
+                            ReminderText = reminder.Text,
+                            IsGlobal = false
+                        });
+                    }
+
+                    foreach (var reminder in _remindersGlobal)
+                    {
+                        roleToUpdate.Reminders.Add(new RoleReminder
+                        {
+                            RoleId = roleToUpdate.Id,
+                            ReminderText = reminder.Text,
+                            IsGlobal = true
+                        });
+                    }
 
                     await context.SaveChangesAsync();
 

@@ -63,12 +63,42 @@ namespace BloodClockTowerScriptEditor.Views
 
         private void AddStatus_Click(object sender, RoutedEventArgs e)
         {
-            _tempStatusList.Add(new StatusInfoEx
+            try
             {
-                Name = "新狀態",
-                Skill = "請輸入狀態說明...",
-                IsSelected = false
-            });
+                // 將 _tempStatusList 轉換為 StatusInfo 列表傳入
+                var existingStatuses = _tempStatusList.Select(s => new StatusInfo
+                {
+                    Name = s.Name,
+                    Skill = s.Skill
+                }).ToList();
+
+                var dialog = new StatusDialog(existingStatuses)
+                {
+                    Owner = this
+                };
+
+                if (dialog.ShowDialog() == true && dialog.SelectedStatuses.Count > 0)
+                {
+                    foreach (var status in dialog.SelectedStatuses)
+                    {
+                        _tempStatusList.Add(new StatusInfoEx
+                        {
+                            Name = status.Name,
+                            Skill = status.Skill,
+                            IsSelected = false
+                        });
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                MessageBox.Show(
+                    $"新增狀態失敗：{ex.Message}",
+                    "錯誤",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                );
+            }
         }
 
         private void RemoveSelectedStatus_Click(object sender, RoutedEventArgs e)
