@@ -20,10 +20,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Resources\相剋規則.json" />
     <None Remove="Resources\角色總表.json" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Resources\相剋規則.json" />
     <EmbeddedResource Include="Resources\角色總表.json" />
   </ItemGroup>
 

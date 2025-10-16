@@ -30,6 +30,7 @@ namespace BloodClockTowerScriptEditor
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             await InitializeDefaultRolesAsync();
+            await InitializeJinxRulesAsync();  
 
             // 🆕 為初始空白劇本加入爪牙/惡魔訊息
             if (DataContext is MainViewModel viewModel)
@@ -102,6 +103,59 @@ namespace BloodClockTowerScriptEditor
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"❌ 同步角色資料失敗：{ex.Message}");
+                System.Diagnostics.Debug.WriteLine(ex.StackTrace);
+
+                // 靜默失敗，不干擾使用者操作
+            }
+        }
+
+        /// <summary>
+        /// 初始化相剋規則資料（每次啟動都執行）
+        /// </summary>
+        private async Task InitializeJinxRulesAsync()
+        {
+            try
+            {
+                System.Diagnostics.Debug.WriteLine("🚀 開始同步相剋規則...");
+
+                // 取得程式資料夾路徑
+                string appFolder = AppDomain.CurrentDomain.BaseDirectory;
+                string jinxJsonPath = Path.Combine(appFolder, "相剋規則.json");
+
+                System.Diagnostics.Debug.WriteLine($"📄 檢查檔案: {jinxJsonPath}");
+
+                // 檢查程式資料夾中是否有 相剋規則.json
+                if (!File.Exists(jinxJsonPath))
+                {
+                    System.Diagnostics.Debug.WriteLine("📥 程式資料夾中沒有相剋規則.json，從內嵌資源建立...");
+
+                    // 載入內嵌資源
+                    string embeddedContent = LoadEmbeddedResource("BloodClockTowerScriptEditor.Resources.相剋規則.json");
+
+                    if (string.IsNullOrEmpty(embeddedContent))
+                    {
+                        System.Diagnostics.Debug.WriteLine("❌ 無法載入內嵌資源：相剋規則.json");
+                        return;
+                    }
+
+                    // 寫入到程式資料夾
+                    await File.WriteAllTextAsync(jinxJsonPath, embeddedContent);
+                    System.Diagnostics.Debug.WriteLine($"✅ 已建立相剋規則.json 到程式資料夾");
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine("✅ 程式資料夾中已有相剋規則.json，使用現有檔案");
+                }
+
+                // 從程式資料夾匯入資料庫 (EF Core 會自動建立資料庫)
+                var importService = new RoleImportService();
+                int importedCount = await importService.ImportJinxRulesFromJsonAsync(jinxJsonPath);
+
+                System.Diagnostics.Debug.WriteLine($"✅ 相剋規則同步完成！處理了 {importedCount} 個規則");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"❌ 同步相剋規則失敗：{ex.Message}");
                 System.Diagnostics.Debug.WriteLine(ex.StackTrace);
 
                 // 靜默失敗，不干擾使用者操作

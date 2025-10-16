@@ -1,4 +1,5 @@
-﻿using BloodClockTowerScriptEditor.Services;
+﻿using BloodClockTowerScriptEditor.Models;
+using BloodClockTowerScriptEditor.Services;
 using System.Windows;
 
 namespace BloodClockTowerScriptEditor
@@ -13,6 +14,7 @@ namespace BloodClockTowerScriptEditor
             try
             {
                 RoleTemplateContext.EnsureDatabaseCreated();
+                JinxRuleContext.EnsureDatabaseCreated(); 
             }
             catch (Exception ex)
             {

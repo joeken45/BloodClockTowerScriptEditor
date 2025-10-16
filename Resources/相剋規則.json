@@ -1,0 +1,38 @@
+[
+  {
+    "id": "13_meta",
+    "name": "麻臉巫婆&落難少女",
+    "team": "a jinxed",
+    "ability": "如果麻臉巫婆創造了落難少女，改為由說書人來決定哪一名玩家變成落難少女。",
+    "image": "https://clocktower-wiki.gstonegames.com/images/thumb/d/de/Pithag.png/300px-Pithag.png",
+    "setup": false,
+    "firstNight": 0.0,
+    "otherNight": 0.0,
+    "reminders": [],
+    "remindersGlobal": []
+  },
+  {
+    "id": "71_meta",
+    "name": "方古&紅唇女郎",
+    "team": "a jinxed",
+    "ability": "如果方古成功轉化了外來者並因此死去，紅唇女郎不會變成方古。",
+    "image": "https://clocktower-wiki.gstonegames.com/images/thumb/9/97/Fanggu.png/300px-Fanggu.png",
+    "setup": false,
+    "firstNight": 0.0,
+    "otherNight": 0.0,
+    "reminders": [],
+    "remindersGlobal": []
+  },
+  {
+    "id": "1122000000222222222222222333_meta",
+    "name": "科學怪人&酒鬼",
+    "team": "a jinxed",
+    "ability": "如果惡魔擁有酒鬼的能力，改為由科學怪人選擇一名玩家：如果他是鎮民，他醉酒。",
+    "image": "https://clocktower-wiki.gstonegames.com/images/f/f1/Boffin.png",
+    "setup": false,
+    "firstNight": 0.0,
+    "otherNight": 0.0,
+    "reminders": [],
+    "remindersGlobal": []
+  }
+]

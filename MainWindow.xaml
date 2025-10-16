@@ -195,6 +195,7 @@
                                         <CheckBox Content="惡魔" IsChecked="{Binding ShowDemons}" Margin="0,0,10,5"/>
                                         <CheckBox Content="旅行者" IsChecked="{Binding ShowTravelers}" Margin="0,0,10,5"/>
                                         <CheckBox Content="傳奇" IsChecked="{Binding ShowFabled}" Margin="0,0,0,5"/>
+                                        <CheckBox Content="相剋" IsChecked="{Binding ShowJinxed}" Margin="10,0,0,5"/>
                                     </WrapPanel>
                                 </StackPanel>
 

@@ -29,6 +29,7 @@ namespace BloodClockTowerScriptEditor.ViewModels
         private bool _showDemons;
         private bool _showTravelers;
         private bool _showFabled;
+        private bool _showJinxed;
 
         // ==================== 建構函式 ====================
         public MainViewModel()
@@ -45,6 +46,7 @@ namespace BloodClockTowerScriptEditor.ViewModels
             _showDemons = true;
             _showTravelers = true;
             _showFabled = true;
+            _showJinxed = true;
 
             FilteredRoles = new ObservableCollection<Role>();
 
@@ -180,6 +182,16 @@ namespace BloodClockTowerScriptEditor.ViewModels
             }
         }
 
+        public bool ShowJinxed
+        {
+            get => _showJinxed;
+            set
+            {
+                if (SetProperty(ref _showJinxed, value))
+                    UpdateFilteredRoles();
+            }
+        }
+
         // ==================== 命令 ====================
 
         [RelayCommand]
@@ -284,7 +296,7 @@ namespace BloodClockTowerScriptEditor.ViewModels
         }
 
         [RelayCommand]
-        private void AddFromOfficialTemplate()
+        private async void AddFromOfficialTemplate()  // 🆕 改成 async
         {
             try
             {
@@ -300,8 +312,11 @@ namespace BloodClockTowerScriptEditor.ViewModels
 
                     UpdateFilteredRoles();
                     UpdateNightOrderLists();
+
+                    // 🆕 檢查相剋規則
+                    await CheckAndAddJinxRulesAsync();
+
                     StatusMessage = $"已新增 {addedCount} 個角色";
-                    // IsDirty 會自動被 OnRolesCollectionChanged 設置,所以這裡不用再加
                 }
             }
             catch (Exception ex)
@@ -370,9 +385,10 @@ namespace BloodClockTowerScriptEditor.ViewModels
                     (ShowMinions && r.Team == TeamType.Minion) ||
                     (ShowDemons && r.Team == TeamType.Demon) ||
                     (ShowTravelers && r.Team == TeamType.Traveler) ||
-                    (ShowFabled && r.Team == TeamType.Fabled)
+                    (ShowFabled && r.Team == TeamType.Fabled) ||
+                    (ShowJinxed && r.Team == TeamType.Jinxed)
                 )
-                .OrderBy(r => r.Team)
+                 .OrderBy(r => r.Team)
                 .ThenBy(r => r.Name);
 
             foreach (var role in filtered)
@@ -507,6 +523,39 @@ namespace BloodClockTowerScriptEditor.ViewModels
         {
             // 任何角色屬性變更都標記為需要儲存
             IsDirty = true;
+        }
+
+        /// <summary>
+        /// 檢查並加入相剋規則
+        /// </summary>
+        private async Task CheckAndAddJinxRulesAsync()
+        {
+            try
+            {
+                var jinxService = new JinxRuleService();
+                var detectedRules = await jinxService.DetectJinxRulesAsync(CurrentScript);
+
+                if (detectedRules.Count == 0)
+                    return;
+
+                // 顯示對話框讓使用者選擇
+                // TODO: 建立 JinxRuleDialog
+                // 暫時先自動加入
+                foreach (var rule in detectedRules)
+                {
+                    var role = rule.ToRole();
+                    CurrentScript.Roles.Add(role);
+                }
+
+                UpdateFilteredRoles();
+                StatusMessage = $"已自動加入 {detectedRules.Count} 個相剋規則";
+
+                System.Diagnostics.Debug.WriteLine($"✅ 偵測到 {detectedRules.Count} 個相剋規則並已加入");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"❌ 檢查相剋規則失敗：{ex.Message}");
+            }
         }
 
         /// <summary>

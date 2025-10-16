@@ -84,7 +84,6 @@
 
         <!-- 角色列表 -->
         <Border Grid.Row="1" Background="White">
-            <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <ListBox x:Name="rolesList" 
                          BorderThickness="0"
                          SelectionMode="Multiple">
@@ -227,7 +226,6 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-            </ScrollViewer>
         </Border>
 
         <!-- 底部按鈕區 -->
