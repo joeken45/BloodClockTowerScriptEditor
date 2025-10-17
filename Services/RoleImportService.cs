@@ -165,6 +165,49 @@ namespace BloodClockTowerScriptEditor.Services
 
             return validLines.ToString();
         }
+        /// <summary>
+        /// 處理提示標記 (Reminders) - 統一處理邏輯
+        /// </summary>
+        /// <param name="roleTemplate">要處理的角色範本</param>
+        /// <param name="item">JSON 項目</param>
+        /// <param name="clearExisting">是否清除現有標記（更新時使用）</param>
+        private void ProcessReminders(RoleTemplate roleTemplate, JToken item, bool clearExisting = false)
+        {
+            if (clearExisting)
+            {
+                roleTemplate.Reminders.Clear();
+            }
+
+            // 處理一般提示標記
+            var reminders = item["reminders"]?.ToObject<List<string>>();
+            if (reminders != null)
+            {
+                foreach (var reminder in reminders)
+                {
+                    roleTemplate.Reminders.Add(new RoleReminder
+                    {
+                        RoleId = roleTemplate.Id,
+                        ReminderText = reminder,
+                        IsGlobal = false
+                    });
+                }
+            }
+
+            // 處理全局提示標記
+            var remindersGlobal = item["remindersGlobal"]?.ToObject<List<string>>();
+            if (remindersGlobal != null)
+            {
+                foreach (var reminder in remindersGlobal)
+                {
+                    roleTemplate.Reminders.Add(new RoleReminder
+                    {
+                        RoleId = roleTemplate.Id,
+                        ReminderText = reminder,
+                        IsGlobal = true
+                    });
+                }
+            }
+        }
 
         /// <summary>
         /// 建立新的 RoleTemplate
@@ -192,35 +235,9 @@ namespace BloodClockTowerScriptEditor.Services
                 UpdatedDate = DateTime.Now
             };
 
-            // 解析一般提示標記
-            var reminders = item["reminders"]?.ToObject<List<string>>();
-            if (reminders != null)
-            {
-                foreach (var reminder in reminders)
-                {
-                    roleTemplate.Reminders.Add(new RoleReminder
-                    {
-                        RoleId = roleTemplate.Id,
-                        ReminderText = reminder,
-                        IsGlobal = false
-                    });
-                }
-            }
-
-            // 解析全局提示標記
-            var remindersGlobal = item["remindersGlobal"]?.ToObject<List<string>>();
-            if (remindersGlobal != null)
-            {
-                foreach (var reminder in remindersGlobal)
-                {
-                    roleTemplate.Reminders.Add(new RoleReminder
-                    {
-                        RoleId = roleTemplate.Id,
-                        ReminderText = reminder,
-                        IsGlobal = true
-                    });
-                }
-            }
+            // ✅ 原本這裡有 40 行 Reminders 處理邏輯
+            // 🔄 現在改用統一的 ProcessReminders() 方法
+            ProcessReminders(roleTemplate, item);
 
             return roleTemplate;
         }
@@ -230,7 +247,6 @@ namespace BloodClockTowerScriptEditor.Services
         /// </summary>
         private void UpdateRoleTemplate(RoleTemplate existing, JToken item, string category, bool isOfficial)
         {
-            // 🔄 覆蓋所有欄位
             existing.Name = item["name"]?.ToString() ?? existing.Name;
             existing.NameEng = item["name_eng"]?.ToString();
             existing.Team = item["team"]?.ToString() ?? existing.Team;
@@ -245,39 +261,11 @@ namespace BloodClockTowerScriptEditor.Services
             existing.OtherNightReminder = item["otherNightReminder"]?.ToString();
             existing.Category = category;
             existing.IsOfficial = isOfficial;
-            existing.UpdatedDate = DateTime.Now; // 🕒 更新時間
+            existing.UpdatedDate = DateTime.Now;
 
-            // 🗑️ 清除舊的提示標記
-            existing.Reminders.Clear();
-
-            // ➕ 重新加入提示標記
-            var reminders = item["reminders"]?.ToObject<List<string>>();
-            if (reminders != null)
-            {
-                foreach (var reminder in reminders)
-                {
-                    existing.Reminders.Add(new RoleReminder
-                    {
-                        RoleId = existing.Id,
-                        ReminderText = reminder,
-                        IsGlobal = false
-                    });
-                }
-            }
-
-            var remindersGlobal = item["remindersGlobal"]?.ToObject<List<string>>();
-            if (remindersGlobal != null)
-            {
-                foreach (var reminder in remindersGlobal)
-                {
-                    existing.Reminders.Add(new RoleReminder
-                    {
-                        RoleId = existing.Id,
-                        ReminderText = reminder,
-                        IsGlobal = true
-                    });
-                }
-            }
+            // ✅ 原本這裡有 40 行 Reminders 處理邏輯（含 Clear() + 兩個 foreach）
+            // 🔄 現在改用統一的 ProcessReminders() 方法，並傳入 clearExisting: true
+            ProcessReminders(existing, item, clearExisting: true);
         }
 
         /// <summary>
