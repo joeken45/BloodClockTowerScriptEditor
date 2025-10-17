@@ -24,13 +24,6 @@ namespace BloodClockTowerScriptEditor.ViewModels
         private Role? _selectedRole;
         private string _statusMessage;
         private string _currentFilePath;
-        private bool _showTownsfolk;
-        private bool _showOutsiders;
-        private bool _showMinions;
-        private bool _showDemons;
-        private bool _showTravelers;
-        private bool _showFabled;
-        private bool _showJinxed;
 
         // ==================== 建構函式 ====================
         public MainViewModel()
@@ -39,15 +32,6 @@ namespace BloodClockTowerScriptEditor.ViewModels
             _currentScript = new Script();
             _statusMessage = "就緒";
             _currentFilePath = string.Empty;
-
-            // 預設全部顯示
-            _showTownsfolk = true;
-            _showOutsiders = true;
-            _showMinions = true;
-            _showDemons = true;
-            _showTravelers = true;
-            _showFabled = true;
-            _showJinxed = true;
 
             FilteredRoles = new ObservableCollection<Role>();
 
@@ -125,72 +109,44 @@ namespace BloodClockTowerScriptEditor.ViewModels
         // 篩選條件
         public bool ShowTownsfolk
         {
-            get => _showTownsfolk;
-            set
-            {
-                if (SetProperty(ref _showTownsfolk, value))
-                    UpdateFilteredRoles();
-            }
+            get => GetTeamFilter(TeamType.Townsfolk);
+            set => SetTeamFilter(TeamType.Townsfolk, value);
         }
 
         public bool ShowOutsiders
         {
-            get => _showOutsiders;
-            set
-            {
-                if (SetProperty(ref _showOutsiders, value))
-                    UpdateFilteredRoles();
-            }
+            get => GetTeamFilter(TeamType.Outsider);
+            set => SetTeamFilter(TeamType.Outsider, value);
         }
 
         public bool ShowMinions
         {
-            get => _showMinions;
-            set
-            {
-                if (SetProperty(ref _showMinions, value))
-                    UpdateFilteredRoles();
-            }
+            get => GetTeamFilter(TeamType.Minion);
+            set => SetTeamFilter(TeamType.Minion, value);
         }
 
         public bool ShowDemons
         {
-            get => _showDemons;
-            set
-            {
-                if (SetProperty(ref _showDemons, value))
-                    UpdateFilteredRoles();
-            }
+            get => GetTeamFilter(TeamType.Demon);
+            set => SetTeamFilter(TeamType.Demon, value);
         }
 
         public bool ShowTravelers
         {
-            get => _showTravelers;
-            set
-            {
-                if (SetProperty(ref _showTravelers, value))
-                    UpdateFilteredRoles();
-            }
+            get => GetTeamFilter(TeamType.Traveler);
+            set => SetTeamFilter(TeamType.Traveler, value);
         }
 
         public bool ShowFabled
         {
-            get => _showFabled;
-            set
-            {
-                if (SetProperty(ref _showFabled, value))
-                    UpdateFilteredRoles();
-            }
+            get => GetTeamFilter(TeamType.Fabled);
+            set => SetTeamFilter(TeamType.Fabled, value);
         }
 
         public bool ShowJinxed
         {
-            get => _showJinxed;
-            set
-            {
-                if (SetProperty(ref _showJinxed, value))
-                    UpdateFilteredRoles();
-            }
+            get => GetTeamFilter(TeamType.Jinxed);
+            set => SetTeamFilter(TeamType.Jinxed, value);
         }
 
         // ==================== 命令 ====================
@@ -240,8 +196,7 @@ namespace BloodClockTowerScriptEditor.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"載入失敗: {ex.Message}", "錯誤", MessageBoxButton.OK, MessageBoxImage.Error);
-                StatusMessage = "載入失敗";
+                ShowError($"載入失敗: {ex.Message}", "載入失敗");
             }
         }
 
@@ -259,12 +214,11 @@ namespace BloodClockTowerScriptEditor.ViewModels
                 _jsonService.SaveScript(CurrentScript, CurrentFilePath);
                 IsDirty = false; // 儲存後清除標記
                 StatusMessage = $"已儲存: {CurrentFilePath}";
-                MessageBox.Show("儲存成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+                ShowSuccess("儲存成功！");
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"儲存失敗: {ex.Message}", "錯誤", MessageBoxButton.OK, MessageBoxImage.Error);
-                StatusMessage = "儲存失敗";
+                ShowError($"儲存失敗: {ex.Message}", "儲存失敗");
             }
         }
 
@@ -286,13 +240,12 @@ namespace BloodClockTowerScriptEditor.ViewModels
                     CurrentFilePath = dialog.FileName;
                     IsDirty = false; // 儲存後清除標記
                     StatusMessage = $"已儲存: {dialog.FileName}";
-                    MessageBox.Show("儲存成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+                    ShowSuccess("儲存成功！");
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"儲存失敗: {ex.Message}", "錯誤", MessageBoxButton.OK, MessageBoxImage.Error);
-                StatusMessage = "儲存失敗";
+                ShowError($"儲存失敗: {ex.Message}", "儲存失敗");
             }
         }
 
@@ -324,14 +277,7 @@ namespace BloodClockTowerScriptEditor.ViewModels
 
                     if (duplicates.Any())
                     {
-                        var confirmResult = MessageBox.Show(
-                            $"以下角色已存在於劇本中：\n\n{string.Join("\n", duplicates)}\n\n是否仍要加入重複的角色？",
-                            "重複角色",
-                            MessageBoxButton.YesNo,
-                            MessageBoxImage.Warning
-                        );
-
-                        if (confirmResult == MessageBoxResult.No)
+                        if (!ShowWarning($"以下角色已存在於劇本中：\n\n{string.Join("\n", duplicates)}\n\n是否仍要加入重複的角色？", "重複角色"))
                         {
                             // 只加入不重複的角色
                             rolesToAdd = dialog.SelectedRoles
@@ -365,7 +311,7 @@ namespace BloodClockTowerScriptEditor.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"新增角色失敗：{ex.Message}", "錯誤", MessageBoxButton.OK, MessageBoxImage.Error);
+                ShowError($"新增角色失敗：{ex.Message}", "新增角色失敗");
             }
         }
 
@@ -374,23 +320,16 @@ namespace BloodClockTowerScriptEditor.ViewModels
         {
             if (SelectedRole == null)
             {
-                MessageBox.Show("請先選擇要刪除的角色", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+                ShowInfo("請先選擇要刪除的角色");
                 return;
             }
 
-            var result = MessageBox.Show(
-                $"確定要刪除角色「{SelectedRole.Name}」嗎？",
-                "確認刪除",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Question
-            );
-
-            if (result == MessageBoxResult.Yes)
+            if (ShowConfirm($"確定要刪除角色「{SelectedRole.Name}」嗎？", "確認刪除"))
             {
                 CurrentScript.Roles.Remove(SelectedRole);
                 SelectedRole = null;
                 UpdateFilteredRoles();
-                UpdateNightOrderLists(); // 🆕 更新夜晚順序
+                UpdateNightOrderLists();
                 StatusMessage = "角色已刪除";
             }
         }
@@ -410,28 +349,52 @@ namespace BloodClockTowerScriptEditor.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"編輯劇本資訊失敗: {ex.Message}", "錯誤", MessageBoxButton.OK, MessageBoxImage.Error);
-                StatusMessage = "編輯失敗";
+                ShowError($"編輯劇本資訊失敗: {ex.Message}", "編輯失敗");
             }
         }
 
         // ==================== 私有方法 ====================
 
+        /// <summary>
+        /// 篩選條件字典 - 管理各陣營的顯示/隱藏狀態
+        /// </summary>
+        private readonly Dictionary<TeamType, bool> _teamFilters = new()
+{
+    { TeamType.Townsfolk, true },
+    { TeamType.Outsider, true },
+    { TeamType.Minion, true },
+    { TeamType.Demon, true },
+    { TeamType.Traveler, true },
+    { TeamType.Fabled, true },
+    { TeamType.Jinxed, true }
+};
+
+        /// <summary>
+        /// 取得陣營篩選狀態
+        /// </summary>
+        private bool GetTeamFilter(TeamType team) => _teamFilters[team];
+
+        /// <summary>
+        /// 設定陣營篩選狀態
+        /// </summary>
+        private void SetTeamFilter(TeamType team, bool value)
+        {
+            if (_teamFilters[team] != value)
+            {
+                _teamFilters[team] = value;
+                UpdateFilteredRoles();
+                OnPropertyChanged($"Show{team}");
+            }
+        }
+
         private void UpdateFilteredRoles()
         {
             FilteredRoles.Clear();
 
+            // 🆕 簡化的篩選邏輯 - 只需一行！
             var filtered = CurrentScript.Roles
-                .Where(r =>
-                    (ShowTownsfolk && r.Team == TeamType.Townsfolk) ||
-                    (ShowOutsiders && r.Team == TeamType.Outsider) ||
-                    (ShowMinions && r.Team == TeamType.Minion) ||
-                    (ShowDemons && r.Team == TeamType.Demon) ||
-                    (ShowTravelers && r.Team == TeamType.Traveler) ||
-                    (ShowFabled && r.Team == TeamType.Fabled) ||
-                    (ShowJinxed && r.Team == TeamType.Jinxed)
-                )
-                 .OrderBy(r => r.Team)
+                .Where(r => _teamFilters.ContainsKey(r.Team) && _teamFilters[r.Team])
+                .OrderBy(r => r.Team)
                 .ThenBy(r => r.Name);
 
             foreach (var role in filtered)
@@ -444,7 +407,7 @@ namespace BloodClockTowerScriptEditor.ViewModels
                 role.NightOrderChanged -= OnRoleNightOrderChanged;
                 role.NightOrderChanged += OnRoleNightOrderChanged;
 
-                // 🆕 訂閱角色的屬性變更事件 (追蹤 IsDirty)
+                // 訂閱角色的屬性變更事件 (追蹤 IsDirty)
                 role.PropertyChanged -= OnRolePropertyChanged;
                 role.PropertyChanged += OnRolePropertyChanged;
 
@@ -520,23 +483,23 @@ namespace BloodClockTowerScriptEditor.ViewModels
 
             if (index == 1)
             {
-                // 第二個 → 第一個 - 0.1
+                // 第二個 → 第一個 - 0.001
                 var first = list[0];
                 var firstOrder = isFirstNight ? first.FirstNight : first.OtherNight;
-                newOrder = firstOrder - 0.1;
+                newOrder = firstOrder - 0.001;
             }
             else
             {
-                // 其他 → 上上個 + 0.1
+                // 其他 → 上上個 + 0.001
                 var target = list[index - 2];
                 var targetOrder = isFirstNight ? target.FirstNight : target.OtherNight;
-                newOrder = targetOrder + 0.1;
+                newOrder = targetOrder + 0.001;
             }
 
             if (isFirstNight)
-                role.FirstNight = (int)(newOrder * 10) / 10.0; // 保留一位小數
+                role.FirstNight = Math.Round(newOrder, 3); // 保留三位小數
             else
-                role.OtherNight = (int)(newOrder * 10) / 10.0;
+                role.OtherNight = Math.Round(newOrder, 3);
         }
 
         /// <summary>
@@ -552,13 +515,13 @@ namespace BloodClockTowerScriptEditor.ViewModels
             var below = list[index + 1];
             var belowOrder = isFirstNight ? below.FirstNight : below.OtherNight;
 
-            // 下移 = 下一個 + 0.1
-            var newOrder = belowOrder + 0.1;
+            // 下移 = 下一個 + 0.001
+            var newOrder = belowOrder + 0.001;
 
             if (isFirstNight)
-                role.FirstNight = (int)(newOrder * 10) / 10.0;
+                role.FirstNight = Math.Round(newOrder, 3); // 保留三位小數
             else
-                role.OtherNight = (int)(newOrder * 10) / 10.0;
+                role.OtherNight = Math.Round(newOrder, 3);
         }
 
         // 【步驟14: 新增角色屬性變更處理 - 放在私有方法區塊】
@@ -677,5 +640,53 @@ namespace BloodClockTowerScriptEditor.ViewModels
                 System.Diagnostics.Debug.WriteLine($"❌ 載入爪牙/惡魔訊息失敗：{ex.Message}");
             }
         }
+
+        #region MessageBox 輔助方法
+
+        /// <summary>
+        /// 顯示錯誤訊息
+        /// </summary>
+        private void ShowError(string message, string title = "錯誤")
+        {
+            MessageBox.Show(message, title, MessageBoxButton.OK, MessageBoxImage.Error);
+            StatusMessage = title;
+        }
+
+        /// <summary>
+        /// 顯示成功訊息
+        /// </summary>
+        private void ShowSuccess(string message, string title = "成功")
+        {
+            MessageBox.Show(message, title, MessageBoxButton.OK, MessageBoxImage.Information);
+            StatusMessage = title;
+        }
+
+        /// <summary>
+        /// 顯示提示訊息
+        /// </summary>
+        private void ShowInfo(string message, string title = "提示")
+        {
+            MessageBox.Show(message, title, MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        /// <summary>
+        /// 顯示確認對話框
+        /// </summary>
+        private bool ShowConfirm(string message, string title = "確認")
+        {
+            return MessageBox.Show(message, title, MessageBoxButton.YesNo, MessageBoxImage.Question)
+                == MessageBoxResult.Yes;
+        }
+
+        /// <summary>
+        /// 顯示警告對話框
+        /// </summary>
+        private bool ShowWarning(string message, string title = "警告")
+        {
+            return MessageBox.Show(message, title, MessageBoxButton.YesNo, MessageBoxImage.Warning)
+                == MessageBoxResult.Yes;
+        }
+
+        #endregion
     }
 }

@@ -154,66 +154,32 @@ namespace BloodClockTowerScriptEditor.Views
         }
 
         /// <summary>
-        /// 新增一般提示標記
+        /// 統一處理提示標記的新增/刪除
+        /// Tag 格式: "Add|Normal" / "Add|Global" / "Remove|Normal" / "Remove|Global"
         /// </summary>
-        private void AddReminder_Click(object sender, RoutedEventArgs e)
+        private void ManageReminder_Click(object sender, RoutedEventArgs e)
         {
-            _reminders.Add(new ReminderItem("新標記"));
-        }
-
-        /// <summary>
-        /// 新增全局提示標記
-        /// </summary>
-        private void AddGlobalReminder_Click(object sender, RoutedEventArgs e)
-        {
-            _remindersGlobal.Add(new ReminderItem("新全局標記"));
-        }
-
-        /// <summary>
-        /// 刪除勾選的一般提示標記
-        /// </summary>
-        private void RemoveSelectedReminders_Click(object sender, RoutedEventArgs e)
-        {
-            var toRemove = _reminders.Where(r => r.IsSelected).ToList();
-
-            if (toRemove.Count == 0)
-            {
-                MessageBox.Show(
-                    "請先勾選要刪除的標記",
-                    "提示",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Information
-                );
+            if (sender is not Button button || button.Tag is not string tag)
                 return;
-            }
 
-            foreach (var item in toRemove)
+            var parts = tag.Split('|');
+            if (parts.Length != 2) return;
+
+            string action = parts[0];  // "Add" 或 "Remove"
+            string type = parts[1];    // "Normal" 或 "Global"
+
+            var collection = type == "Global" ? _remindersGlobal : _reminders;
+
+            if (action == "Add")
             {
-                _reminders.Remove(item);
+                if (type == "Global")
+                    ReminderItem.AddGlobalReminder(collection);
+                else
+                    ReminderItem.AddReminder(collection);
             }
-        }
-
-        /// <summary>
-        /// 刪除勾選的全局提示標記
-        /// </summary>
-        private void RemoveSelectedGlobalReminders_Click(object sender, RoutedEventArgs e)
-        {
-            var toRemove = _remindersGlobal.Where(r => r.IsSelected).ToList();
-
-            if (toRemove.Count == 0)
+            else if (action == "Remove")
             {
-                MessageBox.Show(
-                    "請先勾選要刪除的標記",
-                    "提示",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Information
-                );
-                return;
-            }
-
-            foreach (var item in toRemove)
-            {
-                _remindersGlobal.Remove(item);
+                ReminderItem.RemoveSelected(collection);
             }
         }
 

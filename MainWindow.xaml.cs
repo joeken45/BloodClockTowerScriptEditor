@@ -171,139 +171,57 @@ namespace BloodClockTowerScriptEditor
             );
         }
 
-        // 首個夜晚 - 上移
-        private void MoveUpFirstNight_Click(object sender, RoutedEventArgs e)
+        private void MoveNightOrder_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is Button button && button.Tag is Role role)
+            if (sender is Button button && button.Tag is string tag &&
+                button.DataContext is Role role)
             {
                 var viewModel = DataContext as MainViewModel;
                 if (viewModel != null)
                 {
-                    viewModel.MoveRoleUp(role, isFirstNight: true);
-                    e.Handled = true; // 防止觸發 Border 的點擊事件
-                }
-            }
-        }
+                    bool isFirstNight = tag.Contains("First");
+                    bool isUp = tag.Contains("Up");
 
-        // 首個夜晚 - 下移
-        private void MoveDownFirstNight_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button button && button.Tag is Role role)
-            {
-                var viewModel = DataContext as MainViewModel;
-                if (viewModel != null)
-                {
-                    viewModel.MoveRoleDown(role, isFirstNight: true);
-                    e.Handled = true;
-                }
-            }
-        }
+                    if (isUp) viewModel.MoveRoleUp(role, isFirstNight);
+                    else viewModel.MoveRoleDown(role, isFirstNight);
 
-        // 其他夜晚 - 上移
-        private void MoveUpOtherNight_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button button && button.Tag is Role role)
-            {
-                var viewModel = DataContext as MainViewModel;
-                if (viewModel != null)
-                {
-                    viewModel.MoveRoleUp(role, isFirstNight: false);
-                    e.Handled = true;
-                }
-            }
-        }
-
-        // 其他夜晚 - 下移
-        private void MoveDownOtherNight_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button button && button.Tag is Role role)
-            {
-                var viewModel = DataContext as MainViewModel;
-                if (viewModel != null)
-                {
-                    viewModel.MoveRoleDown(role, isFirstNight: false);
                     e.Handled = true;
                 }
             }
         }
 
         /// <summary>
-        /// 新增一般提示標記
+        /// 統一處理提示標記的新增/刪除
+        /// Tag 格式: "Add|Normal" / "Add|Global" / "Remove|Normal" / "Remove|Global"
         /// </summary>
-        private void AddReminder_Click(object sender, RoutedEventArgs e)
+        private void ManageReminder_Click(object sender, RoutedEventArgs e)
         {
-            if (DataContext is MainViewModel viewModel && viewModel.SelectedRole != null)
+            if (DataContext is not MainViewModel viewModel || viewModel.SelectedRole == null)
+                return;
+
+            if (sender is not Button button || button.Tag is not string tag)
+                return;
+
+            var parts = tag.Split('|');
+            if (parts.Length != 2) return;
+
+            string action = parts[0];  // "Add" 或 "Remove"
+            string type = parts[1];    // "Normal" 或 "Global"
+
+            var collection = type == "Global"
+                ? viewModel.SelectedRole.RemindersGlobal
+                : viewModel.SelectedRole.Reminders;
+
+            if (action == "Add")
             {
-                viewModel.SelectedRole.Reminders.Add(new ReminderItem("新標記"));
+                if (type == "Global")
+                    ReminderItem.AddGlobalReminder(collection);
+                else
+                    ReminderItem.AddReminder(collection);
             }
-        }
-
-        /// <summary>
-        /// 新增全局提示標記
-        /// </summary>
-        private void AddGlobalReminder_Click(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is MainViewModel viewModel && viewModel.SelectedRole != null)
+            else if (action == "Remove")
             {
-                viewModel.SelectedRole.RemindersGlobal.Add(new ReminderItem("新全局標記"));
-            }
-        }
-
-        /// <summary>
-        /// 刪除勾選的一般提示標記
-        /// </summary>
-        private void RemoveSelectedReminders_Click(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is MainViewModel viewModel && viewModel.SelectedRole != null)
-            {
-                var toRemove = viewModel.SelectedRole.Reminders
-                    .Where(r => r.IsSelected)
-                    .ToList();
-
-                if (toRemove.Count == 0)
-                {
-                    MessageBox.Show(
-                        "請先勾選要刪除的標記",
-                        "提示",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Information
-                    );
-                    return;
-                }
-
-                foreach (var item in toRemove)
-                {
-                    viewModel.SelectedRole.Reminders.Remove(item);
-                }
-            }
-        }
-
-        /// <summary>
-        /// 刪除勾選的全局提示標記
-        /// </summary>
-        private void RemoveSelectedGlobalReminders_Click(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is MainViewModel viewModel && viewModel.SelectedRole != null)
-            {
-                var toRemove = viewModel.SelectedRole.RemindersGlobal
-                    .Where(r => r.IsSelected)
-                    .ToList();
-
-                if (toRemove.Count == 0)
-                {
-                    MessageBox.Show(
-                        "請先勾選要刪除的標記",
-                        "提示",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Information
-                    );
-                    return;
-                }
-
-                foreach (var item in toRemove)
-                {
-                    viewModel.SelectedRole.RemindersGlobal.Remove(item);
-                }
+                ReminderItem.RemoveSelected(collection);
             }
         }
     }

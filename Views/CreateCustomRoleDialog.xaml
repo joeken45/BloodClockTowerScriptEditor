@@ -300,11 +300,11 @@
 
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                             <Button Content="➕ 新增" Padding="6,3" FontSize="11"
-                                    Click="AddReminder_Click"
-                                    Background="#4CAF50" Foreground="White" BorderThickness="0" Margin="0,0,6,0"/>
+            Click="ManageReminder_Click" Tag="Add|Normal"
+            Background="#4CAF50" Foreground="White" BorderThickness="0" Margin="0,0,6,0"/>
                             <Button Content="🗑️ 刪除" Padding="6,3" FontSize="11"
-                                    Click="RemoveSelectedReminders_Click"
-                                    Background="#F44336" Foreground="White" BorderThickness="0"/>
+            Click="ManageReminder_Click" Tag="Remove|Normal"
+            Background="#F44336" Foreground="White" BorderThickness="0"/>
                         </StackPanel>
 
                         <Border BorderBrush="#DDD" BorderThickness="1" Height="100" Background="White">
@@ -346,11 +346,11 @@
 
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                             <Button Content="➕ 新增" Padding="6,3" FontSize="11"
-                                    Click="AddGlobalReminder_Click"
-                                    Background="#4CAF50" Foreground="White" BorderThickness="0" Margin="0,0,6,0"/>
+            Click="ManageReminder_Click" Tag="Add|Global"
+            Background="#4CAF50" Foreground="White" BorderThickness="0" Margin="0,0,6,0"/>
                             <Button Content="🗑️ 刪除" Padding="6,3" FontSize="11"
-                                    Click="RemoveSelectedGlobalReminders_Click"
-                                    Background="#F44336" Foreground="White" BorderThickness="0"/>
+            Click="ManageReminder_Click" Tag="Remove|Global"
+            Background="#F44336" Foreground="White" BorderThickness="0"/>
                         </StackPanel>
 
                         <Border BorderBrush="#DDD" BorderThickness="1" Height="100" Background="White">
