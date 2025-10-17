@@ -73,13 +73,16 @@ namespace BloodClockTowerScriptEditor.Views
                 }
 
                 // 載入所有角色
-                _allRoles = await context.RoleTemplates
+                var roles = await context.RoleTemplates
                     .Include(r => r.Reminders)
-                    .OrderBy(r => r.IsOfficial ? 0 : 1)  // 官方角色優先
-                    .ThenBy(r => r.Team)
-                    .ThenBy(r => r.OriginalOrder)
-                    .ThenBy(r => r.CreatedDate)          // 自訂用建立時間
                     .ToListAsync();
+
+                _allRoles = roles
+                    .OrderBy(r => r.IsOfficial ? 0 : 1)
+                    .ThenBy(r => GetTeamOrder(r.Team))
+                    .ThenBy(r => r.OriginalOrder)
+                    .ThenBy(r => r.CreatedDate)
+                    .ToList();
 
                 // 初始化 IsSelected 屬性
                 foreach (var role in _allRoles)
@@ -94,6 +97,19 @@ namespace BloodClockTowerScriptEditor.Views
             {
                 throw new Exception($"載入角色失敗: {ex.Message}", ex);
             }
+        }
+        private int GetTeamOrder(string team)
+        {
+            return team?.ToLower() switch
+            {
+                "townsfolk" => 0,
+                "outsider" => 1,
+                "minion" => 2,
+                "demon" => 3,
+                "traveler" => 4,
+                "fabled" => 5,
+                _ => 6
+            };
         }
 
         /// <summary>
