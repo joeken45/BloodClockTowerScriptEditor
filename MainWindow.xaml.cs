@@ -35,7 +35,7 @@ namespace BloodClockTowerScriptEditor
             // 🆕 為初始空白劇本加入爪牙/惡魔訊息
             if (DataContext is MainViewModel viewModel)
             {
-                await viewModel.InitializeMinionDemonInfoAsync();
+                await viewModel.LoadMinionDemonInfoAsync();
             }
         }
 
@@ -54,112 +54,73 @@ namespace BloodClockTowerScriptEditor
                 }
             }
         }
-
         /// <summary>
-        /// 初始化預設角色資料（每次啟動都執行）
+        /// 同步 JSON 資源到程式資料夾並匯入資料庫
         /// </summary>
-        private async Task InitializeDefaultRolesAsync()
+        private async Task<int> SyncResourceToFolderAsync(
+            string resourceFileName,
+            string embeddedResourceName,
+            Func<string, Task<int>> importAction)
         {
             try
             {
-                System.Diagnostics.Debug.WriteLine("🚀 開始同步角色資料...");
+                System.Diagnostics.Debug.WriteLine($"🚀 開始同步 {resourceFileName}...");
 
-                // 取得程式資料夾路徑
                 string appFolder = AppDomain.CurrentDomain.BaseDirectory;
-                string roleJsonPath = Path.Combine(appFolder, "角色總表.json");
+                string filePath = Path.Combine(appFolder, resourceFileName);
 
-                System.Diagnostics.Debug.WriteLine($"📂 程式資料夾: {appFolder}");
-                System.Diagnostics.Debug.WriteLine($"📄 檢查檔案: {roleJsonPath}");
-
-                // 檢查程式資料夾中是否有 角色總表.json
-                if (!File.Exists(roleJsonPath))
+                if (!File.Exists(filePath))
                 {
-                    System.Diagnostics.Debug.WriteLine("📥 程式資料夾中沒有角色總表.json，從內嵌資源建立...");
+                    System.Diagnostics.Debug.WriteLine($"📥 從內嵌資源建立 {resourceFileName}...");
 
-                    // 載入內嵌資源
-                    string embeddedContent = LoadEmbeddedResource("BloodClockTowerScriptEditor.Resources.角色總表.json");
+                    string embeddedContent = LoadEmbeddedResource(embeddedResourceName);
 
                     if (string.IsNullOrEmpty(embeddedContent))
                     {
-                        System.Diagnostics.Debug.WriteLine("❌ 無法載入內嵌資源：角色總表.json");
-                        return;
+                        System.Diagnostics.Debug.WriteLine($"❌ 無法載入內嵌資源：{embeddedResourceName}");
+                        return 0;
                     }
 
-                    // 寫入到程式資料夾
-                    await File.WriteAllTextAsync(roleJsonPath, embeddedContent);
-                    System.Diagnostics.Debug.WriteLine($"✅ 已建立角色總表.json 到程式資料夾");
+                    await File.WriteAllTextAsync(filePath, embeddedContent);
+                    System.Diagnostics.Debug.WriteLine($"✅ 已建立 {resourceFileName}");
                 }
                 else
                 {
-                    System.Diagnostics.Debug.WriteLine("✅ 程式資料夾中已有角色總表.json，使用現有檔案");
+                    System.Diagnostics.Debug.WriteLine($"✅ 使用現有 {resourceFileName}");
                 }
 
-                // 從程式資料夾匯入資料庫
-                var importService = new RoleImportService();
-                int importedCount = await importService.ImportFromJsonAsync(roleJsonPath, "官方", true);
+                // 執行匯入動作
+                int count = await importAction(filePath);
+                System.Diagnostics.Debug.WriteLine($"✅ {resourceFileName} 同步完成！處理了 {count} 筆");
 
-                System.Diagnostics.Debug.WriteLine($"✅ 角色資料同步完成！處理了 {importedCount} 個角色");
+                return count;
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ 同步角色資料失敗：{ex.Message}");
-                System.Diagnostics.Debug.WriteLine(ex.StackTrace);
-
-                // 靜默失敗，不干擾使用者操作
+                System.Diagnostics.Debug.WriteLine($"❌ 同步 {resourceFileName} 失敗：{ex.Message}");
+                return 0;
             }
         }
 
-        /// <summary>
-        /// 初始化相剋規則資料（每次啟動都執行）
-        /// </summary>
+        // 然後原本的方法改成：
+        private async Task InitializeDefaultRolesAsync()
+        {
+            var importService = new RoleImportService();
+            await SyncResourceToFolderAsync(
+                "角色總表.json",
+                "BloodClockTowerScriptEditor.Resources.角色總表.json",
+                path => importService.ImportFromJsonAsync(path, "官方", true)
+            );
+        }
+
         private async Task InitializeJinxRulesAsync()
         {
-            try
-            {
-                System.Diagnostics.Debug.WriteLine("🚀 開始同步相剋規則...");
-
-                // 取得程式資料夾路徑
-                string appFolder = AppDomain.CurrentDomain.BaseDirectory;
-                string jinxJsonPath = Path.Combine(appFolder, "相剋規則.json");
-
-                System.Diagnostics.Debug.WriteLine($"📄 檢查檔案: {jinxJsonPath}");
-
-                // 檢查程式資料夾中是否有 相剋規則.json
-                if (!File.Exists(jinxJsonPath))
-                {
-                    System.Diagnostics.Debug.WriteLine("📥 程式資料夾中沒有相剋規則.json，從內嵌資源建立...");
-
-                    // 載入內嵌資源
-                    string embeddedContent = LoadEmbeddedResource("BloodClockTowerScriptEditor.Resources.相剋規則.json");
-
-                    if (string.IsNullOrEmpty(embeddedContent))
-                    {
-                        System.Diagnostics.Debug.WriteLine("❌ 無法載入內嵌資源：相剋規則.json");
-                        return;
-                    }
-
-                    // 寫入到程式資料夾
-                    await File.WriteAllTextAsync(jinxJsonPath, embeddedContent);
-                    System.Diagnostics.Debug.WriteLine($"✅ 已建立相剋規則.json 到程式資料夾");
-                }
-                else
-                {
-                    System.Diagnostics.Debug.WriteLine("✅ 程式資料夾中已有相剋規則.json，使用現有檔案");
-                }
-
-                // 從程式資料夾匯入資料庫 (EF Core 會自動建立資料庫)
-                var importService = new RoleImportService();
-                int importedCount = await importService.ImportJinxRulesFromJsonAsync(jinxJsonPath);
-
-                System.Diagnostics.Debug.WriteLine($"✅ 相剋規則同步完成！處理了 {importedCount} 個規則");
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"❌ 同步相剋規則失敗：{ex.Message}");
-                System.Diagnostics.Debug.WriteLine(ex.StackTrace);
-
-                // 靜默失敗，不干擾使用者操作
-            }
+            var importService = new RoleImportService();
+            await SyncResourceToFolderAsync(
+                "相剋規則.json",
+                "BloodClockTowerScriptEditor.Resources.相剋規則.json",
+                importService.ImportJinxRulesFromJsonAsync
+            );
         }
 
         /// <summary>
@@ -203,13 +164,7 @@ namespace BloodClockTowerScriptEditor
         {
             MessageBox.Show(
                 "Blood on the Clocktower 劇本編輯器\n\n" +
-                "版本: 1.0.0 (MVP)\n" +
-                "技術: WPF + .NET 8.0 + MVVM\n\n" +
-                "功能:\n" +
-                "• 載入/儲存 JSON 劇本檔案\n" +
-                "• 顯示角色詳細資訊\n" +
-                "• 陣營篩選功能\n\n" +
-                "開發中...",
+                "版本: 1.0.0 \n",
                 "關於",
                 MessageBoxButton.OK,
                 MessageBoxImage.Information

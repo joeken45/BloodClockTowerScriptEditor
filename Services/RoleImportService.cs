@@ -281,40 +281,6 @@ namespace BloodClockTowerScriptEditor.Services
         }
 
         /// <summary>
-        /// 取得資料庫中的角色總數
-        /// </summary>
-        public async Task<int> GetRoleCountAsync()
-        {
-            using var context = new RoleTemplateContext();
-            return await context.RoleTemplates.CountAsync();
-        }
-
-        /// <summary>
-        /// 清空資料庫（小心使用！）
-        /// </summary>
-        public async Task ClearDatabaseAsync()
-        {
-            using var context = new RoleTemplateContext();
-            context.RoleTemplates.RemoveRange(context.RoleTemplates);
-            await context.SaveChangesAsync();
-        }
-
-        /// <summary>
-        /// 取得各類型角色統計
-        /// </summary>
-        public async Task<Dictionary<string, int>> GetRoleStatisticsAsync()
-        {
-            using var context = new RoleTemplateContext();
-
-            var stats = await context.RoleTemplates
-                .GroupBy(r => r.Team)
-                .Select(g => new { Team = g.Key, Count = g.Count() })
-                .ToDictionaryAsync(x => x.Team, x => x.Count);
-
-            return stats;
-        }
-
-        /// <summary>
         /// 從 JSON 檔案匯入相剋規則到資料庫
         /// </summary>
         /// <param name="jsonFilePath">JSON 檔案路徑</param>

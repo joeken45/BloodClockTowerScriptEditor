@@ -1,5 +1,6 @@
 ﻿using BloodClockTowerScriptEditor.Models;
 using BloodClockTowerScriptEditor.Services;
+using BloodClockTowerScriptEditor.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
@@ -296,33 +297,75 @@ namespace BloodClockTowerScriptEditor.ViewModels
         }
 
         [RelayCommand]
-        private async void AddFromOfficialTemplate()  // 🆕 改成 async
+        private async Task AddFromOfficialTemplate()
         {
             try
             {
-                var dialog = new Views.SelectRoleDialog();
-                if (dialog.ShowDialog() == true && dialog.SelectedRoles != null)
+                var dialog = new SelectRoleDialog
                 {
-                    int addedCount = 0;
-                    foreach (var selectedRole in dialog.SelectedRoles)
+                    Owner = Application.Current.MainWindow
+                };
+
+                bool? result = dialog.ShowDialog();
+
+                if (result == true && dialog.SelectedRoles.Count > 0)
+                {
+                    // 🆕 檢查重複
+                    var existingIds = CurrentScript.Roles
+                        .Select(r => r.Id)
+                        .ToHashSet();
+
+                    var duplicates = dialog.SelectedRoles
+                        .Where(r => existingIds.Contains(r.Id))
+                        .Select(r => r.Name)
+                        .ToList();
+
+                    var rolesToAdd = dialog.SelectedRoles;
+
+                    if (duplicates.Any())
                     {
-                        CurrentScript.Roles.Add(selectedRole);
-                        addedCount++;
+                        var confirmResult = MessageBox.Show(
+                            $"以下角色已存在於劇本中：\n\n{string.Join("\n", duplicates)}\n\n是否仍要加入重複的角色？",
+                            "重複角色",
+                            MessageBoxButton.YesNo,
+                            MessageBoxImage.Warning
+                        );
+
+                        if (confirmResult == MessageBoxResult.No)
+                        {
+                            // 只加入不重複的角色
+                            rolesToAdd = dialog.SelectedRoles
+                                .Where(r => !existingIds.Contains(r.Id))
+                                .ToList();
+                        }
                     }
 
-                    UpdateFilteredRoles();
-                    UpdateNightOrderLists();
+                    // 加入角色
+                    foreach (var role in rolesToAdd)
+                    {
+                        CurrentScript.Roles.Add(role);
+                        role.PropertyChanged += OnRolePropertyChanged;
+                    }
 
-                    // 🆕 檢查相剋規則
-                    await CheckAndAddJinxRulesAsync();
+                    if (rolesToAdd.Count > 0)
+                    {
+                        UpdateFilteredRoles();
+                        UpdateNightOrderLists();
+                        IsDirty = true;
+                        StatusMessage = $"已新增 {rolesToAdd.Count} 個角色";
 
-                    StatusMessage = $"已新增 {addedCount} 個角色";
+                        // 檢查相剋規則
+                        await CheckAndAddJinxRulesAsync();
+                    }
+                    else
+                    {
+                        StatusMessage = "未新增任何角色";
+                    }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"新增角色失敗: {ex.Message}", "錯誤", MessageBoxButton.OK, MessageBoxImage.Error);
-                StatusMessage = "新增角色失敗";
+                MessageBox.Show($"新增角色失敗：{ex.Message}", "錯誤", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -538,8 +581,6 @@ namespace BloodClockTowerScriptEditor.ViewModels
                 if (detectedRules.Count == 0)
                     return;
 
-                // 顯示對話框讓使用者選擇
-                // TODO: 建立 JinxRuleDialog
                 // 暫時先自動加入
                 foreach (var rule in detectedRules)
                 {
@@ -604,7 +645,7 @@ namespace BloodClockTowerScriptEditor.ViewModels
         /// <summary>
         /// 載入爪牙/惡魔訊息（私有，內部使用）
         /// </summary>
-        private async Task LoadMinionDemonInfoAsync()
+        public async Task LoadMinionDemonInfoAsync() 
         {
             try
             {
@@ -628,7 +669,6 @@ namespace BloodClockTowerScriptEditor.ViewModels
                     CurrentScript.Roles.Add(demonInfo.ToRole());
                 }
 
-                // 🆕 更新顯示
                 UpdateFilteredRoles();
                 UpdateNightOrderLists();
             }
@@ -636,14 +676,6 @@ namespace BloodClockTowerScriptEditor.ViewModels
             {
                 System.Diagnostics.Debug.WriteLine($"❌ 載入爪牙/惡魔訊息失敗：{ex.Message}");
             }
-        }
-
-        /// <summary>
-        /// 初始化爪牙/惡魔訊息（公開方法，供程式啟動時調用）
-        /// </summary>
-        public async Task InitializeMinionDemonInfoAsync()
-        {
-            await LoadMinionDemonInfoAsync();
         }
     }
 }

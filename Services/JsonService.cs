@@ -94,32 +94,5 @@ namespace BloodClockTowerScriptEditor.Services
                 throw new InvalidOperationException($"儲存劇本失敗: {ex.Message}", ex);
             }
         }
-
-        /// <summary>
-        /// 驗證 JSON 格式
-        /// </summary>
-        public bool ValidateJson(string json, out string errorMessage)
-        {
-            try
-            {
-                var jArray = JArray.Parse(json);
-                
-                // 檢查是否有 _meta
-                bool hasMeta = jArray.Any(item => item["id"]?.ToString() == "_meta");
-                if (!hasMeta)
-                {
-                    errorMessage = "缺少必要的 _meta 元數據物件";
-                    return false;
-                }
-
-                errorMessage = string.Empty;
-                return true;
-            }
-            catch (JsonException ex)
-            {
-                errorMessage = $"JSON 格式錯誤: {ex.Message}";
-                return false;
-            }
-        }
     }
 }
