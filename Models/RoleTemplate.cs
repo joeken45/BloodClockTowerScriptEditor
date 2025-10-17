@@ -134,6 +134,11 @@ namespace BloodClockTowerScriptEditor.Models
         public DateTime UpdatedDate { get; set; } = DateTime.Now;
 
         /// <summary>
+        /// 原始順序 (從 JSON 匯入時的順序)
+        /// </summary>
+        public int OriginalOrder { get; set; } = 0;
+
+        /// <summary>
         /// 提示標記（導航屬性）
         /// </summary>
         public List<RoleReminder> Reminders { get; set; } = new();

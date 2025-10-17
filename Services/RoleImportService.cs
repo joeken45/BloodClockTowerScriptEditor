@@ -57,6 +57,7 @@ namespace BloodClockTowerScriptEditor.Services
 
                 using var context = new RoleTemplateContext();
 
+                int orderIndex = 0;
                 foreach (var item in jArray)
                 {
                     try
@@ -86,6 +87,7 @@ namespace BloodClockTowerScriptEditor.Services
                         if (existing != null)
                         {
                             // 🔄 更新現有角色
+                            existing.OriginalOrder = orderIndex++;
                             UpdateRoleTemplate(existing, item, category, isOfficial);
                             updatedCount++;
                             System.Diagnostics.Debug.WriteLine($"✏️ 更新角色: {name} ({id})");
@@ -94,6 +96,7 @@ namespace BloodClockTowerScriptEditor.Services
                         {
                             // ➕ 建立新角色
                             var roleTemplate = CreateRoleTemplate(item, category, isOfficial);
+                            roleTemplate.OriginalOrder = orderIndex++;
                             context.RoleTemplates.Add(roleTemplate);
                             addedCount++;
                             System.Diagnostics.Debug.WriteLine($"➕ 新增角色: {name} ({id})");

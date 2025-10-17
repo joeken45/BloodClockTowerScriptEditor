@@ -75,8 +75,10 @@ namespace BloodClockTowerScriptEditor.Views
                 // 載入所有角色
                 _allRoles = await context.RoleTemplates
                     .Include(r => r.Reminders)
-                    .OrderBy(r => r.Team)
-                    .ThenBy(r => r.Name)
+                    .OrderBy(r => r.IsOfficial ? 0 : 1)  // 官方角色優先
+                    .ThenBy(r => r.Team)
+                    .ThenBy(r => r.OriginalOrder)
+                    .ThenBy(r => r.CreatedDate)          // 自訂用建立時間
                     .ToListAsync();
 
                 // 初始化 IsSelected 屬性
