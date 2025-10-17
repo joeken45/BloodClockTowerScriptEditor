@@ -102,6 +102,78 @@ namespace BloodClockTowerScriptEditor.ViewModels
 
         public ObservableCollection<Role> FilteredRoles { get; }
 
+        /// <summary>
+        /// 鎮民角色集合
+        /// </summary>
+        public ObservableCollection<Role> TownsfolkRoles { get; } = new();
+
+        /// <summary>
+        /// 外來者角色集合
+        /// </summary>
+        public ObservableCollection<Role> OutsiderRoles { get; } = new();
+
+        /// <summary>
+        /// 爪牙角色集合
+        /// </summary>
+        public ObservableCollection<Role> MinionRoles { get; } = new();
+
+        /// <summary>
+        /// 惡魔角色集合
+        /// </summary>
+        public ObservableCollection<Role> DemonRoles { get; } = new();
+
+        /// <summary>
+        /// 旅行者角色集合
+        /// </summary>
+        public ObservableCollection<Role> TravelerRoles { get; } = new();
+
+        /// <summary>
+        /// 傳奇角色集合
+        /// </summary>
+        public ObservableCollection<Role> FabledRoles { get; } = new();
+
+        /// <summary>
+        /// 相剋角色集合
+        /// </summary>
+        public ObservableCollection<Role> JinxedRoles { get; } = new();
+
+        // ==================== 各類型數量屬性 ====================
+
+        /// <summary>
+        /// 鎮民數量
+        /// </summary>
+        public int TownsfolkCount => TownsfolkRoles.Count;
+
+        /// <summary>
+        /// 外來者數量
+        /// </summary>
+        public int OutsidersCount => OutsiderRoles.Count;
+
+        /// <summary>
+        /// 爪牙數量
+        /// </summary>
+        public int MinionsCount => MinionRoles.Count;
+
+        /// <summary>
+        /// 惡魔數量
+        /// </summary>
+        public int DemonsCount => DemonRoles.Count;
+
+        /// <summary>
+        /// 旅行者數量
+        /// </summary>
+        public int TravelersCount => TravelerRoles.Count;
+
+        /// <summary>
+        /// 傳奇數量
+        /// </summary>
+        public int FabledCount => FabledRoles.Count;
+
+        /// <summary>
+        /// 相剋數量
+        /// </summary>
+        public int JinxedCount => JinxedRoles.Count;
+
         // 🆕 夜晚順序集合
         public ObservableCollection<Role> FirstNightRoles { get; }
         public ObservableCollection<Role> OtherNightRoles { get; }
@@ -387,17 +459,24 @@ namespace BloodClockTowerScriptEditor.ViewModels
             }
         }
 
-        private void UpdateFilteredRoles()
+        public void UpdateFilteredRoles()
         {
-            FilteredRoles.Clear();
+            // 清空所有集合
+            TownsfolkRoles.Clear();
+            OutsiderRoles.Clear();
+            MinionRoles.Clear();
+            DemonRoles.Clear();
+            TravelerRoles.Clear();
+            FabledRoles.Clear();
+            JinxedRoles.Clear();
 
-            // 🆕 簡化的篩選邏輯 - 只需一行！
-            var filtered = CurrentScript.Roles
-                .Where(r => _teamFilters.ContainsKey(r.Team) && _teamFilters[r.Team])
+            // 按 Team 和 DisplayOrder 排序後分類
+            var sortedRoles = CurrentScript.Roles
                 .OrderBy(r => r.Team)
-                .ThenBy(r => r.Name);
+                .ThenBy(r => r.DisplayOrder)
+                .ToList();
 
-            foreach (var role in filtered)
+            foreach (var role in sortedRoles)
             {
                 // 訂閱角色的類型變更事件
                 role.TeamChanged -= OnRoleTeamChanged;
@@ -411,8 +490,41 @@ namespace BloodClockTowerScriptEditor.ViewModels
                 role.PropertyChanged -= OnRolePropertyChanged;
                 role.PropertyChanged += OnRolePropertyChanged;
 
-                FilteredRoles.Add(role);
+                // 根據 Team 分類
+                switch (role.Team)
+                {
+                    case TeamType.Townsfolk:
+                        TownsfolkRoles.Add(role);
+                        break;
+                    case TeamType.Outsider:
+                        OutsiderRoles.Add(role);
+                        break;
+                    case TeamType.Minion:
+                        MinionRoles.Add(role);
+                        break;
+                    case TeamType.Demon:
+                        DemonRoles.Add(role);
+                        break;
+                    case TeamType.Traveler:
+                        TravelerRoles.Add(role);
+                        break;
+                    case TeamType.Fabled:
+                        FabledRoles.Add(role);
+                        break;
+                    case TeamType.Jinxed:
+                        JinxedRoles.Add(role);
+                        break;
+                }
             }
+
+            // 通知所有數量屬性更新
+            OnPropertyChanged(nameof(TownsfolkCount));
+            OnPropertyChanged(nameof(OutsidersCount));
+            OnPropertyChanged(nameof(MinionsCount));
+            OnPropertyChanged(nameof(DemonsCount));
+            OnPropertyChanged(nameof(TravelersCount));
+            OnPropertyChanged(nameof(FabledCount));
+            OnPropertyChanged(nameof(JinxedCount));
         }
 
         // 🆕 當角色類型改變時重新篩選和排序

@@ -53,11 +53,8 @@ namespace BloodClockTowerScriptEditor.Models
             {
                 if (SetProperty(ref _team, value))
                 {
-                    // 🆕 類型變更時通知 UI 更新
                     OnPropertyChanged(nameof(TeamDisplayName));
-
-                    // 🆕 觸發自訂事件，通知 ViewModel 需要重新排序
-                    TeamChanged?.Invoke(this, System.EventArgs.Empty);
+                    TeamChanged?.Invoke(this, EventArgs.Empty); // ✅ 確保有這行
                 }
             }
         }
@@ -175,6 +172,19 @@ namespace BloodClockTowerScriptEditor.Models
         /// 🆕 夜晚順序變更事件（用於通知 ViewModel 重新排序）
         /// </summary>
         public event System.EventHandler? NightOrderChanged;
+
+        private int _displayOrder;
+
+        /// <summary>
+        /// 顯示順序（用於同類型內的自訂排序）
+        /// 不序列化到 JSON，只在記憶體中使用
+        /// </summary>
+        [JsonIgnore]
+        public int DisplayOrder
+        {
+            get => _displayOrder;
+            set => SetProperty(ref _displayOrder, value);
+        }
 
         [JsonIgnore]
         public string TeamDisplayName => Team switch

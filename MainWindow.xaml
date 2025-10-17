@@ -18,6 +18,7 @@
         <converters:IdFormatValidationConverter x:Key="IdFormatValidationConverter"/>
         <converters:StringNotEmptyConverter x:Key="StringNotEmptyConverter"/>
         <converters:StringToImageSourceConverter x:Key="StringToImageSourceConverter"/>
+        <converters:CountToVisibilityConverter x:Key="CountToVisibilityConverter"/>
 
         <!-- 陣營顏色 -->
         <SolidColorBrush x:Key="TownsfolkBrush" Color="#368CE1"/>
@@ -178,133 +179,512 @@
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
-                                    <!-- 陣營篩選 -->
-                                    <RowDefinition Height="Auto"/>
                                     <!-- 按鈕區 -->
                                     <RowDefinition Height="*"/>
-                                    <!-- 角色列表 -->
+                                    <!-- 分類區塊 -->
                                 </Grid.RowDefinitions>
 
-                                <!-- 陣營篩選 -->
-                                <StackPanel Grid.Row="0" Margin="0,10,0,10">
-                                    <TextBlock Text="陣營篩選" FontWeight="Bold" FontSize="12" Margin="0,0,0,5"/>
-                                    <WrapPanel>
-                                        <CheckBox Content="鎮民" IsChecked="{Binding ShowTownsfolk}" Margin="0,0,10,5"/>
-                                        <CheckBox Content="外來者" IsChecked="{Binding ShowOutsiders}" Margin="0,0,10,5"/>
-                                        <CheckBox Content="爪牙" IsChecked="{Binding ShowMinions}" Margin="0,0,10,5"/>
-                                        <CheckBox Content="惡魔" IsChecked="{Binding ShowDemons}" Margin="0,0,10,5"/>
-                                        <CheckBox Content="旅行者" IsChecked="{Binding ShowTravelers}" Margin="0,0,10,5"/>
-                                        <CheckBox Content="傳奇" IsChecked="{Binding ShowFabled}" Margin="0,0,0,5"/>
-                                        <CheckBox Content="相剋" IsChecked="{Binding ShowJinxed}" Margin="10,0,0,5"/>
-                                    </WrapPanel>
-                                </StackPanel>
+                                <!-- ✅ 按鈕區（保留原有的新增/刪除按鈕） -->
+                                <Border Grid.Row="0" Background="#F5F5F5" Padding="8,10" Margin="0,0,0,10">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
 
-                                <!-- 按鈕區 -->
-                                <Border Grid.Row="1" Background="#F5F5F5" Padding="8,10" Margin="0,0,0,10">
-                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                                        <Button Content="➕" Width="30" Height="30" Margin="0,0,5,0"
-                    Command="{Binding AddFromOfficialTemplateCommand}"
-                    Background="#4CAF50" Foreground="White" BorderThickness="0"
-                    FontSize="16" FontWeight="Bold"
-                    ToolTip="新增角色"/>
-                                    <Button Content="🗑️" Width="30" Height="30"
-                    Command="{Binding RemoveRoleCommand}"
-                    Background="#F44336" Foreground="White" BorderThickness="0"
-                    FontSize="14" FontWeight="Bold"
-                    ToolTip="刪除角色"/>
-                                    </StackPanel>
+                                        <!-- 左側：展開/收合全部按鈕 -->
+                                        <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="0,0,15,0">
+                                            <Button Content="📂 全部展開" Width="90" Height="30" Margin="0,0,5,0"
+                            Click="ExpandAll_Click"
+                            Background="#6c757d" Foreground="White" BorderThickness="0"
+                            FontSize="11" ToolTip="展開所有類別"/>
+                                            <Button Content="📁 全部收合" Width="90" Height="30"
+                            Click="CollapseAll_Click"
+                            Background="#6c757d" Foreground="White" BorderThickness="0"
+                            FontSize="11" ToolTip="收合所有類別"/>
+                                        </StackPanel>
+
+                                        <!-- 右側：新增/刪除按鈕 -->
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                                            <Button Content="➕" Width="30" Height="30" Margin="0,0,5,0"
+                            Command="{Binding AddFromOfficialTemplateCommand}"
+                            Background="#4CAF50" Foreground="White" BorderThickness="0"
+                            FontSize="16" FontWeight="Bold"
+                            ToolTip="新增角色"/>
+                                            <Button Content="🗑️" Width="30" Height="30"
+                            Command="{Binding RemoveRoleCommand}"
+                            Background="#F44336" Foreground="White" BorderThickness="0"
+                            FontSize="14" FontWeight="Bold"
+                            ToolTip="刪除角色"/>
+                                        </StackPanel>
+                                    </Grid>
                                 </Border>
 
-                                <!-- 角色列表 -->
-                                <ListBox Grid.Row="2" 
-                 ItemsSource="{Binding FilteredRoles}"
-                 SelectedItem="{Binding SelectedRole}"
-                 BorderThickness="0">
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <StackPanel Orientation="Horizontal" Margin="0,5">
-                                                <!-- 角色圖片縮圖 -->
-                                                <Border Width="40" Height="40" 
-                    BorderBrush="#DDD" 
-                    BorderThickness="1"
-                    Background="White"
-                    Margin="0,0,10,0"
-                    VerticalAlignment="Center">
-                                                    <Grid>
-                                                        <Image Source="{Binding Image, Converter={StaticResource StringToImageSourceConverter}}" 
-                           Stretch="Uniform"
-                           Margin="2">
-                                                            <Image.Style>
-                                                                <Style TargetType="Image">
-                                                                    <Style.Triggers>
-                                                                        <Trigger Property="Source" Value="{x:Null}">
-                                                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                                                        </Trigger>
-                                                                    </Style.Triggers>
-                                                                </Style>
-                                                            </Image.Style>
-                                                        </Image>
+                                <!-- ✅ 分類展開區塊 -->
+                                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                                    <StackPanel>
+                                        <!-- 🎨 鎮民 -->
+                                        <Border x:Name="borderTownsfolk" BorderBrush="#368CE1" BorderThickness="2" Margin="0,0,0,10" CornerRadius="4"
+                        Visibility="{Binding TownsfolkCount, Converter={StaticResource CountToVisibilityConverter}}">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
 
-                                                        <TextBlock Text="🎭" 
-                               FontSize="24"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               Foreground="#999">
-                                                            <TextBlock.Style>
-                                                                <Style TargetType="TextBlock">
-                                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                                    <Style.Triggers>
-                                                                        <DataTrigger Binding="{Binding Image}" Value="{x:Null}">
-                                                                            <Setter Property="Visibility" Value="Visible"/>
-                                                                        </DataTrigger>
-                                                                        <DataTrigger Binding="{Binding Image}" Value="">
-                                                                            <Setter Property="Visibility" Value="Visible"/>
-                                                                        </DataTrigger>
-                                                                    </Style.Triggers>
-                                                                </Style>
-                                                            </TextBlock.Style>
+                                                <!-- 標題列 -->
+                                                <Border Grid.Row="0" Background="#368CE1" Padding="10" Cursor="Hand"
+                                MouseLeftButtonDown="TeamHeader_Click" Tag="Townsfolk">
+                                                    <Grid>
+                                                        <TextBlock FontWeight="Bold" Foreground="White">
+                                    <Run Text="鎮民 ("/>
+                                    <Run Text="{Binding TownsfolkCount, Mode=OneWay}"/>
+                                    <Run Text=")"/>
                                                         </TextBlock>
+                                                        <TextBlock x:Name="iconTownsfolk" Text="▼" Foreground="White" 
+                                           HorizontalAlignment="Right" FontSize="14"/>
                                                     </Grid>
                                                 </Border>
 
-                                                <!-- 陣營色塊 -->
-                                                <Border Width="4" Height="40" VerticalAlignment="Center" Margin="0,0,8,0">
-                                                    <Border.Style>
-                                                        <Style TargetType="Border">
-                                                            <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding Team}" Value="Townsfolk">
-                                                                    <Setter Property="Background" Value="{StaticResource TownsfolkBrush}"/>
-                                                                </DataTrigger>
-                                                                <DataTrigger Binding="{Binding Team}" Value="Outsider">
-                                                                    <Setter Property="Background" Value="{StaticResource OutsiderBrush}"/>
-                                                                </DataTrigger>
-                                                                <DataTrigger Binding="{Binding Team}" Value="Minion">
-                                                                    <Setter Property="Background" Value="{StaticResource MinionBrush}"/>
-                                                                </DataTrigger>
-                                                                <DataTrigger Binding="{Binding Team}" Value="Demon">
-                                                                    <Setter Property="Background" Value="{StaticResource DemonBrush}"/>
-                                                                </DataTrigger>
-                                                                <DataTrigger Binding="{Binding Team}" Value="Traveler">
-                                                                    <Setter Property="Background" Value="{StaticResource TravelerBrush}"/>
-                                                                </DataTrigger>
-                                                                <DataTrigger Binding="{Binding Team}" Value="Fabled">
-                                                                    <Setter Property="Background" Value="{StaticResource FabledBrush}"/>
-                                                                </DataTrigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </Border.Style>
+                                                <!-- 內容區 -->
+                                                <ItemsControl x:Name="listTownsfolk" Grid.Row="1" 
+                                      ItemsSource="{Binding TownsfolkRoles}"
+                                      Background="White"
+                                      AllowDrop="True"
+                                      Drop="TeamList_Drop"
+                                      Tag="Townsfolk">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Border BorderBrush="#EEE" BorderThickness="0,0,0,1" 
+                                            Padding="10,8" Background="White"
+                                            MouseLeftButtonDown="RoleItem_MouseDown"
+                                            MouseMove="RoleItem_MouseMove"
+                                            Cursor="Hand">
+                                                                <Grid>
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="Auto"/>
+                                                                        <ColumnDefinition Width="Auto"/>
+                                                                        <ColumnDefinition Width="*"/>
+                                                                    </Grid.ColumnDefinitions>
+
+                                                                    <!-- 拖曳標記 -->
+                                                                    <TextBlock Grid.Column="0" Text="⋮⋮" 
+                                                       Foreground="#999" FontSize="14" 
+                                                       VerticalAlignment="Center" Margin="0,0,10,0"/>
+
+                                                                    <!-- 角色圖片 -->
+                                                                    <Border Grid.Column="1" Width="40" Height="40" 
+                                                    Background="#F0F0F0" 
+                                                    BorderBrush="#368CE1" BorderThickness="1"
+                                                    Margin="0,0,10,0">
+                                                                        <Image Source="{Binding Image, Converter={StaticResource StringToImageSourceConverter}}" 
+                                                       Stretch="Uniform"/>
+                                                                    </Border>
+
+                                                                    <!-- 角色名稱 -->
+                                                                    <TextBlock Grid.Column="2" Text="{Binding Name}" 
+                                                       VerticalAlignment="Center" 
+                                                       FontWeight="SemiBold"/>
+                                                                </Grid>
+                                                            </Border>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </Grid>
+                                        </Border>
+
+                                        <!-- 🎨 外來者 -->
+                                        <Border x:Name="borderOutsider" BorderBrush="#71A8D6" BorderThickness="2" Margin="0,0,0,10" CornerRadius="4"
+                        Visibility="{Binding OutsidersCount, Converter={StaticResource CountToVisibilityConverter}}">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+
+                                                <Border Grid.Row="0" Background="#71A8D6" Padding="10" Cursor="Hand"
+                                MouseLeftButtonDown="TeamHeader_Click" Tag="Outsider">
+                                                    <Grid>
+                                                        <TextBlock FontWeight="Bold" Foreground="White">
+                                    <Run Text="外來者 ("/>
+                                    <Run Text="{Binding OutsidersCount, Mode=OneWay}"/>
+                                    <Run Text=")"/>
+                                                        </TextBlock>
+                                                        <TextBlock x:Name="iconOutsider" Text="▼" Foreground="White" 
+                                           HorizontalAlignment="Right" FontSize="14"/>
+                                                    </Grid>
                                                 </Border>
 
-                                                <!-- 角色資訊 -->
-                                                <StackPanel VerticalAlignment="Center">
-                                                    <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="13"/>
-                                                    <TextBlock Text="{Binding TeamDisplayName}" 
-                           FontSize="11" Foreground="Gray"/>
-                                                </StackPanel>
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
+                                                <ItemsControl x:Name="listOutsider" Grid.Row="1" 
+                                      ItemsSource="{Binding OutsiderRoles}"
+                                      Background="White"
+                                      AllowDrop="True"
+                                      Drop="TeamList_Drop"
+                                      Tag="Outsider">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Border BorderBrush="#EEE" BorderThickness="0,0,0,1" 
+                                            Padding="10,8" Background="White"
+                                            MouseLeftButtonDown="RoleItem_MouseDown"
+                                            MouseMove="RoleItem_MouseMove"
+                                            Cursor="Hand">
+                                                                <Grid>
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="Auto"/>
+                                                                        <ColumnDefinition Width="Auto"/>
+                                                                        <ColumnDefinition Width="*"/>
+                                                                    </Grid.ColumnDefinitions>
+
+                                                                    <TextBlock Grid.Column="0" Text="⋮⋮" 
+                                                       Foreground="#999" FontSize="14" 
+                                                       VerticalAlignment="Center" Margin="0,0,10,0"/>
+
+                                                                    <Border Grid.Column="1" Width="40" Height="40" 
+                                                    Background="#F0F0F0" 
+                                                    BorderBrush="#71A8D6" BorderThickness="1"
+                                                    Margin="0,0,10,0">
+                                                                        <Image Source="{Binding Image, Converter={StaticResource StringToImageSourceConverter}}" 
+                                                       Stretch="Uniform"/>
+                                                                    </Border>
+
+                                                                    <TextBlock Grid.Column="2" Text="{Binding Name}" 
+                                                       VerticalAlignment="Center" 
+                                                       FontWeight="SemiBold"/>
+                                                                </Grid>
+                                                            </Border>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </Grid>
+                                        </Border>
+
+                                        <!-- 🎨 爪牙 -->
+                                        <Border x:Name="borderMinion" BorderBrush="#DC3545" BorderThickness="2" Margin="0,0,0,10" CornerRadius="4"
+                        Visibility="{Binding MinionsCount, Converter={StaticResource CountToVisibilityConverter}}">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+
+                                                <Border Grid.Row="0" Background="#DC3545" Padding="10" Cursor="Hand"
+                                MouseLeftButtonDown="TeamHeader_Click" Tag="Minion">
+                                                    <Grid>
+                                                        <TextBlock FontWeight="Bold" Foreground="White">
+                                    <Run Text="爪牙 ("/>
+                                    <Run Text="{Binding MinionsCount, Mode=OneWay}"/>
+                                    <Run Text=")"/>
+                                                        </TextBlock>
+                                                        <TextBlock x:Name="iconMinion" Text="▼" Foreground="White" 
+                                           HorizontalAlignment="Right" FontSize="14"/>
+                                                    </Grid>
+                                                </Border>
+
+                                                <ItemsControl x:Name="listMinion" Grid.Row="1" 
+                                      ItemsSource="{Binding MinionRoles}"
+                                      Background="White"
+                                      AllowDrop="True"
+                                      Drop="TeamList_Drop"
+                                      Tag="Minion">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Border BorderBrush="#EEE" BorderThickness="0,0,0,1" 
+                                            Padding="10,8" Background="White"
+                                            MouseLeftButtonDown="RoleItem_MouseDown"
+                                            MouseMove="RoleItem_MouseMove"
+                                            Cursor="Hand">
+                                                                <Grid>
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="Auto"/>
+                                                                        <ColumnDefinition Width="Auto"/>
+                                                                        <ColumnDefinition Width="*"/>
+                                                                    </Grid.ColumnDefinitions>
+
+                                                                    <TextBlock Grid.Column="0" Text="⋮⋮" 
+                                                       Foreground="#999" FontSize="14" 
+                                                       VerticalAlignment="Center" Margin="0,0,10,0"/>
+
+                                                                    <Border Grid.Column="1" Width="40" Height="40" 
+                                                    Background="#F0F0F0" 
+                                                    BorderBrush="#DC3545" BorderThickness="1"
+                                                    Margin="0,0,10,0">
+                                                                        <Image Source="{Binding Image, Converter={StaticResource StringToImageSourceConverter}}" 
+                                                       Stretch="Uniform"/>
+                                                                    </Border>
+
+                                                                    <TextBlock Grid.Column="2" Text="{Binding Name}" 
+                                                       VerticalAlignment="Center" 
+                                                       FontWeight="SemiBold"/>
+                                                                </Grid>
+                                                            </Border>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </Grid>
+                                        </Border>
+
+                                        <!-- 🎨 惡魔 -->
+                                        <Border x:Name="borderDemon" BorderBrush="#8B0000" BorderThickness="2" Margin="0,0,0,10" CornerRadius="4"
+                        Visibility="{Binding DemonsCount, Converter={StaticResource CountToVisibilityConverter}}">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+
+                                                <Border Grid.Row="0" Background="#8B0000" Padding="10" Cursor="Hand"
+                                MouseLeftButtonDown="TeamHeader_Click" Tag="Demon">
+                                                    <Grid>
+                                                        <TextBlock FontWeight="Bold" Foreground="White">
+                                    <Run Text="惡魔 ("/>
+                                    <Run Text="{Binding DemonsCount, Mode=OneWay}"/>
+                                    <Run Text=")"/>
+                                                        </TextBlock>
+                                                        <TextBlock x:Name="iconDemon" Text="▼" Foreground="White" 
+                                           HorizontalAlignment="Right" FontSize="14"/>
+                                                    </Grid>
+                                                </Border>
+
+                                                <ItemsControl x:Name="listDemon" Grid.Row="1" 
+                                      ItemsSource="{Binding DemonRoles}"
+                                      Background="White"
+                                      AllowDrop="True"
+                                      Drop="TeamList_Drop"
+                                      Tag="Demon">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Border BorderBrush="#EEE" BorderThickness="0,0,0,1" 
+                                            Padding="10,8" Background="White"
+                                            MouseLeftButtonDown="RoleItem_MouseDown"
+                                            MouseMove="RoleItem_MouseMove"
+                                            Cursor="Hand">
+                                                                <Grid>
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="Auto"/>
+                                                                        <ColumnDefinition Width="Auto"/>
+                                                                        <ColumnDefinition Width="*"/>
+                                                                    </Grid.ColumnDefinitions>
+
+                                                                    <TextBlock Grid.Column="0" Text="⋮⋮" 
+                                                       Foreground="#999" FontSize="14" 
+                                                       VerticalAlignment="Center" Margin="0,0,10,0"/>
+
+                                                                    <Border Grid.Column="1" Width="40" Height="40" 
+                                                    Background="#F0F0F0" 
+                                                    BorderBrush="#8B0000" BorderThickness="1"
+                                                    Margin="0,0,10,0">
+                                                                        <Image Source="{Binding Image, Converter={StaticResource StringToImageSourceConverter}}" 
+                                                       Stretch="Uniform"/>
+                                                                    </Border>
+
+                                                                    <TextBlock Grid.Column="2" Text="{Binding Name}" 
+                                                       VerticalAlignment="Center" 
+                                                       FontWeight="SemiBold"/>
+                                                                </Grid>
+                                                            </Border>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </Grid>
+                                        </Border>
+
+                                        <!-- 🎨 旅行者 -->
+                                        <Border x:Name="borderTraveler" BorderBrush="#808080" BorderThickness="2" Margin="0,0,0,10" CornerRadius="4"
+                        Visibility="{Binding TravelersCount, Converter={StaticResource CountToVisibilityConverter}}">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+
+                                                <Border Grid.Row="0" Background="#808080" Padding="10" Cursor="Hand"
+                                MouseLeftButtonDown="TeamHeader_Click" Tag="Traveler">
+                                                    <Grid>
+                                                        <TextBlock FontWeight="Bold" Foreground="White">
+                                    <Run Text="旅行者 ("/>
+                                    <Run Text="{Binding TravelersCount, Mode=OneWay}"/>
+                                    <Run Text=")"/>
+                                                        </TextBlock>
+                                                        <TextBlock x:Name="iconTraveler" Text="▼" Foreground="White" 
+                                           HorizontalAlignment="Right" FontSize="14"/>
+                                                    </Grid>
+                                                </Border>
+
+                                                <ItemsControl x:Name="listTraveler" Grid.Row="1" 
+                                      ItemsSource="{Binding TravelerRoles}"
+                                      Background="White"
+                                      AllowDrop="True"
+                                      Drop="TeamList_Drop"
+                                      Tag="Traveler">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Border BorderBrush="#EEE" BorderThickness="0,0,0,1" 
+                                            Padding="10,8" Background="White"
+                                            MouseLeftButtonDown="RoleItem_MouseDown"
+                                            MouseMove="RoleItem_MouseMove"
+                                            Cursor="Hand">
+                                                                <Grid>
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="Auto"/>
+                                                                        <ColumnDefinition Width="Auto"/>
+                                                                        <ColumnDefinition Width="*"/>
+                                                                    </Grid.ColumnDefinitions>
+
+                                                                    <TextBlock Grid.Column="0" Text="⋮⋮" 
+                                                       Foreground="#999" FontSize="14" 
+                                                       VerticalAlignment="Center" Margin="0,0,10,0"/>
+
+                                                                    <Border Grid.Column="1" Width="40" Height="40" 
+                                                    Background="#F0F0F0" 
+                                                    BorderBrush="#808080" BorderThickness="1"
+                                                    Margin="0,0,10,0">
+                                                                        <Image Source="{Binding Image, Converter={StaticResource StringToImageSourceConverter}}" 
+                                                       Stretch="Uniform"/>
+                                                                    </Border>
+
+                                                                    <TextBlock Grid.Column="2" Text="{Binding Name}" 
+                                                       VerticalAlignment="Center" 
+                                                       FontWeight="SemiBold"/>
+                                                                </Grid>
+                                                            </Border>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </Grid>
+                                        </Border>
+
+                                        <!-- 🎨 傳奇 -->
+                                        <Border x:Name="borderFabled" BorderBrush="#FFC107" BorderThickness="2" Margin="0,0,0,10" CornerRadius="4"
+                        Visibility="{Binding FabledCount, Converter={StaticResource CountToVisibilityConverter}}">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+
+                                                <Border Grid.Row="0" Background="#FFC107" Padding="10" Cursor="Hand"
+                                MouseLeftButtonDown="TeamHeader_Click" Tag="Fabled">
+                                                    <Grid>
+                                                        <TextBlock FontWeight="Bold" Foreground="White">
+                                    <Run Text="傳奇 ("/>
+                                    <Run Text="{Binding FabledCount, Mode=OneWay}"/>
+                                    <Run Text=")"/>
+                                                        </TextBlock>
+                                                        <TextBlock x:Name="iconFabled" Text="▼" Foreground="White" 
+                                           HorizontalAlignment="Right" FontSize="14"/>
+                                                    </Grid>
+                                                </Border>
+
+                                                <ItemsControl x:Name="listFabled" Grid.Row="1" 
+                                      ItemsSource="{Binding FabledRoles}"
+                                      Background="White"
+                                      AllowDrop="True"
+                                      Drop="TeamList_Drop"
+                                      Tag="Fabled">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Border BorderBrush="#EEE" BorderThickness="0,0,0,1" 
+                                            Padding="10,8" Background="White"
+                                            MouseLeftButtonDown="RoleItem_MouseDown"
+                                            MouseMove="RoleItem_MouseMove"
+                                            Cursor="Hand">
+                                                                <Grid>
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="Auto"/>
+                                                                        <ColumnDefinition Width="Auto"/>
+                                                                        <ColumnDefinition Width="*"/>
+                                                                    </Grid.ColumnDefinitions>
+
+                                                                    <TextBlock Grid.Column="0" Text="⋮⋮" 
+                                                       Foreground="#999" FontSize="14" 
+                                                       VerticalAlignment="Center" Margin="0,0,10,0"/>
+
+                                                                    <Border Grid.Column="1" Width="40" Height="40" 
+                                                    Background="#F0F0F0" 
+                                                    BorderBrush="#FFC107" BorderThickness="1"
+                                                    Margin="0,0,10,0">
+                                                                        <Image Source="{Binding Image, Converter={StaticResource StringToImageSourceConverter}}" 
+                                                       Stretch="Uniform"/>
+                                                                    </Border>
+
+                                                                    <TextBlock Grid.Column="2" Text="{Binding Name}" 
+                                                       VerticalAlignment="Center" 
+                                                       FontWeight="SemiBold"/>
+                                                                </Grid>
+                                                            </Border>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </Grid>
+                                        </Border>
+
+                                        <!-- 🎨 相剋 -->
+                                        <Border x:Name="borderJinxed" BorderBrush="#9C27B0" BorderThickness="2" Margin="0,0,0,10" CornerRadius="4"
+                        Visibility="{Binding JinxedCount, Converter={StaticResource CountToVisibilityConverter}}">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+
+                                                <Border Grid.Row="0" Background="#9C27B0" Padding="10" Cursor="Hand"
+                                MouseLeftButtonDown="TeamHeader_Click" Tag="Jinxed">
+                                                    <Grid>
+                                                        <TextBlock FontWeight="Bold" Foreground="White">
+                                    <Run Text="相剋 ("/>
+                                    <Run Text="{Binding JinxedCount, Mode=OneWay}"/>
+                                    <Run Text=")"/>
+                                                        </TextBlock>
+                                                        <TextBlock x:Name="iconJinxed" Text="▼" Foreground="White" 
+                                           HorizontalAlignment="Right" FontSize="14"/>
+                                                    </Grid>
+                                                </Border>
+
+                                                <ItemsControl x:Name="listJinxed" Grid.Row="1" 
+                                      ItemsSource="{Binding JinxedRoles}"
+                                      Background="White"
+                                      AllowDrop="True"
+                                      Drop="TeamList_Drop"
+                                      Tag="Jinxed">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Border BorderBrush="#EEE" BorderThickness="0,0,0,1" 
+                                            Padding="10,8" Background="White"
+                                            MouseLeftButtonDown="RoleItem_MouseDown"
+                                            MouseMove="RoleItem_MouseMove"
+                                            Cursor="Hand">
+                                                                <Grid>
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="Auto"/>
+                                                                        <ColumnDefinition Width="Auto"/>
+                                                                        <ColumnDefinition Width="*"/>
+                                                                    </Grid.ColumnDefinitions>
+
+                                                                    <TextBlock Grid.Column="0" Text="⋮⋮" 
+                                                       Foreground="#999" FontSize="14" 
+                                                       VerticalAlignment="Center" Margin="0,0,10,0"/>
+
+                                                                    <Border Grid.Column="1" Width="40" Height="40" 
+                                                    Background="#F0F0F0" 
+                                                    BorderBrush="#9C27B0" BorderThickness="1"
+                                                    Margin="0,0,10,0">
+                                                                        <Image Source="{Binding Image, Converter={StaticResource StringToImageSourceConverter}}" 
+                                                       Stretch="Uniform"/>
+                                                                    </Border>
+
+                                                                    <TextBlock Grid.Column="2" Text="{Binding Name}" 
+                                                       VerticalAlignment="Center" 
+                                                       FontWeight="SemiBold"/>
+                                                                </Grid>
+                                                            </Border>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </Grid>
+                                        </Border>
+
+                                    </StackPanel>
+                                </ScrollViewer>
                             </Grid>
                         </TabItem>
 

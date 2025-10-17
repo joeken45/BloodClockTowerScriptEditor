@@ -224,5 +224,211 @@ namespace BloodClockTowerScriptEditor
                 ReminderItem.RemoveSelected(collection);
             }
         }
+        // ==================== 私有欄位 ====================
+        private Role? _draggedRole = null;
+        private TeamType _draggedFromTeam;
+
+        // ==================== 展開/收合事件 ====================
+
+        /// <summary>
+        /// 展開所有類別
+        /// </summary>
+        private void ExpandAll_Click(object sender, RoutedEventArgs e)
+        {
+            SetAllTeamVisibility(Visibility.Visible);
+        }
+
+        /// <summary>
+        /// 收合所有類別
+        /// </summary>
+        private void CollapseAll_Click(object sender, RoutedEventArgs e)
+        {
+            SetAllTeamVisibility(Visibility.Collapsed);
+        }
+
+        /// <summary>
+        /// 設定所有類別的可見性
+        /// </summary>
+        private void SetAllTeamVisibility(Visibility visibility)
+        {
+            listTownsfolk.Visibility = visibility;
+            listOutsider.Visibility = visibility;
+            listMinion.Visibility = visibility;
+            listDemon.Visibility = visibility;
+            listTraveler.Visibility = visibility;
+            listFabled.Visibility = visibility;
+            listJinxed.Visibility = visibility;
+
+            // 更新圖示
+            string icon = visibility == Visibility.Visible ? "▼" : "▶";
+            iconTownsfolk.Text = icon;
+            iconOutsider.Text = icon;
+            iconMinion.Text = icon;
+            iconDemon.Text = icon;
+            iconTraveler.Text = icon;
+            iconFabled.Text = icon;
+            iconJinxed.Text = icon;
+        }
+
+        /// <summary>
+        /// 點擊類別標題展開/收合
+        /// </summary>
+        private void TeamHeader_Click(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is Border header && header.Tag is string teamName)
+            {
+                // 找到對應的列表和圖示
+                var (list, icon) = teamName switch
+                {
+                    "Townsfolk" => (listTownsfolk, iconTownsfolk),
+                    "Outsider" => (listOutsider, iconOutsider),
+                    "Minion" => (listMinion, iconMinion),
+                    "Demon" => (listDemon, iconDemon),
+                    "Traveler" => (listTraveler, iconTraveler),
+                    "Fabled" => (listFabled, iconFabled),
+                    "Jinxed" => (listJinxed, iconJinxed),
+                    _ => (null, null)
+                };
+
+                if (list != null && icon != null)
+                {
+                    // 切換可見性
+                    bool isVisible = list.Visibility == Visibility.Visible;
+                    list.Visibility = isVisible ? Visibility.Collapsed : Visibility.Visible;
+                    icon.Text = isVisible ? "▶" : "▼";
+                }
+            }
+        }
+
+        // ==================== 拖曳排序事件 ====================
+
+        /// <summary>
+        /// 開始拖曳角色
+        /// </summary>
+        private void RoleItem_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is Border border && border.DataContext is Role role)
+            {
+                _draggedRole = role;
+
+                // 記錄來源 Team
+                _draggedFromTeam = role.Team;
+
+                // 開始拖曳
+                border.Opacity = 0.5;
+            }
+        }
+
+        /// <summary>
+        /// 拖曳移動
+        /// </summary>
+        private void RoleItem_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed && _draggedRole != null)
+            {
+                if (sender is Border border)
+                {
+                    // 執行拖放操作
+                    DragDrop.DoDragDrop(border, _draggedRole, DragDropEffects.Move);
+
+                    // 恢復透明度
+                    border.Opacity = 1.0;
+                    _draggedRole = null;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 放下角色到新位置
+        /// </summary>
+        private void TeamList_Drop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(typeof(Role)))
+            {
+                var droppedRole = e.Data.GetData(typeof(Role)) as Role;
+
+                if (droppedRole == null || DataContext is not MainViewModel viewModel)
+                    return;
+
+                // 取得目標 Team
+                if (sender is ItemsControl itemsControl && itemsControl.Tag is string targetTeamStr)
+                {
+                    if (!Enum.TryParse<TeamType>(targetTeamStr, out var targetTeam))
+                        return;
+
+                    // 如果拖曳到不同類型，不允許（保持類型分組）
+                    if (droppedRole.Team != targetTeam)
+                    {
+                        MessageBox.Show(
+                            "不能將角色移動到不同類型的分組中",
+                            "提示",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Information
+                        );
+                        return;
+                    }
+
+                    // 取得目標位置（滑鼠下方的角色）
+                    var targetRole = GetRoleUnderMouse(itemsControl, e.GetPosition(itemsControl));
+
+                    if (targetRole != null && targetRole != droppedRole)
+                    {
+                        // 重新排序該類型的所有角色
+                        ReorderRolesInTeam(viewModel, targetTeam, droppedRole, targetRole);
+
+                        // 標記為有變更
+                        viewModel.IsDirty = true;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 取得滑鼠位置下的角色
+        /// </summary>
+        private Role? GetRoleUnderMouse(ItemsControl itemsControl, Point position)
+        {
+            // 簡化版：取得最接近的角色
+            foreach (var item in itemsControl.Items)
+            {
+                if (item is Role role)
+                {
+                    // 這裡可以加入更精確的位置計算
+                    // 暫時返回第一個找到的
+                    return role;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// 重新排序同類型內的角色
+        /// </summary>
+        private void ReorderRolesInTeam(MainViewModel viewModel, TeamType team, Role movedRole, Role targetRole)
+        {
+            // 取得該類型的所有角色
+            var teamRoles = viewModel.CurrentScript.Roles
+                .Where(r => r.Team == team)
+                .OrderBy(r => r.DisplayOrder)
+                .ToList();
+
+            // 移除被移動的角色
+            teamRoles.Remove(movedRole);
+
+            // 找到目標位置
+            int targetIndex = teamRoles.IndexOf(targetRole);
+
+            // 插入到目標位置
+            teamRoles.Insert(targetIndex, movedRole);
+
+            // 重新編號 DisplayOrder
+            for (int i = 0; i < teamRoles.Count; i++)
+            {
+                teamRoles[i].DisplayOrder = i;
+            }
+
+            // 刷新顯示
+            viewModel.UpdateFilteredRoles();
+        }
     }
 }
