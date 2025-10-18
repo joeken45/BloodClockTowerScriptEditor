@@ -84,10 +84,11 @@
 
         <!-- 角色列表 -->
         <Border Grid.Row="1" Background="White">
-                <ListBox x:Name="rolesList" 
-                         BorderThickness="0"
-                         SelectionMode="Multiple">
-                    <ListBox.ItemContainerStyle>
+            <ListBox x:Name="rolesList" 
+         BorderThickness="0"
+         SelectionMode="Multiple"
+         ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListBox.ItemContainerStyle>
                         <Style TargetType="ListBoxItem">
                             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                             <Setter Property="Padding" Value="0"/>
@@ -161,18 +162,17 @@
                                                    FontStyle="Italic"/>
                                     </StackPanel>
 
-                                    <!-- 能力描述 -->
-                                    <TextBlock Grid.Column="4" 
-                                               Text="{Binding Ability}" 
-                                               TextWrapping="Wrap"
-                                               VerticalAlignment="Center"
-                                               Margin="15,0,15,0"
-                                               FontSize="12"
-                                               Foreground="#555"
-                                               MaxHeight="40"
-                                               TextTrimming="CharacterEllipsis"/>
+                                <!-- 能力描述 -->
+                                <TextBlock Grid.Column="4" 
+           Text="{Binding Ability}" 
+           TextWrapping="Wrap"
+           VerticalAlignment="Top"
+           Margin="15,5,15,5"
+           FontSize="12"
+           Foreground="#555"
+           LineHeight="16"/>
 
-                                    <!-- 類型標籤 -->
+                                <!-- 類型標籤 -->
                                     <Border Grid.Column="5" 
                                             Background="#F0F0F0"
                                             CornerRadius="3"

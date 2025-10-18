@@ -309,12 +309,14 @@ namespace BloodClockTowerScriptEditor
         {
             if (sender is Border border && border.DataContext is Role role)
             {
+                // ✅ 新增：設定選中的角色
+                if (DataContext is MainViewModel viewModel)
+                {
+                    viewModel.SelectedRole = role;
+                }
+
                 _draggedRole = role;
-
-                // 記錄來源 Team
                 _draggedFromTeam = role.Team;
-
-                // 開始拖曳
                 border.Opacity = 0.5;
             }
         }
@@ -350,13 +352,11 @@ namespace BloodClockTowerScriptEditor
                 if (droppedRole == null || DataContext is not MainViewModel viewModel)
                     return;
 
-                // 取得目標 Team
                 if (sender is ItemsControl itemsControl && itemsControl.Tag is string targetTeamStr)
                 {
                     if (!Enum.TryParse<TeamType>(targetTeamStr, out var targetTeam))
                         return;
 
-                    // 如果拖曳到不同類型，不允許（保持類型分組）
                     if (droppedRole.Team != targetTeam)
                     {
                         MessageBox.Show(
@@ -368,15 +368,14 @@ namespace BloodClockTowerScriptEditor
                         return;
                     }
 
-                    // 取得目標位置（滑鼠下方的角色）
-                    var targetRole = GetRoleUnderMouse(itemsControl, e.GetPosition(itemsControl));
+                    var mousePosition = e.GetPosition(itemsControl);
+
+                    // ✅ 新增：取得目標角色和是否插入到上方
+                    var (targetRole, insertAbove) = GetDropTarget(itemsControl, mousePosition);
 
                     if (targetRole != null && targetRole != droppedRole)
                     {
-                        // 重新排序該類型的所有角色
-                        ReorderRolesInTeam(viewModel, targetTeam, droppedRole, targetRole);
-
-                        // 標記為有變更
+                        ReorderRolesInTeam(viewModel, targetTeam, droppedRole, targetRole, insertAbove);
                         viewModel.IsDirty = true;
                     }
                 }
@@ -386,49 +385,121 @@ namespace BloodClockTowerScriptEditor
         /// <summary>
         /// 取得滑鼠位置下的角色
         /// </summary>
-        private Role? GetRoleUnderMouse(ItemsControl itemsControl, Point position)
+        private Role? GetRoleUnderMouse(ItemsControl itemsControl, Point mousePosition)
         {
-            // 簡化版：取得最接近的角色
-            foreach (var item in itemsControl.Items)
+            for (int i = 0; i < itemsControl.Items.Count; i++)
             {
-                if (item is Role role)
+                var container = itemsControl.ItemContainerGenerator.ContainerFromIndex(i) as FrameworkElement;
+                if (container == null) continue;
+
+                // 取得容器相對於 ItemsControl 的位置
+                var containerPos = container.TransformToAncestor(itemsControl).Transform(new Point(0, 0));
+                var containerBounds = new Rect(containerPos, container.RenderSize);
+
+                // 檢查滑鼠是否在此容器內
+                if (containerBounds.Contains(mousePosition))
                 {
-                    // 這裡可以加入更精確的位置計算
-                    // 暫時返回第一個找到的
-                    return role;
+                    return itemsControl.Items[i] as Role;
                 }
             }
             return null;
+        }
+        /// <summary>
+        /// 取得放置目標（包含插入位置判斷）
+        /// </summary>
+        private (Role? targetRole, bool insertAbove) GetDropTarget(ItemsControl itemsControl, Point mousePosition)
+        {
+            for (int i = 0; i < itemsControl.Items.Count; i++)
+            {
+                var container = itemsControl.ItemContainerGenerator.ContainerFromIndex(i) as FrameworkElement;
+                if (container == null) continue;
+
+                var containerPos = container.TransformToAncestor(itemsControl).Transform(new Point(0, 0));
+                var containerBounds = new Rect(containerPos, container.RenderSize);
+
+                if (containerBounds.Contains(mousePosition))
+                {
+                    var role = itemsControl.Items[i] as Role;
+
+                    // 計算滑鼠在容器中的相對位置
+                    double relativeY = mousePosition.Y - containerBounds.Top;
+                    bool insertAbove = relativeY < containerBounds.Height / 2;
+
+                    return (role, insertAbove);
+                }
+            }
+            return (null, false);
         }
 
         /// <summary>
         /// 重新排序同類型內的角色
         /// </summary>
-        private void ReorderRolesInTeam(MainViewModel viewModel, TeamType team, Role movedRole, Role targetRole)
+        private void ReorderRolesInTeam(MainViewModel viewModel, TeamType team, Role movedRole, Role targetRole, bool insertAbove)
         {
-            // 取得該類型的所有角色
             var teamRoles = viewModel.CurrentScript.Roles
                 .Where(r => r.Team == team)
                 .OrderBy(r => r.DisplayOrder)
                 .ToList();
 
-            // 移除被移動的角色
             teamRoles.Remove(movedRole);
 
-            // 找到目標位置
             int targetIndex = teamRoles.IndexOf(targetRole);
 
-            // 插入到目標位置
+            // ✅ 根據 insertAbove 決定插入位置
+            if (!insertAbove)
+            {
+                targetIndex++;
+            }
+
             teamRoles.Insert(targetIndex, movedRole);
 
-            // 重新編號 DisplayOrder
             for (int i = 0; i < teamRoles.Count; i++)
             {
                 teamRoles[i].DisplayOrder = i;
             }
 
-            // 刷新顯示
             viewModel.UpdateFilteredRoles();
+        }
+
+        /// <summary>
+        /// 在同類型內上移/下移角色
+        /// </summary>
+        private void MoveRoleInTeam_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && button.DataContext is Role role && DataContext is MainViewModel viewModel)
+            {
+                bool isUp = button.Tag?.ToString() == "Up";
+
+                var teamRoles = viewModel.CurrentScript.Roles
+                    .Where(r => r.Team == role.Team)
+                    .OrderBy(r => r.DisplayOrder)
+                    .ToList();
+
+                int index = teamRoles.IndexOf(role);
+
+                // 檢查是否可以移動
+                if ((isUp && index <= 0) || (!isUp && index >= teamRoles.Count - 1))
+                {
+                    return; // 已在頂部/底部,無法移動
+                }
+
+                // 移除當前角色
+                teamRoles.RemoveAt(index);
+
+                // 插入到新位置
+                int newIndex = isUp ? index - 1 : index + 1;
+                teamRoles.Insert(newIndex, role);
+
+                // ✅ 重新編號所有 DisplayOrder
+                for (int i = 0; i < teamRoles.Count; i++)
+                {
+                    teamRoles[i].DisplayOrder = i;
+                }
+
+                // 刷新顯示
+                viewModel.UpdateFilteredRoles();
+                viewModel.IsDirty = true;
+            }
         }
     }
 }
