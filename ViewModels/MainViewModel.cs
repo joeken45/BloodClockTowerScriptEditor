@@ -76,7 +76,6 @@ namespace BloodClockTowerScriptEditor.ViewModels
             }
         }
 
-        // 【4. 新增角色集合變更事件處理】
         private void OnRolesCollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             IsDirty = true;
@@ -85,7 +84,25 @@ namespace BloodClockTowerScriptEditor.ViewModels
         public Role? SelectedRole
         {
             get => _selectedRole;
-            set => SetProperty(ref _selectedRole, value);
+            set
+            {
+                // 如果設定的值相同，直接返回
+                if (_selectedRole == value)
+                    return;
+
+                // ✅ 切換前驗證舊角色
+                if (_selectedRole != null && value != _selectedRole)
+                {
+                    if (!ValidateRole(_selectedRole))
+                    {
+                        // 驗證失敗，阻止切換
+                        OnPropertyChanged(nameof(SelectedRole));
+                        return;
+                    }
+                }
+
+                SetProperty(ref _selectedRole, value);
+            }
         }
 
         public string StatusMessage
@@ -277,6 +294,10 @@ namespace BloodClockTowerScriptEditor.ViewModels
         {
             try
             {
+                // ✅ 儲存前驗證
+                if (!ValidateScript())
+                    return;
+
                 if (string.IsNullOrEmpty(CurrentFilePath))
                 {
                     SaveAsJson();
@@ -299,6 +320,10 @@ namespace BloodClockTowerScriptEditor.ViewModels
         {
             try
             {
+                // ✅ 儲存前驗證
+                if (!ValidateScript())
+                    return;
+
                 var dialog = new SaveFileDialog
                 {
                     Filter = "JSON 檔案 (*.json)|*.json|所有檔案 (*.*)|*.*",
@@ -425,6 +450,114 @@ namespace BloodClockTowerScriptEditor.ViewModels
             }
         }
 
+        // ==================== 驗證方法 ====================
+
+        /// <summary>
+        /// 驗證單一角色
+        /// </summary>
+        private bool ValidateRole(Role role)
+        {
+            var errors = new System.Collections.Generic.List<string>();
+
+            if (string.IsNullOrWhiteSpace(role.Id))
+                errors.Add("• 角色 ID 為必填");
+
+            if (string.IsNullOrWhiteSpace(role.Name))
+                errors.Add("• 角色名稱為必填");
+
+            if (errors.Any())
+            {
+                ShowInfo($"請先完成當前角色的必填欄位：\n\n{string.Join("\n", errors)}");
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// 驗證整個劇本
+        /// </summary>
+        private bool ValidateScript()
+        {
+            var errors = new System.Collections.Generic.List<string>();
+
+            // 劇本檢查
+            if (string.IsNullOrWhiteSpace(CurrentScript.Meta.Name))
+                errors.Add("• 劇本名稱為必填");
+
+            // 所有角色檢查
+            foreach (var role in CurrentScript.Roles)
+            {
+                if (string.IsNullOrWhiteSpace(role.Id))
+                    errors.Add($"• 角色「{role.Name ?? "(未命名)"}」缺少 ID");
+
+                if (string.IsNullOrWhiteSpace(role.Name))
+                    errors.Add("• 發現未命名的角色");
+            }
+
+            // 唯一性檢查
+            var duplicateIds = CurrentScript.Roles
+                .GroupBy(r => r.Id)
+                .Where(g => g.Count() > 1 && !string.IsNullOrWhiteSpace(g.Key))
+                .Select(g => g.Key)
+                .ToList();
+
+            if (duplicateIds.Any())
+            {
+                errors.Add($"• 重複的角色 ID：{string.Join(", ", duplicateIds)}");
+            }
+
+            // 必填欄位和唯一性錯誤：直接阻止儲存
+            if (errors.Any())
+            {
+                ShowError(string.Join("\n", errors), "無法儲存");
+                return false;
+            }
+
+            // ✅ 夜晚順序衝突檢查：警告但允許繼續
+            var conflicts = CheckNightOrderConflicts();
+            if (conflicts.Any())
+            {
+                var message = "偵測到夜晚順序衝突：\n\n" + string.Join("\n", conflicts) + "\n\n是否仍要儲存？";
+                return ShowConfirm(message, "夜晚順序衝突");
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// 檢查夜晚順序衝突
+        /// </summary>
+        private List<string> CheckNightOrderConflicts()
+        {
+            var conflicts = new List<string>();
+
+            // 檢查首夜順序衝突
+            var firstNightGroups = CurrentScript.Roles
+                .Where(r => r.FirstNight > 0)
+                .GroupBy(r => r.FirstNight)
+                .Where(g => g.Count() > 1);
+
+            foreach (var group in firstNightGroups)
+            {
+                var roleNames = string.Join("、", group.Select(r => r.Name));
+                conflicts.Add($"⚠️ 首夜順序 {group.Key}：{roleNames}");
+            }
+
+            // 檢查其他夜順序衝突
+            var otherNightGroups = CurrentScript.Roles
+                .Where(r => r.OtherNight > 0)
+                .GroupBy(r => r.OtherNight)
+                .Where(g => g.Count() > 1);
+
+            foreach (var group in otherNightGroups)
+            {
+                var roleNames = string.Join("、", group.Select(r => r.Name));
+                conflicts.Add($"⚠️ 其他夜順序 {group.Key}：{roleNames}");
+            }
+
+            return conflicts;
+        }
         // ==================== 私有方法 ====================
 
         /// <summary>

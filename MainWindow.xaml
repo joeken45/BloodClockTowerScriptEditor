@@ -245,6 +245,8 @@
                               Background="White"
                               AllowDrop="True"
                               Drop="TeamList_Drop"
+              DragOver="TeamList_DragOver"
+              DragLeave="TeamList_DragLeave"
                               Tag="Townsfolk">
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
@@ -322,6 +324,8 @@
                               Background="White"
                               AllowDrop="True"
                               Drop="TeamList_Drop"
+              DragOver="TeamList_DragOver"
+              DragLeave="TeamList_DragLeave"
                               Tag="Outsider">
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
@@ -399,6 +403,8 @@
                               Background="White"
                               AllowDrop="True"
                               Drop="TeamList_Drop"
+              DragOver="TeamList_DragOver"
+              DragLeave="TeamList_DragLeave"
                               Tag="Minion">
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
@@ -476,6 +482,8 @@
                               Background="White"
                               AllowDrop="True"
                               Drop="TeamList_Drop"
+              DragOver="TeamList_DragOver"
+              DragLeave="TeamList_DragLeave"
                               Tag="Demon">
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
@@ -553,6 +561,8 @@
                               Background="White"
                               AllowDrop="True"
                               Drop="TeamList_Drop"
+              DragOver="TeamList_DragOver"
+              DragLeave="TeamList_DragLeave"
                               Tag="Traveler">
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
@@ -630,6 +640,8 @@
                               Background="White"
                               AllowDrop="True"
                               Drop="TeamList_Drop"
+              DragOver="TeamList_DragOver"
+              DragLeave="TeamList_DragLeave"
                               Tag="Fabled">
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
@@ -707,6 +719,8 @@
                               Background="White"
                               AllowDrop="True"
                               Drop="TeamList_Drop"
+              DragOver="TeamList_DragOver"
+              DragLeave="TeamList_DragLeave"
                               Tag="Jinxed">
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
@@ -780,7 +794,7 @@
                                     <!-- 角色列表 -->
                                     <ListBox Grid.Row="1" 
                      ItemsSource="{Binding FirstNightRoles}"
-                     SelectedItem="{Binding SelectedRole}"
+         SelectionChanged="NightOrderList_SelectionChanged"
                      BorderThickness="0">
                                         <ListBox.ItemContainerStyle>
                                             <Style TargetType="ListBoxItem">
@@ -862,7 +876,7 @@
                                     <!-- 角色列表 -->
                                     <ListBox Grid.Row="1" 
                      ItemsSource="{Binding OtherNightRoles}"
-                     SelectedItem="{Binding SelectedRole}"
+         SelectionChanged="NightOrderList_SelectionChanged"
                      BorderThickness="0">
                                         <ListBox.ItemContainerStyle>
                                             <Style TargetType="ListBoxItem">

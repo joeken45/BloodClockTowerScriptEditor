@@ -1,13 +1,14 @@
-﻿using BloodClockTowerScriptEditor.ViewModels;
+﻿using BloodClockTowerScriptEditor.Models;
 using BloodClockTowerScriptEditor.Services;
-using BloodClockTowerScriptEditor.Models;
-using System.Windows;
+using BloodClockTowerScriptEditor.ViewModels;
+using System;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
-using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace BloodClockTowerScriptEditor
 {
@@ -224,9 +225,11 @@ namespace BloodClockTowerScriptEditor
                 ReminderItem.RemoveSelected(collection);
             }
         }
+
         // ==================== 私有欄位 ====================
         private Role? _draggedRole = null;
         private TeamType _draggedFromTeam;
+        private System.Windows.Shapes.Line? _dropIndicatorLine = null;  // ✅ 改為指示線
 
         // ==================== 展開/收合事件 ====================
 
@@ -345,6 +348,11 @@ namespace BloodClockTowerScriptEditor
         /// </summary>
         private void TeamList_Drop(object sender, DragEventArgs e)
         {
+            // ✅ 放下時清除指示線
+            if (sender is ItemsControl dropControl)
+            {
+                RemoveDropIndicator(dropControl);
+            }
             if (e.Data.GetDataPresent(typeof(Role)))
             {
                 var droppedRole = e.Data.GetData(typeof(Role)) as Role;
@@ -499,6 +507,117 @@ namespace BloodClockTowerScriptEditor
                 // 刷新顯示
                 viewModel.UpdateFilteredRoles();
                 viewModel.IsDirty = true;
+            }
+        }
+        /// <summary>
+        /// 拖曳經過時顯示插入位置指示線
+        /// </summary>
+        private void TeamList_DragOver(object sender, DragEventArgs e)
+        {
+            if (_draggedRole == null) return;
+
+            if (sender is ItemsControl itemsControl)
+            {
+                var mousePosition = e.GetPosition(itemsControl);
+                var (targetRole, insertAbove) = GetDropTarget(itemsControl, mousePosition);
+
+                // 移除舊的指示線
+                RemoveDropIndicator(itemsControl);
+
+                if (targetRole != null && targetRole != _draggedRole)
+                {
+                    // 找到目標容器並繪製指示線
+                    for (int i = 0; i < itemsControl.Items.Count; i++)
+                    {
+                        if (itemsControl.Items[i] == targetRole)
+                        {
+                            var container = itemsControl.ItemContainerGenerator.ContainerFromIndex(i) as FrameworkElement;
+
+                            if (container != null)
+                            {
+                                DrawDropIndicator(itemsControl, container, insertAbove);
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+
+            e.Effects = DragDropEffects.Move;
+            e.Handled = true;
+        }
+
+        /// <summary>
+        /// 拖曳離開時清除指示線
+        /// </summary>
+        private void TeamList_DragLeave(object sender, DragEventArgs e)
+        {
+            if (sender is ItemsControl itemsControl)
+            {
+                RemoveDropIndicator(itemsControl);
+            }
+        }
+
+        /// <summary>
+        /// 繪製插入位置指示線
+        /// </summary>
+        private void DrawDropIndicator(ItemsControl itemsControl, FrameworkElement targetContainer, bool insertAbove)
+        {
+            // 建立指示線
+            _dropIndicatorLine = new System.Windows.Shapes.Line
+            {
+                Stroke = System.Windows.Media.Brushes.DodgerBlue,
+                StrokeThickness = 3,
+                X1 = 10,
+                X2 = itemsControl.ActualWidth - 10
+            };
+
+            // 計算指示線的 Y 位置
+            var containerPos = targetContainer.TransformToAncestor(itemsControl).Transform(new Point(0, 0));
+            double yPosition = insertAbove ? containerPos.Y : containerPos.Y + targetContainer.ActualHeight;
+
+            _dropIndicatorLine.Y1 = yPosition;
+            _dropIndicatorLine.Y2 = yPosition;
+
+            // 加入到 ItemsControl（需要用 Grid 包裝）
+            if (itemsControl.Parent is Grid parentGrid)
+            {
+                _dropIndicatorLine.SetValue(Grid.RowProperty, itemsControl.GetValue(Grid.RowProperty));
+                _dropIndicatorLine.IsHitTestVisible = false;
+                parentGrid.Children.Add(_dropIndicatorLine);
+            }
+        }
+
+        /// <summary>
+        /// 移除插入位置指示線
+        /// </summary>
+        private void RemoveDropIndicator(ItemsControl itemsControl)
+        {
+            if (_dropIndicatorLine != null)
+            {
+                if (itemsControl.Parent is Grid parentGrid)
+                {
+                    parentGrid.Children.Remove(_dropIndicatorLine);
+                }
+                _dropIndicatorLine = null;
+            }
+        }
+
+        /// <summary>
+        /// 夜晚順序列表選擇變更
+        /// </summary>
+        private void NightOrderList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is ListBox listBox && listBox.SelectedItem is Role role)
+            {
+                if (DataContext is MainViewModel viewModel)
+                {
+                    // 只在選中新角色時才設定（避免清空時觸發）
+                    if (role != null)
+                    {
+                        viewModel.SelectedRole = role;
+                    }
+                }
             }
         }
     }
