@@ -320,7 +320,7 @@ namespace BloodClockTowerScriptEditor
 
                 _draggedRole = role;
                 _draggedFromTeam = role.Team;
-                border.Opacity = 0.5;
+                //border.Opacity = 0.5;
             }
         }
 
@@ -333,6 +333,9 @@ namespace BloodClockTowerScriptEditor
             {
                 if (sender is Border border)
                 {
+                    // ✅ 加在這裡：開始拖曳時才變透明
+                    border.Opacity = 0.5;
+
                     // 執行拖放操作
                     DragDrop.DoDragDrop(border, _draggedRole, DragDropEffects.Move);
 
