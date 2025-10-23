@@ -249,16 +249,10 @@ namespace BloodClockTowerScriptEditor
                 return;
             }
 
-            // 新增空 ImageItem
+            // ✅ Bug Fix: 只新增到 ImageItems，讓事件自動同步到 Image
+            // 移除原本的 viewModel.SelectedRole.Image.Add("")
             var newItem = new ImageItem("");
-            newItem.PropertyChanged += (s, args) =>
-            {
-                viewModel.SelectedRole.Image[viewModel.SelectedRole.ImageItems.IndexOf(newItem)] = newItem.Url;
-                viewModel.IsDirty = true;
-            };
-
             viewModel.SelectedRole.ImageItems.Add(newItem);
-            viewModel.SelectedRole.Image.Add("");
             viewModel.IsDirty = true;
         }
 
@@ -287,9 +281,9 @@ namespace BloodClockTowerScriptEditor
 
                 if (result == MessageBoxResult.Yes)
                 {
-                    int index = viewModel.SelectedRole.ImageItems.IndexOf(item);
-                    viewModel.SelectedRole.ImageItems.RemoveAt(index);
-                    viewModel.SelectedRole.Image.RemoveAt(index);
+                    // ✅ Bug Fix: 只從 ImageItems 移除，讓事件自動同步到 Image
+                    // 移除原本的 viewModel.SelectedRole.Image.RemoveAt(index)
+                    viewModel.SelectedRole.ImageItems.Remove(item);
                     viewModel.IsDirty = true;
                 }
             }

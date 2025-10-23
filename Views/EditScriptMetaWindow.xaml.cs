@@ -15,17 +15,17 @@ namespace BloodClockTowerScriptEditor.Views
             InitializeComponent();
             _originalMeta = meta;
 
-            // 複製資料到臨時變數(不直接修改原始資料)
+            // 載入基本資訊
             txtName.Text = meta.Name;
             txtAuthor.Text = meta.Author;
             txtLogo.Text = meta.Logo;
 
-            // 🆕 載入 BOTC 欄位
+            // 載入 BOTC 欄位
             chkHideTitle.IsChecked = meta.HideTitle ?? false;
             txtBackground.Text = meta.Background ?? string.Empty;
             txtAlmanac.Text = meta.Almanac ?? string.Empty;
 
-            // 複製狀態列表 (使用擴充類別支援勾選)
+            // 複製狀態列表
             _tempStatusList = new ObservableCollection<StatusInfoEx>();
             foreach (var status in meta.Status)
             {
@@ -38,30 +38,42 @@ namespace BloodClockTowerScriptEditor.Views
             }
             statusList.ItemsSource = _tempStatusList;
 
-            // 監聽 Logo 網址變化以更新預覽
+            // ✅ 監聽 Logo 網址變化
             txtLogo.TextChanged += (s, e) =>
             {
-                imgLogo.Source = null;
-                if (!string.IsNullOrWhiteSpace(txtLogo.Text))
-                {
-                    try
-                    {
-                        imgLogo.Source = new System.Windows.Media.Imaging.BitmapImage(
-                            new System.Uri(txtLogo.Text));
-                    }
-                    catch { }
-                }
+                UpdateImagePreview(txtLogo.Text, imgLogo);
             };
 
-            // 初始載入 Logo
-            if (!string.IsNullOrWhiteSpace(meta.Logo))
+            // ✅ 監聽背景圖片 URL 變化
+            txtBackground.TextChanged += (s, e) =>
+            {
+                UpdateImagePreview(txtBackground.Text, imgBackground);
+            };
+
+            // 初始載入 Logo 預覽
+            UpdateImagePreview(meta.Logo, imgLogo);
+
+            // 初始載入背景圖片預覽
+            UpdateImagePreview(meta.Background ?? string.Empty, imgBackground);
+        }
+
+        /// <summary>
+        /// 更新圖片預覽
+        /// </summary>
+        private void UpdateImagePreview(string url, System.Windows.Controls.Image imageControl)
+        {
+            imageControl.Source = null;
+            if (!string.IsNullOrWhiteSpace(url))
             {
                 try
                 {
-                    imgLogo.Source = new System.Windows.Media.Imaging.BitmapImage(
-                        new System.Uri(meta.Logo));
+                    imageControl.Source = new System.Windows.Media.Imaging.BitmapImage(
+                        new System.Uri(url));
                 }
-                catch { }
+                catch
+                {
+                    // 圖片載入失敗，保持空白
+                }
             }
         }
 
@@ -103,24 +115,26 @@ namespace BloodClockTowerScriptEditor.Views
 
         private void OK_Click(object sender, RoutedEventArgs e)
         {
-            // 確定後才將修改寫回原始資料
+            // 寫回基本資訊
             _originalMeta.Name = txtName.Text;
             _originalMeta.Author = txtAuthor.Text;
             _originalMeta.Logo = txtLogo.Text;
 
-            // 🆕 更新 BOTC 欄位
+            // 寫回 BOTC 欄位
             _originalMeta.HideTitle = chkHideTitle.IsChecked == true ? true : null;
-            _originalMeta.Background = string.IsNullOrWhiteSpace(txtBackground.Text) ? null : txtBackground.Text;
-            _originalMeta.Almanac = string.IsNullOrWhiteSpace(txtAlmanac.Text) ? null : txtAlmanac.Text;
+            _originalMeta.Background = string.IsNullOrWhiteSpace(txtBackground.Text) ?
+                null : txtBackground.Text;
+            _originalMeta.Almanac = string.IsNullOrWhiteSpace(txtAlmanac.Text) ?
+                null : txtAlmanac.Text;
 
-            // 更新狀態列表
+            // 寫回狀態列表
             _originalMeta.Status.Clear();
-            foreach (var status in _tempStatusList)
+            foreach (var statusEx in _tempStatusList)
             {
                 _originalMeta.Status.Add(new StatusInfo
                 {
-                    Name = status.Name,
-                    Skill = status.Skill
+                    Name = statusEx.Name,
+                    Skill = statusEx.Skill
                 });
             }
 
@@ -130,7 +144,6 @@ namespace BloodClockTowerScriptEditor.Views
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            // 取消就不修改,直接關閉
             DialogResult = false;
             Close();
         }

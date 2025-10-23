@@ -1107,18 +1107,18 @@
                             </Grid.ColumnDefinitions>
 
                             <Button Grid.Column="0" 
-            Content="➕ 新增圖片" 
-            Padding="12,6" 
-            Click="AddImage_Click"
-            Background="#4CAF50" 
-            Foreground="White" 
-            BorderThickness="0">
+        Content="➕ 新增圖片" 
+        Padding="12,6" 
+        Click="AddImage_Click"
+        Background="#4CAF50" 
+        Foreground="White" 
+        BorderThickness="0">
                                 <Button.Style>
                                     <Style TargetType="Button">
                                         <Setter Property="IsEnabled" Value="True"/>
                                         <Style.Triggers>
-                                            <!-- 最多 3 張圖片 -->
-                                            <DataTrigger Binding="{Binding SelectedRole.Image.Count, Converter={StaticResource IntGreaterThanConverter}, ConverterParameter=2}" Value="True">
+                                            <!-- ✅ Bug Fix: 改綁定到 ImageItems.Count -->
+                                            <DataTrigger Binding="{Binding SelectedRole.ImageItems.Count, Converter={StaticResource IntGreaterThanConverter}, ConverterParameter=2}" Value="True">
                                                 <Setter Property="IsEnabled" Value="False"/>
                                             </DataTrigger>
                                         </Style.Triggers>

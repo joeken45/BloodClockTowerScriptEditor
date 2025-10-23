@@ -268,6 +268,12 @@ namespace BloodClockTowerScriptEditor.Models
                 if (index >= 0 && index < Image.Count)
                 {
                     Image[index] = item.Url;
+
+                    // ✅ Bug Fix: 當修改第一張圖片時，通知 ImageUrl 屬性變更
+                    if (index == 0)
+                    {
+                        OnPropertyChanged(nameof(ImageUrl));
+                    }
                 }
             }
         }
