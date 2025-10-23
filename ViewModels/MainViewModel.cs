@@ -304,7 +304,16 @@ namespace BloodClockTowerScriptEditor.ViewModels
                     return;
                 }
 
-                _jsonService.SaveScript(CurrentScript, CurrentFilePath);
+                // 🆕 彈出格式選擇對話框
+                var formatDialog = new SelectExportFormatDialog
+                {
+                    Owner = Application.Current.MainWindow
+                };
+
+                if (formatDialog.ShowDialog() != true)
+                    return;
+
+                _jsonService.SaveScript(CurrentScript, CurrentFilePath, formatDialog.SelectedFormat);
                 IsDirty = false; // 儲存後清除標記
                 StatusMessage = $"已儲存: {CurrentFilePath}";
                 ShowSuccess("儲存成功！");
@@ -324,6 +333,15 @@ namespace BloodClockTowerScriptEditor.ViewModels
                 if (!ValidateScript())
                     return;
 
+                // 🆕 彈出格式選擇對話框
+                var formatDialog = new SelectExportFormatDialog
+                {
+                    Owner = Application.Current.MainWindow
+                };
+
+                if (formatDialog.ShowDialog() != true)
+                    return;
+
                 var dialog = new SaveFileDialog
                 {
                     Filter = "JSON 檔案 (*.json)|*.json|所有檔案 (*.*)|*.*",
@@ -333,7 +351,7 @@ namespace BloodClockTowerScriptEditor.ViewModels
 
                 if (dialog.ShowDialog() == true)
                 {
-                    _jsonService.SaveScript(CurrentScript, dialog.FileName);
+                    _jsonService.SaveScript(CurrentScript, dialog.FileName, formatDialog.SelectedFormat);
                     CurrentFilePath = dialog.FileName;
                     IsDirty = false; // 儲存後清除標記
                     StatusMessage = $"已儲存: {dialog.FileName}";

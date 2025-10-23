@@ -1,0 +1,72 @@
+﻿<Window x:Class="BloodClockTowerScriptEditor.Views.SelectExportFormatDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="選擇匯出格式"
+        Width="320"
+        Height="280"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        Background="#F5F5F5">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- 標題 -->
+        <TextBlock Grid.Row="0" 
+                   Text="請選擇劇本匯出格式："
+                   FontSize="14"
+                   FontWeight="Bold"
+                   Margin="0,0,0,15"/>
+
+        <!-- 格式選項 -->
+        <StackPanel Grid.Row="1" Margin="10,0">
+            <RadioButton x:Name="rbJiShi"
+                         Content="集石格式 (JiShi)"
+                         FontSize="13"
+                         IsChecked="True"
+                         Margin="0,0,0,10"/>
+            <TextBlock Text="• 相容集石伺服器"
+                       FontSize="11"
+                       Foreground="#666"
+                       Margin="25,0,0,5"/>
+            <TextBlock Text="• Image 為單一字串"
+                       FontSize="11"
+                       Foreground="#666"
+                       Margin="25,0,0,15"/>
+
+            <RadioButton x:Name="rbBOTC"
+                         Content="BOTC 官方格式"
+                         FontSize="13"
+                         Margin="0,0,0,10"/>
+            <TextBlock Text="• 相容 BOTC 官方程式"
+                       FontSize="11"
+                       Foreground="#666"
+                       Margin="25,0,0,5"/>
+            <TextBlock Text="• Image 為陣列格式"
+                       FontSize="11"
+                       Foreground="#666"
+                       Margin="25,0,0,5"/>
+        </StackPanel>
+
+        <!-- 按鈕區 -->
+        <StackPanel Grid.Row="2" 
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Center"
+                    Margin="0,20,0,0">
+            <Button Content="確定" 
+                    Width="100" 
+                    Height="35"
+                    Margin="0,0,10,0"
+                    IsDefault="True"
+                    Click="Confirm_Click"/>
+            <Button Content="取消" 
+                    Width="100" 
+                    Height="35"
+                    IsCancel="True"
+                    Click="Cancel_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

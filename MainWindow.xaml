@@ -1046,20 +1046,13 @@
                                     <models:TeamType>Jinxed</models:TeamType>
                                 </ComboBox>
                             </DockPanel>
-
-                            <DockPanel Grid.Column="2">
-                                <TextBlock Text="英文名稱" FontWeight="SemiBold" DockPanel.Dock="Left" 
-                               VerticalAlignment="Center" Margin="0,0,8,0" Width="80"/>
-                                <TextBox Text="{Binding SelectedRole.NameEng, UpdateSourceTrigger=PropertyChanged}" 
-                             Padding="6,4" BorderBrush="#CCC" BorderThickness="1" VerticalAlignment="Center"/>
-                            </DockPanel>
                         </Grid>
 
                         <!-- 第三行: 圖片 URL (獨立一列) -->
                         <DockPanel Margin="0,0,0,8">
                             <TextBlock Text="圖片 URL" FontWeight="SemiBold" DockPanel.Dock="Left" 
                            VerticalAlignment="Center" Margin="0,0,8,0" Width="80"/>
-                            <TextBox Text="{Binding SelectedRole.Image, UpdateSourceTrigger=PropertyChanged}" 
+                            <TextBox Text="{Binding SelectedRole.ImageUrl, UpdateSourceTrigger=PropertyChanged}" 
                          Padding="6,4" BorderBrush="#CCC" BorderThickness="1" VerticalAlignment="Center"/>
                         </DockPanel>
 

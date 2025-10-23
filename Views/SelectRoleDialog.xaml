@@ -156,10 +156,6 @@
                                         <TextBlock Text="{Binding Name}" 
                                                    FontWeight="SemiBold" 
                                                    FontSize="13"/>
-                                        <TextBlock Text="{Binding NameEng}" 
-                                                   FontSize="10" 
-                                                   Foreground="Gray"
-                                                   FontStyle="Italic"/>
                                     </StackPanel>
 
                                 <!-- 能力描述 -->

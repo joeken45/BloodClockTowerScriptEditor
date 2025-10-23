@@ -46,7 +46,7 @@ namespace BloodClockTowerScriptEditor.Services
                     // 檢查是否為元數據
                     if (id == "_meta")
                     {
-                        script.Meta = item.ToObject<ScriptMeta>(serializer) 
+                        script.Meta = item.ToObject<ScriptMeta>(serializer)
                                       ?? new ScriptMeta();
                     }
                     else
@@ -71,19 +71,59 @@ namespace BloodClockTowerScriptEditor.Services
         /// <summary>
         /// 儲存劇本到檔案
         /// </summary>
-        public void SaveScript(Script script, string filePath)
+        /// <param name="script">劇本物件</param>
+        /// <param name="filePath">檔案路徑</param>
+        /// <param name="format">匯出格式（預設：集石）</param>
+        public void SaveScript(Script script, string filePath, ExportFormat format = ExportFormat.JiShi)
         {
             try
             {
                 var jArray = new JArray();
+                var serializer = JsonSerializer.Create(_settings);
 
-                // 先加入元數據
-                jArray.Add(JObject.FromObject(script.Meta, JsonSerializer.Create(_settings)));
+                // === 處理元數據 ===
+                var metaObj = JObject.FromObject(script.Meta, serializer);
 
-                // 再加入所有角色
+                // BOTC 格式：移除集石專用欄位
+                if (format == ExportFormat.BOTC)
+                {
+                    metaObj.Remove("status");
+                    metaObj.Remove("townsfolk");
+                    metaObj.Remove("outsider");
+                    metaObj.Remove("minion");
+                    metaObj.Remove("demon");
+                    metaObj.Remove("traveler");
+                    metaObj.Remove("a jinxed");
+                }
+                // 集石格式：保留所有欄位
+
+                jArray.Add(metaObj);
+
+                // === 處理角色 ===
                 foreach (var role in script.Roles)
                 {
-                    jArray.Add(JObject.FromObject(role, JsonSerializer.Create(_settings)));
+                    var roleObj = JObject.FromObject(role, serializer);
+
+                    // 處理 Image 欄位
+                    if (roleObj["image"] != null)
+                    {
+                        if (format == ExportFormat.JiShi)
+                        {
+                            // 集石格式：取第一個值，輸出為字串
+                            var imageArray = roleObj["image"] as JArray;
+                            if (imageArray != null && imageArray.Count > 0)
+                            {
+                                roleObj["image"] = imageArray[0];
+                            }
+                            else
+                            {
+                                roleObj.Remove("image");
+                            }
+                        }
+                        // BOTC 格式：保持陣列原樣
+                    }
+
+                    jArray.Add(roleObj);
                 }
 
                 string json = jArray.ToString(Formatting.Indented);
