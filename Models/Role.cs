@@ -226,6 +226,77 @@ namespace BloodClockTowerScriptEditor.Models
         [JsonIgnore]
         public string? ImageUrl => Image.Count > 0 ? Image[0] : null;
 
+        // ==================== 圖片列表 UI 綁定 ====================
+
+        private ObservableCollection<ImageItem>? _imageItems;
+
+        /// <summary>
+        /// UI 綁定用的圖片列表（支援雙向更新）
+        /// </summary>
+        [JsonIgnore]
+        public ObservableCollection<ImageItem> ImageItems
+        {
+            get
+            {
+                if (_imageItems == null)
+                {
+                    _imageItems = new ObservableCollection<ImageItem>();
+
+                    // 從 Image 初始化
+                    foreach (var url in Image)
+                    {
+                        var item = new ImageItem(url);
+                        item.PropertyChanged += OnImageItemChanged;
+                        _imageItems.Add(item);
+                    }
+
+                    // 監聽集合變更
+                    _imageItems.CollectionChanged += OnImageItemsCollectionChanged;
+                }
+                return _imageItems;
+            }
+        }
+
+        /// <summary>
+        /// ImageItem 的 Url 屬性變更時同步回 Image
+        /// </summary>
+        private void OnImageItemChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (sender is ImageItem item && e.PropertyName == nameof(ImageItem.Url))
+            {
+                int index = _imageItems!.IndexOf(item);
+                if (index >= 0 && index < Image.Count)
+                {
+                    Image[index] = item.Url;
+                }
+            }
+        }
+
+        /// <summary>
+        /// ImageItems 集合變更時同步回 Image
+        /// </summary>
+        private void OnImageItemsCollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            // 新增項目
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add && e.NewItems != null)
+            {
+                foreach (ImageItem item in e.NewItems)
+                {
+                    item.PropertyChanged += OnImageItemChanged;
+                    Image.Add(item.Url);
+                }
+            }
+            // 移除項目
+            else if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove && e.OldItems != null)
+            {
+                foreach (ImageItem item in e.OldItems)
+                {
+                    item.PropertyChanged -= OnImageItemChanged;
+                    Image.Remove(item.Url);
+                }
+            }
+        }
+
         /// <summary>
         /// 相剋規則 (BOTC 專用)
         /// </summary>

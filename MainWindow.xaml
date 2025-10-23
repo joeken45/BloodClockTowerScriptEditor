@@ -19,6 +19,7 @@
         <converters:StringNotEmptyConverter x:Key="StringNotEmptyConverter"/>
         <converters:StringToImageSourceConverter x:Key="StringToImageSourceConverter"/>
         <converters:CountToVisibilityConverter x:Key="CountToVisibilityConverter"/>
+        <converters:IntGreaterThanConverter x:Key="IntGreaterThanConverter"/>
 
         <!-- 陣營顏色 -->
         <SolidColorBrush x:Key="TownsfolkBrush" Color="#368CE1"/>
@@ -1048,13 +1049,92 @@
                             </DockPanel>
                         </Grid>
 
-                        <!-- 第三行: 圖片 URL (獨立一列) -->
-                        <DockPanel Margin="0,0,0,8">
-                            <TextBlock Text="圖片 URL" FontWeight="SemiBold" DockPanel.Dock="Left" 
-                           VerticalAlignment="Center" Margin="0,0,8,0" Width="80"/>
-                            <TextBox Text="{Binding SelectedRole.ImageUrl, UpdateSourceTrigger=PropertyChanged}" 
-                         Padding="6,4" BorderBrush="#CCC" BorderThickness="1" VerticalAlignment="Center"/>
-                        </DockPanel>
+                        <!-- 圖片 URL 列表 -->
+                        <TextBlock Text="圖片 URL:" FontWeight="SemiBold" Margin="0,0,0,4"/>
+
+                        <!-- 圖片列表 -->
+                        <ItemsControl ItemsSource="{Binding SelectedRole.ImageItems}" Margin="0,0,0,8">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="#DDD" BorderThickness="1" Padding="8" Margin="0,0,0,6" Background="White">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="60"/>
+                                                <ColumnDefinition Width="8"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="8"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <!-- 預覽圖 -->
+                                            <Border Grid.Column="0" 
+                            Width="60" Height="60" 
+                            BorderBrush="#CCC" BorderThickness="1" 
+                            Background="#F9F9F9">
+                                                <Image Source="{Binding Url, Converter={StaticResource StringToImageSourceConverter}}" 
+                               Stretch="Uniform"/>
+                                            </Border>
+
+                                            <!-- URL 輸入框 -->
+                                            <TextBox Grid.Column="2" 
+                             Text="{Binding Url, UpdateSourceTrigger=PropertyChanged}"
+                             VerticalAlignment="Center" 
+                             Padding="6,4"
+                             BorderBrush="#CCC" 
+                             BorderThickness="1"
+                             TextChanged="ImageUrl_TextChanged"/>
+
+                                            <!-- 刪除按鈕 -->
+                                            <Button Grid.Column="4" 
+                            Content="🗑️" 
+                            Width="32" Height="32"
+                            Click="DeleteImage_Click"
+                            ToolTip="刪除"
+                            Background="#F44336" 
+                            Foreground="White" 
+                            BorderThickness="0"/>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <!-- 新增按鈕 + 說明 -->
+                        <Grid Margin="0,0,0,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Button Grid.Column="0" 
+            Content="➕ 新增圖片" 
+            Padding="12,6" 
+            Click="AddImage_Click"
+            Background="#4CAF50" 
+            Foreground="White" 
+            BorderThickness="0">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="IsEnabled" Value="True"/>
+                                        <Style.Triggers>
+                                            <!-- 最多 3 張圖片 -->
+                                            <DataTrigger Binding="{Binding SelectedRole.Image.Count, Converter={StaticResource IntGreaterThanConverter}, ConverterParameter=2}" Value="True">
+                                                <Setter Property="IsEnabled" Value="False"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+
+                            <TextBlock Grid.Column="1" 
+               Text="說明: 集石格式僅使用第一張圖片 | 最多 3 張" 
+               FontSize="11" 
+               Foreground="#666" 
+               VerticalAlignment="Center" 
+               Margin="12,0,0,0"/>
+                        </Grid>
+
+                        <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Margin="0,4,0,10"/>
 
                         <!-- 第四行: 所屬版本 + 影響設置 -->
                         <Grid Margin="0,0,0,8">

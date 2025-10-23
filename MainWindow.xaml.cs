@@ -231,6 +231,81 @@ namespace BloodClockTowerScriptEditor
         private TeamType _draggedFromTeam;
         private System.Windows.Shapes.Line? _dropIndicatorLine = null;  // ✅ 改為指示線
 
+        // ==================== 圖片管理方法 ====================
+
+        /// <summary>
+        /// 新增圖片
+        /// </summary>
+        private void AddImage_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is not MainViewModel viewModel || viewModel.SelectedRole == null)
+                return;
+
+            // 限制最多 3 張
+            if (viewModel.SelectedRole.Image.Count >= 3)
+            {
+                MessageBox.Show("最多只能新增 3 張圖片", "提示",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            // 新增空 ImageItem
+            var newItem = new ImageItem("");
+            newItem.PropertyChanged += (s, args) =>
+            {
+                viewModel.SelectedRole.Image[viewModel.SelectedRole.ImageItems.IndexOf(newItem)] = newItem.Url;
+                viewModel.IsDirty = true;
+            };
+
+            viewModel.SelectedRole.ImageItems.Add(newItem);
+            viewModel.SelectedRole.Image.Add("");
+            viewModel.IsDirty = true;
+        }
+
+        /// <summary>
+        /// 刪除圖片
+        /// </summary>
+        private void DeleteImage_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is not MainViewModel viewModel || viewModel.SelectedRole == null)
+                return;
+
+            // 至少保留 1 張
+            if (viewModel.SelectedRole.Image.Count <= 1)
+            {
+                MessageBox.Show("至少需要保留 1 張圖片", "提示",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            var button = sender as Button;
+            if (button?.DataContext is ImageItem item)
+            {
+                var displayUrl = string.IsNullOrWhiteSpace(item.Url) ? "(空白)" : item.Url;
+                var result = MessageBox.Show($"確定要刪除此圖片嗎？\n\n{displayUrl}",
+                    "確認刪除", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    int index = viewModel.SelectedRole.ImageItems.IndexOf(item);
+                    viewModel.SelectedRole.ImageItems.RemoveAt(index);
+                    viewModel.SelectedRole.Image.RemoveAt(index);
+                    viewModel.IsDirty = true;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 圖片 URL 變更時觸發
+        /// </summary>
+        private void ImageUrl_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (DataContext is MainViewModel viewModel)
+            {
+                viewModel.IsDirty = true;
+            }
+        }
+
         // ==================== 展開/收合事件 ====================
 
         /// <summary>

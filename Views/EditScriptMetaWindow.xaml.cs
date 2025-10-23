@@ -20,6 +20,11 @@ namespace BloodClockTowerScriptEditor.Views
             txtAuthor.Text = meta.Author;
             txtLogo.Text = meta.Logo;
 
+            // 🆕 載入 BOTC 欄位
+            chkHideTitle.IsChecked = meta.HideTitle ?? false;
+            txtBackground.Text = meta.Background ?? string.Empty;
+            txtAlmanac.Text = meta.Almanac ?? string.Empty;
+
             // 複製狀態列表 (使用擴充類別支援勾選)
             _tempStatusList = new ObservableCollection<StatusInfoEx>();
             foreach (var status in meta.Status)
@@ -62,47 +67,17 @@ namespace BloodClockTowerScriptEditor.Views
 
         private void AddStatus_Click(object sender, RoutedEventArgs e)
         {
-            try
+            _tempStatusList.Add(new StatusInfoEx
             {
-                // 將 _tempStatusList 轉換為 StatusInfo 列表傳入
-                var existingStatuses = _tempStatusList.Select(s => new StatusInfo
-                {
-                    Name = s.Name,
-                    Skill = s.Skill
-                }).ToList();
-
-                var dialog = new StatusDialog(existingStatuses)
-                {
-                    Owner = this
-                };
-
-                if (dialog.ShowDialog() == true && dialog.SelectedStatuses.Count > 0)
-                {
-                    foreach (var status in dialog.SelectedStatuses)
-                    {
-                        _tempStatusList.Add(new StatusInfoEx
-                        {
-                            Name = status.Name,
-                            Skill = status.Skill,
-                            IsSelected = false
-                        });
-                    }
-                }
-            }
-            catch (System.Exception ex)
-            {
-                MessageBox.Show(
-                    $"新增狀態失敗：{ex.Message}",
-                    "錯誤",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error
-                );
-            }
+                Name = "新狀態",
+                Skill = "請輸入說明",
+                IsSelected = false
+            });
         }
 
-        private void RemoveSelectedStatus_Click(object sender, RoutedEventArgs e)
+        private void DeleteSelectedStatus_Click(object sender, RoutedEventArgs e)
         {
-            var selectedItems = _tempStatusList.Where(x => x.IsSelected).ToList();
+            var selectedItems = _tempStatusList.Where(s => s.IsSelected).ToList();
 
             if (selectedItems.Count == 0)
             {
@@ -132,6 +107,11 @@ namespace BloodClockTowerScriptEditor.Views
             _originalMeta.Name = txtName.Text;
             _originalMeta.Author = txtAuthor.Text;
             _originalMeta.Logo = txtLogo.Text;
+
+            // 🆕 更新 BOTC 欄位
+            _originalMeta.HideTitle = chkHideTitle.IsChecked == true ? true : null;
+            _originalMeta.Background = string.IsNullOrWhiteSpace(txtBackground.Text) ? null : txtBackground.Text;
+            _originalMeta.Almanac = string.IsNullOrWhiteSpace(txtAlmanac.Text) ? null : txtAlmanac.Text;
 
             // 更新狀態列表
             _originalMeta.Status.Clear();
