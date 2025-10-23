@@ -16,17 +16,18 @@ namespace BloodClockTowerScriptEditor.Models
         private string _name = string.Empty;
         private TeamType _team = TeamType.Townsfolk;
         private string _ability = string.Empty;
-        private string? _image;
+        private List<string> _image = new();
         private string? _edition;
         private bool _setup;
         private double _firstNight;
         private double _otherNight;
         private ObservableCollection<ReminderItem> _reminders = new();
         private ObservableCollection<ReminderItem> _remindersGlobal = new();
-        private string? _nameEng;
         private string? _flavor;
         private string? _firstNightReminder;
-        private string? _otherNightReminder;
+        private string? _otherNightReminder; 
+        private List<JinxInfo>? _jinxes;
+        private List<SpecialAbility>? _special;
 
         // ==================== JSON 序列化屬性 ====================
 
@@ -67,10 +68,11 @@ namespace BloodClockTowerScriptEditor.Models
         }
 
         [JsonProperty("image", NullValueHandling = NullValueHandling.Ignore)]
-        public string? Image
+        [JsonConverter(typeof(ImageConverter))]
+        public List<string> Image
         {
             get => _image;
-            set => SetProperty(ref _image, value);
+            set => SetProperty(ref _image, value ?? new());
         }
 
         [JsonProperty("edition", NullValueHandling = NullValueHandling.Ignore)]
@@ -133,13 +135,6 @@ namespace BloodClockTowerScriptEditor.Models
             set => SetProperty(ref _remindersGlobal, value);
         }
 
-        [JsonProperty("name_eng", NullValueHandling = NullValueHandling.Ignore)]
-        public string? NameEng
-        {
-            get => _nameEng;
-            set => SetProperty(ref _nameEng, value);
-        }
-
         [JsonProperty("flavor", NullValueHandling = NullValueHandling.Ignore)]
         public string? Flavor
         {
@@ -159,6 +154,20 @@ namespace BloodClockTowerScriptEditor.Models
         {
             get => _otherNightReminder;
             set => SetProperty(ref _otherNightReminder, value);
+        }
+
+        [JsonProperty("jinxes", NullValueHandling = NullValueHandling.Ignore)]
+        public List<JinxInfo>? Jinxes
+        {
+            get => _jinxes;
+            set => SetProperty(ref _jinxes, value);
+        }
+
+        [JsonProperty("special", NullValueHandling = NullValueHandling.Ignore)]
+        public List<SpecialAbility>? Special
+        {
+            get => _special;
+            set => SetProperty(ref _special, value);
         }
 
         // ==================== UI 輔助屬性 (不序列化) ====================
@@ -212,6 +221,42 @@ namespace BloodClockTowerScriptEditor.Models
                     return $"其他夜晚:{OtherNight}";
                 return "不行動";
             }
+        }
+
+        [JsonIgnore]
+        public string? ImageUrl => Image.Count > 0 ? Image[0] : null;
+
+        /// <summary>
+        /// 相剋規則 (BOTC 專用)
+        /// </summary>
+        public class JinxInfo
+        {
+            [JsonProperty("id")]
+            public string Id { get; set; } = string.Empty;
+
+            [JsonProperty("reason")]
+            public string Reason { get; set; } = string.Empty;
+        }
+
+        /// <summary>
+        /// 特殊能力 (BOTC 專用)
+        /// </summary>
+        public class SpecialAbility
+        {
+            [JsonProperty("name")]
+            public string Name { get; set; } = string.Empty;
+
+            [JsonProperty("type")]
+            public string Type { get; set; } = string.Empty;
+
+            [JsonProperty("time", NullValueHandling = NullValueHandling.Ignore)]
+            public string? Time { get; set; }
+
+            [JsonProperty("value", NullValueHandling = NullValueHandling.Ignore)]
+            public string? Value { get; set; }
+
+            [JsonProperty("global", NullValueHandling = NullValueHandling.Ignore)]
+            public bool? Global { get; set; }
         }
     }
 }

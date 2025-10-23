@@ -19,7 +19,6 @@ namespace BloodClockTowerScriptEditor.Views
             txtName.Text = meta.Name;
             txtAuthor.Text = meta.Author;
             txtLogo.Text = meta.Logo;
-            txtDescription.Text = meta.Description;
 
             // 複製狀態列表 (使用擴充類別支援勾選)
             _tempStatusList = new ObservableCollection<StatusInfoEx>();
@@ -133,7 +132,6 @@ namespace BloodClockTowerScriptEditor.Views
             _originalMeta.Name = txtName.Text;
             _originalMeta.Author = txtAuthor.Text;
             _originalMeta.Logo = txtLogo.Text;
-            _originalMeta.Description = txtDescription.Text;
 
             // 更新狀態列表
             _originalMeta.Status.Clear();

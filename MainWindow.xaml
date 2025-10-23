@@ -271,7 +271,7 @@
                                             Background="#F0F0F0" 
                                             BorderBrush="#368CE1" BorderThickness="1"
                                             Margin="0,0,10,0">
-                                                                        <Image Source="{Binding Image, Converter={StaticResource StringToImageSourceConverter}}" 
+                                                                        <Image Source="{Binding ImageUrl, Converter={StaticResource StringToImageSourceConverter}}" 
                                                Stretch="Uniform"/>
                                                                     </Border>
 
@@ -350,7 +350,7 @@
                                             Background="#F0F0F0" 
                                             BorderBrush="#71A8D6" BorderThickness="1"
                                             Margin="0,0,10,0">
-                                                                        <Image Source="{Binding Image, Converter={StaticResource StringToImageSourceConverter}}" 
+                                                                        <Image Source="{Binding ImageUrl, Converter={StaticResource StringToImageSourceConverter}}" 
                                                Stretch="Uniform"/>
                                                                     </Border>
 
@@ -429,7 +429,7 @@
                                             Background="#F0F0F0" 
                                             BorderBrush="#DC3545" BorderThickness="1"
                                             Margin="0,0,10,0">
-                                                                        <Image Source="{Binding Image, Converter={StaticResource StringToImageSourceConverter}}" 
+                                                                        <Image Source="{Binding ImageUrl, Converter={StaticResource StringToImageSourceConverter}}" 
                                                Stretch="Uniform"/>
                                                                     </Border>
 
@@ -508,7 +508,7 @@
                                             Background="#F0F0F0" 
                                             BorderBrush="#8B0000" BorderThickness="1"
                                             Margin="0,0,10,0">
-                                                                        <Image Source="{Binding Image, Converter={StaticResource StringToImageSourceConverter}}" 
+                                                                        <Image Source="{Binding ImageUrl, Converter={StaticResource StringToImageSourceConverter}}" 
                                                Stretch="Uniform"/>
                                                                     </Border>
 
@@ -587,7 +587,7 @@
                                             Background="#F0F0F0" 
                                             BorderBrush="#6c757d" BorderThickness="1"
                                             Margin="0,0,10,0">
-                                                                        <Image Source="{Binding Image, Converter={StaticResource StringToImageSourceConverter}}" 
+                                                                        <Image Source="{Binding ImageUrl, Converter={StaticResource StringToImageSourceConverter}}" 
                                                Stretch="Uniform"/>
                                                                     </Border>
 
@@ -666,7 +666,7 @@
                                             Background="#F0F0F0" 
                                             BorderBrush="#FFC107" BorderThickness="1"
                                             Margin="0,0,10,0">
-                                                                        <Image Source="{Binding Image, Converter={StaticResource StringToImageSourceConverter}}" 
+                                                                        <Image Source="{Binding ImageUrl, Converter={StaticResource StringToImageSourceConverter}}" 
                                                Stretch="Uniform"/>
                                                                     </Border>
 
@@ -745,7 +745,7 @@
                                             Background="#F0F0F0" 
                                             BorderBrush="#9C27B0" BorderThickness="1"
                                             Margin="0,0,10,0">
-                                                                        <Image Source="{Binding Image, Converter={StaticResource StringToImageSourceConverter}}" 
+                                                                        <Image Source="{Binding ImageUrl, Converter={StaticResource StringToImageSourceConverter}}" 
                                                Stretch="Uniform"/>
                                                                     </Border>
 

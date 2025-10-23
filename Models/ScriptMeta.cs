@@ -15,18 +15,20 @@ namespace BloodClockTowerScriptEditor.Models
         private string _author = string.Empty;
         private string _description = string.Empty;
         private string _logo = string.Empty;
-        private string _townsfolkName = "鎮民";
-        private string _outsidersName = "外來者";
-        private string _minionsName = "爪牙";
-        private string _demonsName = "惡魔";
         private string _townsfolk = "鎮民";
         private string _outsider = "外來者";
         private string _minion = "爪牙";
         private string _demon = "惡魔";
         private string _traveler = "旅行者";
         private string _aJinxed = "相剋規則";
-        private string? _aJinxedName;
         private List<StatusInfo> _status = new();
+        // === BOTC 專用 (選用) ===
+        private bool? _hideTitle;
+        private string? _background;
+        private string? _almanac;
+        private List<string>? _bootlegger;
+        private List<string>? _firstNight;
+        private List<string>? _otherNight;
 
         // ==================== 公開屬性 ====================
 
@@ -63,34 +65,6 @@ namespace BloodClockTowerScriptEditor.Models
         {
             get => _logo;
             set => SetProperty(ref _logo, value);
-        }
-
-        [JsonProperty("townsfolkName")]
-        public string TownsfolkName
-        {
-            get => _townsfolkName;
-            set => SetProperty(ref _townsfolkName, value);
-        }
-
-        [JsonProperty("outsidersName")]
-        public string OutsidersName
-        {
-            get => _outsidersName;
-            set => SetProperty(ref _outsidersName, value);
-        }
-
-        [JsonProperty("minionsName")]
-        public string MinionsName
-        {
-            get => _minionsName;
-            set => SetProperty(ref _minionsName, value);
-        }
-
-        [JsonProperty("demonsName")]
-        public string DemonsName
-        {
-            get => _demonsName;
-            set => SetProperty(ref _demonsName, value);
         }
 
         [JsonProperty("townsfolk")]
@@ -135,18 +109,53 @@ namespace BloodClockTowerScriptEditor.Models
             set => SetProperty(ref _aJinxed, value);
         }
 
-        [JsonProperty("a jinxedName")]
-        public string? AJinxedName
-        {
-            get => _aJinxedName;
-            set => SetProperty(ref _aJinxedName, value);
-        }
-
         [JsonProperty("status")]
         public List<StatusInfo> Status
         {
             get => _status;
             set => SetProperty(ref _status, value);
+        }
+
+        [JsonProperty("hideTitle", NullValueHandling = NullValueHandling.Ignore)]
+        public bool? HideTitle
+        {
+            get => _hideTitle;
+            set => SetProperty(ref _hideTitle, value);
+        }
+
+        [JsonProperty("background", NullValueHandling = NullValueHandling.Ignore)]
+        public string? Background
+        {
+            get => _background;
+            set => SetProperty(ref _background, value);
+        }
+
+        [JsonProperty("almanac", NullValueHandling = NullValueHandling.Ignore)]
+        public string? Almanac
+        {
+            get => _almanac;
+            set => SetProperty(ref _almanac, value);
+        }
+
+        [JsonProperty("bootlegger", NullValueHandling = NullValueHandling.Ignore)]
+        public List<string>? Bootlegger
+        {
+            get => _bootlegger;
+            set => SetProperty(ref _bootlegger, value);
+        }
+
+        [JsonProperty("firstNight", NullValueHandling = NullValueHandling.Ignore)]
+        public List<string>? FirstNightOrder
+        {
+            get => _firstNight;
+            set => SetProperty(ref _firstNight, value);
+        }
+
+        [JsonProperty("otherNight", NullValueHandling = NullValueHandling.Ignore)]
+        public List<string>? OtherNightOrder
+        {
+            get => _otherNight;
+            set => SetProperty(ref _otherNight, value);
         }
     }
 

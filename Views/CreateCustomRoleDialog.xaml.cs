@@ -60,7 +60,6 @@ namespace BloodClockTowerScriptEditor.Views
             txtId.Text = role.Id;
             txtId.IsEnabled = false; // 編輯時不允許修改 ID
             txtName.Text = role.Name;
-            txtNameEng.Text = role.NameEng ?? "";
             txtImage.Text = role.Image ?? "";
             txtAbility.Text = role.Ability ?? "";
             txtEdition.Text = role.Edition ?? "custom";
@@ -192,7 +191,6 @@ namespace BloodClockTowerScriptEditor.Views
             {
                 string id = txtId.Text.Trim();
                 string name = txtName.Text.Trim();
-                string nameEng = txtNameEng.Text.Trim();
                 string ability = txtAbility.Text.Trim();
                 string image = txtImage.Text.Trim();
                 string edition = txtEdition.Text.Trim();
@@ -240,7 +238,6 @@ namespace BloodClockTowerScriptEditor.Views
                     {
                         Id = id,
                         Name = name,
-                        NameEng = string.IsNullOrEmpty(nameEng) ? null : nameEng,
                         Team = team,
                         Ability = ability,
                         Image = string.IsNullOrEmpty(image) ? null : image,
@@ -302,7 +299,6 @@ namespace BloodClockTowerScriptEditor.Views
                     }
 
                     roleToUpdate.Name = name;
-                    roleToUpdate.NameEng = string.IsNullOrEmpty(nameEng) ? null : nameEng;
                     roleToUpdate.Team = team;
                     roleToUpdate.Ability = ability;
                     roleToUpdate.Image = string.IsNullOrEmpty(image) ? null : image;

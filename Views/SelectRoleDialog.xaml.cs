@@ -164,7 +164,6 @@ namespace BloodClockTowerScriptEditor.Views
                     if (string.IsNullOrEmpty(searchText)) return true;
 
                     return (r.Name?.ToLower().Contains(searchText) ?? false) ||
-                           (r.NameEng?.ToLower().Contains(searchText) ?? false) ||
                            (r.Ability?.ToLower().Contains(searchText) ?? false);
 
                 }).ToList();

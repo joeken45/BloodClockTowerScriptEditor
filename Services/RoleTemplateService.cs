@@ -55,7 +55,6 @@ namespace BloodClockTowerScriptEditor.Services
                 .Include(r => r.Reminders)
                 .Where(r =>
                     r.Name.ToLower().Contains(keyword) ||
-                    (r.NameEng != null && r.NameEng.ToLower().Contains(keyword)) ||
                     (r.Ability != null && r.Ability.ToLower().Contains(keyword)))
                 .OrderBy(r => r.Team)
                 .ThenBy(r => r.Name)

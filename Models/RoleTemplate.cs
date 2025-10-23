@@ -26,12 +26,6 @@ namespace BloodClockTowerScriptEditor.Models
         public string Name { get; set; } = string.Empty;
 
         /// <summary>
-        /// 英文名稱
-        /// </summary>
-        [MaxLength(100)]
-        public string? NameEng { get; set; }
-
-        /// <summary>
         /// 角色類型（townsfolk, outsider, minion, demon, traveler, fabled）
         /// </summary>
         [Required]
@@ -152,10 +146,11 @@ namespace BloodClockTowerScriptEditor.Models
             {
                 Id = this.Id,
                 Name = this.Name,
-                NameEng = this.NameEng,
                 Team = Enum.Parse<TeamType>(this.Team, true),
                 Ability = this.Ability ?? string.Empty,
-                Image = this.Image,
+                Image = string.IsNullOrEmpty(this.Image)
+    ? new List<string>()
+    : new List<string> { this.Image },
                 Edition = this.Edition,
                 Flavor = this.Flavor,
                 Setup = this.Setup,

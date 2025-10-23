@@ -218,7 +218,6 @@ namespace BloodClockTowerScriptEditor.Services
             {
                 Id = item["id"]?.ToString() ?? string.Empty,
                 Name = item["name"]?.ToString() ?? string.Empty,
-                NameEng = item["name_eng"]?.ToString(),
                 Team = item["team"]?.ToString() ?? "townsfolk",
                 Ability = item["ability"]?.ToString(),
                 Image = item["image"]?.ToString(),
@@ -248,7 +247,6 @@ namespace BloodClockTowerScriptEditor.Services
         private void UpdateRoleTemplate(RoleTemplate existing, JToken item, string category, bool isOfficial)
         {
             existing.Name = item["name"]?.ToString() ?? existing.Name;
-            existing.NameEng = item["name_eng"]?.ToString();
             existing.Team = item["team"]?.ToString() ?? existing.Team;
             existing.Ability = item["ability"]?.ToString();
             existing.Image = item["image"]?.ToString();

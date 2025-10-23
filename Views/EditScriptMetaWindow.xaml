@@ -53,14 +53,6 @@
                     </Border>
                 </StackPanel>
 
-                <!-- 第三行: 劇本描述 -->
-                <StackPanel Margin="0,0,0,15">
-                    <TextBlock Text="劇本描述:" FontWeight="SemiBold" Margin="0,0,0,3"/>
-                    <TextBox x:Name="txtDescription" Padding="6" TextWrapping="Wrap" 
-                             AcceptsReturn="True" Height="70"
-                             VerticalScrollBarVisibility="Auto"/>
-                </StackPanel>
-
                 <!-- 狀態列表標題 + 按鈕 -->
                 <Grid Margin="0,0,0,8">
                     <Grid.ColumnDefinitions>

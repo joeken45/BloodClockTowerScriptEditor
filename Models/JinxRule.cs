@@ -113,7 +113,9 @@ namespace BloodClockTowerScriptEditor.Models
                 Name = this.Name,
                 Team = TeamType.Jinxed,
                 Ability = this.Ability,
-                Image = this.Image,
+                Image = string.IsNullOrEmpty(this.Image)
+    ? new List<string>()
+    : new List<string> { this.Image },
                 Setup = this.Setup,
                 FirstNight = (int)this.FirstNight,
                 OtherNight = (int)this.OtherNight,
