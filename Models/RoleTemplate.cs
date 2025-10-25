@@ -62,12 +62,12 @@ namespace BloodClockTowerScriptEditor.Models
         /// <summary>
         /// 首個夜晚行動順序（0 表示不行動）
         /// </summary>
-        public int FirstNight { get; set; }
+        public double FirstNight { get; set; }
 
         /// <summary>
         /// 其他夜晚行動順序（0 表示不行動）
         /// </summary>
-        public int OtherNight { get; set; }
+        public double OtherNight { get; set; }
 
         /// <summary>
         /// 首個夜晚說書人提示

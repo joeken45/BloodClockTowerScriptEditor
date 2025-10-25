@@ -165,12 +165,71 @@ namespace BloodClockTowerScriptEditor.Services
 
             return validLines.ToString();
         }
+
         /// <summary>
-        /// 處理提示標記 (Reminders) - 統一處理邏輯
+        /// 安全解析夜晚順序（處理空字串、小數、null）
         /// </summary>
-        /// <param name="roleTemplate">要處理的角色範本</param>
-        /// <param name="item">JSON 項目</param>
-        /// <param name="clearExisting">是否清除現有標記（更新時使用）</param>
+        private double ParseNightOrder(JToken? token)  // ✅ 返回 double
+        {
+            if (token == null || token.Type == JTokenType.Null)
+                return 0.0;
+
+            string? value = token.ToString();
+            if (string.IsNullOrWhiteSpace(value))
+                return 0.0;
+
+            // 直接解析為 double
+            if (double.TryParse(value, out double result))
+                return result;
+
+            return 0.0;
+        }
+        /// <summary>
+        /// 安全解析提示標記（支援字串、陣列、逗號分隔）
+        /// </summary>
+        private List<string> ParseReminders(JToken? token)
+        {
+            var result = new List<string>();
+
+            if (token == null || token.Type == JTokenType.Null)
+                return result;
+
+            // 情況 1: 陣列格式 ["標記1", "標記2"]
+            if (token.Type == JTokenType.Array)
+            {
+                var array = token.ToObject<List<string>>();
+                if (array != null)
+                {
+                    foreach (var item in array)
+                    {
+                        if (!string.IsNullOrWhiteSpace(item))
+                            result.Add(item.Trim());
+                    }
+                }
+            }
+            // 情況 2: 字串格式 "標記1, 標記2" 或 "標記1"
+            else if (token.Type == JTokenType.String)
+            {
+                string? value = token.ToString();
+                if (!string.IsNullOrWhiteSpace(value))
+                {
+                    // 用逗號分割
+                    var items = value.Split(new[] { ',', '，' }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var item in items)
+                    {
+                        string trimmed = item.Trim();
+                        if (!string.IsNullOrWhiteSpace(trimmed))
+                            result.Add(trimmed);
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// 處理提示標記 (Reminders) - 統一處理邏輯（已更新使用 ParseReminders）
+        /// </summary>
         private void ProcessReminders(RoleTemplate roleTemplate, JToken item, bool clearExisting = false)
         {
             if (clearExisting)
@@ -178,39 +237,33 @@ namespace BloodClockTowerScriptEditor.Services
                 roleTemplate.Reminders.Clear();
             }
 
-            // 處理一般提示標記
-            var reminders = item["reminders"]?.ToObject<List<string>>();
-            if (reminders != null)
+            // 處理一般提示標記（使用新的解析方法）
+            var reminders = ParseReminders(item["reminders"]);
+            foreach (var reminder in reminders)
             {
-                foreach (var reminder in reminders)
+                roleTemplate.Reminders.Add(new RoleReminder
                 {
-                    roleTemplate.Reminders.Add(new RoleReminder
-                    {
-                        RoleId = roleTemplate.Id,
-                        ReminderText = reminder,
-                        IsGlobal = false
-                    });
-                }
+                    RoleId = roleTemplate.Id,
+                    ReminderText = reminder,
+                    IsGlobal = false
+                });
             }
 
-            // 處理全局提示標記
-            var remindersGlobal = item["remindersGlobal"]?.ToObject<List<string>>();
-            if (remindersGlobal != null)
+            // 處理全局提示標記（使用新的解析方法）
+            var remindersGlobal = ParseReminders(item["remindersGlobal"]);
+            foreach (var reminder in remindersGlobal)
             {
-                foreach (var reminder in remindersGlobal)
+                roleTemplate.Reminders.Add(new RoleReminder
                 {
-                    roleTemplate.Reminders.Add(new RoleReminder
-                    {
-                        RoleId = roleTemplate.Id,
-                        ReminderText = reminder,
-                        IsGlobal = true
-                    });
-                }
+                    RoleId = roleTemplate.Id,
+                    ReminderText = reminder,
+                    IsGlobal = true
+                });
             }
         }
 
         /// <summary>
-        /// 建立新的 RoleTemplate
+        /// 建立新的 RoleTemplate（已更新使用 ParseNightOrder）
         /// </summary>
         private RoleTemplate CreateRoleTemplate(JToken item, string category, bool isOfficial)
         {
@@ -224,8 +277,8 @@ namespace BloodClockTowerScriptEditor.Services
                 Edition = item["edition"]?.ToString() ?? "custom",
                 Flavor = item["flavor"]?.ToString(),
                 Setup = item["setup"]?.ToObject<bool>() ?? false,
-                FirstNight = item["firstNight"]?.ToObject<int>() ?? 0,
-                OtherNight = item["otherNight"]?.ToObject<int>() ?? 0,
+                FirstNight = ParseNightOrder(item["firstNight"]),
+                OtherNight = ParseNightOrder(item["otherNight"]),
                 FirstNightReminder = item["firstNightReminder"]?.ToString(),
                 OtherNightReminder = item["otherNightReminder"]?.ToString(),
                 Category = category,
@@ -234,15 +287,14 @@ namespace BloodClockTowerScriptEditor.Services
                 UpdatedDate = DateTime.Now
             };
 
-            // ✅ 原本這裡有 40 行 Reminders 處理邏輯
-            // 🔄 現在改用統一的 ProcessReminders() 方法
+            // 使用新的 ProcessReminders 方法
             ProcessReminders(roleTemplate, item);
 
             return roleTemplate;
         }
 
         /// <summary>
-        /// 更新現有 RoleTemplate (覆蓋所有欄位)
+        /// 更新現有 RoleTemplate（已更新使用 ParseNightOrder）
         /// </summary>
         private void UpdateRoleTemplate(RoleTemplate existing, JToken item, string category, bool isOfficial)
         {
@@ -253,16 +305,15 @@ namespace BloodClockTowerScriptEditor.Services
             existing.Edition = item["edition"]?.ToString() ?? "custom";
             existing.Flavor = item["flavor"]?.ToString();
             existing.Setup = item["setup"]?.ToObject<bool>() ?? false;
-            existing.FirstNight = item["firstNight"]?.ToObject<int>() ?? 0;
-            existing.OtherNight = item["otherNight"]?.ToObject<int>() ?? 0;
+            existing.FirstNight = ParseNightOrder(item["firstNight"]);
+            existing.OtherNight = ParseNightOrder(item["otherNight"]);
             existing.FirstNightReminder = item["firstNightReminder"]?.ToString();
             existing.OtherNightReminder = item["otherNightReminder"]?.ToString();
             existing.Category = category;
             existing.IsOfficial = isOfficial;
             existing.UpdatedDate = DateTime.Now;
 
-            // ✅ 原本這裡有 40 行 Reminders 處理邏輯（含 Clear() + 兩個 foreach）
-            // 🔄 現在改用統一的 ProcessReminders() 方法，並傳入 clearExisting: true
+            // 使用新的 ProcessReminders 方法（清除現有標記）
             ProcessReminders(existing, item, clearExisting: true);
         }
 

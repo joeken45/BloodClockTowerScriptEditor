@@ -431,7 +431,7 @@ namespace BloodClockTowerScriptEditor.ViewModels
         }
 
         [RelayCommand]
-        private void RemoveRole()
+        private async Task RemoveRole()
         {
             if (SelectedRole == null)
             {
@@ -443,8 +443,13 @@ namespace BloodClockTowerScriptEditor.ViewModels
             {
                 CurrentScript.Roles.Remove(SelectedRole);
                 SelectedRole = null;
+
+                // 🆕 刪除角色後，同步相剋規則
+                await CheckAndAddJinxRulesAsync();
+
                 UpdateFilteredRoles();
                 UpdateNightOrderLists();
+                IsDirty = true;
                 StatusMessage = "角色已刪除";
             }
         }
@@ -787,41 +792,45 @@ namespace BloodClockTowerScriptEditor.ViewModels
                 role.OtherNight = Math.Round(newOrder, 3);
         }
 
-        // 【步驟14: 新增角色屬性變更處理 - 放在私有方法區塊】
-        private void OnRolePropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private string _lastRoleId = string.Empty;  // 新增欄位記錄上次的 ID
+
+        private async void OnRolePropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             // 任何角色屬性變更都標記為需要儲存
             IsDirty = true;
+
+            // 🆕 如果是 Id 欄位變更，同步相剋規則
+            if (e.PropertyName == nameof(Role.Id) && sender is Role role)
+            {
+                if (!string.IsNullOrEmpty(_lastRoleId) && _lastRoleId != role.Id)
+                {
+                    System.Diagnostics.Debug.WriteLine($"🔄 角色 ID 變更: {_lastRoleId} → {role.Id}");
+                    await CheckAndAddJinxRulesAsync();
+                }
+                _lastRoleId = role.Id;
+            }
         }
 
         /// <summary>
-        /// 檢查並加入相剋規則
+        /// 檢查並同步相剋規則（集石獨立物件 + BOTC Jinxes 陣列）
         /// </summary>
         private async Task CheckAndAddJinxRulesAsync()
         {
             try
             {
-                var jinxService = new JinxRuleService();
-                var detectedRules = await jinxService.DetectJinxRulesAsync(CurrentScript);
+                // 1. 同步集石格式的獨立相剋物件（加入/移除）
+                await JinxSyncHelper.SyncJinxedRolesAsync(CurrentScript);
 
-                if (detectedRules.Count == 0)
-                    return;
-
-                // 暫時先自動加入
-                foreach (var rule in detectedRules)
-                {
-                    var role = rule.ToRole();
-                    CurrentScript.Roles.Add(role);
-                }
+                // 2. 同步所有角色的 BOTC 格式 Jinxes 陣列
+                await JinxSyncHelper.SyncAllRoleJinxesAsync(CurrentScript);
 
                 UpdateFilteredRoles();
-                StatusMessage = $"已自動加入 {detectedRules.Count} 個相剋規則";
 
-                System.Diagnostics.Debug.WriteLine($"✅ 偵測到 {detectedRules.Count} 個相剋規則並已加入");
+                System.Diagnostics.Debug.WriteLine($"✅ 相剋規則同步完成");
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ 檢查相剋規則失敗：{ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"❌ 同步相剋規則失敗：{ex.Message}");
             }
         }
 

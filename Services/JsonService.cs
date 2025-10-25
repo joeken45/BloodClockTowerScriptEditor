@@ -85,16 +85,16 @@ namespace BloodClockTowerScriptEditor.Services
                 var metaObj = JObject.FromObject(script.Meta, serializer);
 
                 // BOTC 格式：移除集石專用欄位
-                if (format == ExportFormat.BOTC)
-                {
-                    metaObj.Remove("status");
-                    metaObj.Remove("townsfolk");
-                    metaObj.Remove("outsider");
-                    metaObj.Remove("minion");
-                    metaObj.Remove("demon");
-                    metaObj.Remove("traveler");
-                    metaObj.Remove("a jinxed");
-                }
+                //if (format == ExportFormat.BOTC)
+                //{
+                //    metaObj.Remove("status");
+                //    metaObj.Remove("townsfolk");
+                //    metaObj.Remove("outsider");
+                //    metaObj.Remove("minion");
+                //    metaObj.Remove("demon");
+                //    metaObj.Remove("traveler");
+                //    metaObj.Remove("a jinxed");
+                //}
                 // 集石格式：保留所有欄位
 
                 jArray.Add(metaObj);

@@ -200,12 +200,12 @@ namespace BloodClockTowerScriptEditor.Views
                 string team = ((ComboBoxItem)cmbTeam.SelectedItem).Tag?.ToString() ?? "townsfolk";
 
                 // 解析夜晚順序
-                if (!int.TryParse(txtFirstNight.Text, out int firstNight))
+                if (!double.TryParse(txtFirstNight.Text, out double firstNight))
                 {
                     firstNight = 0;
                 }
 
-                if (!int.TryParse(txtOtherNight.Text, out int otherNight))
+                if (!double.TryParse(txtOtherNight.Text, out double otherNight))
                 {
                     otherNight = 0;
                 }

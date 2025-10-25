@@ -79,5 +79,16 @@ namespace BloodClockTowerScriptEditor.Services
             using var context = new JinxRuleContext();
             return await context.JinxRules.FirstOrDefaultAsync(j => j.Id == id);
         }
+
+        /// <summary>
+        /// 根據角色名稱查詢所有相關的相剋規則
+        /// </summary>
+        public async Task<List<JinxRule>> GetRulesByCharacterNameAsync(string characterName)
+        {
+            using var context = new JinxRuleContext();
+            return await context.JinxRules
+                .Where(j => j.Character1 == characterName || j.Character2 == characterName)
+                .ToListAsync();
+        }
     }
 }
