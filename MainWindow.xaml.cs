@@ -23,6 +23,11 @@ namespace BloodClockTowerScriptEditor
             Loaded += MainWindow_Loaded;
             // 🆕 註冊關閉事件
             Closing += MainWindow_Closing;
+            // 🆕 監聽 SelectedRole 變更，用於切換 UI
+            if (DataContext is MainViewModel viewModel)
+            {
+                viewModel.PropertyChanged += ViewModel_PropertyChanged;
+            }
         }
 
         /// <summary>
@@ -226,6 +231,97 @@ namespace BloodClockTowerScriptEditor
             }
         }
 
+        /// <summary>
+        /// 監聽 ViewModel 屬性變更
+        /// </summary>
+        private void ViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            // 當 SelectedRole 變更時，檢查是否需要切換 UI
+            if (e.PropertyName == nameof(MainViewModel.SelectedRole))
+            {
+                UpdateRoleEditorVisibility();
+
+                // 如果選擇的是相剋角色，監聽 Team 變更
+                if (sender is MainViewModel vm && vm.SelectedRole != null)
+                {
+                    vm.SelectedRole.PropertyChanged -= SelectedRole_PropertyChanged;
+                    vm.SelectedRole.PropertyChanged += SelectedRole_PropertyChanged;
+
+                    // 初始化 UI 狀態
+                    UpdateRoleEditorVisibility();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 監聽角色屬性變更（主要監聽 Team 變更）
+        /// </summary>
+        private void SelectedRole_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            // 當 Team 變更時，切換 UI
+            if (e.PropertyName == nameof(Role.Team))
+            {
+                UpdateRoleEditorVisibility();
+
+                // 如果切換到相剋規則，清空不必要的欄位
+                if (sender is Role role && role.Team == TeamType.Jinxed)
+                {
+                    ClearNonJinxedFields(role);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 更新角色編輯器的顯示/隱藏
+        /// </summary>
+        private void UpdateRoleEditorVisibility()
+        {
+            if (DataContext is not MainViewModel viewModel || viewModel.SelectedRole == null)
+            {
+                // 沒有選擇角色時，兩個編輯器都隱藏
+                NormalRoleEditor.Visibility = Visibility.Collapsed;
+                JinxedRoleEditor.Visibility = Visibility.Collapsed;
+                return;
+            }
+
+            bool isJinxedRole = viewModel.SelectedRole.Team == TeamType.Jinxed;
+
+            // 根據角色類型切換 UI
+            NormalRoleEditor.Visibility = isJinxedRole
+                ? Visibility.Collapsed
+                : Visibility.Visible;
+
+            JinxedRoleEditor.Visibility = isJinxedRole
+                ? Visibility.Visible
+                : Visibility.Collapsed;
+
+            System.Diagnostics.Debug.WriteLine($"UI 切換: {(isJinxedRole ? "相剋規則編輯器" : "一般角色編輯器")}");
+        }
+
+        /// <summary>
+        /// 清空非相剋規則需要的欄位
+        /// </summary>
+        private void ClearNonJinxedFields(Role role)
+        {
+            // 清空不必要的欄位，但保留基本資訊
+            role.Edition = null;
+            role.Setup = false;
+            role.Flavor = null;
+            role.FirstNight = 0;
+            role.FirstNightReminder = null;
+            role.OtherNight = 0;
+            role.OtherNightReminder = null;
+
+            // 清空提示標記
+            role.Reminders.Clear();
+            role.RemindersGlobal.Clear();
+
+            // 清空 BOTC Jinxes
+            role.Jinxes = null;
+
+            System.Diagnostics.Debug.WriteLine($"已清空角色 {role.Name} 的非相剋欄位");
+        }
+
         // ==================== 私有欄位 ====================
         private Role? _draggedRole = null;
         private TeamType _draggedFromTeam;
@@ -293,6 +389,65 @@ namespace BloodClockTowerScriptEditor
         /// 圖片 URL 變更時觸發
         /// </summary>
         private void ImageUrl_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (DataContext is MainViewModel viewModel)
+            {
+                viewModel.IsDirty = true;
+            }
+        }
+
+        // ==================== Jinx 管理方法 ====================
+
+        /// <summary>
+        /// 新增 Jinx
+        /// </summary>
+        private void AddJinx_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is not MainViewModel viewModel || viewModel.SelectedRole == null)
+                return;
+
+            var newItem = new JinxItem("", "");
+            viewModel.SelectedRole.JinxItems.Add(newItem);
+            viewModel.IsDirty = true;
+        }
+
+        /// <summary>
+        /// 刪除 Jinx
+        /// </summary>
+        private void DeleteJinx_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is not MainViewModel viewModel || viewModel.SelectedRole == null)
+                return;
+
+            var button = sender as Button;
+            if (button?.DataContext is JinxItem item)
+            {
+                var displayRole = string.IsNullOrEmpty(item.TargetRoleName)
+                    ? "(未選擇)"
+                    : item.TargetRoleName;
+
+                var displayReason = string.IsNullOrEmpty(item.Reason)
+                    ? "(無說明)"
+                    : (item.Reason.Length > 30 ? item.Reason.Substring(0, 30) + "..." : item.Reason);
+
+                var result = MessageBox.Show(
+                    $"確定要刪除此相剋規則嗎？\n\n角色: {displayRole}\n規則: {displayReason}",
+                    "確認刪除",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    viewModel.SelectedRole.JinxItems.Remove(item);
+                    viewModel.IsDirty = true;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Jinx 規則說明變更時觸發
+        /// </summary>
+        private void JinxReason_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (DataContext is MainViewModel viewModel)
             {

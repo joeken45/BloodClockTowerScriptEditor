@@ -303,6 +303,142 @@ namespace BloodClockTowerScriptEditor.Models
             }
         }
 
+        // ==================== Jinx 列表 UI 綁定 ====================
+
+        // ==================== 集石相剋規則專用屬性 ====================
+
+        /// <summary>
+        /// 相剋角色1的名稱 (UI 綁定用)
+        /// </summary>
+        [JsonIgnore]
+        public string JinxRole1Name
+        {
+            get
+            {
+                if (Team != TeamType.Jinxed || string.IsNullOrEmpty(Name))
+                    return string.Empty;
+
+                // 從 Name 解析: "方古&紅唇女郎" → "方古"
+                var parts = Name.Split('&');
+                return parts.Length > 0 ? parts[0] : string.Empty;
+            }
+            set
+            {
+                UpdateJinxRoleNames(value, JinxRole2Name);
+            }
+        }
+
+        /// <summary>
+        /// 相剋角色2的名稱 (UI 綁定用)
+        /// </summary>
+        [JsonIgnore]
+        public string JinxRole2Name
+        {
+            get
+            {
+                if (Team != TeamType.Jinxed || string.IsNullOrEmpty(Name))
+                    return string.Empty;
+
+                // 從 Name 解析: "方古&紅唇女郎" → "紅唇女郎"
+                var parts = Name.Split('&');
+                return parts.Length > 1 ? parts[1] : string.Empty;
+            }
+            set
+            {
+                UpdateJinxRoleNames(JinxRole1Name, value);
+            }
+        }
+
+        /// <summary>
+        /// 更新相剋角色名稱並自動生成 Name
+        /// </summary>
+        private void UpdateJinxRoleNames(string role1Name, string role2Name)
+        {
+            // 組合成完整的 Name
+            if (string.IsNullOrEmpty(role1Name) && string.IsNullOrEmpty(role2Name))
+            {
+                Name = string.Empty;
+            }
+            else
+            {
+                Name = $"{role1Name}&{role2Name}";
+            }
+
+            OnPropertyChanged(nameof(JinxRole1Name));
+            OnPropertyChanged(nameof(JinxRole2Name));
+            OnPropertyChanged(nameof(Name));
+        }
+
+
+        private ObservableCollection<JinxItem>? _jinxItems;
+
+        /// <summary>
+        /// UI 綁定用的 Jinx 列表（支援雙向更新）
+        /// </summary>
+        [JsonIgnore]
+        public ObservableCollection<JinxItem> JinxItems
+        {
+            get
+            {
+                if (_jinxItems == null)
+                {
+                    _jinxItems = new ObservableCollection<JinxItem>();
+
+                    // 從 Jinxes 初始化
+                    if (Jinxes != null)
+                    {
+                        foreach (var jinx in Jinxes)
+                        {
+                            // 透過 ID 查找角色名稱
+                            // 注意: 這裡需要從 Script 取得所有角色來查找名稱
+                            // 暫時先用 ID 作為名稱，之後再補完
+                            var item = new JinxItem(jinx.Id, jinx.Reason);
+                            item.PropertyChanged += OnJinxItemChanged;
+                            _jinxItems.Add(item);
+                        }
+                    }
+
+                    // 監聽集合變更
+                    _jinxItems.CollectionChanged += OnJinxItemsCollectionChanged;
+                }
+                return _jinxItems;
+            }
+        }
+
+        /// <summary>
+        /// JinxItem 的屬性變更時同步回 Jinxes
+        /// </summary>
+        private void OnJinxItemChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (sender is JinxItem item)
+            {
+                int index = _jinxItems!.IndexOf(item);
+                if (Jinxes != null && index >= 0 && index < Jinxes.Count)
+                {
+                    // 這裡需要將角色名稱轉換回 ID
+                    // 暫時先直接使用 TargetRoleName，之後再補完
+                    Jinxes[index].Reason = item.Reason;
+                }
+            }
+        }
+
+        /// <summary>
+        /// JinxItems 集合變更時同步回 Jinxes
+        /// </summary>
+        private void OnJinxItemsCollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            // 同步回 Jinxes 列表
+            Jinxes = _jinxItems?.Count > 0
+                ? _jinxItems.Select(item => new JinxInfo
+                {
+                    Id = item.TargetRoleName,  // 暫時使用名稱，之後需轉換為 ID
+                    Reason = item.Reason
+                }).ToList()
+                : null;
+
+            OnPropertyChanged(nameof(Jinxes));
+        }
+
         /// <summary>
         /// 相剋規則 (BOTC 專用)
         /// </summary>

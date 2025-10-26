@@ -812,6 +812,24 @@ namespace BloodClockTowerScriptEditor.ViewModels
         }
 
         /// <summary>
+        /// 供 Jinx ComboBox 綁定使用的角色名稱列表
+        /// </summary>
+        public List<string> AvailableRoleNamesForJinx
+        {
+            get
+            {
+                if (SelectedRole == null) return new List<string>();
+
+                return CurrentScript.Roles
+                    .Where(r => r.Name != SelectedRole.Name &&      // 排除自己
+                               r.Team != TeamType.Jinxed)           // 排除相剋物件
+                    .Select(r => r.Name)
+                    .OrderBy(r => r)
+                    .ToList();
+            }
+        }
+
+        /// <summary>
         /// 檢查並同步相剋規則（集石獨立物件 + BOTC Jinxes 陣列）
         /// </summary>
         private async Task CheckAndAddJinxRulesAsync()
