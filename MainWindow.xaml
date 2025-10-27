@@ -1376,13 +1376,16 @@
                                FontSize="11"/>
 
                                                 <!-- 角色選擇 ComboBox -->
-                                                <ComboBox Grid.Column="2"
-                              ItemsSource="{Binding DataContext.AvailableRoleNamesForJinx, RelativeSource={RelativeSource AncestorType=Window}}"
-                              SelectedItem="{Binding TargetRoleName, UpdateSourceTrigger=PropertyChanged}"
-                              VerticalAlignment="Center"
-                              Padding="4,2"
-                              BorderBrush="#CCC"
-                              BorderThickness="1"/>
+                                                <ComboBox x:Name="cmbJinxTargetRole"
+          Grid.Column="2"
+          ItemsSource="{Binding DataContext.AvailableRoleNamesForJinx, 
+                        RelativeSource={RelativeSource AncestorType=Window}}"
+          Loaded="JinxTargetRole_Loaded"
+          SelectionChanged="JinxTargetRole_SelectionChanged"
+          VerticalAlignment="Center"
+          Padding="4,2"
+          BorderBrush="#CCC"
+          BorderThickness="1"/>
 
                                                 <!-- 規則說明標籤 -->
                                                 <TextBlock Grid.Column="4" 

@@ -901,11 +901,12 @@ namespace BloodClockTowerScriptEditor.ViewModels
         {
             try
             {
-                // 1. 同步集石格式的獨立相剋物件（加入/移除）
+                // 1. 從資料庫同步（只處理官方規則）
                 await JinxSyncHelper.SyncJinxedRolesAsync(CurrentScript);
-
-                // 2. 同步所有角色的 BOTC 格式 Jinxes 陣列
                 await JinxSyncHelper.SyncAllRoleJinxesAsync(CurrentScript);
+
+                // 2. ✅ 新增：從所有角色的 BOTC Jinxes 同步（處理自訂規則）
+                JinxSyncHelper.SyncFromAllBotcJinxes(CurrentScript);
 
                 UpdateFilteredRoles();
 

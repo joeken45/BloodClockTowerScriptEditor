@@ -445,24 +445,82 @@ namespace BloodClockTowerScriptEditor
         }
 
         /// <summary>
-        /// Jinx 規則說明變更時觸發
+        /// 相剋角色 1 選擇變更時，通知角色 2 的選項更新
         /// </summary>
+        private void JinxRole_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (DataContext is MainViewModel viewModel && viewModel.SelectedRole?.Team == TeamType.Jinxed)
+            {
+                viewModel.IsDirty = true;
+
+                // ✅ 集石格式編輯後，同步到 BOTC 格式
+                JinxSyncHelper.SyncFromJinxedRoles(viewModel.CurrentScript);
+                viewModel.UpdateFilteredRoles();
+            }
+        }
+
+        /// <summary>
+        /// Jinx 目標角色 ComboBox 載入時，將 ID 轉換為名稱顯示
+        /// </summary>
+        private void JinxTargetRole_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (sender is ComboBox comboBox &&
+                comboBox.DataContext is JinxItem item &&
+                DataContext is MainViewModel viewModel)
+            {
+                // ID → 名稱
+                var role = viewModel.CurrentScript.Roles
+                    .FirstOrDefault(r => r.Id == item.TargetRoleName && r.Team != TeamType.Jinxed);
+
+                if (role != null)
+                {
+                    comboBox.SelectedItem = role.Name;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Jinx 目標角色選擇變更時，將名稱轉換為 ID 存入
+        /// </summary>
+        private void JinxTargetRole_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is ComboBox comboBox &&
+                comboBox.DataContext is JinxItem item &&
+                comboBox.SelectedItem is string selectedName &&
+                DataContext is MainViewModel viewModel)
+            {
+                var role = viewModel.CurrentScript.Roles
+                    .FirstOrDefault(r => r.Name == selectedName && r.Team != TeamType.Jinxed);
+
+                if (role != null)
+                {
+                    item.TargetRoleName = role.Id;
+                    viewModel.IsDirty = true;
+
+                    // ✅ 觸發同步
+                    SyncJinxesAfterEdit();
+                }
+            }
+        }
+
         private void JinxReason_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (DataContext is MainViewModel viewModel)
             {
                 viewModel.IsDirty = true;
+
+                // ✅ 規則說明變更也要同步
+                SyncJinxesAfterEdit();
             }
         }
-        /// <summary>
-        /// 相剋角色 1 選擇變更時，通知角色 2 的選項更新
-        /// </summary>
-        private void JinxRole_SelectionChanged(object sender, SelectionChangedEventArgs e)
+
+        private void SyncJinxesAfterEdit()
         {
             if (DataContext is MainViewModel viewModel)
             {
-                // 🔄 使用公開方法通知更新
-                viewModel.NotifyJinxRolesListChanged();
+                // 使用新的同步方法
+                JinxSyncHelper.SyncFromAllBotcJinxes(viewModel.CurrentScript);
+                viewModel.UpdateFilteredRoles();
             }
         }
 
