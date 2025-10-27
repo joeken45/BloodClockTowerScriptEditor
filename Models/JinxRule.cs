@@ -50,21 +50,6 @@ namespace BloodClockTowerScriptEditor.Models
         public string? Image { get; set; }
 
         /// <summary>
-        /// 是否影響設置
-        /// </summary>
-        public bool Setup { get; set; } = false;
-
-        /// <summary>
-        /// 首夜順序 (相剋規則通常為 0)
-        /// </summary>
-        public double FirstNight { get; set; } = 0.0;
-
-        /// <summary>
-        /// 其他夜順序 (相剋規則通常為 0)
-        /// </summary>
-        public double OtherNight { get; set; } = 0.0;
-
-        /// <summary>
         /// 角色 1 名稱 (從 Name 解析)
         /// </summary>
         [MaxLength(100)]
@@ -114,11 +99,12 @@ namespace BloodClockTowerScriptEditor.Models
                 Team = TeamType.Jinxed,
                 Ability = this.Ability,
                 Image = string.IsNullOrEmpty(this.Image)
-    ? new List<string>()
-    : new List<string> { this.Image },
-                Setup = this.Setup,
-                FirstNight = (int)this.FirstNight,
-                OtherNight = (int)this.OtherNight,
+                    ? new List<string>()
+                    : new List<string> { this.Image },
+                // 相剋規則不需要這些欄位，設為預設值
+                Setup = false,
+                FirstNight = 0,
+                OtherNight = 0,
                 Reminders = new System.Collections.ObjectModel.ObservableCollection<ReminderItem>(),
                 RemindersGlobal = new System.Collections.ObjectModel.ObservableCollection<ReminderItem>()
             };

@@ -25,8 +25,11 @@ namespace BloodClockTowerScriptEditor.Services
             // 取得所有相剋規則
             var allRules = await context.JinxRules.ToListAsync();
 
-            // 取得劇本中的所有角色名稱
-            var roleNames = script.Roles.Select(r => r.Name).ToHashSet();
+            // 取得劇本中的所有角色名稱（排除相剋規則自己）
+            var roleNames = script.Roles
+                .Where(r => r.Team != TeamType.Jinxed)
+                .Select(r => r.Name)
+                .ToHashSet();
 
             foreach (var rule in allRules)
             {
@@ -36,13 +39,8 @@ namespace BloodClockTowerScriptEditor.Services
 
                 if (hasChar1 && hasChar2)
                 {
-                    // 檢查是否已經加入過 (用 Id 判斷)
-                    bool alreadyAdded = script.Roles.Any(r => r.Id == rule.Id);
-
-                    if (!alreadyAdded)
-                    {
-                        detectedRules.Add(rule);
-                    }
+                    // 🆕 回傳所有應該存在的相剋規則，不管是否已經加入劇本
+                    detectedRules.Add(rule);
                 }
             }
 

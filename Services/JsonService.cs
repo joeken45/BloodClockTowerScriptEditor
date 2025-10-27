@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -142,44 +143,63 @@ namespace BloodClockTowerScriptEditor.Services
 
                 // === 處理元數據 ===
                 var metaObj = JObject.FromObject(script.Meta, serializer);
-
-                // BOTC 格式：移除集石專用欄位
-                //if (format == ExportFormat.BOTC)
-                //{
-                //    metaObj.Remove("status");
-                //    metaObj.Remove("townsfolk");
-                //    metaObj.Remove("outsider");
-                //    metaObj.Remove("minion");
-                //    metaObj.Remove("demon");
-                //    metaObj.Remove("traveler");
-                //    metaObj.Remove("a jinxed");
-                //}
-                // 集石格式：保留所有欄位
-
                 jArray.Add(metaObj);
 
                 // === 處理角色 ===
                 foreach (var role in script.Roles)
                 {
-                    var roleObj = JObject.FromObject(role, serializer);
+                    JObject roleObj;
 
-                    // 處理 Image 欄位
-                    if (roleObj["image"] != null)
+                    // 🆕 判斷是否為相剋規則
+                    if (role.Team == TeamType.Jinxed)
                     {
-                        if (format == ExportFormat.JiShi)
+                        // 相剋規則：只輸出必要欄位
+                        roleObj = new JObject
                         {
-                            // 集石格式：取第一個值，輸出為字串
-                            var imageArray = roleObj["image"] as JArray;
-                            if (imageArray != null && imageArray.Count > 0)
+                            ["id"] = role.Id,
+                            ["name"] = role.Name,
+                            ["team"] = "a jinxed",
+                            ["ability"] = role.Ability
+                        };
+
+                        // 可選欄位：image（如果有的話）
+                        if (role.Image != null && role.Image.Count > 0)
+                        {
+                            if (format == ExportFormat.JiShi)
                             {
-                                roleObj["image"] = imageArray[0];
+                                // 集石格式：字串
+                                roleObj["image"] = role.Image[0];
                             }
                             else
                             {
-                                roleObj.Remove("image");
+                                // BOTC 格式：陣列
+                                roleObj["image"] = JArray.FromObject(role.Image);
                             }
                         }
-                        // BOTC 格式：保持陣列原樣
+                    }
+                    else
+                    {
+                        // 一般角色：完整序列化
+                        roleObj = JObject.FromObject(role, serializer);
+
+                        // 處理 Image 欄位
+                        if (roleObj["image"] != null)
+                        {
+                            if (format == ExportFormat.JiShi)
+                            {
+                                // 集石格式：取第一個值，輸出為字串
+                                var imageArray = roleObj["image"] as JArray;
+                                if (imageArray != null && imageArray.Count > 0)
+                                {
+                                    roleObj["image"] = imageArray[0];
+                                }
+                                else
+                                {
+                                    roleObj.Remove("image");
+                                }
+                            }
+                            // BOTC 格式：保持陣列原樣
+                        }
                     }
 
                     jArray.Add(roleObj);
@@ -193,7 +213,7 @@ namespace BloodClockTowerScriptEditor.Services
                 throw new InvalidOperationException($"儲存劇本失敗: {ex.Message}", ex);
             }
         }
-        
+
         /// <summary>
         /// 解析相剋規則名稱（載入劇本時使用）
         /// </summary>

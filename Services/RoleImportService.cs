@@ -364,18 +364,11 @@ namespace BloodClockTowerScriptEditor.Services
                         // 解析 JSON 物件
                         string? id = item["id"]?.ToString();
                         string? name = item["name"]?.ToString();
-                        string? team = item["team"]?.ToString();
 
-                        // 基本驗證
+                        // 基本驗證：只檢查 id 和 name
                         if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(name))
                         {
-                            continue; // 跳過無效資料
-                        }
-
-                        // 驗證是否為相剋規則 (team 必須是 "a jinxed")
-                        if (team?.ToLower() != "a jinxed")
-                        {
-                            System.Diagnostics.Debug.WriteLine($"⚠️ 跳過非相剋規則: {name} (team: {team})");
+                            System.Diagnostics.Debug.WriteLine($"⚠️ 跳過無效資料: id={id}, name={name}");
                             continue;
                         }
 
@@ -433,9 +426,6 @@ namespace BloodClockTowerScriptEditor.Services
                 Team = "a jinxed",
                 Ability = item["ability"]?.ToString() ?? string.Empty,
                 Image = item["image"]?.ToString(),
-                Setup = item["setup"]?.ToObject<bool>() ?? false,
-                FirstNight = item["firstNight"]?.ToObject<double>() ?? 0.0,
-                OtherNight = item["otherNight"]?.ToObject<double>() ?? 0.0,
                 CreatedDate = DateTime.Now,
                 UpdatedDate = DateTime.Now
             };
@@ -454,9 +444,6 @@ namespace BloodClockTowerScriptEditor.Services
             existing.Name = item["name"]?.ToString() ?? existing.Name;
             existing.Ability = item["ability"]?.ToString() ?? existing.Ability;
             existing.Image = item["image"]?.ToString();
-            existing.Setup = item["setup"]?.ToObject<bool>() ?? false;
-            existing.FirstNight = item["firstNight"]?.ToObject<double>() ?? 0.0;
-            existing.OtherNight = item["otherNight"]?.ToObject<double>() ?? 0.0;
             existing.UpdatedDate = DateTime.Now;
 
             // 重新解析角色名稱
