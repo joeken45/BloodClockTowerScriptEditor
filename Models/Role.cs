@@ -55,7 +55,14 @@ namespace BloodClockTowerScriptEditor.Models
                 if (SetProperty(ref _team, value))
                 {
                     OnPropertyChanged(nameof(TeamDisplayName));
-                    TeamChanged?.Invoke(this, EventArgs.Empty); // ✅ 確保有這行
+                    TeamChanged?.Invoke(this, EventArgs.Empty);
+
+                    // 🆕 如果切換到相剋角色，通知 JinxRole1Name/2Name 更新
+                    if (value == TeamType.Jinxed)
+                    {
+                        OnPropertyChanged(nameof(JinxRole1Name));
+                        OnPropertyChanged(nameof(JinxRole2Name));
+                    }
                 }
             }
         }
@@ -354,6 +361,10 @@ namespace BloodClockTowerScriptEditor.Models
         /// </summary>
         private void UpdateJinxRoleNames(string role1Name, string role2Name)
         {
+            // 🔴 加入防護：只有相剋角色才處理
+            if (Team != TeamType.Jinxed)
+                return;
+
             // 組合成完整的 Name
             if (string.IsNullOrEmpty(role1Name) && string.IsNullOrEmpty(role2Name))
             {

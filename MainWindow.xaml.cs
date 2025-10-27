@@ -454,6 +454,17 @@ namespace BloodClockTowerScriptEditor
                 viewModel.IsDirty = true;
             }
         }
+        /// <summary>
+        /// 相剋角色 1 選擇變更時，通知角色 2 的選項更新
+        /// </summary>
+        private void JinxRole_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (DataContext is MainViewModel viewModel)
+            {
+                // 🔄 使用公開方法通知更新
+                viewModel.NotifyJinxRolesListChanged();
+            }
+        }
 
         // ==================== 展開/收合事件 ====================
 

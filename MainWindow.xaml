@@ -15,7 +15,6 @@
         <!-- 轉換器 -->
         <converters:TeamTypeConverter x:Key="TeamTypeConverter"/>
         <converters:NullToBooleanConverter x:Key="NullToBooleanConverter"/>
-        <converters:IdFormatValidationConverter x:Key="IdFormatValidationConverter"/>
         <converters:StringNotEmptyConverter x:Key="StringNotEmptyConverter"/>
         <converters:StringToImageSourceConverter x:Key="StringToImageSourceConverter"/>
         <converters:CountToVisibilityConverter x:Key="CountToVisibilityConverter"/>
@@ -969,7 +968,7 @@
                             <TextBlock Text="角色編輯" FontSize="20" FontWeight="Bold" Margin="0,0,0,8"/>
                             <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Margin="0,0,0,12"/>
 
-                            <!-- 第一行: 角色 ID + 角色名稱 -->
+                            <!-- 角色名稱 + 角色類型 左右並排 -->
                             <Grid Margin="0,0,0,8">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
@@ -977,64 +976,42 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
 
+                                <!-- 角色名稱 (唯讀) -->
                                 <DockPanel Grid.Column="0">
-                                    <TextBlock Text="角色 ID *" FontWeight="SemiBold" DockPanel.Dock="Left" 
-                               VerticalAlignment="Center" Margin="0,0,8,0" Width="80"/>
-                                    <TextBox Text="{Binding SelectedRole.Id, UpdateSourceTrigger=PropertyChanged}" 
-                             Padding="6,4" VerticalAlignment="Center">
-                                        <TextBox.Style>
-                                            <Style TargetType="TextBox">
-                                                <Setter Property="BorderBrush" Value="#CCC"/>
-                                                <Setter Property="BorderThickness" Value="1"/>
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding SelectedRole.Id, Converter={StaticResource StringNotEmptyConverter}}" Value="False">
-                                                        <Setter Property="BorderBrush" Value="#F44336"/>
-                                                        <Setter Property="BorderThickness" Value="2"/>
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding SelectedRole.Id, Converter={StaticResource IdFormatValidationConverter}}" Value="False">
-                                                        <Setter Property="BorderBrush" Value="#FF9800"/>
-                                                        <Setter Property="BorderThickness" Value="2"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBox.Style>
-                                    </TextBox>
+                                    <TextBlock Text="角色名稱" 
+                   FontWeight="SemiBold" 
+                   DockPanel.Dock="Left" 
+                   VerticalAlignment="Center" 
+                   Margin="0,0,8,0" 
+                   Width="80"/>
+                                    <TextBlock Text="🔒 唯讀" 
+                   FontSize="9" 
+                   Foreground="#999" 
+                   DockPanel.Dock="Right" 
+                   VerticalAlignment="Center" 
+                   Margin="4,0,0,0"/>
+                                    <TextBox Text="{Binding SelectedRole.Name, Mode=OneWay}" 
+                 IsReadOnly="True"
+                 Background="#F5F5F5"
+                 Padding="6,4" 
+                 VerticalAlignment="Center"
+                 BorderBrush="#CCC"
+                 BorderThickness="1"/>
                                 </DockPanel>
 
+                                <!-- 角色類型 -->
                                 <DockPanel Grid.Column="2">
-                                    <TextBlock Text="角色名稱 *" FontWeight="SemiBold" DockPanel.Dock="Left" 
-                               VerticalAlignment="Center" Margin="0,0,8,0" Width="80"/>
-                                    <TextBox Text="{Binding SelectedRole.Name, UpdateSourceTrigger=PropertyChanged}" 
-                             Padding="6,4" VerticalAlignment="Center">
-                                        <TextBox.Style>
-                                            <Style TargetType="TextBox">
-                                                <Setter Property="BorderBrush" Value="#CCC"/>
-                                                <Setter Property="BorderThickness" Value="1"/>
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding SelectedRole.Name, Converter={StaticResource StringNotEmptyConverter}}" Value="False">
-                                                        <Setter Property="BorderBrush" Value="#F44336"/>
-                                                        <Setter Property="BorderThickness" Value="2"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBox.Style>
-                                    </TextBox>
-                                </DockPanel>
-                            </Grid>
-
-                            <!-- 第二行: 角色類型 + 英文名稱 -->
-                            <Grid Margin="0,0,0,8">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="12"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-
-                                <DockPanel Grid.Column="0">
-                                    <TextBlock Text="角色類型 *" FontWeight="SemiBold" DockPanel.Dock="Left" 
-                               VerticalAlignment="Center" Margin="0,0,8,0" Width="80"/>
+                                    <TextBlock Text="角色類型 *" 
+                   FontWeight="SemiBold" 
+                   DockPanel.Dock="Left" 
+                   VerticalAlignment="Center" 
+                   Margin="0,0,8,0" 
+                   Width="80"/>
                                     <ComboBox SelectedItem="{Binding SelectedRole.Team}" 
-                              Padding="6,4" BorderBrush="#CCC" BorderThickness="1" VerticalAlignment="Center">
+                  Padding="6,4" 
+                  BorderBrush="#CCC" 
+                  BorderThickness="1" 
+                  VerticalAlignment="Center">
                                         <ComboBox.ItemTemplate>
                                             <DataTemplate>
                                                 <TextBlock Text="{Binding Converter={StaticResource TeamTypeConverter}}"/>
@@ -1046,7 +1023,7 @@
                                         <models:TeamType>Demon</models:TeamType>
                                         <models:TeamType>Traveler</models:TeamType>
                                         <models:TeamType>Fabled</models:TeamType>
-                                        <models:TeamType>Jinxed</models:TeamType>
+                                        <!-- 🔴 移除 Jinxed -->
                                     </ComboBox>
                                 </DockPanel>
                             </Grid>
@@ -1487,84 +1464,29 @@
 
                             <!-- ===== 自動生成欄位區塊 (唯讀) ===== -->
 
-                            <!-- 第一行: ID 和 名稱 左右並排 -->
-                            <Grid Margin="0,0,0,8">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="12"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-
-                                <!-- ID -->
-                                <DockPanel Grid.Column="0">
-                                    <TextBlock Text="ID" 
-                       FontWeight="SemiBold" 
-                       DockPanel.Dock="Left" 
-                       VerticalAlignment="Center" 
-                       Width="50"/>
-                                    <TextBlock Text="🔒 自動生成" 
-                       FontSize="9" 
-                       Foreground="#999" 
-                       DockPanel.Dock="Right" 
-                       VerticalAlignment="Center" 
-                       Margin="4,0,0,0"/>
-                                    <TextBox Text="{Binding SelectedRole.Id, Mode=OneWay}" 
-                     IsReadOnly="True" 
-                     Background="#F5F5F5" 
-                     Padding="6,4" 
-                     BorderBrush="#CCC" 
-                     BorderThickness="1" 
-                     VerticalAlignment="Center"/>
-                                </DockPanel>
-
-                                <!-- 名稱 -->
-                                <DockPanel Grid.Column="2">
-                                    <TextBlock Text="名稱" 
-                       FontWeight="SemiBold" 
-                       DockPanel.Dock="Left" 
-                       VerticalAlignment="Center" 
-                       Width="50"/>
-                                    <TextBlock Text="🔒 自動生成" 
-                       FontSize="9" 
-                       Foreground="#999" 
-                       DockPanel.Dock="Right" 
-                       VerticalAlignment="Center" 
-                       Margin="4,0,0,0"/>
-                                    <TextBox Text="{Binding SelectedRole.Name, Mode=OneWay}" 
-                     IsReadOnly="True" 
-                     Background="#F5F5F5" 
-                     Padding="6,4" 
-                     BorderBrush="#CCC" 
-                     BorderThickness="1" 
-                     VerticalAlignment="Center"/>
-                                </DockPanel>
-                            </Grid>
-
-                            <!-- 第二行: 類型 -->
+                            <!-- 只保留名稱 (唯讀) -->
                             <DockPanel Margin="0,0,0,8">
-                                <TextBlock Text="類型" 
-                   FontWeight="SemiBold" 
-                   DockPanel.Dock="Left" 
-                   VerticalAlignment="Center" 
-                   Width="50"/>
-                                <TextBlock Text="🔒 固定值" 
-                   FontSize="9" 
-                   Foreground="#999" 
-                   DockPanel.Dock="Right" 
-                   VerticalAlignment="Center" 
-                   Margin="4,0,0,0"/>
-                                <TextBox Text="a jinxed" 
-                 IsReadOnly="True" 
-                 Background="#F5F5F5" 
-                 Padding="6,4" 
-                 BorderBrush="#CCC" 
-                 BorderThickness="1" 
-                 VerticalAlignment="Center"/>
+                                <TextBlock Text="名稱" 
+               FontWeight="SemiBold" 
+               DockPanel.Dock="Left" 
+               VerticalAlignment="Center" 
+               Width="50"/>
+                                <TextBlock Text="🔒 自動生成" 
+               FontSize="9" 
+               Foreground="#999" 
+               DockPanel.Dock="Right" 
+               VerticalAlignment="Center" 
+               Margin="4,0,0,0"/>
+                                <TextBox Text="{Binding SelectedRole.Name, Mode=OneWay}" 
+             IsReadOnly="True" 
+             Background="#F5F5F5" 
+             Padding="6,4" 
+             BorderBrush="#CCC" 
+             BorderThickness="1" 
+             VerticalAlignment="Center"/>
                             </DockPanel>
 
-                            <Border BorderBrush="#DDD" 
-            BorderThickness="0,0,0,1" 
-            Margin="0,8"/>
+                            <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Margin="0,8"/>
 
                             <!-- ===== 角色選擇區塊 ===== -->
 
@@ -1579,37 +1501,35 @@
                                 <!-- 相剋角色1 -->
                                 <DockPanel Grid.Column="0">
                                     <TextBlock Text="相剋角色 1 *" 
-                       FontWeight="SemiBold" 
-                       DockPanel.Dock="Left" 
-                       VerticalAlignment="Center" 
-                       Width="90"/>
+               FontWeight="SemiBold" 
+               DockPanel.Dock="Left" 
+               VerticalAlignment="Center" 
+               Width="90"/>
                                     <ComboBox x:Name="cmbJinxRole1"
-                      SelectedItem="{Binding SelectedRole.JinxRole1Name, UpdateSourceTrigger=PropertyChanged}"
-                      Padding="6,4"
-                      BorderBrush="#CCC"
-                      BorderThickness="1"
-                      VerticalAlignment="Center">
-                                        <!-- 暫時使用靜態項目，後續會改為動態綁定 -->
-                                        <ComboBoxItem Content="(請選擇角色)"/>
-                                    </ComboBox>
+          ItemsSource="{Binding AvailableRolesForJinx1}"
+          SelectedItem="{Binding SelectedRole.JinxRole1Name, UpdateSourceTrigger=PropertyChanged}"
+          SelectionChanged="JinxRole_SelectionChanged"
+          Padding="6,4"
+          BorderBrush="#CCC"
+          BorderThickness="1"
+          VerticalAlignment="Center"/>
                                 </DockPanel>
 
                                 <!-- 相剋角色2 -->
                                 <DockPanel Grid.Column="2">
                                     <TextBlock Text="相剋角色 2 *" 
-                       FontWeight="SemiBold" 
-                       DockPanel.Dock="Left" 
-                       VerticalAlignment="Center" 
-                       Width="90"/>
+               FontWeight="SemiBold" 
+               DockPanel.Dock="Left" 
+               VerticalAlignment="Center" 
+               Width="90"/>
                                     <ComboBox x:Name="cmbJinxRole2"
-                      SelectedItem="{Binding SelectedRole.JinxRole2Name, UpdateSourceTrigger=PropertyChanged}"
-                      Padding="6,4"
-                      BorderBrush="#CCC"
-                      BorderThickness="1"
-                      VerticalAlignment="Center">
-                                        <!-- 暫時使用靜態項目，後續會改為動態綁定 -->
-                                        <ComboBoxItem Content="(請選擇角色)"/>
-                                    </ComboBox>
+          ItemsSource="{Binding AvailableRolesForJinx2}"
+          SelectedItem="{Binding SelectedRole.JinxRole2Name, UpdateSourceTrigger=PropertyChanged}"
+          SelectionChanged="JinxRole_SelectionChanged"
+          Padding="6,4"
+          BorderBrush="#CCC"
+          BorderThickness="1"
+          VerticalAlignment="Center"/>
                                 </DockPanel>
                             </Grid>
 

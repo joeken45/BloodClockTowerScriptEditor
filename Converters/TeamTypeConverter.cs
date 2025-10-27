@@ -66,27 +66,6 @@ namespace BloodClockTowerScriptEditor.Converters
     }
 
     /// <summary>
-    /// 驗證字串是否為有效的 ID 格式（英文、數字、底線、連字號）
-    /// </summary>
-    public class IdFormatValidationConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            if (value is string id && !string.IsNullOrEmpty(id))
-            {
-                // 只允許英文、數字、底線、連字號
-                return System.Text.RegularExpressions.Regex.IsMatch(id, @"^[a-zA-Z0-9_-]+$");
-            }
-            return false;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    /// <summary>
     /// 驗證字串是否為空
     /// </summary>
     public class StringNotEmptyConverter : IValueConverter

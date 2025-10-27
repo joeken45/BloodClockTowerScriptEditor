@@ -86,22 +86,30 @@ namespace BloodClockTowerScriptEditor.ViewModels
             get => _selectedRole;
             set
             {
-                // 如果設定的值相同，直接返回
-                if (_selectedRole == value)
-                    return;
-
-                // ✅ 切換前驗證舊角色
-                if (_selectedRole != null && value != _selectedRole)
+                // 取消訂閱舊角色的事件
+                if (_selectedRole != null)
                 {
-                    if (!ValidateRole(_selectedRole))
-                    {
-                        // 驗證失敗，阻止切換
-                        OnPropertyChanged(nameof(SelectedRole));
-                        return;
-                    }
+                    _selectedRole.PropertyChanged -= OnRolePropertyChanged;
+                    _selectedRole.TeamChanged -= OnRoleTeamChanged;
+                    _selectedRole.NightOrderChanged -= OnRoleNightOrderChanged;
                 }
 
-                SetProperty(ref _selectedRole, value);
+                if (SetProperty(ref _selectedRole, value))
+                {
+                    // 訂閱新角色的事件
+                    if (_selectedRole != null)
+                    {
+                        _selectedRole.PropertyChanged += OnRolePropertyChanged;
+                        _selectedRole.TeamChanged += OnRoleTeamChanged;
+                        _selectedRole.NightOrderChanged += OnRoleNightOrderChanged;
+
+                        _lastRoleId = _selectedRole.Id;
+                    }
+
+                    // 🆕 通知相剋角色選項更新
+                    OnPropertyChanged(nameof(AvailableRolesForJinx1));
+                    OnPropertyChanged(nameof(AvailableRolesForJinx2));
+                }
             }
         }
 
@@ -812,6 +820,15 @@ namespace BloodClockTowerScriptEditor.ViewModels
         }
 
         /// <summary>
+        /// 通知相剋角色選項列表更新（供 UI 呼叫）
+        /// </summary>
+        public void NotifyJinxRolesListChanged()
+        {
+            OnPropertyChanged(nameof(AvailableRolesForJinx1));
+            OnPropertyChanged(nameof(AvailableRolesForJinx2));
+        }
+
+        /// <summary>
         /// 供 Jinx ComboBox 綁定使用的角色名稱列表
         /// </summary>
         public List<string> AvailableRoleNamesForJinx
@@ -823,6 +840,54 @@ namespace BloodClockTowerScriptEditor.ViewModels
                 return CurrentScript.Roles
                     .Where(r => r.Name != SelectedRole.Name &&      // 排除自己
                                r.Team != TeamType.Jinxed)           // 排除相剋物件
+                    .Select(r => r.Name)
+                    .OrderBy(r => r)
+                    .ToList();
+            }
+        }
+
+        /// <summary>
+        /// 相剋角色 1 的可選角色列表（排除相剋物件和角色 2）
+        /// </summary>
+        public List<string> AvailableRolesForJinx1
+        {
+            get
+            {
+                // 🔴 只有在選擇相剋角色時才計算
+                if (SelectedRole == null || SelectedRole.Team != TeamType.Jinxed)
+                    return new List<string>();
+
+                // 🔴 使用 _name 直接讀取，避免觸發 PropertyChanged
+                var role2Name = SelectedRole.JinxRole2Name;
+
+                return CurrentScript.Roles
+                    .Where(r => r.Team != TeamType.Jinxed &&                    // 排除相剋物件
+                               !string.IsNullOrEmpty(r.Name) &&                 // 排除空名稱
+                               r.Name != role2Name)                             // 排除角色2
+                    .Select(r => r.Name)
+                    .OrderBy(r => r)
+                    .ToList();
+            }
+        }
+
+        /// <summary>
+        /// 相剋角色 2 的可選角色列表（排除相剋物件和角色 1）
+        /// </summary>
+        public List<string> AvailableRolesForJinx2
+        {
+            get
+            {
+                // 🔴 只有在選擇相剋角色時才計算
+                if (SelectedRole == null || SelectedRole.Team != TeamType.Jinxed)
+                    return new List<string>();
+
+                // 🔴 使用 _name 直接讀取，避免觸發 PropertyChanged
+                var role1Name = SelectedRole.JinxRole1Name;
+
+                return CurrentScript.Roles
+                    .Where(r => r.Team != TeamType.Jinxed &&                    // 排除相剋物件
+                               !string.IsNullOrEmpty(r.Name) &&                 // 排除空名稱
+                               r.Name != role1Name)                             // 排除角色1
                     .Select(r => r.Name)
                     .OrderBy(r => r)
                     .ToList();
