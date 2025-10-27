@@ -426,9 +426,15 @@ namespace BloodClockTowerScriptEditor.Models
                 int index = _jinxItems!.IndexOf(item);
                 if (Jinxes != null && index >= 0 && index < Jinxes.Count)
                 {
-                    // 這裡需要將角色名稱轉換回 ID
-                    // 暫時先直接使用 TargetRoleName，之後再補完
-                    Jinxes[index].Reason = item.Reason;
+                    // 🔴 修正：處理所有屬性變更
+                    if (e.PropertyName == nameof(JinxItem.TargetRoleName))
+                    {
+                        Jinxes[index].Id = item.TargetRoleName;
+                    }
+                    else if (e.PropertyName == nameof(JinxItem.Reason))
+                    {
+                        Jinxes[index].Reason = item.Reason;
+                    }
                 }
             }
         }
@@ -448,6 +454,24 @@ namespace BloodClockTowerScriptEditor.Models
                 : null;
 
             OnPropertyChanged(nameof(Jinxes));
+        }
+
+        /// <summary>
+        /// 強制將 JinxItems 同步到 Jinxes（用於手動觸發同步）
+        /// </summary>
+        public void SyncJinxItemsToJinxes()
+        {
+            if (_jinxItems == null || _jinxItems.Count == 0)
+            {
+                Jinxes = null;
+                return;
+            }
+
+            Jinxes = _jinxItems.Select(item => new JinxInfo
+            {
+                Id = item.TargetRoleName,
+                Reason = item.Reason
+            }).ToList();
         }
 
         /// <summary>

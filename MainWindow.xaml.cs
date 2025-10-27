@@ -487,17 +487,45 @@ namespace BloodClockTowerScriptEditor
             if (sender is ComboBox comboBox &&
                 comboBox.DataContext is JinxItem item &&
                 comboBox.SelectedItem is string selectedName &&
-                DataContext is MainViewModel viewModel)
+                DataContext is MainViewModel viewModel &&
+                viewModel.SelectedRole != null)
             {
-                var role = viewModel.CurrentScript.Roles
+                var targetRole = viewModel.CurrentScript.Roles
                     .FirstOrDefault(r => r.Name == selectedName && r.Team != TeamType.Jinxed);
 
-                if (role != null)
+                if (targetRole != null)
                 {
-                    item.TargetRoleName = role.Id;
+                    // 🔴 關鍵：先記錄舊的目標角色 ID
+                    string oldTargetId = item.TargetRoleName;
+
+                    // 🔴 更新新的目標角色 ID
+                    item.TargetRoleName = targetRole.Id;
+
+                    // 🔴 立即同步整個 JinxItems 到 Jinxes
+                    viewModel.SelectedRole.SyncJinxItemsToJinxes();
+
+                    // 🔴 移除舊目標角色的反向 Jinx
+                    if (!string.IsNullOrEmpty(oldTargetId))
+                    {
+                        var oldTargetRole = viewModel.CurrentScript.Roles
+                            .FirstOrDefault(r => r.Id == oldTargetId && r.Team != TeamType.Jinxed);
+
+                        if (oldTargetRole != null && oldTargetRole.Jinxes != null)
+                        {
+                            var toRemove = oldTargetRole.Jinxes
+                                .FirstOrDefault(j => j.Id == viewModel.SelectedRole.Id);
+                            if (toRemove != null)
+                            {
+                                oldTargetRole.Jinxes.Remove(toRemove);
+                                if (oldTargetRole.Jinxes.Count == 0)
+                                    oldTargetRole.Jinxes = null;
+                            }
+                        }
+                    }
+
                     viewModel.IsDirty = true;
 
-                    // ✅ 觸發同步
+                    // 🔴 現在才呼叫同步
                     SyncJinxesAfterEdit();
                 }
             }
