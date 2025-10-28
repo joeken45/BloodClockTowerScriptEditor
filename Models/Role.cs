@@ -430,6 +430,33 @@ namespace BloodClockTowerScriptEditor.Models
         }
 
         /// <summary>
+        /// 移除目標角色為空的 Jinx 項目
+        /// </summary>
+        public void RemoveEmptyJinxItems()
+        {
+            if (_jinxItems != null)
+            {
+                // 找出所有空值項目
+                var emptyItems = _jinxItems
+                    .Where(ji => string.IsNullOrEmpty(ji.TargetRoleName))
+                    .ToList();
+
+                if (emptyItems.Any())
+                {
+                    foreach (var item in emptyItems)
+                    {
+                        _jinxItems.Remove(item);
+                    }
+
+                    // 同步到 Jinxes
+                    SyncJinxItemsToJinxes();
+
+                    System.Diagnostics.Debug.WriteLine($"✅ 已移除 {emptyItems.Count} 個空值 Jinx");
+                }
+            }
+        }
+
+        /// <summary>
         /// 檢查 JinxItems 是否已初始化
         /// </summary>
         [JsonIgnore]

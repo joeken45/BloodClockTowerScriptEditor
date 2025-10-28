@@ -73,8 +73,8 @@
         <!-- 選單列 -->
         <Menu Grid.Row="0">
             <MenuItem Header="檔案(_F)">
-                <!-- 🆕 新增: 新增檔案 -->
-                <MenuItem Header="新增檔案(_N)" 
+                <!-- 🆕 新增: 開啟新檔 -->
+                <MenuItem Header="開啟新檔(_N)" 
                   Command="{Binding NewFileCommand}"
                   InputGestureText="Ctrl+N">
                     <MenuItem.Icon>

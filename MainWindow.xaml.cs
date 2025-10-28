@@ -422,9 +422,20 @@ namespace BloodClockTowerScriptEditor
             var button = sender as Button;
             if (button?.DataContext is JinxItem item)
             {
-                var displayRole = string.IsNullOrEmpty(item.TargetRoleName)
-                    ? "(未選擇)"
-                    : item.TargetRoleName;
+                // 取得目標角色名稱用於顯示
+                string displayRole;
+                Role? targetRole = null;
+
+                if (string.IsNullOrEmpty(item.TargetRoleName))
+                {
+                    displayRole = "(未選擇)";
+                }
+                else
+                {
+                    targetRole = viewModel.CurrentScript.Roles
+                        .FirstOrDefault(r => r.Id == item.TargetRoleName && r.Team != TeamType.Jinxed);
+                    displayRole = targetRole?.Name ?? item.TargetRoleName;
+                }
 
                 var displayReason = string.IsNullOrEmpty(item.Reason)
                     ? "(無說明)"
@@ -438,8 +449,50 @@ namespace BloodClockTowerScriptEditor
 
                 if (result == MessageBoxResult.Yes)
                 {
+                    System.Diagnostics.Debug.WriteLine($"🗑️ 刪除 Jinx: {viewModel.SelectedRole.Name} -> {displayRole}");
+
+                    // 1. 從當前角色移除 JinxItem
                     viewModel.SelectedRole.JinxItems.Remove(item);
+
+                    // 2. 同步當前角色的 Jinxes
+                    viewModel.SelectedRole.SyncJinxItemsToJinxes();
+
+                    // 3. 如果目標角色存在，移除對方的反向 Jinx
+                    if (targetRole != null)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"🔗 移除 {targetRole.Name} 的反向 Jinx");
+
+                        // 移除對方的 Jinxes
+                        if (targetRole.Jinxes != null)
+                        {
+                            var toRemove = targetRole.Jinxes
+                                .FirstOrDefault(j => j.Id == viewModel.SelectedRole.Id);
+
+                            if (toRemove != null)
+                            {
+                                targetRole.Jinxes.Remove(toRemove);
+                                if (targetRole.Jinxes.Count == 0)
+                                    targetRole.Jinxes = null;
+
+                                System.Diagnostics.Debug.WriteLine($"   ✅ 已移除 {targetRole.Name} 的 Jinxes");
+                            }
+                        }
+
+                        // 移除對方的 JinxItems（如果已初始化）
+                        if (targetRole.IsJinxItemsInitialized)
+                        {
+                            targetRole.RemoveJinxItem(viewModel.SelectedRole.Id);
+                            System.Diagnostics.Debug.WriteLine($"   ✅ 已移除 {targetRole.Name} 的 JinxItems");
+                        }
+                    }
+
+                    // 4. 同步集石格式
+                    System.Diagnostics.Debug.WriteLine($"🔄 同步集石格式");
+                    SyncJinxesAfterEdit();
+
                     viewModel.IsDirty = true;
+
+                    System.Diagnostics.Debug.WriteLine($"✅ 刪除完成");
                 }
             }
         }
@@ -600,83 +653,123 @@ namespace BloodClockTowerScriptEditor
                 var targetRole = viewModel.CurrentScript.Roles
                     .FirstOrDefault(r => r.Name == selectedName && r.Team != TeamType.Jinxed);
 
-                if (targetRole != null)
+                // ✅ 檢查 1：如果選擇空值，設為空字串並返回（允許使用者清空）
+                if (targetRole == null || string.IsNullOrEmpty(selectedName))
                 {
-                    // 記錄舊目標
-                    string oldTargetId = item.TargetRoleName;
-                    string oldReason = item.Reason ?? "";
+                    System.Diagnostics.Debug.WriteLine("⚠️ 目標角色為空，設為空字串");
+                    item.TargetRoleName = "";
+                    return;
+                }
 
-                    System.Diagnostics.Debug.WriteLine($"🔄 切換相剋目標: {oldTargetId} → {targetRole.Id}");
+                // 記錄舊目標
+                string oldTargetId = item.TargetRoleName;
 
-                    // 更新新目標
-                    item.TargetRoleName = targetRole.Id;
+                // ✅ 檢查 2：防止選擇重複的相剋規則
+                if (oldTargetId != targetRole.Id &&
+                    viewModel.SelectedRole.JinxItems != null)
+                {
+                    bool isDuplicate = viewModel.SelectedRole.JinxItems
+                        .Any(ji => ji != item && ji.TargetRoleName == targetRole.Id);
 
-                    // 立即同步當前角色的 JinxItems → Jinxes
-                    viewModel.SelectedRole.SyncJinxItemsToJinxes();
-
-                    // 🔴 步驟 1：移除舊目標角色的反向 Jinx
-                    if (!string.IsNullOrEmpty(oldTargetId))
+                    if (isDuplicate)
                     {
-                        var oldTargetRole = viewModel.CurrentScript.Roles
+                        MessageBox.Show(
+                            $"已存在與「{targetRole.Name}」的相剋規則！\n\n每個角色對只能有一條相剋規則。",
+                            "重複的相剋規則",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Warning);
+
+                        // 恢復原值
+                        var oldRole = viewModel.CurrentScript.Roles
                             .FirstOrDefault(r => r.Id == oldTargetId && r.Team != TeamType.Jinxed);
 
-                        if (oldTargetRole != null)
+                        if (oldRole != null)
                         {
-                            System.Diagnostics.Debug.WriteLine($"🗑️ 從 {oldTargetRole.Name} 移除與 {viewModel.SelectedRole.Name} 的相剋");
-
-                            // 移除 Jinxes
-                            if (oldTargetRole.Jinxes != null)
-                            {
-                                var toRemove = oldTargetRole.Jinxes
-                                    .FirstOrDefault(j => j.Id == viewModel.SelectedRole.Id);
-                                if (toRemove != null)
-                                {
-                                    oldTargetRole.Jinxes.Remove(toRemove);
-                                    if (oldTargetRole.Jinxes.Count == 0)
-                                        oldTargetRole.Jinxes = null;
-
-                                    System.Diagnostics.Debug.WriteLine($"   ✅ 已移除 Jinxes");
-                                }
-                            }
-
-                            // 移除 JinxItems
-                            oldTargetRole.RemoveJinxItem(viewModel.SelectedRole.Id);
+                            comboBox.SelectedItem = oldRole.Name;
                         }
-                    }
-
-                    // 🔴 步驟 2：為新目標角色建立反向 Jinx
-                    System.Diagnostics.Debug.WriteLine($"🔗 在 {targetRole.Name} 中建立與 {viewModel.SelectedRole.Name} 的相剋");
-
-                    // 建立/更新 Jinxes
-                    targetRole.Jinxes ??= new List<Role.JinxInfo>();
-
-                    var existingJinx = targetRole.Jinxes.FirstOrDefault(j => j.Id == viewModel.SelectedRole.Id);
-                    if (existingJinx != null)
-                    {
-                        // 更新現有的
-                        existingJinx.Reason = oldReason;
-                        System.Diagnostics.Debug.WriteLine($"   ✅ 已更新 Jinxes");
-                    }
-                    else
-                    {
-                        // 建立新的
-                        targetRole.Jinxes.Add(new Role.JinxInfo
+                        else
                         {
-                            Id = viewModel.SelectedRole.Id,
-                            Reason = oldReason
-                        });
-                        System.Diagnostics.Debug.WriteLine($"   ✅ 已新增 Jinxes");
-                    }
+                            comboBox.SelectedItem = null;
+                        }
 
-                    // 建立/更新 JinxItems（如果已初始化）
-                    if (targetRole.IsJinxItemsInitialized)
-                    {
-                        targetRole.AddOrUpdateJinxItem(viewModel.SelectedRole.Id, oldReason);
+                        System.Diagnostics.Debug.WriteLine($"⚠️ 阻止重複規則: {viewModel.SelectedRole.Name} -> {targetRole.Name}");
+                        return;
                     }
-
-                    viewModel.IsDirty = true;
-                    SyncJinxesAfterEdit();
                 }
+
+                // === 以下是原本的更新邏輯 ===
+                string oldReason = item.Reason ?? "";
+
+                System.Diagnostics.Debug.WriteLine($"🔄 切換相剋目標: {oldTargetId} → {targetRole.Id}");
+
+                // 更新新目標
+                item.TargetRoleName = targetRole.Id;
+
+                // 立即同步當前角色的 JinxItems → Jinxes
+                viewModel.SelectedRole.SyncJinxItemsToJinxes();
+
+                // 🔴 步驟 1：移除舊目標角色的反向 Jinx
+                if (!string.IsNullOrEmpty(oldTargetId))
+                {
+                    var oldTargetRole = viewModel.CurrentScript.Roles
+                        .FirstOrDefault(r => r.Id == oldTargetId && r.Team != TeamType.Jinxed);
+
+                    if (oldTargetRole != null)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"🗑️ 從 {oldTargetRole.Name} 移除與 {viewModel.SelectedRole.Name} 的相剋");
+
+                        // 移除 Jinxes
+                        if (oldTargetRole.Jinxes != null)
+                        {
+                            var toRemove = oldTargetRole.Jinxes
+                                .FirstOrDefault(j => j.Id == viewModel.SelectedRole.Id);
+                            if (toRemove != null)
+                            {
+                                oldTargetRole.Jinxes.Remove(toRemove);
+                                if (oldTargetRole.Jinxes.Count == 0)
+                                    oldTargetRole.Jinxes = null;
+
+                                System.Diagnostics.Debug.WriteLine($"   ✅ 已移除 Jinxes");
+                            }
+                        }
+
+                        // 移除 JinxItems
+                        oldTargetRole.RemoveJinxItem(viewModel.SelectedRole.Id);
+                    }
+                }
+
+                // 🔴 步驟 2：為新目標角色建立反向 Jinx
+                System.Diagnostics.Debug.WriteLine($"🔗 在 {targetRole.Name} 中建立與 {viewModel.SelectedRole.Name} 的相剋");
+
+                // 建立/更新 Jinxes
+                targetRole.Jinxes ??= new List<Role.JinxInfo>();
+
+                var existingJinx = targetRole.Jinxes.FirstOrDefault(j => j.Id == viewModel.SelectedRole.Id);
+                if (existingJinx != null)
+                {
+                    // 更新現有的
+                    existingJinx.Reason = oldReason;
+                    System.Diagnostics.Debug.WriteLine($"   ✅ 已更新 Jinxes");
+                }
+                else
+                {
+                    // 建立新的
+                    targetRole.Jinxes.Add(new Role.JinxInfo
+                    {
+                        Id = viewModel.SelectedRole.Id,
+                        Reason = oldReason
+                    });
+                    System.Diagnostics.Debug.WriteLine($"   ✅ 已新增 Jinxes");
+                }
+
+                // 建立/更新 JinxItems（如果已初始化）
+                if (targetRole.IsJinxItemsInitialized)
+                {
+                    targetRole.AddOrUpdateJinxItem(viewModel.SelectedRole.Id, oldReason);
+                }
+
+                viewModel.IsDirty = true;
+                SyncJinxesAfterEdit();
             }
         }
 

@@ -138,6 +138,12 @@ namespace BloodClockTowerScriptEditor.Services
         {
             try
             {
+                // ✅ 儲存前清理所有角色的空值 Jinx
+                foreach (var role in script.Roles)
+                {
+                    role.RemoveEmptyJinxItems();
+                }
+
                 var jArray = new JArray();
                 var serializer = JsonSerializer.Create(_settings);
 

@@ -89,6 +89,8 @@ namespace BloodClockTowerScriptEditor.ViewModels
                 // 取消訂閱舊角色的事件
                 if (_selectedRole != null)
                 {
+                    _selectedRole.RemoveEmptyJinxItems();  // ✅ 加入這行
+
                     _selectedRole.PropertyChanged -= OnRolePropertyChanged;
                     _selectedRole.TeamChanged -= OnRoleTeamChanged;
                     _selectedRole.NightOrderChanged -= OnRoleNightOrderChanged;
@@ -449,6 +451,70 @@ namespace BloodClockTowerScriptEditor.ViewModels
 
             if (ShowConfirm($"確定要刪除角色「{SelectedRole.Name}」嗎？", "確認刪除"))
             {
+                // ✅ 如果刪除的是集石格式相剋規則，需要同步刪除相關角色的 BOTC Jinxes
+                if (SelectedRole.Team == TeamType.Jinxed)
+                {
+                    // 解析集石格式名稱 "角色1&角色2"
+                    var parts = SelectedRole.Name.Split('&');
+                    if (parts.Length == 2)
+                    {
+                        string name1 = parts[0].Trim();
+                        string name2 = parts[1].Trim();
+
+                        var role1 = CurrentScript.Roles
+                            .FirstOrDefault(r => r.Name == name1 && r.Team != TeamType.Jinxed);
+                        var role2 = CurrentScript.Roles
+                            .FirstOrDefault(r => r.Name == name2 && r.Team != TeamType.Jinxed);
+
+                        System.Diagnostics.Debug.WriteLine($"🗑️ 刪除集石相剋規則: {SelectedRole.Name}");
+
+                        // 移除角色1的相關 Jinx
+                        if (role1 != null && role2 != null)
+                        {
+                            // 移除角色1的 Jinxes
+                            if (role1.Jinxes != null)
+                            {
+                                var toRemove1 = role1.Jinxes.FirstOrDefault(j => j.Id == role2.Id);
+                                if (toRemove1 != null)
+                                {
+                                    role1.Jinxes.Remove(toRemove1);
+                                    if (role1.Jinxes.Count == 0)
+                                        role1.Jinxes = null;
+
+                                    System.Diagnostics.Debug.WriteLine($"   ✅ 已移除 {role1.Name} 的 Jinxes");
+                                }
+                            }
+
+                            // 移除角色1的 JinxItems
+                            if (role1.IsJinxItemsInitialized)
+                            {
+                                role1.RemoveJinxItem(role2.Id);
+                            }
+
+                            // 移除角色2的 Jinxes
+                            if (role2.Jinxes != null)
+                            {
+                                var toRemove2 = role2.Jinxes.FirstOrDefault(j => j.Id == role1.Id);
+                                if (toRemove2 != null)
+                                {
+                                    role2.Jinxes.Remove(toRemove2);
+                                    if (role2.Jinxes.Count == 0)
+                                        role2.Jinxes = null;
+
+                                    System.Diagnostics.Debug.WriteLine($"   ✅ 已移除 {role2.Name} 的 Jinxes");
+                                }
+                            }
+
+                            // 移除角色2的 JinxItems
+                            if (role2.IsJinxItemsInitialized)
+                            {
+                                role2.RemoveJinxItem(role1.Id);
+                            }
+                        }
+                    }
+                }
+
+                // 原有的刪除邏輯
                 CurrentScript.Roles.Remove(SelectedRole);
                 SelectedRole = null;
 
