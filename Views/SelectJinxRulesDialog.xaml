@@ -1,0 +1,143 @@
+﻿<Window x:Class="BloodClockTowerScriptEditor.Views.SelectJinxRulesDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="偵測到的相剋規則" 
+        Width="700" Height="500"
+        WindowStartupLocation="CenterOwner"
+        Background="#F5F5F5">
+
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- 標題與說明 -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,16">
+            <TextBlock Text="偵測到的相剋規則" 
+                       FontSize="18" 
+                       FontWeight="Bold"
+                       Margin="0,0,0,8"/>
+            <TextBlock Text="根據當前劇本的角色，從資料庫中偵測到以下可能的相剋規則。請勾選要加入的規則。" 
+                       FontSize="12"
+                       Foreground="#666"
+                       TextWrapping="Wrap"/>
+        </StackPanel>
+
+        <!-- 相剋規則列表 -->
+        <Border Grid.Row="1" 
+                BorderBrush="#DDD" 
+                BorderThickness="1" 
+                Background="White"
+                CornerRadius="4">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <ItemsControl x:Name="icJinxRules" Margin="8">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="#E0E0E0" 
+                BorderThickness="0,0,0,1" 
+                Padding="8"
+                Margin="0,0,0,4">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- 勾選框 -->
+                                    <CheckBox Grid.Column="0" 
+                          IsChecked="{Binding IsSelected}"
+                          IsEnabled="{Binding IsEnabled}"
+                          VerticalAlignment="Top"
+                          Margin="0,0,12,0"/>
+
+                                    <!-- 規則內容 -->
+                                    <StackPanel Grid.Column="1">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock FontSize="13" FontWeight="SemiBold">
+                            <Run Text="{Binding Role1Name}"/>
+                            <Run Text=" &amp; " Foreground="#666"/>
+                            <Run Text="{Binding Role2Name}"/>
+                                            </TextBlock>
+
+                                            <TextBlock Text=" [已存在]" 
+                                   Foreground="#999" 
+                                   FontSize="11"
+                                   Margin="4,0,0,0"
+                                   VerticalAlignment="Center">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsEnabled}" Value="False">
+                                                                <Setter Property="Visibility" Value="Visible"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </StackPanel>
+
+                                        <TextBlock Text="{Binding Reason}" 
+                               FontSize="11"
+                               Foreground="#666"
+                               TextWrapping="Wrap"
+                               Margin="0,4,0,0"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Border>
+
+        <!-- 統計資訊 -->
+        <TextBlock Grid.Row="2" 
+                   x:Name="txtStatistics"
+                   Text="偵測到 0 個規則，已存在 0 個"
+                   FontSize="11"
+                   Foreground="#666"
+                   Margin="0,8"/>
+
+        <!-- 按鈕列 -->
+        <StackPanel Grid.Row="3" 
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Right"
+                    Margin="0,8,0,0">
+            <Button Content="全選可用" 
+                    Click="SelectAll_Click"
+                    Padding="12,6" 
+                    Margin="0,0,8,0"
+                    Background="#2196F3"
+                    Foreground="White"
+                    BorderThickness="0"/>
+
+            <Button Content="取消全選" 
+                    Click="DeselectAll_Click"
+                    Padding="12,6" 
+                    Margin="0,0,16,0"
+                    Background="#757575"
+                    Foreground="White"
+                    BorderThickness="0"/>
+
+            <Button Content="確定" 
+                    Click="OK_Click"
+                    Padding="16,6" 
+                    Margin="0,0,8,0"
+                    Background="#4CAF50"
+                    Foreground="White"
+                    BorderThickness="0"
+                    FontWeight="SemiBold"/>
+
+            <Button Content="取消" 
+                    Click="Cancel_Click"
+                    Padding="16,6"
+                    Background="#F44336"
+                    Foreground="White"
+                    BorderThickness="0"/>
+        </StackPanel>
+    </Grid>
+</Window>

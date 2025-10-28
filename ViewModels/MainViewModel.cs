@@ -19,7 +19,8 @@ namespace BloodClockTowerScriptEditor.ViewModels
     {
         // ==================== 私有欄位 ====================
         private bool _isDirty; // 檔案是否有未儲存的變更
-        private readonly JsonService _jsonService;
+        private readonly JsonService _jsonService; 
+        private readonly JinxRuleService _jinxRuleService;
         private Script _currentScript;
         private Role? _selectedRole;
         private string _statusMessage;
@@ -29,6 +30,7 @@ namespace BloodClockTowerScriptEditor.ViewModels
         public MainViewModel()
         {
             _jsonService = new JsonService();
+            _jinxRuleService = new JinxRuleService();
             _currentScript = new Script();
             _statusMessage = "就緒";
             _currentFilePath = string.Empty;
@@ -424,9 +426,6 @@ namespace BloodClockTowerScriptEditor.ViewModels
                         UpdateNightOrderLists();
                         IsDirty = true;
                         StatusMessage = $"已新增 {rolesToAdd.Count} 個角色";
-
-                        // 檢查相剋規則
-                        await CheckAndAddJinxRulesAsync();
                     }
                     else
                     {
@@ -437,6 +436,118 @@ namespace BloodClockTowerScriptEditor.ViewModels
             catch (Exception ex)
             {
                 ShowError($"新增角色失敗：{ex.Message}", "新增角色失敗");
+            }
+
+            // ✅ 加這一行消除警告
+            await Task.CompletedTask;
+        }
+
+        [RelayCommand]
+        private async Task DetectJinx()
+        {
+            try
+            {
+                StatusMessage = "正在偵測相剋規則...";
+
+                // 1. 從資料庫偵測所有可能的相剋規則
+                var detectedRules = await _jinxRuleService.DetectJinxRulesAsync(CurrentScript);
+
+                if (detectedRules.Count == 0)
+                {
+                    ShowInfo("未偵測到任何相剋規則。\n\n當前劇本中的角色沒有資料庫中定義的相剋關係。");
+                    StatusMessage = "未偵測到相剋規則";
+                    return;
+                }
+
+                // 2. 建立顯示用的 JinxRuleItem 列表
+                var jinxItems = new ObservableCollection<JinxRuleItem>();
+
+                foreach (var rule in detectedRules)
+                {
+                    // 從資料庫規則取得角色名稱
+                    string name1 = rule.Character1;
+                    string name2 = rule.Character2;
+
+                    var role1 = CurrentScript.Roles.FirstOrDefault(r =>
+                        r.Name == name1 && r.Team != TeamType.Jinxed);
+                    var role2 = CurrentScript.Roles.FirstOrDefault(r =>
+                        r.Name == name2 && r.Team != TeamType.Jinxed);
+
+                    if (role1 == null || role2 == null) continue;
+
+                    // 檢查是否已存在（集石格式已存在）
+                    bool alreadyExists = CurrentScript.Roles.Any(r => r.Id == rule.Id);
+
+                    jinxItems.Add(new JinxRuleItem
+                    {
+                        RuleId = rule.Id,
+                        Role1Id = role1.Id,
+                        Role1Name = role1.Name,
+                        Role2Id = role2.Id,
+                        Role2Name = role2.Name,
+                        Reason = rule.Ability ?? "",
+                        IsEnabled = !alreadyExists,
+                        IsSelected = false
+                    });
+                }
+
+                // 3. 顯示選擇視窗
+                var dialog = new Views.SelectJinxRulesDialog(jinxItems)
+                {
+                    Owner = System.Windows.Application.Current.MainWindow
+                };
+
+                if (dialog.ShowDialog() == true)
+                {
+                    var selectedRules = dialog.SelectedRules;
+
+                    if (selectedRules.Count > 0)
+                    {
+                        // 4. ✅ 將選中的 JinxRule 轉換為 Role 並加入劇本
+                        foreach (var item in selectedRules)
+                        {
+                            // 從資料庫規則找到對應的 JinxRule
+                            var rule = detectedRules.FirstOrDefault(r => r.Id == item.RuleId);
+                            if (rule != null)
+                            {
+                                // ✅ 將 JinxRule 轉換為 Role（集石格式）
+                                var jinxRole = new Role
+                                {
+                                    Id = rule.Id,
+                                    Name = rule.Name,
+                                    Team = TeamType.Jinxed,
+                                    Ability = rule.Ability ?? ""
+                                };
+
+                                if (!string.IsNullOrEmpty(rule.Image))
+                                {
+                                    jinxRole.Image = new List<string> { rule.Image };
+                                }
+
+                                CurrentScript.Roles.Add(jinxRole);
+                                System.Diagnostics.Debug.WriteLine($"✅ 加入相剋規則: {jinxRole.Name}");
+                            }
+                        }
+
+                        // 5. 同步 BOTC Jinxes
+                        JinxSyncHelper.SyncFromAllBotcJinxes(CurrentScript);
+                        await JinxSyncHelper.SyncAllRoleJinxesAsync(CurrentScript);
+
+                        UpdateFilteredRoles();
+                        IsDirty = true;
+                        StatusMessage = $"已加入 {selectedRules.Count} 個相剋規則";
+
+                        ShowInfo($"成功加入 {selectedRules.Count} 個相剋規則");
+                    }
+                }
+                else
+                {
+                    StatusMessage = "取消偵測相剋規則";
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowError($"偵測相剋規則失敗：{ex.Message}", "偵測失敗");
             }
         }
 
@@ -451,10 +562,9 @@ namespace BloodClockTowerScriptEditor.ViewModels
 
             if (ShowConfirm($"確定要刪除角色「{SelectedRole.Name}」嗎？", "確認刪除"))
             {
-                // ✅ 如果刪除的是集石格式相剋規則，需要同步刪除相關角色的 BOTC Jinxes
+                // ✅ 如果刪除的是集石格式，移除雙向 BOTC Jinxes
                 if (SelectedRole.Team == TeamType.Jinxed)
                 {
-                    // 解析集石格式名稱 "角色1&角色2"
                     var parts = SelectedRole.Name.Split('&');
                     if (parts.Length == 2)
                     {
@@ -466,66 +576,28 @@ namespace BloodClockTowerScriptEditor.ViewModels
                         var role2 = CurrentScript.Roles
                             .FirstOrDefault(r => r.Name == name2 && r.Team != TeamType.Jinxed);
 
-                        System.Diagnostics.Debug.WriteLine($"🗑️ 刪除集石相剋規則: {SelectedRole.Name}");
-
-                        // 移除角色1的相關 Jinx
                         if (role1 != null && role2 != null)
                         {
-                            // 移除角色1的 Jinxes
-                            if (role1.Jinxes != null)
-                            {
-                                var toRemove1 = role1.Jinxes.FirstOrDefault(j => j.Id == role2.Id);
-                                if (toRemove1 != null)
-                                {
-                                    role1.Jinxes.Remove(toRemove1);
-                                    if (role1.Jinxes.Count == 0)
-                                        role1.Jinxes = null;
-
-                                    System.Diagnostics.Debug.WriteLine($"   ✅ 已移除 {role1.Name} 的 Jinxes");
-                                }
-                            }
-
-                            // 移除角色1的 JinxItems
-                            if (role1.IsJinxItemsInitialized)
-                            {
-                                role1.RemoveJinxItem(role2.Id);
-                            }
-
-                            // 移除角色2的 Jinxes
-                            if (role2.Jinxes != null)
-                            {
-                                var toRemove2 = role2.Jinxes.FirstOrDefault(j => j.Id == role1.Id);
-                                if (toRemove2 != null)
-                                {
-                                    role2.Jinxes.Remove(toRemove2);
-                                    if (role2.Jinxes.Count == 0)
-                                        role2.Jinxes = null;
-
-                                    System.Diagnostics.Debug.WriteLine($"   ✅ 已移除 {role2.Name} 的 Jinxes");
-                                }
-                            }
-
-                            // 移除角色2的 JinxItems
-                            if (role2.IsJinxItemsInitialized)
-                            {
-                                role2.RemoveJinxItem(role1.Id);
-                            }
+                            // 移除雙向 Jinx
+                            RemoveBidirectionalJinx(role1, role2);
                         }
                     }
                 }
 
-                // 原有的刪除邏輯
                 CurrentScript.Roles.Remove(SelectedRole);
                 SelectedRole = null;
 
-                // 🆕 刪除角色後，同步相剋規則
-                await CheckAndAddJinxRulesAsync();
+                // ✅ 只清理失效的集石格式（角色已不存在）
+                CleanupInvalidJinxRules();
 
                 UpdateFilteredRoles();
                 UpdateNightOrderLists();
                 IsDirty = true;
                 StatusMessage = "角色已刪除";
             }
+
+            // ✅ 加這一行消除警告
+            await Task.CompletedTask;
         }
 
         [RelayCommand]
@@ -868,21 +940,10 @@ namespace BloodClockTowerScriptEditor.ViewModels
 
         private string _lastRoleId = string.Empty;  // 新增欄位記錄上次的 ID
 
-        private async void OnRolePropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void OnRolePropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             // 任何角色屬性變更都標記為需要儲存
             IsDirty = true;
-
-            // 🆕 如果是 Id 欄位變更，同步相剋規則
-            if (e.PropertyName == nameof(Role.Id) && sender is Role role)
-            {
-                if (!string.IsNullOrEmpty(_lastRoleId) && _lastRoleId != role.Id)
-                {
-                    System.Diagnostics.Debug.WriteLine($"🔄 角色 ID 變更: {_lastRoleId} → {role.Id}");
-                    await CheckAndAddJinxRulesAsync();
-                }
-                _lastRoleId = role.Id;
-            }
         }
 
         /// <summary>
@@ -961,28 +1022,70 @@ namespace BloodClockTowerScriptEditor.ViewModels
         }
 
         /// <summary>
-        /// 檢查並同步相剋規則（集石獨立物件 + BOTC Jinxes 陣列）
+        /// 移除雙向 Jinx 的 Helper 方法
         /// </summary>
-        private async Task CheckAndAddJinxRulesAsync()
+        private void RemoveBidirectionalJinx(Role role1, Role role2)
         {
-            try
+            // 移除 role1 → role2
+            if (role1.Jinxes != null)
             {
-                // 1. 從資料庫同步（只處理官方規則）
-                await JinxSyncHelper.SyncJinxedRolesAsync(CurrentScript);
-                await JinxSyncHelper.SyncAllRoleJinxesAsync(CurrentScript);
-
-                // 2. ✅ 新增：從所有角色的 BOTC Jinxes 同步（處理自訂規則）
-                JinxSyncHelper.SyncFromAllBotcJinxes(CurrentScript);
-
-                UpdateFilteredRoles();
-
-                System.Diagnostics.Debug.WriteLine($"✅ 相剋規則同步完成");
+                var toRemove = role1.Jinxes.FirstOrDefault(j => j.Id == role2.Id);
+                if (toRemove != null)
+                {
+                    role1.Jinxes.Remove(toRemove);
+                    if (role1.Jinxes.Count == 0) role1.Jinxes = null;
+                }
             }
-            catch (Exception ex)
+            if (role1.IsJinxItemsInitialized)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ 同步相剋規則失敗：{ex.Message}");
+                role1.RemoveJinxItem(role2.Id);
             }
+
+            // 移除 role2 → role1
+            if (role2.Jinxes != null)
+            {
+                var toRemove = role2.Jinxes.FirstOrDefault(j => j.Id == role1.Id);
+                if (toRemove != null)
+                {
+                    role2.Jinxes.Remove(toRemove);
+                    if (role2.Jinxes.Count == 0) role2.Jinxes = null;
+                }
+            }
+            if (role2.IsJinxItemsInitialized)
+            {
+                role2.RemoveJinxItem(role1.Id);
+            }
+
+            System.Diagnostics.Debug.WriteLine($"✅ 已移除雙向 Jinx: {role1.Name} ↔ {role2.Name}");
         }
+
+        /// <summary>
+        /// 清理失效的集石格式
+        /// </summary>
+        private void CleanupInvalidJinxRules()  // ✅ 移除 async Task，改為 void
+        {
+            var jinxedRoles = CurrentScript.Roles.Where(r => r.Team == TeamType.Jinxed).ToList();
+
+            foreach (var jinxRole in jinxedRoles)
+            {
+                var parts = jinxRole.Name.Split('&');
+                if (parts.Length != 2) continue;
+
+                bool role1Exists = CurrentScript.Roles.Any(r =>
+                    r.Name == parts[0].Trim() && r.Team != TeamType.Jinxed);
+                bool role2Exists = CurrentScript.Roles.Any(r =>
+                    r.Name == parts[1].Trim() && r.Team != TeamType.Jinxed);
+
+                // 如果任一角色不存在，移除集石格式
+                if (!role1Exists || !role2Exists)
+                {
+                    CurrentScript.Roles.Remove(jinxRole);
+                    System.Diagnostics.Debug.WriteLine($"🗑️ 清理失效的相剋規則: {jinxRole.Name}");
+                }
+            }
+
+        }
+
 
         /// <summary>
         /// 檢查是否有未儲存的變更,詢問使用者是否儲存
