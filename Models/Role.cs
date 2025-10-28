@@ -380,6 +380,82 @@ namespace BloodClockTowerScriptEditor.Models
             OnPropertyChanged(nameof(Name));
         }
 
+        /// <summary>
+        /// 更新 JinxItems 中指定目標的 Reason（如果 JinxItems 已初始化）
+        /// </summary>
+        public void UpdateJinxItemReason(string targetRoleId, string newReason)
+        {
+            System.Diagnostics.Debug.WriteLine($"🔍 UpdateJinxItemReason 被呼叫: Role={this.Name}, TargetId={targetRoleId}, NewReason={newReason}");
+            System.Diagnostics.Debug.WriteLine($"🔍 _jinxItems 是否為 null: {_jinxItems == null}");
+
+            if (_jinxItems != null)
+            {
+                System.Diagnostics.Debug.WriteLine($"🔍 _jinxItems 數量: {_jinxItems.Count}");
+
+                var item = _jinxItems.FirstOrDefault(ji => ji.TargetRoleName == targetRoleId);
+
+                if (item != null)
+                {
+                    System.Diagnostics.Debug.WriteLine($"✅ 找到 JinxItem，舊值={item.Reason}");
+                    item.Reason = newReason;
+                    System.Diagnostics.Debug.WriteLine($"✅ JinxItem 已更新，新值={item.Reason}");
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine($"❌ 找不到 JinxItem (TargetRoleName={targetRoleId})");
+
+                    // 列出所有 JinxItems 的 TargetRoleName
+                    foreach (var ji in _jinxItems)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"   - JinxItem: TargetRoleName={ji.TargetRoleName}");
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 移除 JinxItems 中指定目標的項目（如果 JinxItems 已初始化）
+        /// </summary>
+        public void RemoveJinxItem(string targetRoleId)
+        {
+            if (_jinxItems != null)
+            {
+                var item = _jinxItems.FirstOrDefault(ji => ji.TargetRoleName == targetRoleId);
+                if (item != null)
+                {
+                    _jinxItems.Remove(item);
+                    System.Diagnostics.Debug.WriteLine($"🗑️ RemoveJinxItem: 從 {this.Name} 移除目標 {targetRoleId}");
+                }
+            }
+        }
+
+        /// <summary>
+        /// 檢查 JinxItems 是否已初始化
+        /// </summary>
+        [JsonIgnore]
+        public bool IsJinxItemsInitialized => _jinxItems != null;
+
+        /// <summary>
+        /// 新增或更新 JinxItem（如果 JinxItems 已初始化）
+        /// </summary>
+        public void AddOrUpdateJinxItem(string targetRoleId, string reason)
+        {
+            if (_jinxItems != null)
+            {
+                var existing = _jinxItems.FirstOrDefault(ji => ji.TargetRoleName == targetRoleId);
+                if (existing != null)
+                {
+                    existing.Reason = reason;
+                    System.Diagnostics.Debug.WriteLine($"🔄 UpdateJinxItem: {this.Name} 更新目標 {targetRoleId}");
+                }
+                else
+                {
+                    var newItem = new JinxItem(targetRoleId, reason);
+                    _jinxItems.Add(newItem);
+                    System.Diagnostics.Debug.WriteLine($"➕ AddJinxItem: {this.Name} 新增目標 {targetRoleId}");
+                }
+            }
+        }
 
         private ObservableCollection<JinxItem>? _jinxItems;
 

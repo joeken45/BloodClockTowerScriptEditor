@@ -26,7 +26,15 @@ namespace BloodClockTowerScriptEditor.Models
         public string Reason
         {
             get => _reason;
-            set => SetProperty(ref _reason, value);
+            set
+            {
+                if (_reason != value)
+                {
+                    System.Diagnostics.Debug.WriteLine($"🔔 JinxItem.Reason 變更: TargetRole={TargetRoleName}, 舊值={_reason}, 新值={value}");
+                    _reason = value;
+                    OnPropertyChanged();
+                }
+            }
         }
 
         /// <summary>

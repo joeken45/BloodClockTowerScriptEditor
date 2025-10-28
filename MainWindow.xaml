@@ -1402,7 +1402,8 @@
                              BorderThickness="1"
                              TextWrapping="Wrap"
                              AcceptsReturn="False"
-                             TextChanged="JinxReason_TextChanged"/>
+         GotFocus="JinxReason_GotFocus"
+         LostFocus="JinxReason_LostFocus"/>
 
                                                 <!-- 刪除按鈕 -->
                                                 <Button Grid.Column="8" 
@@ -1557,7 +1558,9 @@
                  BorderBrush="#CCC" 
                  BorderThickness="1" 
                  FontSize="11" 
-                 VerticalScrollBarVisibility="Auto"/>
+                 VerticalScrollBarVisibility="Auto"
+         GotFocus="JinxedRoleAbility_GotFocus"
+         LostFocus="JinxedRoleAbility_LostFocus"/>
                             </DockPanel>
 
                             <Border BorderBrush="#DDD" 

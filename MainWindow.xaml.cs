@@ -459,6 +459,113 @@ namespace BloodClockTowerScriptEditor
             }
         }
 
+        // 修改資料結構
+        private (Role role, string oldAbility)? _oldJinxedAbility = null;
+
+        /// <summary>
+        /// 集石格式 Ability 獲得焦點時記住舊值和當前角色
+        /// </summary>
+        private void JinxedRoleAbility_GotFocus(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine("🎯 JinxedRoleAbility_GotFocus 被觸發");
+
+            if (DataContext is MainViewModel viewModel &&
+                viewModel.SelectedRole?.Team == TeamType.Jinxed)
+            {
+                string oldAbility = viewModel.SelectedRole.Ability ?? "";
+                _oldJinxedAbility = (viewModel.SelectedRole, oldAbility);
+                System.Diagnostics.Debug.WriteLine($"📝 記錄: 角色={viewModel.SelectedRole.Name}, 舊值={oldAbility}");
+            }
+        }
+
+        /// <summary>
+        /// 集石格式 Ability 失去焦點時比對並同步到 BOTC 格式
+        /// </summary>
+        private void JinxedRoleAbility_LostFocus(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine("🎯 JinxedRoleAbility_LostFocus 被觸發");
+
+            if (DataContext is MainViewModel viewModel &&
+                _oldJinxedAbility.HasValue)
+            {
+                Role editedRole = _oldJinxedAbility.Value.role;
+                string oldAbility = _oldJinxedAbility.Value.oldAbility;
+                string newAbility = editedRole.Ability ?? "";
+
+                System.Diagnostics.Debug.WriteLine($"📝 編輯的角色={editedRole.Name}");
+                System.Diagnostics.Debug.WriteLine($"📝 舊值={oldAbility}, 新值={newAbility}");
+
+                if (oldAbility != newAbility)
+                {
+                    System.Diagnostics.Debug.WriteLine("✏️ Ability 有變更，開始同步...");
+
+                    var parts = editedRole.Name.Split('&');
+                    if (parts.Length == 2)
+                    {
+                        string name1 = parts[0].Trim();
+                        string name2 = parts[1].Trim();
+
+                        var role1 = viewModel.CurrentScript.Roles
+                            .FirstOrDefault(r => r.Name == name1 && r.Team != TeamType.Jinxed);
+                        var role2 = viewModel.CurrentScript.Roles
+                            .FirstOrDefault(r => r.Name == name2 && r.Team != TeamType.Jinxed);
+
+                        System.Diagnostics.Debug.WriteLine($"🎯 找到角色1: {role1?.Name ?? "null"}");
+                        System.Diagnostics.Debug.WriteLine($"🎯 找到角色2: {role2?.Name ?? "null"}");
+
+                        // 更新角色1
+                        if (role1 != null)
+                        {
+                            if (role1.Jinxes != null)
+                            {
+                                var jinx = role1.Jinxes.FirstOrDefault(j => j.Id == role2?.Id);
+                                if (jinx != null)
+                                {
+                                    System.Diagnostics.Debug.WriteLine($"🔄 更新角色1的 Jinxes");
+                                    jinx.Reason = newAbility;
+                                }
+                            }
+
+                            System.Diagnostics.Debug.WriteLine($"🔄 呼叫角色1的 UpdateJinxItemReason");
+                            role1.UpdateJinxItemReason(role2?.Id, newAbility);
+                        }
+
+                        // 更新角色2
+                        if (role2 != null)
+                        {
+                            if (role2.Jinxes != null)
+                            {
+                                var jinx = role2.Jinxes.FirstOrDefault(j => j.Id == role1?.Id);
+                                if (jinx != null)
+                                {
+                                    System.Diagnostics.Debug.WriteLine($"🔄 更新角色2的 Jinxes");
+                                    jinx.Reason = newAbility;
+                                }
+                            }
+
+                            System.Diagnostics.Debug.WriteLine($"🔄 呼叫角色2的 UpdateJinxItemReason");
+                            role2.UpdateJinxItemReason(role1?.Id, newAbility);
+                        }
+                    }
+
+                    viewModel.IsDirty = true;
+                    viewModel.UpdateFilteredRoles();
+
+                    System.Diagnostics.Debug.WriteLine($"✅ 同步完成");
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine("⏭️ Ability 沒有變更，跳過同步");
+                }
+
+                _oldJinxedAbility = null;
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("❌ JinxedRoleAbility_LostFocus 條件不滿足");
+            }
+        }
+
         /// <summary>
         /// Jinx 目標角色 ComboBox 載入時，將 ID 轉換為名稱顯示
         /// </summary>
@@ -495,51 +602,219 @@ namespace BloodClockTowerScriptEditor
 
                 if (targetRole != null)
                 {
-                    // 🔴 關鍵：先記錄舊的目標角色 ID
+                    // 記錄舊目標
                     string oldTargetId = item.TargetRoleName;
+                    string oldReason = item.Reason ?? "";
 
-                    // 🔴 更新新的目標角色 ID
+                    System.Diagnostics.Debug.WriteLine($"🔄 切換相剋目標: {oldTargetId} → {targetRole.Id}");
+
+                    // 更新新目標
                     item.TargetRoleName = targetRole.Id;
 
-                    // 🔴 立即同步整個 JinxItems 到 Jinxes
+                    // 立即同步當前角色的 JinxItems → Jinxes
                     viewModel.SelectedRole.SyncJinxItemsToJinxes();
 
-                    // 🔴 移除舊目標角色的反向 Jinx
+                    // 🔴 步驟 1：移除舊目標角色的反向 Jinx
                     if (!string.IsNullOrEmpty(oldTargetId))
                     {
                         var oldTargetRole = viewModel.CurrentScript.Roles
                             .FirstOrDefault(r => r.Id == oldTargetId && r.Team != TeamType.Jinxed);
 
-                        if (oldTargetRole != null && oldTargetRole.Jinxes != null)
+                        if (oldTargetRole != null)
                         {
-                            var toRemove = oldTargetRole.Jinxes
-                                .FirstOrDefault(j => j.Id == viewModel.SelectedRole.Id);
-                            if (toRemove != null)
+                            System.Diagnostics.Debug.WriteLine($"🗑️ 從 {oldTargetRole.Name} 移除與 {viewModel.SelectedRole.Name} 的相剋");
+
+                            // 移除 Jinxes
+                            if (oldTargetRole.Jinxes != null)
                             {
-                                oldTargetRole.Jinxes.Remove(toRemove);
-                                if (oldTargetRole.Jinxes.Count == 0)
-                                    oldTargetRole.Jinxes = null;
+                                var toRemove = oldTargetRole.Jinxes
+                                    .FirstOrDefault(j => j.Id == viewModel.SelectedRole.Id);
+                                if (toRemove != null)
+                                {
+                                    oldTargetRole.Jinxes.Remove(toRemove);
+                                    if (oldTargetRole.Jinxes.Count == 0)
+                                        oldTargetRole.Jinxes = null;
+
+                                    System.Diagnostics.Debug.WriteLine($"   ✅ 已移除 Jinxes");
+                                }
                             }
+
+                            // 移除 JinxItems
+                            oldTargetRole.RemoveJinxItem(viewModel.SelectedRole.Id);
                         }
                     }
 
-                    viewModel.IsDirty = true;
+                    // 🔴 步驟 2：為新目標角色建立反向 Jinx
+                    System.Diagnostics.Debug.WriteLine($"🔗 在 {targetRole.Name} 中建立與 {viewModel.SelectedRole.Name} 的相剋");
 
-                    // 🔴 現在才呼叫同步
+                    // 建立/更新 Jinxes
+                    targetRole.Jinxes ??= new List<Role.JinxInfo>();
+
+                    var existingJinx = targetRole.Jinxes.FirstOrDefault(j => j.Id == viewModel.SelectedRole.Id);
+                    if (existingJinx != null)
+                    {
+                        // 更新現有的
+                        existingJinx.Reason = oldReason;
+                        System.Diagnostics.Debug.WriteLine($"   ✅ 已更新 Jinxes");
+                    }
+                    else
+                    {
+                        // 建立新的
+                        targetRole.Jinxes.Add(new Role.JinxInfo
+                        {
+                            Id = viewModel.SelectedRole.Id,
+                            Reason = oldReason
+                        });
+                        System.Diagnostics.Debug.WriteLine($"   ✅ 已新增 Jinxes");
+                    }
+
+                    // 建立/更新 JinxItems（如果已初始化）
+                    if (targetRole.IsJinxItemsInitialized)
+                    {
+                        targetRole.AddOrUpdateJinxItem(viewModel.SelectedRole.Id, oldReason);
+                    }
+
+                    viewModel.IsDirty = true;
                     SyncJinxesAfterEdit();
                 }
             }
         }
 
-        private void JinxReason_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (DataContext is MainViewModel viewModel)
-            {
-                viewModel.IsDirty = true;
+        // 改用複合 key：角色ID + 目標角色ID
+        private Dictionary<string, (Role editedRole, string targetRoleId, string oldReason)> _oldJinxReasons = new();
 
-                // ✅ 規則說明變更也要同步
-                SyncJinxesAfterEdit();
+        /// <summary>
+        /// BOTC 格式 Reason 獲得焦點時記住舊值
+        /// </summary>
+        private void JinxReason_GotFocus(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine("🎯 JinxReason_GotFocus 被觸發");
+
+            if (sender is TextBox textBox &&
+                textBox.DataContext is JinxItem item &&
+                DataContext is MainViewModel viewModel &&
+                viewModel.SelectedRole != null)
+            {
+                string key = $"{viewModel.SelectedRole.Id}_{item.TargetRoleName}";
+                string oldReason = item.Reason ?? "";
+
+                _oldJinxReasons[key] = (viewModel.SelectedRole, item.TargetRoleName, oldReason);
+
+                // 🔴 把 key 存到 TextBox.Tag，這樣 LostFocus 時可以取回
+                textBox.Tag = key;
+
+                System.Diagnostics.Debug.WriteLine($"📝 記錄: Key={key}, 角色={viewModel.SelectedRole.Name}, 目標={item.TargetRoleName}, 舊值={oldReason}");
             }
+        }
+
+        /// <summary>
+        /// BOTC 格式 Reason 失去焦點時比對並同步
+        /// </summary>
+        private void JinxReason_LostFocus(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine("🎯 JinxReason_LostFocus 被觸發");
+
+            if (sender is not TextBox textBox)
+            {
+                System.Diagnostics.Debug.WriteLine("❌ sender 不是 TextBox");
+                return;
+            }
+
+            System.Diagnostics.Debug.WriteLine($"   textBox.Tag={textBox.Tag}");
+            System.Diagnostics.Debug.WriteLine($"   字典大小={_oldJinxReasons.Count}");
+
+            if (textBox.Tag is not string key)
+            {
+                System.Diagnostics.Debug.WriteLine("❌ textBox.Tag 不是 string");
+                return;
+            }
+
+            if (DataContext is not MainViewModel viewModel)
+            {
+                System.Diagnostics.Debug.WriteLine("❌ DataContext 不是 MainViewModel");
+                return;
+            }
+
+            if (!_oldJinxReasons.TryGetValue(key, out var oldData))
+            {
+                System.Diagnostics.Debug.WriteLine($"❌ 字典中找不到 key={key}");
+                return;
+            }
+
+            Role editedRole = oldData.editedRole;
+            string targetRoleId = oldData.targetRoleId;
+            string oldReason = oldData.oldReason;
+
+            // 🔴 從 editedRole 的 JinxItems 找到對應項目取得新值
+            var jinxItem = editedRole.JinxItems?.FirstOrDefault(ji => ji.TargetRoleName == targetRoleId);
+            if (jinxItem == null)
+            {
+                System.Diagnostics.Debug.WriteLine("❌ 找不到對應的 JinxItem");
+                _oldJinxReasons.Remove(key);
+                return;
+            }
+
+            string newReason = jinxItem.Reason ?? "";
+
+            System.Diagnostics.Debug.WriteLine($"📝 編輯的角色={editedRole.Name}");
+            System.Diagnostics.Debug.WriteLine($"📝 目標角色ID={targetRoleId}");
+            System.Diagnostics.Debug.WriteLine($"📝 舊值={oldReason}, 新值={newReason}");
+
+            if (oldReason != newReason)
+            {
+                System.Diagnostics.Debug.WriteLine("✏️ Reason 有變更，開始同步...");
+
+                // 步驟 1：更新編輯角色的 Jinxes
+                editedRole.SyncJinxItemsToJinxes();
+
+                // 步驟 2：找到對方角色並更新
+                var targetRole = viewModel.CurrentScript.Roles
+                    .FirstOrDefault(r => r.Id == targetRoleId && r.Team != TeamType.Jinxed);
+
+                System.Diagnostics.Debug.WriteLine($"🎯 找到目標角色: {targetRole?.Name ?? "null"}");
+
+                if (targetRole != null)
+                {
+                    // 更新對方角色的 Jinxes
+                    if (targetRole.Jinxes != null)
+                    {
+                        var reverseJinx = targetRole.Jinxes
+                            .FirstOrDefault(j => j.Id == editedRole.Id);
+                        if (reverseJinx != null)
+                        {
+                            System.Diagnostics.Debug.WriteLine($"🔄 更新對方 Jinxes: {reverseJinx.Reason} → {newReason}");
+                            reverseJinx.Reason = newReason;
+                        }
+                    }
+
+                    // 更新對方角色的 JinxItems
+                    System.Diagnostics.Debug.WriteLine($"🔄 呼叫 UpdateJinxItemReason...");
+                    targetRole.UpdateJinxItemReason(editedRole.Id, newReason);
+                }
+
+                // 步驟 3：更新集石格式的 Ability
+                var jinxedRole = viewModel.CurrentScript.Roles
+                    .FirstOrDefault(r => r.Team == TeamType.Jinxed &&
+                        (r.Name == $"{editedRole.Name}&{targetRole?.Name}" ||
+                         r.Name == $"{targetRole?.Name}&{editedRole.Name}"));
+
+                if (jinxedRole != null)
+                {
+                    System.Diagnostics.Debug.WriteLine($"🔄 更新集石格式 Ability");
+                    jinxedRole.Ability = newReason;
+                }
+
+                viewModel.IsDirty = true;
+                viewModel.UpdateFilteredRoles();
+
+                System.Diagnostics.Debug.WriteLine($"✅ 同步完成");
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("⏭️ Reason 沒有變更，跳過同步");
+            }
+
+            _oldJinxReasons.Remove(key);
         }
 
         private void SyncJinxesAfterEdit()
