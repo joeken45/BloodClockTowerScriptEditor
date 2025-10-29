@@ -62,6 +62,7 @@
                             <Run Text="{Binding Role2Name}"/>
                                             </TextBlock>
 
+                                            <!-- ✅ [已存在] 標記 -->
                                             <TextBlock Text=" [已存在]" 
                                    Foreground="#999" 
                                    FontSize="11"

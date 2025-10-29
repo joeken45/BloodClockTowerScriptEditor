@@ -475,8 +475,10 @@ namespace BloodClockTowerScriptEditor.ViewModels
 
                     if (role1 == null || role2 == null) continue;
 
-                    // 檢查是否已存在（集石格式已存在）
-                    bool alreadyExists = CurrentScript.Roles.Any(r => r.Id == rule.Id);
+                    // ✅ 檢查是否已存在（用角色名稱判斷，不用 ID）
+                    bool alreadyExists = CurrentScript.Roles.Any(r =>
+                        r.Team == TeamType.Jinxed &&
+                        (r.Name == $"{name1}&{name2}" || r.Name == $"{name2}&{name1}"));
 
                     jinxItems.Add(new JinxRuleItem
                     {
@@ -503,14 +505,14 @@ namespace BloodClockTowerScriptEditor.ViewModels
 
                     if (selectedRules.Count > 0)
                     {
-                        // 4. ✅ 將選中的 JinxRule 轉換為 Role 並加入劇本
+                        // 4. 將選中的 JinxRule 轉換為 Role 並加入劇本
                         foreach (var item in selectedRules)
                         {
                             // 從資料庫規則找到對應的 JinxRule
                             var rule = detectedRules.FirstOrDefault(r => r.Id == item.RuleId);
                             if (rule != null)
                             {
-                                // ✅ 將 JinxRule 轉換為 Role（集石格式）
+                                // 將 JinxRule 轉換為 Role（集石格式）
                                 var jinxRole = new Role
                                 {
                                     Id = rule.Id,
@@ -549,6 +551,8 @@ namespace BloodClockTowerScriptEditor.ViewModels
             {
                 ShowError($"偵測相剋規則失敗：{ex.Message}", "偵測失敗");
             }
+
+            await Task.CompletedTask;
         }
 
         [RelayCommand]
