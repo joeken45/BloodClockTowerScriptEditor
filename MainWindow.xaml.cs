@@ -70,15 +70,11 @@ namespace BloodClockTowerScriptEditor
         {
             try
             {
-                System.Diagnostics.Debug.WriteLine($"🚀 開始同步 {resourceFileName}...");
-
                 string appFolder = AppDomain.CurrentDomain.BaseDirectory;
                 string filePath = Path.Combine(appFolder, resourceFileName);
 
                 if (!File.Exists(filePath))
                 {
-                    System.Diagnostics.Debug.WriteLine($"📥 從內嵌資源建立 {resourceFileName}...");
-
                     string embeddedContent = LoadEmbeddedResource(embeddedResourceName);
 
                     if (string.IsNullOrEmpty(embeddedContent))
@@ -88,17 +84,11 @@ namespace BloodClockTowerScriptEditor
                     }
 
                     await File.WriteAllTextAsync(filePath, embeddedContent);
-                    System.Diagnostics.Debug.WriteLine($"✅ 已建立 {resourceFileName}");
-                }
-                else
-                {
-                    System.Diagnostics.Debug.WriteLine($"✅ 使用現有 {resourceFileName}");
                 }
 
                 // 執行匯入動作
                 int count = await importAction(filePath);
-                System.Diagnostics.Debug.WriteLine($"✅ {resourceFileName} 同步完成！處理了 {count} 筆");
-
+                
                 return count;
             }
             catch (Exception ex)
@@ -143,11 +133,6 @@ namespace BloodClockTowerScriptEditor
                 if (stream == null)
                 {
                     System.Diagnostics.Debug.WriteLine($"❌ 找不到內嵌資源: {resourceName}");
-                    System.Diagnostics.Debug.WriteLine("可用的資源:");
-                    foreach (var name in assembly.GetManifestResourceNames())
-                    {
-                        System.Diagnostics.Debug.WriteLine($"  - {name}");
-                    }
                     return string.Empty;
                 }
 
@@ -294,8 +279,6 @@ namespace BloodClockTowerScriptEditor
             JinxedRoleEditor.Visibility = isJinxedRole
                 ? Visibility.Visible
                 : Visibility.Collapsed;
-
-            System.Diagnostics.Debug.WriteLine($"UI 切換: {(isJinxedRole ? "相剋規則編輯器" : "一般角色編輯器")}");
         }
 
         /// <summary>
@@ -449,8 +432,6 @@ namespace BloodClockTowerScriptEditor
 
                 if (result == MessageBoxResult.Yes)
                 {
-                    System.Diagnostics.Debug.WriteLine($"🗑️ 刪除 Jinx: {viewModel.SelectedRole.Name} -> {displayRole}");
-
                     // 1. 從當前角色移除 JinxItem
                     viewModel.SelectedRole.JinxItems.Remove(item);
 
@@ -460,8 +441,6 @@ namespace BloodClockTowerScriptEditor
                     // 3. 如果目標角色存在，移除對方的反向 Jinx
                     if (targetRole != null)
                     {
-                        System.Diagnostics.Debug.WriteLine($"🔗 移除 {targetRole.Name} 的反向 Jinx");
-
                         // 移除對方的 Jinxes
                         if (targetRole.Jinxes != null)
                         {
@@ -473,8 +452,6 @@ namespace BloodClockTowerScriptEditor
                                 targetRole.Jinxes.Remove(toRemove);
                                 if (targetRole.Jinxes.Count == 0)
                                     targetRole.Jinxes = null;
-
-                                System.Diagnostics.Debug.WriteLine($"   ✅ 已移除 {targetRole.Name} 的 Jinxes");
                             }
                         }
 
@@ -482,17 +459,13 @@ namespace BloodClockTowerScriptEditor
                         if (targetRole.IsJinxItemsInitialized)
                         {
                             targetRole.RemoveJinxItem(viewModel.SelectedRole.Id);
-                            System.Diagnostics.Debug.WriteLine($"   ✅ 已移除 {targetRole.Name} 的 JinxItems");
                         }
                     }
 
                     // 4. 同步集石格式
-                    System.Diagnostics.Debug.WriteLine($"🔄 同步集石格式");
                     SyncJinxesAfterEdit();
 
                     viewModel.IsDirty = true;
-
-                    System.Diagnostics.Debug.WriteLine($"✅ 刪除完成");
                 }
             }
         }
@@ -520,14 +493,11 @@ namespace BloodClockTowerScriptEditor
         /// </summary>
         private void JinxedRoleAbility_GotFocus(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine("🎯 JinxedRoleAbility_GotFocus 被觸發");
-
             if (DataContext is MainViewModel viewModel &&
                 viewModel.SelectedRole?.Team == TeamType.Jinxed)
             {
                 string oldAbility = viewModel.SelectedRole.Ability ?? "";
                 _oldJinxedAbility = (viewModel.SelectedRole, oldAbility);
-                System.Diagnostics.Debug.WriteLine($"📝 記錄: 角色={viewModel.SelectedRole.Name}, 舊值={oldAbility}");
             }
         }
 
@@ -536,8 +506,6 @@ namespace BloodClockTowerScriptEditor
         /// </summary>
         private void JinxedRoleAbility_LostFocus(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine("🎯 JinxedRoleAbility_LostFocus 被觸發");
-
             if (DataContext is MainViewModel viewModel &&
                 _oldJinxedAbility.HasValue)
             {
@@ -545,13 +513,8 @@ namespace BloodClockTowerScriptEditor
                 string oldAbility = _oldJinxedAbility.Value.oldAbility;
                 string newAbility = editedRole.Ability ?? "";
 
-                System.Diagnostics.Debug.WriteLine($"📝 編輯的角色={editedRole.Name}");
-                System.Diagnostics.Debug.WriteLine($"📝 舊值={oldAbility}, 新值={newAbility}");
-
                 if (oldAbility != newAbility)
                 {
-                    System.Diagnostics.Debug.WriteLine("✏️ Ability 有變更，開始同步...");
-
                     var parts = editedRole.Name.Split('&');
                     if (parts.Length == 2)
                     {
@@ -563,9 +526,6 @@ namespace BloodClockTowerScriptEditor
                         var role2 = viewModel.CurrentScript.Roles
                             .FirstOrDefault(r => r.Name == name2 && r.Team != TeamType.Jinxed);
 
-                        System.Diagnostics.Debug.WriteLine($"🎯 找到角色1: {role1?.Name ?? "null"}");
-                        System.Diagnostics.Debug.WriteLine($"🎯 找到角色2: {role2?.Name ?? "null"}");
-
                         // 更新角色1
                         if (role1 != null)
                         {
@@ -574,12 +534,10 @@ namespace BloodClockTowerScriptEditor
                                 var jinx = role1.Jinxes.FirstOrDefault(j => j.Id == role2?.Id);
                                 if (jinx != null)
                                 {
-                                    System.Diagnostics.Debug.WriteLine($"🔄 更新角色1的 Jinxes");
                                     jinx.Reason = newAbility;
                                 }
                             }
 
-                            System.Diagnostics.Debug.WriteLine($"🔄 呼叫角色1的 UpdateJinxItemReason");
                             role1.UpdateJinxItemReason(role2?.Id, newAbility);
                         }
 
@@ -591,31 +549,19 @@ namespace BloodClockTowerScriptEditor
                                 var jinx = role2.Jinxes.FirstOrDefault(j => j.Id == role1?.Id);
                                 if (jinx != null)
                                 {
-                                    System.Diagnostics.Debug.WriteLine($"🔄 更新角色2的 Jinxes");
                                     jinx.Reason = newAbility;
                                 }
                             }
 
-                            System.Diagnostics.Debug.WriteLine($"🔄 呼叫角色2的 UpdateJinxItemReason");
                             role2.UpdateJinxItemReason(role1?.Id, newAbility);
                         }
                     }
 
                     viewModel.IsDirty = true;
                     viewModel.UpdateFilteredRoles();
-
-                    System.Diagnostics.Debug.WriteLine($"✅ 同步完成");
-                }
-                else
-                {
-                    System.Diagnostics.Debug.WriteLine("⏭️ Ability 沒有變更，跳過同步");
                 }
 
                 _oldJinxedAbility = null;
-            }
-            else
-            {
-                System.Diagnostics.Debug.WriteLine("❌ JinxedRoleAbility_LostFocus 條件不滿足");
             }
         }
 
@@ -781,8 +727,6 @@ namespace BloodClockTowerScriptEditor
         /// </summary>
         private void JinxReason_GotFocus(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine("🎯 JinxReason_GotFocus 被觸發");
-
             if (sender is TextBox textBox &&
                 textBox.DataContext is JinxItem item &&
                 DataContext is MainViewModel viewModel &&
@@ -795,8 +739,6 @@ namespace BloodClockTowerScriptEditor
 
                 // 🔴 把 key 存到 TextBox.Tag，這樣 LostFocus 時可以取回
                 textBox.Tag = key;
-
-                System.Diagnostics.Debug.WriteLine($"📝 記錄: Key={key}, 角色={viewModel.SelectedRole.Name}, 目標={item.TargetRoleName}, 舊值={oldReason}");
             }
         }
 
@@ -805,32 +747,12 @@ namespace BloodClockTowerScriptEditor
         /// </summary>
         private void JinxReason_LostFocus(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine("🎯 JinxReason_LostFocus 被觸發");
-
-            if (sender is not TextBox textBox)
+            // 整合判斷：檢查所有必要條件
+            if (sender is not TextBox textBox ||
+                textBox.Tag is not string key ||
+                DataContext is not MainViewModel viewModel ||
+                !_oldJinxReasons.TryGetValue(key, out var oldData))
             {
-                System.Diagnostics.Debug.WriteLine("❌ sender 不是 TextBox");
-                return;
-            }
-
-            System.Diagnostics.Debug.WriteLine($"   textBox.Tag={textBox.Tag}");
-            System.Diagnostics.Debug.WriteLine($"   字典大小={_oldJinxReasons.Count}");
-
-            if (textBox.Tag is not string key)
-            {
-                System.Diagnostics.Debug.WriteLine("❌ textBox.Tag 不是 string");
-                return;
-            }
-
-            if (DataContext is not MainViewModel viewModel)
-            {
-                System.Diagnostics.Debug.WriteLine("❌ DataContext 不是 MainViewModel");
-                return;
-            }
-
-            if (!_oldJinxReasons.TryGetValue(key, out var oldData))
-            {
-                System.Diagnostics.Debug.WriteLine($"❌ 字典中找不到 key={key}");
                 return;
             }
 
@@ -838,74 +760,59 @@ namespace BloodClockTowerScriptEditor
             string targetRoleId = oldData.targetRoleId;
             string oldReason = oldData.oldReason;
 
-            // 🔴 從 editedRole 的 JinxItems 找到對應項目取得新值
+            // 從 editedRole 的 JinxItems 找到對應項目取得新值
             var jinxItem = editedRole.JinxItems?.FirstOrDefault(ji => ji.TargetRoleName == targetRoleId);
             if (jinxItem == null)
             {
-                System.Diagnostics.Debug.WriteLine("❌ 找不到對應的 JinxItem");
                 _oldJinxReasons.Remove(key);
                 return;
             }
 
             string newReason = jinxItem.Reason ?? "";
 
-            System.Diagnostics.Debug.WriteLine($"📝 編輯的角色={editedRole.Name}");
-            System.Diagnostics.Debug.WriteLine($"📝 目標角色ID={targetRoleId}");
-            System.Diagnostics.Debug.WriteLine($"📝 舊值={oldReason}, 新值={newReason}");
-
-            if (oldReason != newReason)
+            // 只在有變更時才同步
+            if (oldReason == newReason)
             {
-                System.Diagnostics.Debug.WriteLine("✏️ Reason 有變更，開始同步...");
+                _oldJinxReasons.Remove(key);
+                return;
+            }
 
-                // 步驟 1：更新編輯角色的 Jinxes
-                editedRole.SyncJinxItemsToJinxes();
+            // 步驟 1：更新編輯角色的 Jinxes
+            editedRole.SyncJinxItemsToJinxes();
 
-                // 步驟 2：找到對方角色並更新
-                var targetRole = viewModel.CurrentScript.Roles
-                    .FirstOrDefault(r => r.Id == targetRoleId && r.Team != TeamType.Jinxed);
+            // 步驟 2：找到對方角色並更新
+            var targetRole = viewModel.CurrentScript.Roles
+                .FirstOrDefault(r => r.Id == targetRoleId && r.Team != TeamType.Jinxed);
 
-                System.Diagnostics.Debug.WriteLine($"🎯 找到目標角色: {targetRole?.Name ?? "null"}");
-
-                if (targetRole != null)
+            if (targetRole != null)
+            {
+                // 更新對方角色的 Jinxes
+                if (targetRole.Jinxes != null)
                 {
-                    // 更新對方角色的 Jinxes
-                    if (targetRole.Jinxes != null)
+                    var reverseJinx = targetRole.Jinxes.FirstOrDefault(j => j.Id == editedRole.Id);
+                    if (reverseJinx != null)
                     {
-                        var reverseJinx = targetRole.Jinxes
-                            .FirstOrDefault(j => j.Id == editedRole.Id);
-                        if (reverseJinx != null)
-                        {
-                            System.Diagnostics.Debug.WriteLine($"🔄 更新對方 Jinxes: {reverseJinx.Reason} → {newReason}");
-                            reverseJinx.Reason = newReason;
-                        }
+                        reverseJinx.Reason = newReason;
                     }
-
-                    // 更新對方角色的 JinxItems
-                    System.Diagnostics.Debug.WriteLine($"🔄 呼叫 UpdateJinxItemReason...");
-                    targetRole.UpdateJinxItemReason(editedRole.Id, newReason);
                 }
 
-                // 步驟 3：更新集石格式的 Ability
-                var jinxedRole = viewModel.CurrentScript.Roles
-                    .FirstOrDefault(r => r.Team == TeamType.Jinxed &&
-                        (r.Name == $"{editedRole.Name}&{targetRole?.Name}" ||
-                         r.Name == $"{targetRole?.Name}&{editedRole.Name}"));
-
-                if (jinxedRole != null)
-                {
-                    System.Diagnostics.Debug.WriteLine($"🔄 更新集石格式 Ability");
-                    jinxedRole.Ability = newReason;
-                }
-
-                viewModel.IsDirty = true;
-                viewModel.UpdateFilteredRoles();
-
-                System.Diagnostics.Debug.WriteLine($"✅ 同步完成");
+                // 更新對方角色的 JinxItems
+                targetRole.UpdateJinxItemReason(editedRole.Id, newReason);
             }
-            else
+
+            // 步驟 3：更新集石格式的 Ability
+            var jinxedRole = viewModel.CurrentScript.Roles
+                .FirstOrDefault(r => r.Team == TeamType.Jinxed &&
+                    (r.Name == $"{editedRole.Name}&{targetRole?.Name}" ||
+                     r.Name == $"{targetRole?.Name}&{editedRole.Name}"));
+
+            if (jinxedRole != null)
             {
-                System.Diagnostics.Debug.WriteLine("⏭️ Reason 沒有變更，跳過同步");
+                jinxedRole.Ability = newReason;
             }
+
+            viewModel.IsDirty = true;
+            viewModel.UpdateFilteredRoles();
 
             _oldJinxReasons.Remove(key);
         }
