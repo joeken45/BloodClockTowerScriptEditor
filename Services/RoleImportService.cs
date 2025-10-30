@@ -1,4 +1,5 @@
 ﻿using BloodClockTowerScriptEditor.Models;
+using BloodClockTowerScriptEditor.Data;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -281,7 +282,6 @@ namespace BloodClockTowerScriptEditor.Services
                 OtherNight = ParseNightOrder(item["otherNight"]),
                 FirstNightReminder = item["firstNightReminder"]?.ToString(),
                 OtherNightReminder = item["otherNightReminder"]?.ToString(),
-                Category = category,
                 IsOfficial = isOfficial,
                 CreatedDate = DateTime.Now,
                 UpdatedDate = DateTime.Now
@@ -309,7 +309,6 @@ namespace BloodClockTowerScriptEditor.Services
             existing.OtherNight = ParseNightOrder(item["otherNight"]);
             existing.FirstNightReminder = item["firstNightReminder"]?.ToString();
             existing.OtherNightReminder = item["otherNightReminder"]?.ToString();
-            existing.Category = category;
             existing.IsOfficial = isOfficial;
             existing.UpdatedDate = DateTime.Now;
 

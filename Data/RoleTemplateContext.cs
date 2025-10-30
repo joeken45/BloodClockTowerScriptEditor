@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.IO;
 
-namespace BloodClockTowerScriptEditor.Services
+namespace BloodClockTowerScriptEditor.Data
 {
     /// <summary>
     /// 角色範本資料庫上下文

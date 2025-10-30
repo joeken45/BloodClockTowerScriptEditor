@@ -1,6 +1,7 @@
 ﻿using BloodClockTowerScriptEditor.Models;
 using BloodClockTowerScriptEditor.Services;
 using BloodClockTowerScriptEditor.Views;
+using BloodClockTowerScriptEditor.Data;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
@@ -106,8 +107,6 @@ namespace BloodClockTowerScriptEditor.ViewModels
                         _selectedRole.PropertyChanged += OnRolePropertyChanged;
                         _selectedRole.TeamChanged += OnRoleTeamChanged;
                         _selectedRole.NightOrderChanged += OnRoleNightOrderChanged;
-
-                        _lastRoleId = _selectedRole.Id;
                     }
 
                     // 🆕 通知相剋角色選項更新
@@ -206,49 +205,6 @@ namespace BloodClockTowerScriptEditor.ViewModels
         // 🆕 夜晚順序集合
         public ObservableCollection<Role> FirstNightRoles { get; }
         public ObservableCollection<Role> OtherNightRoles { get; }
-
-        // 篩選條件
-        public bool ShowTownsfolk
-        {
-            get => GetTeamFilter(TeamType.Townsfolk);
-            set => SetTeamFilter(TeamType.Townsfolk, value);
-        }
-
-        public bool ShowOutsiders
-        {
-            get => GetTeamFilter(TeamType.Outsider);
-            set => SetTeamFilter(TeamType.Outsider, value);
-        }
-
-        public bool ShowMinions
-        {
-            get => GetTeamFilter(TeamType.Minion);
-            set => SetTeamFilter(TeamType.Minion, value);
-        }
-
-        public bool ShowDemons
-        {
-            get => GetTeamFilter(TeamType.Demon);
-            set => SetTeamFilter(TeamType.Demon, value);
-        }
-
-        public bool ShowTravelers
-        {
-            get => GetTeamFilter(TeamType.Traveler);
-            set => SetTeamFilter(TeamType.Traveler, value);
-        }
-
-        public bool ShowFabled
-        {
-            get => GetTeamFilter(TeamType.Fabled);
-            set => SetTeamFilter(TeamType.Fabled, value);
-        }
-
-        public bool ShowJinxed
-        {
-            get => GetTeamFilter(TeamType.Jinxed);
-            set => SetTeamFilter(TeamType.Jinxed, value);
-        }
 
         // ==================== 命令 ====================
 
@@ -682,28 +638,6 @@ namespace BloodClockTowerScriptEditor.ViewModels
         // ==================== 驗證方法 ====================
 
         /// <summary>
-        /// 驗證單一角色
-        /// </summary>
-        private bool ValidateRole(Role role)
-        {
-            var errors = new System.Collections.Generic.List<string>();
-
-            if (string.IsNullOrWhiteSpace(role.Id))
-                errors.Add("• 角色 ID 為必填");
-
-            if (string.IsNullOrWhiteSpace(role.Name))
-                errors.Add("• 角色名稱為必填");
-
-            if (errors.Any())
-            {
-                ShowInfo($"請先完成當前角色的必填欄位：\n\n{string.Join("\n", errors)}");
-                return false;
-            }
-
-            return true;
-        }
-
-        /// <summary>
         /// 驗證整個劇本
         /// </summary>
         private bool ValidateScript()
@@ -788,38 +722,6 @@ namespace BloodClockTowerScriptEditor.ViewModels
             return conflicts;
         }
         // ==================== 私有方法 ====================
-
-        /// <summary>
-        /// 篩選條件字典 - 管理各陣營的顯示/隱藏狀態
-        /// </summary>
-        private readonly Dictionary<TeamType, bool> _teamFilters = new()
-{
-    { TeamType.Townsfolk, true },
-    { TeamType.Outsider, true },
-    { TeamType.Minion, true },
-    { TeamType.Demon, true },
-    { TeamType.Traveler, true },
-    { TeamType.Fabled, true },
-    { TeamType.Jinxed, true }
-};
-
-        /// <summary>
-        /// 取得陣營篩選狀態
-        /// </summary>
-        private bool GetTeamFilter(TeamType team) => _teamFilters[team];
-
-        /// <summary>
-        /// 設定陣營篩選狀態
-        /// </summary>
-        private void SetTeamFilter(TeamType team, bool value)
-        {
-            if (_teamFilters[team] != value)
-            {
-                _teamFilters[team] = value;
-                UpdateFilteredRoles();
-                OnPropertyChanged($"Show{team}");
-            }
-        }
 
         public void UpdateFilteredRoles()
         {
@@ -998,39 +900,10 @@ namespace BloodClockTowerScriptEditor.ViewModels
                 role.OtherNight = Math.Round(newOrder, 3);
         }
 
-        private string _lastRoleId = string.Empty;  // 新增欄位記錄上次的 ID
-
         private void OnRolePropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             // 任何角色屬性變更都標記為需要儲存
             IsDirty = true;
-        }
-
-        /// <summary>
-        /// 通知相剋角色選項列表更新（供 UI 呼叫）
-        /// </summary>
-        public void NotifyJinxRolesListChanged()
-        {
-            OnPropertyChanged(nameof(AvailableRolesForJinx1));
-            OnPropertyChanged(nameof(AvailableRolesForJinx2));
-        }
-
-        /// <summary>
-        /// 供 Jinx ComboBox 綁定使用的角色名稱列表
-        /// </summary>
-        public List<string> AvailableRoleNamesForJinx
-        {
-            get
-            {
-                if (SelectedRole == null) return new List<string>();
-
-                return CurrentScript.Roles
-                    .Where(r => r.Name != SelectedRole.Name &&      // 排除自己
-                               r.Team != TeamType.Jinxed)           // 排除相剋物件
-                    .Select(r => r.Name)
-                    .OrderBy(r => r)
-                    .ToList();
-            }
         }
 
         /// <summary>
@@ -1145,7 +1018,6 @@ namespace BloodClockTowerScriptEditor.ViewModels
             }
 
         }
-
 
         /// <summary>
         /// 檢查是否有未儲存的變更,詢問使用者是否儲存

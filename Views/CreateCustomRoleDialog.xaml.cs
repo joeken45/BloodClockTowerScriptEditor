@@ -1,5 +1,6 @@
 ﻿using BloodClockTowerScriptEditor.Models;
 using BloodClockTowerScriptEditor.Services;
+using BloodClockTowerScriptEditor.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.ObjectModel;
@@ -249,7 +250,6 @@ namespace BloodClockTowerScriptEditor.Views
                         FirstNightReminder = string.IsNullOrEmpty(firstNightReminder) ? null : firstNightReminder,
                         OtherNightReminder = string.IsNullOrEmpty(otherNightReminder) ? null : otherNightReminder,
                         IsOfficial = false,
-                        Category = "custom",
                         CreatedDate = DateTime.Now,
                         UpdatedDate = DateTime.Now
                     };

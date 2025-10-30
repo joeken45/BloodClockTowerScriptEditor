@@ -80,12 +80,6 @@ namespace BloodClockTowerScriptEditor.Models
         public string? OtherNightReminder { get; set; }
 
         /// <summary>
-        /// 分類標籤（官方/自訂/社群等）
-        /// </summary>
-        [MaxLength(50)]
-        public string? Category { get; set; }
-
-        /// <summary>
         /// 是否為官方角色
         /// </summary>
         public bool IsOfficial { get; set; } = true;
@@ -95,28 +89,7 @@ namespace BloodClockTowerScriptEditor.Models
         /// </summary>
         [NotMapped]
         public bool IsSelected { get; set; } = false;
-
-        /// <summary>
-        /// UI 用：類型的中文顯示名稱（不儲存到資料庫）
-        /// </summary>
-        [NotMapped]
-        public string TeamDisplayName
-        {
-            get
-            {
-                return Team?.ToLower() switch
-                {
-                    "townsfolk" => "鎮民",
-                    "outsider" => "外來者",
-                    "minion" => "爪牙",
-                    "demon" => "惡魔",
-                    "traveler" => "旅行者",
-                    "fabled" => "傳奇",
-                    _ => "未知"
-                };
-            }
-        }
-
+              
         /// <summary>
         /// 建立日期
         /// </summary>

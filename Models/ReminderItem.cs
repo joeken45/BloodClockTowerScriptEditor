@@ -33,13 +33,6 @@ namespace BloodClockTowerScriptEditor.Models
         }
 
         /// <summary>
-        /// 建構子
-        /// </summary>
-        public ReminderItem()
-        {
-        }
-
-        /// <summary>
         /// 建構子（帶文字）
         /// </summary>
         /// <param name="text">標記文字</param>

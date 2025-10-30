@@ -12,6 +12,8 @@ namespace BloodClockTowerScriptEditor.Models
     /// </summary>
     public class Role : ObservableObject
     {
+        // ==================== 第一部分：私有欄位 ====================
+        // 按照 JSON 屬性的順序排列
         private string _id = string.Empty;
         private string _name = string.Empty;
         private TeamType _team = TeamType.Townsfolk;
@@ -25,11 +27,29 @@ namespace BloodClockTowerScriptEditor.Models
         private ObservableCollection<ReminderItem> _remindersGlobal = new();
         private string? _flavor;
         private string? _firstNightReminder;
-        private string? _otherNightReminder; 
+        private string? _otherNightReminder;
         private List<JinxInfo>? _jinxes;
         private List<SpecialAbility>? _special;
 
-        // ==================== JSON 序列化屬性 ====================
+        // UI 相關私有欄位
+        private int _displayOrder;
+        private ObservableCollection<ImageItem>? _imageItems;
+        private ObservableCollection<JinxItem>? _jinxItems;
+
+        // ==================== 第二部分：事件 ====================
+
+        /// <summary>
+        /// 🆕 類型變更事件（用於通知 ViewModel 重新排序）
+        /// </summary>
+        public event System.EventHandler? TeamChanged;
+
+        /// <summary>
+        /// 🆕 夜晚順序變更事件（用於通知 ViewModel 重新排序）
+        /// </summary>
+        public event System.EventHandler? NightOrderChanged;
+
+        // ==================== 第三部分：JSON 序列化屬性（BOTC 官方格式）====================
+        // 按照 BOTC 官方 JSON schema 的順序排列
 
         [JsonProperty("id")]
         public string Id
@@ -177,19 +197,7 @@ namespace BloodClockTowerScriptEditor.Models
             set => SetProperty(ref _special, value);
         }
 
-        // ==================== UI 輔助屬性 (不序列化) ====================
-
-        /// <summary>
-        /// 🆕 類型變更事件（用於通知 ViewModel 重新排序）
-        /// </summary>
-        public event System.EventHandler? TeamChanged;
-
-        /// <summary>
-        /// 🆕 夜晚順序變更事件（用於通知 ViewModel 重新排序）
-        /// </summary>
-        public event System.EventHandler? NightOrderChanged;
-
-        private int _displayOrder;
+        // ==================== 第四部分：UI 顯示屬性（不序列化）====================
 
         /// <summary>
         /// 顯示順序（用於同類型內的自訂排序）
@@ -233,9 +241,7 @@ namespace BloodClockTowerScriptEditor.Models
         [JsonIgnore]
         public string? ImageUrl => Image.Count > 0 ? Image[0] : null;
 
-        // ==================== 圖片列表 UI 綁定 ====================
-
-        private ObservableCollection<ImageItem>? _imageItems;
+        // ==================== 第五部分：圖片管理（Image ↔ ImageItems 雙向同步）====================
 
         /// <summary>
         /// UI 綁定用的圖片列表（支援雙向更新）
@@ -310,9 +316,204 @@ namespace BloodClockTowerScriptEditor.Models
             }
         }
 
-        // ==================== Jinx 列表 UI 綁定 ====================
+        // ==================== 第六部分：相剋規則管理（Jinxes ↔ JinxItems 雙向同步）====================
 
-        // ==================== 集石相剋規則專用屬性 ====================
+        /// <summary>
+        /// UI 綁定用的 Jinx 列表（支援雙向更新）
+        /// </summary>
+        [JsonIgnore]
+        public ObservableCollection<JinxItem> JinxItems
+        {
+            get
+            {
+                if (_jinxItems == null)
+                {
+                    _jinxItems = new ObservableCollection<JinxItem>();
+
+                    // 從 Jinxes 初始化
+                    if (Jinxes != null)
+                    {
+                        foreach (var jinx in Jinxes)
+                        {
+                            // 透過 ID 查找角色名稱
+                            // 注意: 這裡需要從 Script 取得所有角色來查找名稱
+                            // 暫時先用 ID 作為名稱，之後再補完
+                            var item = new JinxItem(jinx.Id, jinx.Reason);
+                            item.PropertyChanged += OnJinxItemChanged;
+                            _jinxItems.Add(item);
+                        }
+                    }
+
+                    // 監聽集合變更
+                    _jinxItems.CollectionChanged += OnJinxItemsCollectionChanged;
+                }
+                return _jinxItems;
+            }
+        }
+
+        /// <summary>
+        /// JinxItem 的屬性變更時同步回 Jinxes
+        /// </summary>
+        private void OnJinxItemChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (sender is JinxItem item)
+            {
+                int index = _jinxItems!.IndexOf(item);
+                if (Jinxes != null && index >= 0 && index < Jinxes.Count)
+                {
+                    // 🔴 修正：處理所有屬性變更
+                    if (e.PropertyName == nameof(JinxItem.TargetRoleId))
+                    {
+                        Jinxes[index].Id = item.TargetRoleId;
+                    }
+                    else if (e.PropertyName == nameof(JinxItem.Reason))
+                    {
+                        Jinxes[index].Reason = item.Reason;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// JinxItems 集合變更時同步回 Jinxes
+        /// </summary>
+        private void OnJinxItemsCollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            // 同步回 Jinxes 列表
+            Jinxes = _jinxItems?.Count > 0
+                ? _jinxItems.Select(item => new JinxInfo
+                {
+                    Id = item.TargetRoleId,  // 暫時使用名稱，之後需轉換為 ID
+                    Reason = item.Reason
+                }).ToList()
+                : null;
+
+            OnPropertyChanged(nameof(Jinxes));
+        }
+
+        /// <summary>
+        /// 強制將 JinxItems 同步到 Jinxes（用於手動觸發同步）
+        /// </summary>
+        public void SyncJinxItemsToJinxes()
+        {
+            if (_jinxItems == null || _jinxItems.Count == 0)
+            {
+                Jinxes = null;
+                return;
+            }
+
+            Jinxes = _jinxItems.Select(item => new JinxInfo
+            {
+                Id = item.TargetRoleId,
+                Reason = item.Reason
+            }).ToList();
+        }
+
+        /// <summary>
+        /// 更新 JinxItems 中指定目標的 Reason（如果 JinxItems 已初始化）
+        /// </summary>
+        public void UpdateJinxItemReason(string targetRoleId, string newReason)
+        {
+            System.Diagnostics.Debug.WriteLine($"🔍 UpdateJinxItemReason 被呼叫: Role={this.Name}, TargetId={targetRoleId}, NewReason={newReason}");
+            System.Diagnostics.Debug.WriteLine($"🔍 _jinxItems 是否為 null: {_jinxItems == null}");
+
+            if (_jinxItems != null)
+            {
+                System.Diagnostics.Debug.WriteLine($"🔍 _jinxItems 數量: {_jinxItems.Count}");
+
+                var item = _jinxItems.FirstOrDefault(ji => ji.TargetRoleId == targetRoleId);
+
+                if (item != null)
+                {
+                    System.Diagnostics.Debug.WriteLine($"✅ 找到 JinxItem，舊值={item.Reason}");
+                    item.Reason = newReason;
+                    System.Diagnostics.Debug.WriteLine($"✅ JinxItem 已更新，新值={item.Reason}");
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine($"❌ 找不到 JinxItem (TargetRoleId={targetRoleId})");
+
+                    // 列出所有 JinxItems 的 TargetRoleId
+                    foreach (var ji in _jinxItems)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"   - JinxItem: TargetRoleId={ji.TargetRoleId}");
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 移除 JinxItems 中指定目標的項目（如果 JinxItems 已初始化）
+        /// </summary>
+        public void RemoveJinxItem(string targetRoleId)
+        {
+            if (_jinxItems != null)
+            {
+                var item = _jinxItems.FirstOrDefault(ji => ji.TargetRoleId == targetRoleId);
+                if (item != null)
+                {
+                    _jinxItems.Remove(item);
+                    System.Diagnostics.Debug.WriteLine($"🗑️ RemoveJinxItem: 從 {this.Name} 移除目標 {targetRoleId}");
+                }
+            }
+        }
+
+        /// <summary>
+        /// 移除目標角色為空的 Jinx 項目
+        /// </summary>
+        public void RemoveEmptyJinxItems()
+        {
+            if (_jinxItems != null)
+            {
+                // 找出所有空值項目
+                var emptyItems = _jinxItems
+                    .Where(ji => string.IsNullOrEmpty(ji.TargetRoleId))
+                    .ToList();
+
+                if (emptyItems.Any())
+                {
+                    foreach (var item in emptyItems)
+                    {
+                        _jinxItems.Remove(item);
+                    }
+
+                    // 同步到 Jinxes
+                    SyncJinxItemsToJinxes();
+
+                    System.Diagnostics.Debug.WriteLine($"✅ 已移除 {emptyItems.Count} 個空值 Jinx");
+                }
+            }
+        }
+
+        /// <summary>
+        /// 新增或更新 JinxItem（如果 JinxItems 已初始化）
+        /// </summary>
+        public void AddOrUpdateJinxItem(string targetRoleId, string reason)
+        {
+            if (_jinxItems != null)
+            {
+                var existing = _jinxItems.FirstOrDefault(ji => ji.TargetRoleId == targetRoleId);
+                if (existing != null)
+                {
+                    existing.Reason = reason;
+                    System.Diagnostics.Debug.WriteLine($"🔄 UpdateJinxItem: {this.Name} 更新目標 {targetRoleId}");
+                }
+                else
+                {
+                    var newItem = new JinxItem(targetRoleId, reason);
+                    _jinxItems.Add(newItem);
+                    System.Diagnostics.Debug.WriteLine($"➕ AddJinxItem: {this.Name} 新增目標 {targetRoleId}");
+                }
+            }
+        }
+
+        /// <summary>
+        /// 檢查 JinxItems 是否已初始化
+        /// </summary>
+        [JsonIgnore]
+        public bool IsJinxItemsInitialized => _jinxItems != null;
+
+        // ==================== 第七部分：集石格式專用屬性 ====================
 
         /// <summary>
         /// 相剋角色1的名稱 (UI 綁定用)
@@ -380,202 +581,7 @@ namespace BloodClockTowerScriptEditor.Models
             OnPropertyChanged(nameof(Name));
         }
 
-        /// <summary>
-        /// 更新 JinxItems 中指定目標的 Reason（如果 JinxItems 已初始化）
-        /// </summary>
-        public void UpdateJinxItemReason(string targetRoleId, string newReason)
-        {
-            System.Diagnostics.Debug.WriteLine($"🔍 UpdateJinxItemReason 被呼叫: Role={this.Name}, TargetId={targetRoleId}, NewReason={newReason}");
-            System.Diagnostics.Debug.WriteLine($"🔍 _jinxItems 是否為 null: {_jinxItems == null}");
-
-            if (_jinxItems != null)
-            {
-                System.Diagnostics.Debug.WriteLine($"🔍 _jinxItems 數量: {_jinxItems.Count}");
-
-                var item = _jinxItems.FirstOrDefault(ji => ji.TargetRoleName == targetRoleId);
-
-                if (item != null)
-                {
-                    System.Diagnostics.Debug.WriteLine($"✅ 找到 JinxItem，舊值={item.Reason}");
-                    item.Reason = newReason;
-                    System.Diagnostics.Debug.WriteLine($"✅ JinxItem 已更新，新值={item.Reason}");
-                }
-                else
-                {
-                    System.Diagnostics.Debug.WriteLine($"❌ 找不到 JinxItem (TargetRoleName={targetRoleId})");
-
-                    // 列出所有 JinxItems 的 TargetRoleName
-                    foreach (var ji in _jinxItems)
-                    {
-                        System.Diagnostics.Debug.WriteLine($"   - JinxItem: TargetRoleName={ji.TargetRoleName}");
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// 移除 JinxItems 中指定目標的項目（如果 JinxItems 已初始化）
-        /// </summary>
-        public void RemoveJinxItem(string targetRoleId)
-        {
-            if (_jinxItems != null)
-            {
-                var item = _jinxItems.FirstOrDefault(ji => ji.TargetRoleName == targetRoleId);
-                if (item != null)
-                {
-                    _jinxItems.Remove(item);
-                    System.Diagnostics.Debug.WriteLine($"🗑️ RemoveJinxItem: 從 {this.Name} 移除目標 {targetRoleId}");
-                }
-            }
-        }
-
-        /// <summary>
-        /// 移除目標角色為空的 Jinx 項目
-        /// </summary>
-        public void RemoveEmptyJinxItems()
-        {
-            if (_jinxItems != null)
-            {
-                // 找出所有空值項目
-                var emptyItems = _jinxItems
-                    .Where(ji => string.IsNullOrEmpty(ji.TargetRoleName))
-                    .ToList();
-
-                if (emptyItems.Any())
-                {
-                    foreach (var item in emptyItems)
-                    {
-                        _jinxItems.Remove(item);
-                    }
-
-                    // 同步到 Jinxes
-                    SyncJinxItemsToJinxes();
-
-                    System.Diagnostics.Debug.WriteLine($"✅ 已移除 {emptyItems.Count} 個空值 Jinx");
-                }
-            }
-        }
-
-        /// <summary>
-        /// 檢查 JinxItems 是否已初始化
-        /// </summary>
-        [JsonIgnore]
-        public bool IsJinxItemsInitialized => _jinxItems != null;
-
-        /// <summary>
-        /// 新增或更新 JinxItem（如果 JinxItems 已初始化）
-        /// </summary>
-        public void AddOrUpdateJinxItem(string targetRoleId, string reason)
-        {
-            if (_jinxItems != null)
-            {
-                var existing = _jinxItems.FirstOrDefault(ji => ji.TargetRoleName == targetRoleId);
-                if (existing != null)
-                {
-                    existing.Reason = reason;
-                    System.Diagnostics.Debug.WriteLine($"🔄 UpdateJinxItem: {this.Name} 更新目標 {targetRoleId}");
-                }
-                else
-                {
-                    var newItem = new JinxItem(targetRoleId, reason);
-                    _jinxItems.Add(newItem);
-                    System.Diagnostics.Debug.WriteLine($"➕ AddJinxItem: {this.Name} 新增目標 {targetRoleId}");
-                }
-            }
-        }
-
-        private ObservableCollection<JinxItem>? _jinxItems;
-
-        /// <summary>
-        /// UI 綁定用的 Jinx 列表（支援雙向更新）
-        /// </summary>
-        [JsonIgnore]
-        public ObservableCollection<JinxItem> JinxItems
-        {
-            get
-            {
-                if (_jinxItems == null)
-                {
-                    _jinxItems = new ObservableCollection<JinxItem>();
-
-                    // 從 Jinxes 初始化
-                    if (Jinxes != null)
-                    {
-                        foreach (var jinx in Jinxes)
-                        {
-                            // 透過 ID 查找角色名稱
-                            // 注意: 這裡需要從 Script 取得所有角色來查找名稱
-                            // 暫時先用 ID 作為名稱，之後再補完
-                            var item = new JinxItem(jinx.Id, jinx.Reason);
-                            item.PropertyChanged += OnJinxItemChanged;
-                            _jinxItems.Add(item);
-                        }
-                    }
-
-                    // 監聽集合變更
-                    _jinxItems.CollectionChanged += OnJinxItemsCollectionChanged;
-                }
-                return _jinxItems;
-            }
-        }
-
-        /// <summary>
-        /// JinxItem 的屬性變更時同步回 Jinxes
-        /// </summary>
-        private void OnJinxItemChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (sender is JinxItem item)
-            {
-                int index = _jinxItems!.IndexOf(item);
-                if (Jinxes != null && index >= 0 && index < Jinxes.Count)
-                {
-                    // 🔴 修正：處理所有屬性變更
-                    if (e.PropertyName == nameof(JinxItem.TargetRoleName))
-                    {
-                        Jinxes[index].Id = item.TargetRoleName;
-                    }
-                    else if (e.PropertyName == nameof(JinxItem.Reason))
-                    {
-                        Jinxes[index].Reason = item.Reason;
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// JinxItems 集合變更時同步回 Jinxes
-        /// </summary>
-        private void OnJinxItemsCollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            // 同步回 Jinxes 列表
-            Jinxes = _jinxItems?.Count > 0
-                ? _jinxItems.Select(item => new JinxInfo
-                {
-                    Id = item.TargetRoleName,  // 暫時使用名稱，之後需轉換為 ID
-                    Reason = item.Reason
-                }).ToList()
-                : null;
-
-            OnPropertyChanged(nameof(Jinxes));
-        }
-
-        /// <summary>
-        /// 強制將 JinxItems 同步到 Jinxes（用於手動觸發同步）
-        /// </summary>
-        public void SyncJinxItemsToJinxes()
-        {
-            if (_jinxItems == null || _jinxItems.Count == 0)
-            {
-                Jinxes = null;
-                return;
-            }
-
-            Jinxes = _jinxItems.Select(item => new JinxInfo
-            {
-                Id = item.TargetRoleName,
-                Reason = item.Reason
-            }).ToList();
-        }
+        // ==================== 第八部分：內部類別定義 ====================
 
         /// <summary>
         /// 相剋規則 (BOTC 專用)

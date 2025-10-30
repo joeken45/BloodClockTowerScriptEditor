@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BloodClockTowerScriptEditor.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.IO;
 
-namespace BloodClockTowerScriptEditor.Models
+namespace BloodClockTowerScriptEditor.Data
 {
     /// <summary>
     /// 相剋規則資料庫上下文

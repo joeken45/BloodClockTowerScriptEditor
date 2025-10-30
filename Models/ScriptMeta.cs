@@ -32,13 +32,6 @@ namespace BloodClockTowerScriptEditor.Models
 
         // ==================== 公開屬性 ====================
 
-        [JsonProperty("id")]
-        public string Id
-        {
-            get => _id;
-            set => SetProperty(ref _id, value);
-        }
-
         [JsonProperty("name")]
         public string Name
         {
@@ -53,60 +46,11 @@ namespace BloodClockTowerScriptEditor.Models
             set => SetProperty(ref _author, value);
         }
 
-        [JsonProperty("description")]
-        public string Description
-        {
-            get => _description;
-            set => SetProperty(ref _description, value);
-        }
-
         [JsonProperty("logo")]
         public string Logo
         {
             get => _logo;
             set => SetProperty(ref _logo, value);
-        }
-
-        [JsonProperty("townsfolk")]
-        public string Townsfolk
-        {
-            get => _townsfolk;
-            set => SetProperty(ref _townsfolk, value);
-        }
-
-        [JsonProperty("outsider")]
-        public string Outsider
-        {
-            get => _outsider;
-            set => SetProperty(ref _outsider, value);
-        }
-
-        [JsonProperty("minion")]
-        public string Minion
-        {
-            get => _minion;
-            set => SetProperty(ref _minion, value);
-        }
-
-        [JsonProperty("demon")]
-        public string Demon
-        {
-            get => _demon;
-            set => SetProperty(ref _demon, value);
-        }
-
-        [JsonProperty("traveler")]
-        public string Traveler
-        {
-            get => _traveler;
-            set => SetProperty(ref _traveler, value);
-        }
-
-        [JsonProperty("a jinxed")]
-        public string AJinxed
-        {
-            get => _aJinxed;
-            set => SetProperty(ref _aJinxed, value);
         }
 
         [JsonProperty("status")]

@@ -1,5 +1,4 @@
-﻿using BloodClockTowerScriptEditor.Models;
-using BloodClockTowerScriptEditor.Services;
+﻿using BloodClockTowerScriptEditor.Data;
 using System.Windows;
 
 namespace BloodClockTowerScriptEditor

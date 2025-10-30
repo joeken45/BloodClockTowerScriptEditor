@@ -8,16 +8,16 @@ namespace BloodClockTowerScriptEditor.Models
     /// </summary>
     public class JinxItem : ObservableObject
     {
-        private string _targetRoleName = string.Empty;
+        private string _targetRolesId = string.Empty;
         private string _reason = string.Empty;
 
         /// <summary>
         /// 目標角色名稱
         /// </summary>
-        public string TargetRoleName
+        public string TargetRoleId
         {
-            get => _targetRoleName;
-            set => SetProperty(ref _targetRoleName, value);
+            get => _targetRolesId;
+            set => SetProperty(ref _targetRolesId, value);
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace BloodClockTowerScriptEditor.Models
             {
                 if (_reason != value)
                 {
-                    System.Diagnostics.Debug.WriteLine($"🔔 JinxItem.Reason 變更: TargetRole={TargetRoleName}, 舊值={_reason}, 新值={value}");
+                    System.Diagnostics.Debug.WriteLine($"🔔 JinxItem.Reason 變更: TargetRole={TargetRoleId}, 舊值={_reason}, 新值={value}");
                     _reason = value;
                     OnPropertyChanged();
                 }
@@ -38,18 +38,11 @@ namespace BloodClockTowerScriptEditor.Models
         }
 
         /// <summary>
-        /// 建構子
-        /// </summary>
-        public JinxItem()
-        {
-        }
-
-        /// <summary>
         /// 建構子（帶參數）
         /// </summary>
-        public JinxItem(string targetRoleName, string reason)
+        public JinxItem(string targetRoleId, string reason)
         {
-            TargetRoleName = targetRoleName;
+            TargetRoleId = targetRoleId;
             Reason = reason;
         }
     }

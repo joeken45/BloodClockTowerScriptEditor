@@ -307,7 +307,6 @@ namespace BloodClockTowerScriptEditor
 
         // ==================== 私有欄位 ====================
         private Role? _draggedRole = null;
-        private TeamType _draggedFromTeam;
         private System.Windows.Shapes.Line? _dropIndicatorLine = null;  // ✅ 改為指示線
 
         // ==================== 圖片管理方法 ====================
@@ -409,15 +408,15 @@ namespace BloodClockTowerScriptEditor
                 string displayRole;
                 Role? targetRole = null;
 
-                if (string.IsNullOrEmpty(item.TargetRoleName))
+                if (string.IsNullOrEmpty(item.TargetRoleId))
                 {
                     displayRole = "(未選擇)";
                 }
                 else
                 {
                     targetRole = viewModel.CurrentScript.Roles
-                        .FirstOrDefault(r => r.Id == item.TargetRoleName && r.Team != TeamType.Jinxed);
-                    displayRole = targetRole?.Name ?? item.TargetRoleName;
+                        .FirstOrDefault(r => r.Id == item.TargetRoleId && r.Team != TeamType.Jinxed);
+                    displayRole = targetRole?.Name ?? item.TargetRoleId;
                 }
 
                 var displayReason = string.IsNullOrEmpty(item.Reason)
@@ -576,7 +575,7 @@ namespace BloodClockTowerScriptEditor
             {
                 // ID → 名稱
                 var role = viewModel.CurrentScript.Roles
-                    .FirstOrDefault(r => r.Id == item.TargetRoleName && r.Team != TeamType.Jinxed);
+                    .FirstOrDefault(r => r.Id == item.TargetRoleId && r.Team != TeamType.Jinxed);
 
                 if (role != null)
                 {
@@ -603,19 +602,19 @@ namespace BloodClockTowerScriptEditor
                 if (targetRole == null || string.IsNullOrEmpty(selectedName))
                 {
                     System.Diagnostics.Debug.WriteLine("⚠️ 目標角色為空，設為空字串");
-                    item.TargetRoleName = "";
+                    item.TargetRoleId = "";
                     return;
                 }
 
                 // 記錄舊目標
-                string oldTargetId = item.TargetRoleName;
+                string oldTargetId = item.TargetRoleId;
 
                 // ✅ 檢查 2：防止選擇重複的相剋規則
                 if (oldTargetId != targetRole.Id &&
                     viewModel.SelectedRole.JinxItems != null)
                 {
                     bool isDuplicate = viewModel.SelectedRole.JinxItems
-                        .Any(ji => ji != item && ji.TargetRoleName == targetRole.Id);
+                        .Any(ji => ji != item && ji.TargetRoleId == targetRole.Id);
 
                     if (isDuplicate)
                     {
@@ -649,7 +648,7 @@ namespace BloodClockTowerScriptEditor
                 System.Diagnostics.Debug.WriteLine($"🔄 切換相剋目標: {oldTargetId} → {targetRole.Id}");
 
                 // 更新新目標
-                item.TargetRoleName = targetRole.Id;
+                item.TargetRoleId = targetRole.Id;
 
                 // 立即同步當前角色的 JinxItems → Jinxes
                 viewModel.SelectedRole.SyncJinxItemsToJinxes();
@@ -732,10 +731,10 @@ namespace BloodClockTowerScriptEditor
                 DataContext is MainViewModel viewModel &&
                 viewModel.SelectedRole != null)
             {
-                string key = $"{viewModel.SelectedRole.Id}_{item.TargetRoleName}";
+                string key = $"{viewModel.SelectedRole.Id}_{item.TargetRoleId}";
                 string oldReason = item.Reason ?? "";
 
-                _oldJinxReasons[key] = (viewModel.SelectedRole, item.TargetRoleName, oldReason);
+                _oldJinxReasons[key] = (viewModel.SelectedRole, item.TargetRoleId, oldReason);
 
                 // 🔴 把 key 存到 TextBox.Tag，這樣 LostFocus 時可以取回
                 textBox.Tag = key;
@@ -761,7 +760,7 @@ namespace BloodClockTowerScriptEditor
             string oldReason = oldData.oldReason;
 
             // 從 editedRole 的 JinxItems 找到對應項目取得新值
-            var jinxItem = editedRole.JinxItems?.FirstOrDefault(ji => ji.TargetRoleName == targetRoleId);
+            var jinxItem = editedRole.JinxItems?.FirstOrDefault(ji => ji.TargetRoleId == targetRoleId);
             if (jinxItem == null)
             {
                 _oldJinxReasons.Remove(key);
@@ -915,8 +914,6 @@ namespace BloodClockTowerScriptEditor
                 }
 
                 _draggedRole = role;
-                _draggedFromTeam = role.Team;
-                //border.Opacity = 0.5;
             }
         }
 
@@ -989,28 +986,6 @@ namespace BloodClockTowerScriptEditor
             }
         }
 
-        /// <summary>
-        /// 取得滑鼠位置下的角色
-        /// </summary>
-        private Role? GetRoleUnderMouse(ItemsControl itemsControl, Point mousePosition)
-        {
-            for (int i = 0; i < itemsControl.Items.Count; i++)
-            {
-                var container = itemsControl.ItemContainerGenerator.ContainerFromIndex(i) as FrameworkElement;
-                if (container == null) continue;
-
-                // 取得容器相對於 ItemsControl 的位置
-                var containerPos = container.TransformToAncestor(itemsControl).Transform(new Point(0, 0));
-                var containerBounds = new Rect(containerPos, container.RenderSize);
-
-                // 檢查滑鼠是否在此容器內
-                if (containerBounds.Contains(mousePosition))
-                {
-                    return itemsControl.Items[i] as Role;
-                }
-            }
-            return null;
-        }
         /// <summary>
         /// 取得放置目標（包含插入位置判斷）
         /// </summary>

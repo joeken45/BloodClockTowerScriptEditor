@@ -86,28 +86,5 @@ namespace BloodClockTowerScriptEditor.Models
                 Character2 = parts[1].Trim();
             }
         }
-
-        /// <summary>
-        /// 轉換為 Role 物件 (加入劇本時使用)
-        /// </summary>
-        public Role ToRole()
-        {
-            return new Role
-            {
-                Id = this.Id,
-                Name = this.Name,
-                Team = TeamType.Jinxed,
-                Ability = this.Ability,
-                Image = string.IsNullOrEmpty(this.Image)
-                    ? new List<string>()
-                    : new List<string> { this.Image },
-                // 相剋規則不需要這些欄位，設為預設值
-                Setup = false,
-                FirstNight = 0,
-                OtherNight = 0,
-                Reminders = new System.Collections.ObjectModel.ObservableCollection<ReminderItem>(),
-                RemindersGlobal = new System.Collections.ObjectModel.ObservableCollection<ReminderItem>()
-            };
-        }
     }
 }

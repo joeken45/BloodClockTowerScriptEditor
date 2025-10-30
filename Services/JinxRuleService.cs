@@ -1,4 +1,5 @@
 ﻿using BloodClockTowerScriptEditor.Models;
+using BloodClockTowerScriptEditor.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,48 +46,6 @@ namespace BloodClockTowerScriptEditor.Services
             }
 
             return detectedRules;
-        }
-
-        /// <summary>
-        /// 根據兩個角色名稱查詢相剋規則
-        /// </summary>
-        public async Task<JinxRule?> GetJinxRuleAsync(string character1, string character2)
-        {
-            using var context = new JinxRuleContext();
-
-            return await context.JinxRules
-                .FirstOrDefaultAsync(j =>
-                    (j.Character1 == character1 && j.Character2 == character2) ||
-                    (j.Character1 == character2 && j.Character2 == character1));
-        }
-
-        /// <summary>
-        /// 取得所有相剋規則
-        /// </summary>
-        public async Task<List<JinxRule>> GetAllRulesAsync()
-        {
-            using var context = new JinxRuleContext();
-            return await context.JinxRules.ToListAsync();
-        }
-
-        /// <summary>
-        /// 根據 ID 取得相剋規則
-        /// </summary>
-        public async Task<JinxRule?> GetRuleByIdAsync(string id)
-        {
-            using var context = new JinxRuleContext();
-            return await context.JinxRules.FirstOrDefaultAsync(j => j.Id == id);
-        }
-
-        /// <summary>
-        /// 根據角色名稱查詢所有相關的相剋規則
-        /// </summary>
-        public async Task<List<JinxRule>> GetRulesByCharacterNameAsync(string characterName)
-        {
-            using var context = new JinxRuleContext();
-            return await context.JinxRules
-                .Where(j => j.Character1 == characterName || j.Character2 == characterName)
-                .ToListAsync();
         }
     }
 }
