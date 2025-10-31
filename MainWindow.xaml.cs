@@ -1174,5 +1174,54 @@ namespace BloodClockTowerScriptEditor
                 }
             }
         }
+
+        /// <summary>
+        /// 新增特殊功能
+        /// </summary>
+        private void AddSpecial_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is MainViewModel vm && vm.SelectedRole != null)
+            {
+                // 初始化 Special 列表（使用 ObservableCollection）
+                if (vm.SelectedRole.Special == null)
+                {
+                    vm.SelectedRole.Special = new System.Collections.ObjectModel.ObservableCollection<Role.SpecialAbility>();
+                }
+
+                // 新增預設的特殊功能
+                var newSpecial = new Role.SpecialAbility
+                {
+                    Type = "selection",
+                    Name = "grimoire",
+                    Value = "",
+                    Time = null,
+                    Global = null
+                };
+
+                vm.SelectedRole.Special.Add(newSpecial);
+
+                // 標記為已修改
+                vm.IsDirty = true;
+                vm.StatusMessage = "已新增特殊功能";
+            }
+        }
+
+        /// <summary>
+        /// 刪除特殊功能
+        /// </summary>
+        private void DeleteSpecial_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && button.Tag is Role.SpecialAbility special)
+            {
+                if (DataContext is MainViewModel vm && vm.SelectedRole?.Special != null)
+                {
+                    vm.SelectedRole.Special.Remove(special);
+
+                    // 標記為已修改
+                    vm.IsDirty = true;
+                    vm.StatusMessage = "已刪除特殊功能";
+                }
+            }
+        }
     }
 }

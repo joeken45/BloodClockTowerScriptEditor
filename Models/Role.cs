@@ -29,7 +29,7 @@ namespace BloodClockTowerScriptEditor.Models
         private string? _firstNightReminder;
         private string? _otherNightReminder;
         private List<JinxInfo>? _jinxes;
-        private List<SpecialAbility>? _special;
+        private ObservableCollection<SpecialAbility>? _special;
 
         // UI 相關私有欄位
         private int _displayOrder;
@@ -190,8 +190,8 @@ namespace BloodClockTowerScriptEditor.Models
             set => SetProperty(ref _jinxes, value);
         }
 
-        [JsonProperty("special", NullValueHandling = NullValueHandling.Ignore)]
-        public List<SpecialAbility>? Special
+        [JsonProperty("special")]
+        public ObservableCollection<SpecialAbility>? Special
         {
             get => _special;
             set => SetProperty(ref _special, value);
@@ -598,22 +598,27 @@ namespace BloodClockTowerScriptEditor.Models
         /// <summary>
         /// 特殊能力 (BOTC 專用)
         /// </summary>
+
+        /// <summary>
+        /// 特殊功能定義
+        /// </summary>
         public class SpecialAbility
         {
-            [JsonProperty("name")]
-            public string Name { get; set; } = string.Empty;
-
             [JsonProperty("type")]
             public string Type { get; set; } = string.Empty;
 
-            [JsonProperty("time", NullValueHandling = NullValueHandling.Ignore)]
+            [JsonProperty("name")]
+            public string Name { get; set; } = string.Empty;
+
+            [JsonProperty("value")]
+            public object? Value { get; set; }
+
+            [JsonProperty("time")]
             public string? Time { get; set; }
 
-            [JsonProperty("value", NullValueHandling = NullValueHandling.Ignore)]
-            public string? Value { get; set; }
-
-            [JsonProperty("global", NullValueHandling = NullValueHandling.Ignore)]
-            public bool? Global { get; set; }
+            [JsonProperty("global")]
+            public string? Global { get; set; }
         }
+
     }
 }
