@@ -579,25 +579,8 @@ namespace BloodClockTowerScriptEditor.ViewModels
 
                     foreach (var role in CurrentScript.Roles.Where(r => r.Team != TeamType.Jinxed))
                     {
-                        // 清理 Jinxes
-                        if (role.Jinxes != null)
-                        {
-                            var toRemove = role.Jinxes.Where(j => j.Id == deletedRoleId).ToList();
-                            foreach (var jinx in toRemove)
-                            {
-                                role.Jinxes.Remove(jinx);
-                                System.Diagnostics.Debug.WriteLine($"🗑️ 從 {role.Name} 移除與已刪除角色的 Jinx");
-                            }
-
-                            if (role.Jinxes.Count == 0)
-                                role.Jinxes = null;
-                        }
-
-                        // 清理 JinxItems
-                        if (role.IsJinxItemsInitialized)
-                        {
-                            role.RemoveJinxItem(deletedRoleId);
-                        }
+                        // ✅ 使用 Helper 方法整併邏輯
+                        JinxSyncHelper.RemoveJinxFromRole(role, deletedRoleId);
                     }
                 }
 
@@ -904,6 +887,24 @@ namespace BloodClockTowerScriptEditor.ViewModels
         {
             // 任何角色屬性變更都標記為需要儲存
             IsDirty = true;
+        }
+
+        /// <summary>
+        /// 供 Jinx ComboBox 綁定使用的角色名稱列表
+        /// </summary>
+        public List<string> AvailableRoleNamesForJinx
+        {
+            get
+            {
+                if (SelectedRole == null) return new List<string>();
+
+                return CurrentScript.Roles
+                    .Where(r => r.Name != SelectedRole.Name &&      // 排除自己
+                               r.Team != TeamType.Jinxed)           // 排除相剋物件
+                    .Select(r => r.Name)
+                    .OrderBy(r => r)
+                    .ToList();
+            }
         }
 
         /// <summary>

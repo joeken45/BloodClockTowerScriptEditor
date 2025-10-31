@@ -181,5 +181,29 @@ namespace BloodClockTowerScriptEditor.ViewModels
                 System.Diagnostics.Debug.WriteLine($"🔗 從集石規則建立: {name1} ↔ {name2}");
             }
         }
+
+        /// <summary>
+        /// 從角色移除指定的 Jinx（整併重複邏輯）
+        /// </summary>
+        public static void RemoveJinxFromRole(Role role, string targetRoleId)
+        {
+            if (role == null || string.IsNullOrEmpty(targetRoleId))
+                return;
+
+            // 1. 移除 Jinxes
+            if (role.Jinxes != null)
+            {
+                var toRemove = role.Jinxes.Where(j => j.Id == targetRoleId).ToList();
+                foreach (var jinx in toRemove)
+                    role.Jinxes.Remove(jinx);
+
+                if (role.Jinxes.Count == 0)
+                    role.Jinxes = null;
+            }
+
+            // 2. 移除 JinxItems（如果已初始化）
+            if (role.IsJinxItemsInitialized)
+                role.RemoveJinxItem(targetRoleId);
+        }
     }
 }

@@ -89,7 +89,28 @@ namespace BloodClockTowerScriptEditor.Models
         /// </summary>
         [NotMapped]
         public bool IsSelected { get; set; } = false;
-              
+
+        /// <summary>
+        /// UI 用：類型的中文顯示名稱（不儲存到資料庫）
+        /// </summary>
+        [NotMapped]
+        public string TeamDisplayName
+        {
+            get
+            {
+                return Team?.ToLower() switch
+                {
+                    "townsfolk" => "鎮民",
+                    "outsider" => "外來者",
+                    "minion" => "爪牙",
+                    "demon" => "惡魔",
+                    "traveler" => "旅行者",
+                    "fabled" => "傳奇",
+                    _ => "未知"
+                };
+            }
+        }
+
         /// <summary>
         /// 建立日期
         /// </summary>

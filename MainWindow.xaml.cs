@@ -79,7 +79,6 @@ namespace BloodClockTowerScriptEditor
 
                     if (string.IsNullOrEmpty(embeddedContent))
                     {
-                        System.Diagnostics.Debug.WriteLine($"❌ 無法載入內嵌資源：{embeddedResourceName}");
                         return 0;
                     }
 
@@ -91,9 +90,8 @@ namespace BloodClockTowerScriptEditor
                 
                 return count;
             }
-            catch (Exception ex)
+            catch 
             {
-                System.Diagnostics.Debug.WriteLine($"❌ 同步 {resourceFileName} 失敗：{ex.Message}");
                 return 0;
             }
         }
@@ -394,7 +392,7 @@ namespace BloodClockTowerScriptEditor
         }
 
         /// <summary>
-        /// 刪除 Jinx
+        /// 刪除 Jinx - 使用 JinxSyncHelper.RemoveJinxFromRole 整併邏輯
         /// </summary>
         private void DeleteJinx_Click(object sender, RoutedEventArgs e)
         {
@@ -437,28 +435,10 @@ namespace BloodClockTowerScriptEditor
                     // 2. 同步當前角色的 Jinxes
                     viewModel.SelectedRole.SyncJinxItemsToJinxes();
 
-                    // 3. 如果目標角色存在，移除對方的反向 Jinx
+                    // 3. ✅ 使用 Helper 方法移除對方的反向 Jinx（整併重複邏輯）
                     if (targetRole != null)
                     {
-                        // 移除對方的 Jinxes
-                        if (targetRole.Jinxes != null)
-                        {
-                            var toRemove = targetRole.Jinxes
-                                .FirstOrDefault(j => j.Id == viewModel.SelectedRole.Id);
-
-                            if (toRemove != null)
-                            {
-                                targetRole.Jinxes.Remove(toRemove);
-                                if (targetRole.Jinxes.Count == 0)
-                                    targetRole.Jinxes = null;
-                            }
-                        }
-
-                        // 移除對方的 JinxItems（如果已初始化）
-                        if (targetRole.IsJinxItemsInitialized)
-                        {
-                            targetRole.RemoveJinxItem(viewModel.SelectedRole.Id);
-                        }
+                        JinxSyncHelper.RemoveJinxFromRole(targetRole, viewModel.SelectedRole.Id);
                     }
 
                     // 4. 同步集石格式
