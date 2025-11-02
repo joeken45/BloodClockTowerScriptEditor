@@ -41,7 +41,7 @@ namespace BloodClockTowerScriptEditor
             // 🆕 為初始空白劇本加入爪牙/惡魔訊息
             if (DataContext is MainViewModel viewModel)
             {
-                await viewModel.LoadMinionDemonInfoAsync();
+                await viewModel.LoadRequiredPhasesAsync();
             }
         }
 

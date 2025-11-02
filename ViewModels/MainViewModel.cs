@@ -18,9 +18,19 @@ namespace BloodClockTowerScriptEditor.ViewModels
     /// </summary>
     public partial class MainViewModel : ObservableObject
     {
+        /// <summary>
+        /// 必要階段角色的 ID 列表（在角色列表中隱藏，但會出現在夜晚順序中）
+        /// </summary>
+        private static readonly HashSet<string> RequiredPhaseIds = new()
+{
+    "M",      // 爪牙資訊
+    "D",      // 惡魔資訊
+    "dawn",   // 黎明
+    "dusk"    // 黃昏
+};
         // ==================== 私有欄位 ====================
         private bool _isDirty; // 檔案是否有未儲存的變更
-        private readonly JsonService _jsonService; 
+        private readonly JsonService _jsonService;
         private readonly JinxRuleService _jinxRuleService;
         private Script _currentScript;
         private Role? _selectedRole;
@@ -219,7 +229,7 @@ namespace BloodClockTowerScriptEditor.ViewModels
             CurrentScript = new Script();
 
             // 🆕 自動加入爪牙/惡魔訊息
-            await LoadMinionDemonInfoAsync();
+            await LoadRequiredPhasesAsync();
 
             CurrentFilePath = string.Empty;
             SelectedRole = null;
@@ -228,7 +238,7 @@ namespace BloodClockTowerScriptEditor.ViewModels
         }
 
         [RelayCommand]
-        private void LoadJson()
+        private async void LoadJson()  // ✅ 改為 async void
         {
             try
             {
@@ -244,8 +254,13 @@ namespace BloodClockTowerScriptEditor.ViewModels
 
                 if (dialog.ShowDialog() == true)
                 {
+                    // 載入檔案內容
                     CurrentScript = _jsonService.LoadScript(dialog.FileName);
                     CurrentFilePath = dialog.FileName;
+
+                    // ✅ 新增：載入後合併必要階段角色
+                    await MergeRequiredPhasesAsync();
+
                     StatusMessage = $"已載入: {dialog.FileName}";
                     SelectedRole = null;
                     IsDirty = false; // 載入後重置標記
@@ -718,7 +733,9 @@ namespace BloodClockTowerScriptEditor.ViewModels
             JinxedRoles.Clear();
 
             // 按 Team 和 DisplayOrder 排序後分類
+            // ✅ 新增：過濾掉必要階段角色
             var sortedRoles = CurrentScript.Roles
+                .Where(r => !RequiredPhaseIds.Contains(r.Id))  // ← 新增這行
                 .OrderBy(r => r.Team)
                 .ThenBy(r => r.DisplayOrder)
                 .ToList();
@@ -1064,14 +1081,16 @@ namespace BloodClockTowerScriptEditor.ViewModels
         }
 
         /// <summary>
-        /// 載入爪牙/惡魔訊息（私有，內部使用）
+        /// 載入必要階段角色（爪牙資訊、惡魔資訊、黎明、黃昏）
+        /// 這些角色在角色列表中隱藏，但會出現在夜晚順序中
         /// </summary>
-        public async Task LoadMinionDemonInfoAsync() 
+        public async Task LoadRequiredPhasesAsync()
         {
             try
             {
                 using var context = new RoleTemplateContext();
 
+                // 載入四個必要階段角色
                 var minionInfo = await context.RoleTemplates
                     .Include(r => r.Reminders)
                     .FirstOrDefaultAsync(r => r.Id == "M");
@@ -1080,14 +1099,36 @@ namespace BloodClockTowerScriptEditor.ViewModels
                     .Include(r => r.Reminders)
                     .FirstOrDefaultAsync(r => r.Id == "D");
 
+                var dawnInfo = await context.RoleTemplates
+                    .Include(r => r.Reminders)
+                    .FirstOrDefaultAsync(r => r.Id == "dawn");
+
+                var duskInfo = await context.RoleTemplates
+                    .Include(r => r.Reminders)
+                    .FirstOrDefaultAsync(r => r.Id == "dusk");
+
+                // 加入爪牙資訊
                 if (minionInfo != null)
                 {
                     CurrentScript.Roles.Add(minionInfo.ToRole());
                 }
 
+                // 加入惡魔資訊
                 if (demonInfo != null)
                 {
                     CurrentScript.Roles.Add(demonInfo.ToRole());
+                }
+
+                // 加入黎明
+                if (dawnInfo != null)
+                {
+                    CurrentScript.Roles.Add(dawnInfo.ToRole());
+                }
+
+                // 加入黃昏
+                if (duskInfo != null)
+                {
+                    CurrentScript.Roles.Add(duskInfo.ToRole());
                 }
 
                 UpdateFilteredRoles();
@@ -1095,7 +1136,64 @@ namespace BloodClockTowerScriptEditor.ViewModels
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ 載入爪牙/惡魔訊息失敗：{ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"❌ 載入必要階段角色失敗：{ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 合併必要階段角色（如果檔案中已有同名的角色，則取代）
+        /// </summary>
+        private async Task MergeRequiredPhasesAsync()
+        {
+            try
+            {
+                using var context = new RoleTemplateContext();
+
+                // 載入四個必要階段角色
+                var requiredPhases = new List<(string Id, RoleTemplate? Template)>
+        {
+            ("M", await context.RoleTemplates.Include(r => r.Reminders).FirstOrDefaultAsync(r => r.Id == "M")),
+            ("D", await context.RoleTemplates.Include(r => r.Reminders).FirstOrDefaultAsync(r => r.Id == "D")),
+            ("dawn", await context.RoleTemplates.Include(r => r.Reminders).FirstOrDefaultAsync(r => r.Id == "dawn")),
+            ("dusk", await context.RoleTemplates.Include(r => r.Reminders).FirstOrDefaultAsync(r => r.Id == "dusk"))
+        };
+
+                foreach (var (id, template) in requiredPhases)
+                {
+                    if (template == null)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"⚠️ 資料庫中找不到必要階段角色: {id}");
+                        continue;
+                    }
+
+                    // ✅ 改用 Name 判斷（檔案中可能使用不同的 ID）
+                    var existingRole = CurrentScript.Roles.FirstOrDefault(r =>
+                        r.Name.Equals(template.Name, StringComparison.OrdinalIgnoreCase));
+
+                    if (existingRole != null)
+                    {
+                        // 取代現有角色（保留檔案中的順序位置）
+                        int index = CurrentScript.Roles.IndexOf(existingRole);
+                        var newRole = template.ToRole();
+                        newRole.DisplayOrder = existingRole.DisplayOrder; // 保留原順序
+                        CurrentScript.Roles[index] = newRole;
+                        System.Diagnostics.Debug.WriteLine($"🔄 取代必要階段角色: {template.Name} (原ID: {existingRole.Id} → 新ID: {template.Id})");
+                    }
+                    else
+                    {
+                        // 加入新角色
+                        CurrentScript.Roles.Add(template.ToRole());
+                        System.Diagnostics.Debug.WriteLine($"➕ 加入必要階段角色: {template.Name} ({template.Id})");
+                    }
+                }
+
+                // 更新 UI
+                UpdateFilteredRoles();
+                UpdateNightOrderLists();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"❌ 合併必要階段角色失敗：{ex.Message}");
             }
         }
 
