@@ -145,14 +145,14 @@ namespace BloodClockTowerScriptEditor.Models
         }
 
         [JsonProperty("firstNight", NullValueHandling = NullValueHandling.Ignore)]
-        public List<string>? FirstNightOrder
+        public List<string>? FirstNight
         {
             get => _firstNight;
             set => SetProperty(ref _firstNight, value);
         }
 
         [JsonProperty("otherNight", NullValueHandling = NullValueHandling.Ignore)]
-        public List<string>? OtherNightOrder
+        public List<string>? OtherNight
         {
             get => _otherNight;
             set => SetProperty(ref _otherNight, value);

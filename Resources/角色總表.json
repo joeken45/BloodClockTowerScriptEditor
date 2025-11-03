@@ -13,7 +13,8 @@
     "remindersGlobal": "[]",
     "flavor": "暗流湧動、獲取訊息、進場能力",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "washerwoman"
   },
   {
     "name": "圖書管理員",
@@ -29,7 +30,8 @@
     "remindersGlobal": "[]",
     "flavor": "暗流湧動、獲取訊息、進場能力",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "librarian"
   },
   {
     "name": "調查員",
@@ -45,7 +47,8 @@
     "remindersGlobal": "[]",
     "flavor": "暗流湧動、獲取訊息、進場能力",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "investigator"
   },
   {
     "name": "廚師",
@@ -61,7 +64,8 @@
     "remindersGlobal": "[]",
     "flavor": "暗流湧動、獲取訊息、進場能力、鄰近",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "chef"
   },
   {
     "name": "共情者",
@@ -77,7 +81,8 @@
     "remindersGlobal": "[]",
     "flavor": "暗流湧動、獲取資訊、鄰近",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "empath"
   },
   {
     "name": "占卜師",
@@ -93,7 +98,8 @@
     "remindersGlobal": "[]",
     "flavor": "暗流湧動、獲取訊息、進場能力、持續檢測型能力、互動干擾",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "fortune_teller"
   },
   {
     "name": "送葬者",
@@ -109,7 +115,8 @@
     "remindersGlobal": "[]",
     "flavor": "暗流湧動、獲取訊息、處決、回溯型能力",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "undertaker"
   },
   {
     "name": "僧侶",
@@ -125,7 +132,8 @@
     "remindersGlobal": "[]",
     "flavor": "暗流湧動、保護、免死",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "monk"
   },
   {
     "name": "守鴉人",
@@ -141,7 +149,8 @@
     "remindersGlobal": "[]",
     "flavor": "暗流湧動、獲取訊息、死亡觸發能力。",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "ravenkeeper"
   },
   {
     "name": "貞潔者",
@@ -157,7 +166,8 @@
     "remindersGlobal": "[]",
     "flavor": "暗流湧動、提名、處決、限次能力",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "virgin"
   },
   {
     "name": "獵手",
@@ -173,7 +183,8 @@
     "remindersGlobal": "[]",
     "flavor": "暗流湧動、公開觸發能力、額外死亡、限次能力",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "slayer"
   },
   {
     "name": "士兵",
@@ -189,7 +200,8 @@
     "remindersGlobal": "[]",
     "flavor": "暗流湧動、保護、免死",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "soldier"
   },
   {
     "name": "鎮長",
@@ -205,7 +217,8 @@
     "remindersGlobal": "[]",
     "flavor": "暗流湧動、免死、處決、特殊勝利失敗條件。",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "mayor"
   },
   {
     "name": "祖母",
@@ -221,7 +234,8 @@
     "remindersGlobal": "[]",
     "flavor": "黯月初升、獲取資訊、進場能力、死亡觸發能力、額外死亡",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "grandmother"
   },
   {
     "name": "水手",
@@ -237,7 +251,8 @@
     "remindersGlobal": "[]",
     "flavor": "黯月初升、免死、醉酒",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "sailor"
   },
   {
     "name": "侍女",
@@ -253,7 +268,8 @@
     "remindersGlobal": "[]",
     "flavor": "黯月初升、獲取訊息",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "chambermaid"
   },
   {
     "name": "驅魔人",
@@ -269,7 +285,8 @@
     "remindersGlobal": "[]",
     "flavor": "黯月初升、能力效果干擾、暴露角色。",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "exorcist"
   },
   {
     "name": "旅店老闆",
@@ -285,7 +302,8 @@
     "remindersGlobal": "[]",
     "flavor": "黯月初升、免死、醉酒",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "innkeeper"
   },
   {
     "name": "賭徒",
@@ -301,7 +319,8 @@
     "remindersGlobal": "[]",
     "flavor": "黯月初升、額外死亡",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "gambler"
   },
   {
     "name": "造謠者",
@@ -317,7 +336,8 @@
     "remindersGlobal": "[]",
     "flavor": "黯月初升、公開觸發能力、回溯型能力、額外死亡",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "gossip"
   },
   {
     "name": "侍臣",
@@ -333,7 +353,8 @@
     "remindersGlobal": "[]",
     "flavor": "黯月初升、醉酒",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "courtier"
   },
   {
     "name": "教授",
@@ -349,7 +370,8 @@
     "remindersGlobal": "[]",
     "flavor": "黯月初升、復活、限次能力",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "professor"
   },
   {
     "name": "吟遊詩人",
@@ -365,7 +387,8 @@
     "remindersGlobal": "[]",
     "flavor": "黯月初升、處決、醉酒",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "minstrel"
   },
   {
     "name": "茶藝師",
@@ -381,7 +404,8 @@
     "remindersGlobal": "[]",
     "flavor": "黯月初升、鄰近、免死、持續檢測型能力",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "tea_lady"
   },
   {
     "name": "和平主義者",
@@ -397,7 +421,8 @@
     "remindersGlobal": "[]",
     "flavor": "黯月初升、處決、免死",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "pacifist"
   },
   {
     "name": "弄臣",
@@ -413,7 +438,8 @@
     "remindersGlobal": "[]",
     "flavor": "黯月初升、免死、限次能力",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "fool"
   },
   {
     "name": "鐘錶匠",
@@ -429,7 +455,8 @@
     "remindersGlobal": "[]",
     "flavor": "夢殞春宵、獲取訊息、進場能力",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "clockmaker"
   },
   {
     "name": "築夢師",
@@ -445,7 +472,8 @@
     "remindersGlobal": "[]",
     "flavor": "夢殞春宵、獲取訊息",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "dreamer"
   },
   {
     "name": "舞蛇人",
@@ -461,7 +489,8 @@
     "remindersGlobal": "[]",
     "flavor": "夢殞春宵、角色變化、陣營轉變、中毒",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "snake_charmer"
   },
   {
     "name": "數學家",
@@ -477,7 +506,8 @@
     "remindersGlobal": "[]",
     "flavor": "夢殞春宵、獲取訊息、回溯型能力",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "mathematician"
   },
   {
     "name": "賣花女孩",
@@ -493,7 +523,8 @@
     "remindersGlobal": "[]",
     "flavor": "夢殞春宵、獲取訊息、投票、回溯型能力",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "flowergirl"
   },
   {
     "name": "城鎮公告員",
@@ -509,7 +540,8 @@
     "remindersGlobal": "[]",
     "flavor": "夢殞春宵、獲取資訊、提名、回溯型能力",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "town_crier"
   },
   {
     "name": "神諭者",
@@ -525,7 +557,8 @@
     "remindersGlobal": "[]",
     "flavor": "獲取訊息",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "oracle"
   },
   {
     "name": "博學者",
@@ -541,7 +574,8 @@
     "remindersGlobal": "[]",
     "flavor": "夢殞春宵、獲取資訊、拜訪說書人",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "savant"
   },
   {
     "name": "女裁縫",
@@ -557,7 +591,8 @@
     "remindersGlobal": "[]",
     "flavor": "夢殞春宵、獲取資訊、限次能力",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "seamstress"
   },
   {
     "name": "哲學家",
@@ -573,7 +608,8 @@
     "remindersGlobal": "是哲學家",
     "flavor": "備註",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "philosopher"
   },
   {
     "name": "藝術家",
@@ -589,7 +625,8 @@
     "remindersGlobal": "[]",
     "flavor": "夢殞春宵、獲取訊息、拜訪說書人、限次能力",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "artist"
   },
   {
     "name": "雜耍藝人",
@@ -605,7 +642,8 @@
     "remindersGlobal": "[]",
     "flavor": "夢殞春宵、獲取訊息、進場能力、回溯型能力",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "juggler"
   },
   {
     "name": "賢者",
@@ -621,7 +659,8 @@
     "remindersGlobal": "[]",
     "flavor": "夢殞春宵、獲取訊息、死亡觸發能力",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "sage"
   },
   {
     "name": "半獸人",
@@ -637,7 +676,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、持續檢測型能力、互動干擾、進場能力",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "lycanthrope"
   },
   {
     "name": "報喪女妖",
@@ -653,7 +693,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、死亡觸發能力、提名、投票、暴露角色",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "banshee"
   },
   {
     "name": "唱詩男孩",
@@ -669,7 +710,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、獲取資訊、死亡觸發能力、設置調整",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "choirboy"
   },
   {
     "name": "傳教士",
@@ -685,7 +727,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、暴露角色、能力效果干擾、持續偵測型能力",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "preacher"
   },
   {
     "name": "村夫",
@@ -701,7 +744,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、設置調整、獲取訊息、醉酒、持續檢測型能力",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "village_idiot"
   },
   {
     "name": "工程師",
@@ -717,7 +761,8 @@
     "remindersGlobal": "[]",
     "flavor": "角色變化、限次能力",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "engineer"
   },
   {
     "name": "貴族",
@@ -733,7 +778,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、進場能力、獲取資訊",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "noble"
   },
   {
     "name": "公主",
@@ -749,7 +795,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、提名、處決、回溯型能力、免死、進場能力",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "princess"
   },
   {
     "name": "國王",
@@ -765,7 +812,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、獲取資訊、暴露角色",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "king"
   },
   {
     "name": "將軍",
@@ -781,7 +829,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、獲取訊息",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "general"
   },
   {
     "name": "煉金術士",
@@ -797,7 +846,8 @@
     "remindersGlobal": "是煉金術士",
     "flavor": "實驗性角色、獲得能力、設定調整",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "alchemist"
   },
   {
     "name": "魔術師",
@@ -813,7 +863,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、認知覆蓋",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "magician"
   },
   {
     "name": "農夫",
@@ -829,7 +880,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、角色變化、死亡觸發能力",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "farmer"
   },
   {
     "name": "女祭司",
@@ -845,7 +897,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、獲取訊息",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "high_priestess"
   },
   {
     "name": "氣球駕駛員",
@@ -861,7 +914,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、取得資訊、設定調整",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "balloonist"
   },
   {
     "name": "騎士",
@@ -877,7 +931,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、進場能力、獲取資訊",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "knight"
   },
   {
     "name": "賞金獵人",
@@ -893,7 +948,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、獲取訊息、進場能力、回溯型能力、陣營轉變、死亡觸發能力、設定調整",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "bounty_hunter"
   },
   {
     "name": "失憶者",
@@ -909,7 +965,8 @@
     "remindersGlobal": "[]",
     "flavor": "獲得能力、拜訪說書人、獲取訊息、實驗性角色",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "amnesiac"
   },
   {
     "name": "食人族",
@@ -925,7 +982,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、獲得能力、處決、中毒、持續檢測型能力",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "cannibal"
   },
   {
     "name": "事務官",
@@ -941,7 +999,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、進場能力、獲取訊息",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "steward"
   },
   {
     "name": "守夜人",
@@ -957,7 +1016,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、暴露角色、限次能力",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "nightwatchman"
   },
   {
     "name": "無神論者",
@@ -973,7 +1033,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、死後能力保留、處決、特殊勝利失敗條件、設定調整",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "atheist"
   },
   {
     "name": "戲法師",
@@ -989,7 +1050,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、公開觸發能力、特殊勝利失敗條件",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "alsaahir"
   },
   {
     "name": "小精靈",
@@ -1005,7 +1067,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、獲取訊息、進場能力、瘋狂、獲得能力、死亡觸發能力",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "pixie"
   },
   {
     "name": "修行者",
@@ -1021,7 +1084,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、獲取訊息、進場能力",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "shugenja"
   },
   {
     "name": "巡山人",
@@ -1037,7 +1101,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、角色變化、限次能力、設置調整",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "huntsman"
   },
   {
     "name": "異教領袖",
@@ -1053,7 +1118,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、陣營轉變、鄰近、特殊勝利失敗條件、公開觸發能力",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "cult_leader"
   },
   {
     "name": "罌粟種植者",
@@ -1069,7 +1135,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、能力效果干擾、死亡觸發能力、獲取資訊、暴露角色",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "poppy_grower"
   },
   {
     "name": "漁夫",
@@ -1085,7 +1152,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、獲取訊息、拜訪說書人、限次能力",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "fisherman"
   },
   {
     "name": "雜技演員",
@@ -1101,7 +1169,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、醉酒、中毒、額外死亡、持續檢測型能力",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "acrobat"
   },
   {
     "name": "半仙",
@@ -1117,7 +1186,8 @@
     "remindersGlobal": "[]",
     "flavor": "華燈初上、更換選擇目標",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "banxian"
   },
   {
     "name": "變臉師",
@@ -1133,7 +1203,8 @@
     "remindersGlobal": "是變臉師",
     "flavor": "華燈初上、瘋狂、回溯型能力、獲得能力",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "bianlianshi"
   },
   {
     "name": "打更人",
@@ -1149,7 +1220,8 @@
     "remindersGlobal": "[]",
     "flavor": "華燈初上、免死",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "dagengren"
   },
   {
     "name": "店小二",
@@ -1165,7 +1237,8 @@
     "remindersGlobal": "[]",
     "flavor": "華燈初上、獲取訊息、醉酒、死後能力保留、進場能力",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "dianxiaoer"
   },
   {
     "name": "歌伶",
@@ -1181,7 +1254,8 @@
     "remindersGlobal": "[]",
     "flavor": "華燈初上、公開觸發能力、額外死亡、限次能力、回溯型能力",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "geling"
   },
   {
     "name": "和尚",
@@ -1197,7 +1271,8 @@
     "remindersGlobal": "[]",
     "flavor": "華燈初上、能力效果干擾、影響、鄰近",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "heshang"
   },
   {
     "name": "錦衣衛",
@@ -1213,7 +1288,8 @@
     "remindersGlobal": "[]",
     "flavor": "華燈初上、免死、死亡觸發能力",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "jinyiwei"
   },
   {
     "name": "郎中",
@@ -1229,7 +1305,8 @@
     "remindersGlobal": "[]",
     "flavor": "華燈初上、獲取資訊",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "langzhong"
   },
   {
     "name": "欽天監",
@@ -1245,7 +1322,8 @@
     "remindersGlobal": "[]",
     "flavor": "華燈初上、獲取資訊、鄰近、進場能力",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "qintianjian"
   },
   {
     "name": "悟道者",
@@ -1261,7 +1339,8 @@
     "remindersGlobal": "是悟道者",
     "flavor": "華燈初上、認知覆蓋、設定調整、角色變化、影響",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "wudaozhe"
   },
   {
     "name": "戲子",
@@ -1277,7 +1356,8 @@
     "remindersGlobal": "[]",
     "flavor": "華燈初上、設置調整、特殊勝利失敗條件、死後能力保留、持續檢測型能力",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "xizi"
   },
   {
     "name": "熊孩子",
@@ -1293,7 +1373,8 @@
     "remindersGlobal": "[]",
     "flavor": "華燈初上、能力效果干擾、持續檢測型能力",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "xionghaizi"
   },
   {
     "name": "陰陽師",
@@ -1309,7 +1390,8 @@
     "remindersGlobal": "[]",
     "flavor": "華燈初上、獲取資訊、進場能力",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "yinyangshi"
   },
   {
     "name": "秉筆",
@@ -1325,7 +1407,8 @@
     "remindersGlobal": "[]",
     "flavor": "山雨欲來、死亡觸發能力、獲取資訊、回溯型能力",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "bingbi"
   },
   {
     "name": "寵妃",
@@ -1341,7 +1424,8 @@
     "remindersGlobal": "[]",
     "flavor": "山雨欲來",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "chongfei"
   },
   {
     "name": "刀客",
@@ -1357,7 +1441,8 @@
     "remindersGlobal": "[]",
     "flavor": "山雨欲來、進場能力、獲取資訊、公開觸發能力、限次能力、額外死亡、回溯型能力",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "daoke"
   },
   {
     "name": "道士",
@@ -1373,7 +1458,8 @@
     "remindersGlobal": "[]",
     "flavor": "山雨欲來、醉酒、死亡觸發能力",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "daoshi"
   },
   {
     "name": "方士",
@@ -1389,7 +1475,8 @@
     "remindersGlobal": "[]",
     "flavor": "山雨欲來、進場能力、獲取資訊",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "fangshi"
   },
   {
     "name": "風水師",
@@ -1405,7 +1492,8 @@
     "remindersGlobal": "[]",
     "flavor": "山雨欲來",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "fengshuishi"
   },
   {
     "name": "狸貓",
@@ -1421,7 +1509,8 @@
     "remindersGlobal": "[]",
     "flavor": "山雨欲來、角色變化、死亡觸發能力、持續檢測型能力",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "limao"
   },
   {
     "name": "掮客",
@@ -1437,7 +1526,8 @@
     "remindersGlobal": "[]",
     "flavor": "山雨欲來、更換選擇目標、持續檢測型能力",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "qianke"
   },
   {
     "name": "染坊坊主",
@@ -1453,7 +1543,8 @@
     "remindersGlobal": "[]",
     "flavor": "山雨欲來",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "ranfangfangzhu"
   },
   {
     "name": "史官",
@@ -1469,7 +1560,8 @@
     "remindersGlobal": "[]",
     "flavor": "山雨欲來、獲取訊息、回溯型能力、處決",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "shiguan"
   },
   {
     "name": "提刑官",
@@ -1485,7 +1577,8 @@
     "remindersGlobal": "[]",
     "flavor": "山雨欲來、提名、限次能力、獲取訊息、互動干擾、回溯型能力",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "tixingguan"
   },
   {
     "name": "巡察",
@@ -1501,7 +1594,8 @@
     "remindersGlobal": "[]",
     "flavor": "山雨欲來、免死",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "xuncha"
   },
   {
     "name": "偃師",
@@ -1517,7 +1611,8 @@
     "remindersGlobal": "[]",
     "flavor": "山雨欲來",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "yanshi"
   },
   {
     "name": "驛使",
@@ -1533,7 +1628,8 @@
     "remindersGlobal": "[]",
     "flavor": "山雨欲來",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "yishi"
   },
   {
     "name": "引路人",
@@ -1549,7 +1645,8 @@
     "remindersGlobal": "[]",
     "flavor": "山雨欲來、獲取資訊、影響",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "yinluren"
   },
   {
     "name": "俑匠",
@@ -1565,7 +1662,8 @@
     "remindersGlobal": "[]",
     "flavor": "山雨欲來",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "yongjiang"
   },
   {
     "name": "鴆",
@@ -1581,7 +1679,8 @@
     "remindersGlobal": "[]",
     "flavor": "山雨欲來、中毒、額外死亡、限次能力",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "zhen"
   },
   {
     "name": "知府",
@@ -1597,7 +1696,8 @@
     "remindersGlobal": "[]",
     "flavor": "山雨欲來、獲取資訊、回溯型能力",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "zhifu"
   },
   {
     "name": "戲子(改)",
@@ -1613,7 +1713,8 @@
     "remindersGlobal": "[]",
     "flavor": "華燈初上、特殊勝利失敗條件、死後能力保留、持續檢測型能力",
     "edition": "custom",
-    "team": "townsfolk"
+    "team": "townsfolk",
+    "officialId": "xizi_new"
   },
   {
     "name": "管家",
@@ -1629,7 +1730,8 @@
     "remindersGlobal": "[]",
     "flavor": "暗流湧動、投票",
     "edition": "custom",
-    "team": "outsider"
+    "team": "outsider",
+    "officialId": "butler"
   },
   {
     "name": "酒鬼",
@@ -1645,7 +1747,8 @@
     "remindersGlobal": "是酒鬼",
     "flavor": "暗流湧動、認知覆蓋、設定調整",
     "edition": "custom",
-    "team": "outsider"
+    "team": "outsider",
+    "officialId": "drunk"
   },
   {
     "name": "陌客",
@@ -1661,7 +1764,8 @@
     "remindersGlobal": "[]",
     "flavor": "暗流湧動、互動干擾、死後能力保留",
     "edition": "custom",
-    "team": "outsider"
+    "team": "outsider",
+    "officialId": "recluse"
   },
   {
     "name": "聖徒",
@@ -1677,7 +1781,8 @@
     "remindersGlobal": "[]",
     "flavor": "暗流湧動、處決、特殊勝利失敗條件、死亡觸發能力",
     "edition": "custom",
-    "team": "outsider"
+    "team": "outsider",
+    "officialId": "saint"
   },
   {
     "name": "修補匠",
@@ -1693,7 +1798,8 @@
     "remindersGlobal": "[]",
     "flavor": "黯月初升、額外死亡",
     "edition": "custom",
-    "team": "outsider"
+    "team": "outsider",
+    "officialId": "tinker"
   },
   {
     "name": "月之子",
@@ -1709,7 +1815,8 @@
     "remindersGlobal": "[]",
     "flavor": "黯月初升、死亡觸發能力、公開觸發能力、額外死亡、回溯型能力",
     "edition": "custom",
-    "team": "outsider"
+    "team": "outsider",
+    "officialId": "moonchild"
   },
   {
     "name": "莽夫",
@@ -1725,7 +1832,8 @@
     "remindersGlobal": "[]",
     "flavor": "黯月初升、醉酒、陣營轉變",
     "edition": "custom",
-    "team": "outsider"
+    "team": "outsider",
+    "officialId": "goon"
   },
   {
     "name": "瘋子",
@@ -1741,7 +1849,8 @@
     "remindersGlobal": "是瘋子",
     "flavor": "黯月初升、認知覆蓋、暴露角色、讓他人獲取訊息",
     "edition": "custom",
-    "team": "outsider"
+    "team": "outsider",
+    "officialId": "lunatic"
   },
   {
     "name": "畸形秀演員",
@@ -1757,7 +1866,8 @@
     "remindersGlobal": "[]",
     "flavor": "夢殞春宵、瘋狂、處決",
     "edition": "custom",
-    "team": "outsider"
+    "team": "outsider",
+    "officialId": "mutant"
   },
   {
     "name": "心上人",
@@ -1773,7 +1883,8 @@
     "remindersGlobal": "[]",
     "flavor": "夢殞春宵、死亡時觸發能力、醉酒",
     "edition": "custom",
-    "team": "outsider"
+    "team": "outsider",
+    "officialId": "sweetheart"
   },
   {
     "name": "理髮師",
@@ -1789,7 +1900,8 @@
     "remindersGlobal": "[]",
     "flavor": "夢殞春宵、死亡觸發能力、角色變化、暴露角色",
     "edition": "custom",
-    "team": "outsider"
+    "team": "outsider",
+    "officialId": "barber"
   },
   {
     "name": "呆瓜",
@@ -1805,7 +1917,8 @@
     "remindersGlobal": "[]",
     "flavor": "夢殞春宵、死亡觸發能力、公開觸發能力、特殊勝利失敗條件",
     "edition": "custom",
-    "team": "outsider"
+    "team": "outsider",
+    "officialId": "klutz"
   },
   {
     "name": "告密者",
@@ -1821,7 +1934,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、暴露角色、進場能力、獲取訊息",
     "edition": "custom",
-    "team": "outsider"
+    "team": "outsider",
+    "officialId": "snitch"
   },
   {
     "name": "解謎大師",
@@ -1837,7 +1951,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、醉酒、死後能力保留、獲取資訊、限次能力、進場能力",
     "edition": "custom",
-    "team": "outsider"
+    "team": "outsider",
+    "officialId": "puzzlemaster"
   },
   {
     "name": "狂熱者",
@@ -1853,7 +1968,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、投票",
     "edition": "custom",
-    "team": "outsider"
+    "team": "outsider",
+    "officialId": "zealot"
   },
   {
     "name": "落難少女",
@@ -1869,7 +1985,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、暴露角色、限次能力、公開觸發能力、特殊勝利失敗條件",
     "edition": "custom",
-    "team": "outsider"
+    "team": "outsider",
+    "officialId": "damsel"
   },
   {
     "name": "帽匠",
@@ -1885,7 +2002,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、死亡觸發能力、角色變化、暴露角色",
     "edition": "custom",
-    "team": "outsider"
+    "team": "outsider",
+    "officialId": "hatter"
   },
   {
     "name": "魔像",
@@ -1901,7 +2019,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、提名、額外死亡、限次能力",
     "edition": "custom",
-    "team": "outsider"
+    "team": "outsider",
+    "officialId": "golem"
   },
   {
     "name": "食人魔",
@@ -1917,7 +2036,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、進場能力、陣營轉變、認知覆蓋",
     "edition": "custom",
-    "team": "outsider"
+    "team": "outsider",
+    "officialId": "ogre"
   },
   {
     "name": "瘟疫醫生",
@@ -1933,7 +2053,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、死亡觸發能力、獲得能力",
     "edition": "custom",
-    "team": "outsider"
+    "team": "outsider",
+    "officialId": "plague_doctor"
   },
   {
     "name": "異端分子",
@@ -1949,7 +2070,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、特殊勝利失敗條件、死後能力保留",
     "edition": "custom",
-    "team": "outsider"
+    "team": "outsider",
+    "officialId": "heretic"
   },
   {
     "name": "隱士",
@@ -1965,7 +2087,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、獲得能力、設置調整",
     "edition": "custom",
-    "team": "outsider"
+    "team": "outsider",
+    "officialId": "hermit"
   },
   {
     "name": "政客",
@@ -1981,7 +2104,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、特殊勝利失敗條件、死後能力保留",
     "edition": "custom",
-    "team": "outsider"
+    "team": "outsider",
+    "officialId": "politician"
   },
   {
     "name": "逆臣",
@@ -1997,7 +2121,8 @@
     "remindersGlobal": "[]",
     "flavor": "華燈初上、陣營轉變、處決、死亡觸發能力、進場能力、回溯型能力",
     "edition": "custom",
-    "team": "outsider"
+    "team": "outsider",
+    "officialId": "nichen"
   },
   {
     "name": "煞星",
@@ -2013,7 +2138,8 @@
     "remindersGlobal": "[]",
     "flavor": "華燈初上、死亡觸發能力、額外死亡、鄰近",
     "edition": "custom",
-    "team": "outsider"
+    "team": "outsider",
+    "officialId": "shaxing"
   },
   {
     "name": "使節",
@@ -2029,7 +2155,8 @@
     "remindersGlobal": "[]",
     "flavor": "華燈初上、更換選擇目標、死後能力保留",
     "edition": "custom",
-    "team": "outsider"
+    "team": "outsider",
+    "officialId": "shijie"
   },
   {
     "name": "書生",
@@ -2045,7 +2172,8 @@
     "remindersGlobal": "[]",
     "flavor": "華燈初上、暴露角色、限次能力、拜訪說書人、死後能力保留、額外死亡、回溯型能力",
     "edition": "custom",
-    "team": "outsider"
+    "team": "outsider",
+    "officialId": "shusheng"
   },
   {
     "name": "酒保",
@@ -2061,7 +2189,8 @@
     "remindersGlobal": "[]",
     "flavor": "山雨欲來、鄰近、醉酒、持續檢測型能力、死後能力保留",
     "edition": "custom",
-    "team": "outsider"
+    "team": "outsider",
+    "officialId": "jiubao"
   },
   {
     "name": "入殮師",
@@ -2077,7 +2206,8 @@
     "remindersGlobal": "[]",
     "flavor": "山雨欲來、提名、處決、角色變化、陣營轉變、持續檢測型能力",
     "edition": "custom",
-    "team": "outsider"
+    "team": "outsider",
+    "officialId": "rulianshi"
   },
   {
     "name": "書僮",
@@ -2093,7 +2223,8 @@
     "remindersGlobal": "[]",
     "flavor": "山雨欲來、額外死亡、進場能力",
     "edition": "custom",
-    "team": "outsider"
+    "team": "outsider",
+    "officialId": "shutong"
   },
   {
     "name": "投毒者",
@@ -2109,7 +2240,8 @@
     "remindersGlobal": "[]",
     "flavor": "暗流湧動、中毒",
     "edition": "custom",
-    "team": "minion"
+    "team": "minion",
+    "officialId": "poisoner"
   },
   {
     "name": "間諜",
@@ -2125,7 +2257,8 @@
     "remindersGlobal": "[]",
     "flavor": "暗流湧動、獲取資訊、互動干擾、死後能力保留",
     "edition": "custom",
-    "team": "minion"
+    "team": "minion",
+    "officialId": "spy"
   },
   {
     "name": "紅唇女郎",
@@ -2141,7 +2274,8 @@
     "remindersGlobal": "[]",
     "flavor": "暗流湧動、角色變化、死亡觸發能力",
     "edition": "custom",
-    "team": "minion"
+    "team": "minion",
+    "officialId": "scarlet_woman"
   },
   {
     "name": "男爵",
@@ -2157,7 +2291,8 @@
     "remindersGlobal": "[]",
     "flavor": "暗流湧動、設置調整",
     "edition": "custom",
-    "team": "minion"
+    "team": "minion",
+    "officialId": "baron"
   },
   {
     "name": "教父",
@@ -2173,7 +2308,8 @@
     "remindersGlobal": "[]",
     "flavor": "黯月初升、獲取訊息、進場能力、設置調整、額外死亡、回溯型能力",
     "edition": "custom",
-    "team": "minion"
+    "team": "minion",
+    "officialId": "godfather"
   },
   {
     "name": "魔鬼代言人",
@@ -2189,7 +2325,8 @@
     "remindersGlobal": "[]",
     "flavor": "黯月初升、處決、免死",
     "edition": "custom",
-    "team": "minion"
+    "team": "minion",
+    "officialId": "devils_advocate"
   },
   {
     "name": "刺客",
@@ -2205,7 +2342,8 @@
     "remindersGlobal": "[]",
     "flavor": "黯月初升、能力效果干擾、限次能力",
     "edition": "custom",
-    "team": "minion"
+    "team": "minion",
+    "officialId": "assassin"
   },
   {
     "name": "主謀",
@@ -2221,7 +2359,8 @@
     "remindersGlobal": "[]",
     "flavor": "處決、特殊勝利失敗條件、死亡觸發能力",
     "edition": "custom",
-    "team": "minion"
+    "team": "minion",
+    "officialId": "mastermind"
   },
   {
     "name": "鏡像雙子",
@@ -2237,7 +2376,8 @@
     "remindersGlobal": "[]",
     "flavor": "夢殞春宵、暴露角色、進場能力、獲取訊息、處決、特殊勝利失敗條件",
     "edition": "custom",
-    "team": "minion"
+    "team": "minion",
+    "officialId": "evil_twin"
   },
   {
     "name": "女巫",
@@ -2253,7 +2393,8 @@
     "remindersGlobal": "[]",
     "flavor": "夢殞春宵、額外死亡、提名、持續檢測型能力",
     "edition": "custom",
-    "team": "minion"
+    "team": "minion",
+    "officialId": "witch"
   },
   {
     "name": "洗腦師",
@@ -2269,7 +2410,8 @@
     "remindersGlobal": "[]",
     "flavor": "夢殞春宵、瘋狂、處決、暴露角色",
     "edition": "custom",
-    "team": "minion"
+    "team": "minion",
+    "officialId": "cerenovus"
   },
   {
     "name": "麻臉巫婆",
@@ -2285,7 +2427,8 @@
     "remindersGlobal": "[]",
     "flavor": "夢殞春宵、角色變化、免死、額外死亡",
     "edition": "custom",
-    "team": "minion"
+    "team": "minion",
+    "officialId": "pit-hag"
   },
   {
     "name": "哥布林",
@@ -2301,7 +2444,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、提名、公開觸發能力、處決、特殊勝利失敗條件",
     "edition": "custom",
-    "team": "minion"
+    "team": "minion",
+    "officialId": "goblin"
   },
   {
     "name": "寡婦",
@@ -2317,7 +2461,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、獲取資訊、進場能力、中毒、暴露角色",
     "edition": "custom",
-    "team": "minion"
+    "team": "minion",
+    "officialId": "widow"
   },
   {
     "name": "街頭風琴手",
@@ -2333,7 +2478,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、投票、暴露角色、醉酒",
     "edition": "custom",
-    "team": "minion"
+    "team": "minion",
+    "officialId": "organ_grinder"
   },
   {
     "name": "精神病患者",
@@ -2349,7 +2495,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、額外死亡、公開觸發能力、處決、免死",
     "edition": "custom",
-    "team": "minion"
+    "team": "minion",
+    "officialId": "psychopath"
   },
   {
     "name": "科學怪人",
@@ -2365,7 +2512,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、獲得能力、設定調整、暴露角色、持續偵測型能力",
     "edition": "custom",
-    "team": "minion"
+    "team": "minion",
+    "officialId": "boffin"
   },
   {
     "name": "恐懼之靈",
@@ -2381,7 +2529,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、暴露角色、提名、處決、特殊勝利失敗條件",
     "edition": "custom",
-    "team": "minion"
+    "team": "minion",
+    "officialId": "fearmonger"
   },
   {
     "name": "靈言師",
@@ -2397,7 +2546,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、獲取資訊、進場能力、陣營轉變、限次能力、回溯型能力",
     "edition": "custom",
-    "team": "minion"
+    "team": "minion",
+    "officialId": "mezepheles"
   },
   {
     "name": "提線木偶",
@@ -2413,7 +2563,8 @@
     "remindersGlobal": "是提線木偶",
     "flavor": "實驗性角色、認知覆蓋、設定調整、暴露角色、鄰近",
     "edition": "custom",
-    "team": "minion"
+    "team": "minion",
+    "officialId": "marionette"
   },
   {
     "name": "亡魂",
@@ -2429,7 +2580,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、暴露角色",
     "edition": "custom",
-    "team": "minion"
+    "team": "minion",
+    "officialId": "wraith"
   },
   {
     "name": "維齊爾",
@@ -2445,7 +2597,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、投票、處決、暴露角色、免死",
     "edition": "custom",
-    "team": "minion"
+    "team": "minion",
+    "officialId": "vizier"
   },
   {
     "name": "巫師",
@@ -2461,7 +2614,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、獲得能力、拜訪說書人、獲取資訊、暴露角色、限次能力",
     "edition": "custom",
-    "team": "minion"
+    "team": "minion",
+    "officialId": "wizard"
   },
   {
     "name": "限",
@@ -2477,7 +2631,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、設置調整、中毒、回溯型能力",
     "edition": "custom",
-    "team": "minion"
+    "team": "minion",
+    "officialId": "xaan"
   },
   {
     "name": "鷹身女妖",
@@ -2493,7 +2648,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、瘋狂、額外死亡、暴露角色",
     "edition": "custom",
-    "team": "minion"
+    "team": "minion",
+    "officialId": "harpy"
   },
   {
     "name": "炸彈人",
@@ -2509,7 +2665,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、處決、額外死亡",
     "edition": "custom",
-    "team": "minion"
+    "team": "minion",
+    "officialId": "boomdandy"
   },
   {
     "name": "召喚師",
@@ -2525,7 +2682,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、獲取資訊、角色變化、陣營轉變、設置調整",
     "edition": "custom",
-    "team": "minion"
+    "team": "minion",
+    "officialId": "summoner"
   },
   {
     "name": "趕屍人",
@@ -2541,7 +2699,8 @@
     "remindersGlobal": "[]",
     "flavor": "華燈初上、互動干擾、設置調整、死亡觸發能力、鄰近、持續檢測型能力",
     "edition": "custom",
-    "team": "minion"
+    "team": "minion",
+    "officialId": "ganshiren"
   },
   {
     "name": "狐媚娘",
@@ -2557,7 +2716,8 @@
     "remindersGlobal": "[]",
     "flavor": "華燈初上、暴露角色、處決、陣營轉變、死亡觸發能力、進場能力",
     "edition": "custom",
-    "team": "minion"
+    "team": "minion",
+    "officialId": "humeiniang"
   },
   {
     "name": "禁衛軍",
@@ -2573,7 +2733,8 @@
     "remindersGlobal": "[]",
     "flavor": "華燈初上、瘋狂、處決",
     "edition": "custom",
-    "team": "minion"
+    "team": "minion",
+    "officialId": "jinweijun"
   },
   {
     "name": "養蠱人",
@@ -2589,7 +2750,8 @@
     "remindersGlobal": "[]",
     "flavor": "華燈初上、提名、額外死亡、死後能力保留、回溯型能力",
     "edition": "custom",
-    "team": "minion"
+    "team": "minion",
+    "officialId": "yangguren"
   },
   {
     "name": "蠱雕",
@@ -2605,7 +2767,8 @@
     "remindersGlobal": "[]",
     "flavor": "山雨欲來、中毒、獲取資訊、認知覆蓋",
     "edition": "custom",
-    "team": "minion"
+    "team": "minion",
+    "officialId": "gudiao"
   },
   {
     "name": "畫皮",
@@ -2621,7 +2784,8 @@
     "remindersGlobal": "[]",
     "flavor": "山雨欲來、進場能力、額外死亡、互動干擾、免死、復活、獲得能力",
     "edition": "custom",
-    "team": "minion"
+    "team": "minion",
+    "officialId": "huapi"
   },
   {
     "name": "禁衛軍(改)",
@@ -2637,7 +2801,8 @@
     "remindersGlobal": "[]",
     "flavor": "山雨欲來、瘋狂、處決",
     "edition": "custom",
-    "team": "minion"
+    "team": "minion",
+    "officialId": "jinweijun2"
   },
   {
     "name": "孟婆",
@@ -2653,7 +2818,8 @@
     "remindersGlobal": "[]",
     "flavor": "山雨欲來、額外死亡、能力效果干擾",
     "edition": "custom",
-    "team": "minion"
+    "team": "minion",
+    "officialId": "mengpo"
   },
   {
     "name": "釀酒師",
@@ -2669,7 +2835,8 @@
     "remindersGlobal": "[]",
     "flavor": "山雨欲來、能力效果干擾",
     "edition": "custom",
-    "team": "minion"
+    "team": "minion",
+    "officialId": "niangjiushi"
   },
   {
     "name": "小惡魔",
@@ -2685,7 +2852,8 @@
     "remindersGlobal": "[]",
     "flavor": "暗流湧動、角色變化、死亡觸發能力",
     "edition": "custom",
-    "team": "demon"
+    "team": "demon",
+    "officialId": "imp"
   },
   {
     "name": "僵怖",
@@ -2701,7 +2869,8 @@
     "remindersGlobal": "[]",
     "flavor": "黯月初升、免死、限次能力、互動干擾、回溯型能力",
     "edition": "custom",
-    "team": "demon"
+    "team": "demon",
+    "officialId": "zombuul"
   },
   {
     "name": "普卡",
@@ -2717,7 +2886,8 @@
     "remindersGlobal": "[]",
     "flavor": "黯月初升、中毒、回溯型能力",
     "edition": "custom",
-    "team": "demon"
+    "team": "demon",
+    "officialId": "pukka"
   },
   {
     "name": "沙巴洛斯",
@@ -2733,7 +2903,8 @@
     "remindersGlobal": "[]",
     "flavor": "黯月初升、額外死亡、復活、回溯型能力",
     "edition": "custom",
-    "team": "demon"
+    "team": "demon",
+    "officialId": "shabaloth"
   },
   {
     "name": "珀",
@@ -2749,7 +2920,8 @@
     "remindersGlobal": "[]",
     "flavor": "黯月初升、額外死亡、回溯型能力",
     "edition": "custom",
-    "team": "demon"
+    "team": "demon",
+    "officialId": "po"
   },
   {
     "name": "方古",
@@ -2765,7 +2937,8 @@
     "remindersGlobal": "[]",
     "flavor": "夢殞春宵、角色變化、陣營轉變、限次能力、設置調整",
     "edition": "custom",
-    "team": "demon"
+    "team": "demon",
+    "officialId": "fang_gu"
   },
   {
     "name": "亡骨魔",
@@ -2781,7 +2954,8 @@
     "remindersGlobal": "[]",
     "flavor": "夢殞春宵、死後能力保留、中毒、鄰近、持續偵測型能力、設定調整",
     "edition": "custom",
-    "team": "demon"
+    "team": "demon",
+    "officialId": "vigormortis"
   },
   {
     "name": "諾-達鯴",
@@ -2797,7 +2971,8 @@
     "remindersGlobal": "[]",
     "flavor": "夢殞春宵、中毒、鄰近、持續檢測型能力",
     "edition": "custom",
-    "team": "demon"
+    "team": "demon",
+    "officialId": "no_dashii"
   },
   {
     "name": "渦流",
@@ -2813,7 +2988,8 @@
     "remindersGlobal": "[]",
     "flavor": "夢殞春宵、能力效果干擾、處決、特殊勝利失敗條件",
     "edition": "custom",
-    "team": "demon"
+    "team": "demon",
+    "officialId": "vortox"
   },
   {
     "name": "奧赫",
@@ -2829,7 +3005,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色",
     "edition": "custom",
-    "team": "demon"
+    "team": "demon",
+    "officialId": "ojo"
   },
   {
     "name": "暴亂",
@@ -2845,7 +3022,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、提名、額外死亡、角色變化",
     "edition": "custom",
-    "team": "demon"
+    "team": "demon",
+    "officialId": "riot"
   },
   {
     "name": "堤豐之首",
@@ -2861,7 +3039,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、設置調整",
     "edition": "custom",
-    "team": "demon"
+    "team": "demon",
+    "officialId": "lord_of_typhon"
   },
   {
     "name": "哈迪寂亞",
@@ -2877,7 +3056,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、額外死亡、復活、暴露角色",
     "edition": "custom",
-    "team": "demon"
+    "team": "demon",
+    "officialId": "al-hadikhia"
   },
   {
     "name": "軍團",
@@ -2893,7 +3073,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、投票、設定調整、互動干擾",
     "edition": "custom",
-    "team": "demon"
+    "team": "demon",
+    "officialId": "legion"
   },
   {
     "name": "卡扎力",
@@ -2909,7 +3090,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、設置調整、角色變化、陣營轉變",
     "edition": "custom",
-    "team": "demon"
+    "team": "demon",
+    "officialId": "kazali"
   },
   {
     "name": "利維坦",
@@ -2925,7 +3107,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、暴露角色、處決、特殊勝利失敗條件",
     "edition": "custom",
-    "team": "demon"
+    "team": "demon",
+    "officialId": "leviathan"
   },
   {
     "name": "痢蛭",
@@ -2941,7 +3124,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、進場能力、中毒、免死、持續檢測型能力",
     "edition": "custom",
-    "team": "demon"
+    "team": "demon",
+    "officialId": "lleech"
   },
   {
     "name": "小怪寶",
@@ -2957,7 +3141,8 @@
     "remindersGlobal": "是惡魔, 死亡",
     "flavor": "實驗性角色、互動干擾、設定調整、暴露角色",
     "edition": "custom",
-    "team": "demon"
+    "team": "demon",
+    "officialId": "lil_monsta"
   },
   {
     "name": "牙噶巴卜",
@@ -2973,7 +3158,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、額外死亡、回溯型能力、進場能力、獲取資訊",
     "edition": "custom",
-    "team": "demon"
+    "team": "demon",
+    "officialId": "yaggababble"
   },
   {
     "name": "混沌",
@@ -2989,7 +3175,8 @@
     "remindersGlobal": "[]",
     "flavor": "華燈初上、鄰近、中毒、持續檢測型能力、死亡觸發能力",
     "edition": "custom",
-    "team": "demon"
+    "team": "demon",
+    "officialId": "hundun"
   },
   {
     "name": "窮奇",
@@ -3005,7 +3192,8 @@
     "remindersGlobal": "[]",
     "flavor": "華燈初上、互動干擾、設置調整、額外死亡、回溯型能力",
     "edition": "custom",
-    "team": "demon"
+    "team": "demon",
+    "officialId": "qiongqi"
   },
   {
     "name": "饕餮",
@@ -3021,7 +3209,8 @@
     "remindersGlobal": "[]",
     "flavor": "華燈初上、額外死亡、設置調整",
     "edition": "custom",
-    "team": "demon"
+    "team": "demon",
+    "officialId": "taotie"
   },
   {
     "name": "檮杌",
@@ -3037,7 +3226,8 @@
     "remindersGlobal": "[]",
     "flavor": "華燈初上、能力效果干擾、免死",
     "edition": "custom",
-    "team": "demon"
+    "team": "demon",
+    "officialId": "taowu"
   },
   {
     "name": "暴君",
@@ -3053,7 +3243,8 @@
     "remindersGlobal": "[]",
     "flavor": "山雨欲來、額外死亡、回溯型能力",
     "edition": "custom",
-    "team": "demon"
+    "team": "demon",
+    "officialId": "baojun"
   },
   {
     "name": "典獄長",
@@ -3069,7 +3260,8 @@
     "remindersGlobal": "[]",
     "flavor": "山雨欲來、處決、額外死亡",
     "edition": "custom",
-    "team": "demon"
+    "team": "demon",
+    "officialId": "dianyuzhang"
   },
   {
     "name": "姑獲鳥",
@@ -3085,7 +3277,8 @@
     "remindersGlobal": "[]",
     "flavor": "山雨欲來、處決、獲得能力",
     "edition": "custom",
-    "team": "demon"
+    "team": "demon",
+    "officialId": "guhuoniao"
   },
   {
     "name": "奸佞",
@@ -3101,7 +3294,8 @@
     "remindersGlobal": "[]",
     "flavor": "山雨欲來、額外死亡、投票",
     "edition": "custom",
-    "team": "demon"
+    "team": "demon",
+    "officialId": "jianning"
   },
   {
     "name": "閻羅",
@@ -3117,7 +3311,8 @@
     "remindersGlobal": "[]",
     "flavor": "山雨欲來、額外死亡、投票",
     "edition": "custom",
-    "team": "demon"
+    "team": "demon",
+    "officialId": "yanluo"
   },
   {
     "name": "末日預言者",
@@ -3133,7 +3328,8 @@
     "remindersGlobal": "[]",
     "flavor": "任意遊戲、額外死亡、公開觸發能力、限次能力",
     "edition": "custom",
-    "team": "fabled"
+    "team": "fabled",
+    "officialId": "doomsayer"
   },
   {
     "name": "玩具匠",
@@ -3149,7 +3345,8 @@
     "remindersGlobal": "[]",
     "flavor": "任意遊戲、進場能力、限次能力",
     "edition": "custom",
-    "team": "fabled"
+    "team": "fabled",
+    "officialId": "toymaker"
   },
   {
     "name": "天使",
@@ -3165,7 +3362,8 @@
     "remindersGlobal": "[]",
     "flavor": "任意遊戲",
     "edition": "custom",
-    "team": "fabled"
+    "team": "fabled",
+    "officialId": "angel"
   },
   {
     "name": "佛教徒",
@@ -3181,7 +3379,8 @@
     "remindersGlobal": "[]",
     "flavor": "任意遊戲",
     "edition": "custom",
-    "team": "fabled"
+    "team": "fabled",
+    "officialId": "buddhist"
   },
   {
     "name": "革命者",
@@ -3197,7 +3396,8 @@
     "remindersGlobal": "[]",
     "flavor": "任意遊戲、鄰近、互動干擾、限次能力",
     "edition": "custom",
-    "team": "fabled"
+    "team": "fabled",
+    "officialId": "revolutionary"
   },
   {
     "name": "地獄藏書員",
@@ -3213,7 +3413,8 @@
     "remindersGlobal": "[]",
     "flavor": "任意遊戲",
     "edition": "custom",
-    "team": "fabled"
+    "team": "fabled",
+    "officialId": "hells_librarian"
   },
   {
     "name": "小提琴手",
@@ -3229,7 +3430,8 @@
     "remindersGlobal": "[]",
     "flavor": "任意遊戲、特殊勝利失敗條件、限次能力",
     "edition": "custom",
-    "team": "fabled"
+    "team": "fabled",
+    "officialId": "fiddler"
   },
   {
     "name": "騙人精",
@@ -3245,7 +3447,8 @@
     "remindersGlobal": "[]",
     "flavor": "自定義遊戲、能力效果干擾、限次能力",
     "edition": "custom",
-    "team": "fabled"
+    "team": "fabled",
+    "officialId": "fibbin"
   },
   {
     "name": "公爵夫人",
@@ -3261,7 +3464,8 @@
     "remindersGlobal": "[]",
     "flavor": "自定義遊戲、獲取資訊、公開觸發能力、拜訪說書人",
     "edition": "custom",
-    "team": "fabled"
+    "team": "fabled",
+    "officialId": "duchess"
   },
   {
     "name": "哨兵",
@@ -3277,7 +3481,8 @@
     "remindersGlobal": "[]",
     "flavor": "自定義遊戲、設定調整",
     "edition": "custom",
-    "team": "fabled"
+    "team": "fabled",
+    "officialId": "sentinel"
   },
   {
     "name": "聖潔之魂",
@@ -3293,7 +3498,8 @@
     "remindersGlobal": "[]",
     "flavor": "自定義遊戲",
     "edition": "custom",
-    "team": "fabled"
+    "team": "fabled",
+    "officialId": "spirit_of_ivory"
   },
   {
     "name": "燈神",
@@ -3309,7 +3515,8 @@
     "remindersGlobal": "[]",
     "flavor": "自定義遊戲、特殊規則",
     "edition": "custom",
-    "team": "fabled"
+    "team": "fabled",
+    "officialId": "djinn"
   },
   {
     "name": "暴風捕手",
@@ -3325,7 +3532,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、暴露角色、进场能力、免死、处决",
     "edition": "custom",
-    "team": "fabled"
+    "team": "fabled",
+    "officialId": "storm_catcher"
   },
   {
     "name": "失敗的上帝",
@@ -3341,7 +3549,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、进场能力、限次能力",
     "edition": "custom",
-    "team": "fabled"
+    "team": "fabled",
+    "officialId": "deusexfiasco"
   },
   {
     "name": "擺渡人",
@@ -3357,7 +3566,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色",
     "edition": "custom",
-    "team": "fabled"
+    "team": "fabled",
+    "officialId": "ferryman"
   },
   {
     "name": "園丁",
@@ -3373,7 +3583,8 @@
     "remindersGlobal": "[]",
     "flavor": "在線魔典",
     "edition": "custom",
-    "team": "fabled"
+    "team": "fabled",
+    "officialId": "gardener"
   },
   {
     "name": "私貨商人",
@@ -3389,7 +3600,8 @@
     "remindersGlobal": "[]",
     "flavor": "在線魔典",
     "edition": "custom",
-    "team": "fabled"
+    "team": "fabled",
+    "officialId": "bootlegger"
   },
   {
     "name": "麒麟",
@@ -3405,7 +3617,8 @@
     "remindersGlobal": "[]",
     "flavor": "華燈初上",
     "edition": "custom",
-    "team": "fabled"
+    "team": "fabled",
+    "officialId": "qilin"
   },
   {
     "name": "赦令承旨",
@@ -3421,7 +3634,8 @@
     "remindersGlobal": "[]",
     "flavor": "山雨欲來",
     "edition": "custom",
-    "team": "fabled"
+    "team": "fabled",
+    "officialId": "shelingchengzhi"
   },
   {
     "name": "官員",
@@ -3437,7 +3651,8 @@
     "remindersGlobal": "[]",
     "flavor": "暗流湧動、投票",
     "edition": "custom",
-    "team": "traveler"
+    "team": "traveler",
+    "officialId": "bureaucrat"
   },
   {
     "name": "乞丐",
@@ -3453,7 +3668,8 @@
     "remindersGlobal": "[]",
     "flavor": "暗流湧動、投票、獲取資訊",
     "edition": "custom",
-    "team": "traveler"
+    "team": "traveler",
+    "officialId": "beggar"
   },
   {
     "name": "槍手",
@@ -3469,7 +3685,8 @@
     "remindersGlobal": "[]",
     "flavor": "暗流湧動、投票、額外死亡",
     "edition": "custom",
-    "team": "traveler"
+    "team": "traveler",
+    "officialId": "gunslinger"
   },
   {
     "name": "竊賊",
@@ -3485,7 +3702,8 @@
     "remindersGlobal": "[]",
     "flavor": "暗流湧動、投票",
     "edition": "custom",
-    "team": "traveler"
+    "team": "traveler",
+    "officialId": "thief"
   },
   {
     "name": "替罪羊",
@@ -3501,7 +3719,8 @@
     "remindersGlobal": "[]",
     "flavor": "暗流湧動、處決",
     "edition": "custom",
-    "team": "traveler"
+    "team": "traveler",
+    "officialId": "scapegoat"
   },
   {
     "name": "法官",
@@ -3517,7 +3736,8 @@
     "remindersGlobal": "[]",
     "flavor": "黯月初升、提名、處決",
     "edition": "custom",
-    "team": "traveler"
+    "team": "traveler",
+    "officialId": "judge"
   },
   {
     "name": "女舍監",
@@ -3533,7 +3753,8 @@
     "remindersGlobal": "[]",
     "flavor": "黯月初升、特殊機制",
     "edition": "custom",
-    "team": "traveler"
+    "team": "traveler",
+    "officialId": "matron"
   },
   {
     "name": "巫毒師",
@@ -3549,7 +3770,8 @@
     "remindersGlobal": "[]",
     "flavor": "黯月初升、投票",
     "edition": "custom",
-    "team": "traveler"
+    "team": "traveler",
+    "officialId": "voudon"
   },
   {
     "name": "學徒",
@@ -3565,7 +3787,8 @@
     "remindersGlobal": "是學徒",
     "flavor": "黯月初升、獲得能力、進場能力",
     "edition": "custom",
-    "team": "traveler"
+    "team": "traveler",
+    "officialId": "apprentice"
   },
   {
     "name": "主教",
@@ -3581,7 +3804,8 @@
     "remindersGlobal": "[]",
     "flavor": "黯月初升、提名",
     "edition": "custom",
-    "team": "traveler"
+    "team": "traveler",
+    "officialId": "bishop"
   },
   {
     "name": "怪咖",
@@ -3597,7 +3821,8 @@
     "remindersGlobal": "[]",
     "flavor": "夢殞春宵、免死",
     "edition": "custom",
-    "team": "traveler"
+    "team": "traveler",
+    "officialId": "deviant"
   },
   {
     "name": "集骨者",
@@ -3613,7 +3838,8 @@
     "remindersGlobal": "[]",
     "flavor": "夢殞春宵、限次能力、獲得能力",
     "edition": "custom",
-    "team": "traveler"
+    "team": "traveler",
+    "officialId": "bone_collector"
   },
   {
     "name": "咖啡師",
@@ -3629,7 +3855,8 @@
     "remindersGlobal": "[]",
     "flavor": "夢殞春宵、能力效果干擾、獲得能力、暴露角色",
     "edition": "custom",
-    "team": "traveler"
+    "team": "traveler",
+    "officialId": "barista"
   },
   {
     "name": "流鶯",
@@ -3645,7 +3872,8 @@
     "remindersGlobal": "[]",
     "flavor": "夢殞春宵、獲取資訊、額外死亡、暴露角色",
     "edition": "custom",
-    "team": "traveler"
+    "team": "traveler",
+    "officialId": "harlot"
   },
   {
     "name": "屠夫",
@@ -3661,7 +3889,8 @@
     "remindersGlobal": "[]",
     "flavor": "夢殞春宵、提名、處決、額外死亡",
     "edition": "custom",
-    "team": "traveler"
+    "team": "traveler",
+    "officialId": "butcher"
   },
   {
     "name": "黑幫",
@@ -3677,7 +3906,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、額外死亡、鄰近",
     "edition": "custom",
-    "team": "traveler"
+    "team": "traveler",
+    "officialId": "gangster"
   },
   {
     "name": "侏儒",
@@ -3693,7 +3923,8 @@
     "remindersGlobal": "[]",
     "flavor": "實驗性角色、進場能力、提名、額外死亡",
     "edition": "custom",
-    "team": "traveler"
+    "team": "traveler",
+    "officialId": "gnome"
   },
   {
     "name": "叫花子",
@@ -3709,7 +3940,8 @@
     "remindersGlobal": "是叫花子",
     "flavor": "華燈初上、獲得能力",
     "edition": "custom",
-    "team": "traveler"
+    "team": "traveler",
+    "officialId": "jiaohuazi"
   },
   {
     "name": "刁民",
@@ -3725,7 +3957,8 @@
     "remindersGlobal": "[]",
     "flavor": "山雨欲來",
     "edition": "custom",
-    "team": "traveler"
+    "team": "traveler",
+    "officialId": "diaomin"
   },
   {
     "name": "爪牙訊息",
@@ -3741,7 +3974,8 @@
     "remindersGlobal": "[]",
     "flavor": "備註",
     "edition": "custom",
-    "team": "fabled"
+    "team": "fabled",
+    "officialId": ""
   },
   {
     "name": "惡魔訊息",
@@ -3757,7 +3991,8 @@
     "remindersGlobal": "[]",
     "flavor": "備註",
     "edition": "custom",
-    "team": "fabled"
+    "team": "fabled",
+    "officialId": ""
   },
   {
     "name": "黃昏",
@@ -3773,7 +4008,8 @@
     "remindersGlobal": "[]",
     "flavor": "備註",
     "edition": "custom",
-    "team": "fabled"
+    "team": "fabled",
+    "officialId": ""
   },
   {
     "name": "黎明",
@@ -3789,6 +4025,7 @@
     "remindersGlobal": "[]",
     "flavor": "備註",
     "edition": "custom",
-    "team": "fabled"
+    "team": "fabled",
+    "officialId": ""
   }
 ]

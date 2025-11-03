@@ -16,6 +16,17 @@ namespace BloodClockTowerScriptEditor.Services
     {
         private readonly JsonSerializerSettings _settings;
 
+        /// <summary>
+        /// 必要階段角色名稱對應的輸出 ID
+        /// </summary>
+        private static readonly Dictionary<string, string> RequiredPhaseIdMapping = new()
+{
+    { "爪牙資訊", "minioninfo" },
+    { "惡魔資訊", "demoninfo" },
+    { "黎明", "dawn" },
+    { "黃昏", "dusk" }
+};
+
         public JsonService()
         {
             _settings = new JsonSerializerSettings
@@ -144,6 +155,9 @@ namespace BloodClockTowerScriptEditor.Services
                     role.RemoveEmptyJinxItems();
                 }
 
+                // ✅ 新增：生成夜晚順序陣列（在序列化之前）
+                GenerateNightOrderArrays(script);
+
                 var jArray = new JArray();
                 var serializer = JsonSerializer.Create(_settings);
 
@@ -252,5 +266,49 @@ namespace BloodClockTowerScriptEditor.Services
             // 無法解析
             return (string.Empty, string.Empty, false);
         }
+
+        /// <summary>
+        /// 取得角色的輸出 ID（必要階段角色使用映射 ID）
+        /// </summary>
+        private string GetRoleOutputId(Role role)
+        {
+            // 檢查是否為必要階段角色
+            if (RequiredPhaseIdMapping.TryGetValue(role.Name, out string? mappedId))
+            {
+                return mappedId;
+            }
+
+            // 一般角色使用原本的 ID
+            return role.Id;
+        }
+
+        /// <summary>
+        /// 生成 _meta 的 firstNight 和 otherNight 陣列
+        /// </summary>
+        private void GenerateNightOrderArrays(Script script)
+        {
+            // 生成 firstNight 陣列
+            var firstNightRoles = script.Roles
+                .Where(r => r.FirstNight > 0)
+                .OrderBy(r => r.FirstNight)
+                .ThenBy(r => r.Name)
+                .Select(r => GetRoleOutputId(r))
+                .ToList();
+
+            // 只在有角色時才設置（避免空陣列）
+            script.Meta.FirstNight = firstNightRoles.Count > 0 ? firstNightRoles : null;
+
+            // 生成 otherNight 陣列
+            var otherNightRoles = script.Roles
+                .Where(r => r.OtherNight > 0)
+                .OrderBy(r => r.OtherNight)
+                .ThenBy(r => r.Name)
+                .Select(r => GetRoleOutputId(r))
+                .ToList();
+
+            // 只在有角色時才設置（避免空陣列）
+            script.Meta.OtherNight = otherNightRoles.Count > 0 ? otherNightRoles : null;
+        }
+
     }
 }
