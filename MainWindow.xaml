@@ -19,6 +19,7 @@
         <converters:StringToImageSourceConverter x:Key="StringToImageSourceConverter"/>
         <converters:CountToVisibilityConverter x:Key="CountToVisibilityConverter"/>
         <converters:IntGreaterThanConverter x:Key="IntGreaterThanConverter"/>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
 
         <!-- 陣營顏色 -->
         <SolidColorBrush x:Key="TownsfolkBrush" Color="#368CE1"/>
@@ -1010,7 +1011,8 @@
                                 </DockPanel>
 
                                 <!-- 角色類型 -->
-                                <DockPanel Grid.Column="2">
+                                <DockPanel Grid.Column="2"
+           Visibility="{Binding SelectedRole.ShowDetailFields, Converter={StaticResource BoolToVisibilityConverter}}">
                                     <TextBlock Text="角色類型 *" 
                    FontWeight="SemiBold" 
                    DockPanel.Dock="Left" 
@@ -1038,34 +1040,57 @@
                                 </DockPanel>
                             </Grid>
 
-                            <!-- 圖片 URL 列表 -->
-                            <TextBlock Text="圖片 URL:" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                            <!-- ✅ 新增：使用官方 ID CheckBox -->
+                            <CheckBox Content="使用官方 ID（輸出時簡化為官方 ID 字串）"
+                              IsChecked="{Binding SelectedRole.UseOfficialId, UpdateSourceTrigger=PropertyChanged}"
+                              Margin="0,12,0,8"
+                              FontSize="12"
+                              Visibility="{Binding SelectedRole.ShowOfficialIdCheckBox, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <CheckBox.ToolTip>
+                                    <TextBlock TextWrapping="Wrap" MaxWidth="300">
+                                勾選後，此角色在儲存劇本時只會輸出官方 ID（如 "washerwoman"），而不會輸出完整的角色資訊。<LineBreak/><LineBreak/>
+                                勾選後將隱藏所有編輯欄位，只保留唯讀的角色名稱。
+                                    </TextBlock>
+                                </CheckBox.ToolTip>
+                            </CheckBox>
 
-                            <!-- 圖片列表 -->
-                            <ItemsControl ItemsSource="{Binding SelectedRole.ImageItems}" Margin="0,0,0,8">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Border BorderBrush="#DDD" BorderThickness="1" Padding="8" Margin="0,0,0,6" Background="White">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="60"/>
-                                                    <ColumnDefinition Width="8"/>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="8"/>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                </Grid.ColumnDefinitions>
+                            <!-- ✅ 分隔線 -->
+                            <Border BorderBrush="#DDD" 
+                            BorderThickness="0,0,0,1" 
+                            Margin="0,0,0,12"
+                            Visibility="{Binding SelectedRole.ShowOfficialIdCheckBox, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
-                                                <!-- 預覽圖 -->
-                                                <Border Grid.Column="0" 
+                            <!-- ✅ 新增：包裹所有編輯欄位的 StackPanel -->
+                            <StackPanel Visibility="{Binding SelectedRole.ShowDetailFields, Converter={StaticResource BoolToVisibilityConverter}}">
+
+                                <!-- 圖片 URL 列表 -->
+                                <TextBlock Text="圖片 URL:" FontWeight="SemiBold" Margin="0,0,0,4"/>
+
+                                <!-- 圖片列表 -->
+                                <ItemsControl ItemsSource="{Binding SelectedRole.ImageItems}" Margin="0,0,0,8">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border BorderBrush="#DDD" BorderThickness="1" Padding="8" Margin="0,0,0,6" Background="White">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="60"/>
+                                                        <ColumnDefinition Width="8"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="8"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <!-- 預覽圖 -->
+                                                    <Border Grid.Column="0" 
                             Width="60" Height="60" 
                             BorderBrush="#CCC" BorderThickness="1" 
                             Background="#F9F9F9">
-                                                    <Image Source="{Binding Url, Converter={StaticResource StringToImageSourceConverter}}" 
+                                                        <Image Source="{Binding Url, Converter={StaticResource StringToImageSourceConverter}}" 
                                Stretch="Uniform"/>
-                                                </Border>
+                                                    </Border>
 
-                                                <!-- URL 輸入框 -->
-                                                <TextBox Grid.Column="2" 
+                                                    <!-- URL 輸入框 -->
+                                                    <TextBox Grid.Column="2" 
                              Text="{Binding Url, UpdateSourceTrigger=PropertyChanged}"
                              VerticalAlignment="Center" 
                              Padding="6,4"
@@ -1073,8 +1098,8 @@
                              BorderThickness="1"
                              TextChanged="ImageUrl_TextChanged"/>
 
-                                                <!-- 刪除按鈕 -->
-                                                <Button Grid.Column="4" 
+                                                    <!-- 刪除按鈕 -->
+                                                    <Button Grid.Column="4" 
                             Content="🗑️" 
                             Width="32" Height="32"
                             Click="DeleteImage_Click"
@@ -1082,311 +1107,311 @@
                             Background="#F44336" 
                             Foreground="White" 
                             BorderThickness="0"/>
-                                            </Grid>
-                                        </Border>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
 
-                            <!-- 新增按鈕 + 說明 -->
-                            <Grid Margin="0,0,0,8">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
+                                <!-- 新增按鈕 + 說明 -->
+                                <Grid Margin="0,0,0,8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
 
-                                <Button Grid.Column="0" 
+                                    <Button Grid.Column="0" 
         Content="➕ 新增圖片" 
         Padding="12,6" 
         Click="AddImage_Click"
         Background="#4CAF50" 
         Foreground="White" 
         BorderThickness="0">
-                                    <Button.Style>
-                                        <Style TargetType="Button">
-                                            <Setter Property="IsEnabled" Value="True"/>
-                                            <Style.Triggers>
-                                                <!-- ✅ Bug Fix: 改綁定到 ImageItems.Count -->
-                                                <DataTrigger Binding="{Binding SelectedRole.ImageItems.Count, Converter={StaticResource IntGreaterThanConverter}, ConverterParameter=2}" Value="True">
-                                                    <Setter Property="IsEnabled" Value="False"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Button.Style>
-                                </Button>
+                                        <Button.Style>
+                                            <Style TargetType="Button">
+                                                <Setter Property="IsEnabled" Value="True"/>
+                                                <Style.Triggers>
+                                                    <!-- ✅ Bug Fix: 改綁定到 ImageItems.Count -->
+                                                    <DataTrigger Binding="{Binding SelectedRole.ImageItems.Count, Converter={StaticResource IntGreaterThanConverter}, ConverterParameter=2}" Value="True">
+                                                        <Setter Property="IsEnabled" Value="False"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                    </Button>
 
-                                <TextBlock Grid.Column="1" 
+                                    <TextBlock Grid.Column="1" 
                Text="說明: 集石格式僅使用第一張圖片 | 最多 3 張" 
                FontSize="11" 
                Foreground="#666" 
                VerticalAlignment="Center" 
                Margin="12,0,0,0"/>
-                            </Grid>
+                                </Grid>
 
-                            <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Margin="0,4,0,10"/>
+                                <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Margin="0,4,0,10"/>
 
-                            <!-- 第四行: 所屬版本 + 影響設置 -->
-                            <Grid Margin="0,0,0,8">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="12"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
+                                <!-- 第四行: 所屬版本 + 影響設置 -->
+                                <Grid Margin="0,0,0,8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="12"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
 
-                                <DockPanel Grid.Column="0">
-                                    <TextBlock Text="所屬版本" FontWeight="SemiBold" DockPanel.Dock="Left" 
+                                    <DockPanel Grid.Column="0">
+                                        <TextBlock Text="所屬版本" FontWeight="SemiBold" DockPanel.Dock="Left" 
                                VerticalAlignment="Center" Margin="0,0,8,0" Width="80"/>
-                                    <TextBox Text="{Binding SelectedRole.Edition, UpdateSourceTrigger=PropertyChanged}" 
+                                        <TextBox Text="{Binding SelectedRole.Edition, UpdateSourceTrigger=PropertyChanged}" 
                              Padding="6,4" BorderBrush="#CCC" BorderThickness="1" VerticalAlignment="Center"/>
-                                </DockPanel>
+                                    </DockPanel>
 
-                                <CheckBox Grid.Column="2" 
+                                    <CheckBox Grid.Column="2" 
                           Content="影響設置 (Setup)" 
                           IsChecked="{Binding SelectedRole.Setup}" 
                           FontSize="12" 
                           VerticalAlignment="Center"/>
-                            </Grid>
+                                </Grid>
 
-                            <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Margin="0,4,0,10"/>
+                                <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Margin="0,4,0,10"/>
 
-                            <!-- 能力描述 -->
-                            <TextBlock Text="能力描述 *" FontWeight="SemiBold" Margin="0,0,0,4"/>
-                            <TextBox Text="{Binding SelectedRole.Ability, UpdateSourceTrigger=PropertyChanged}" 
+                                <!-- 能力描述 -->
+                                <TextBlock Text="能力描述 *" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                                <TextBox Text="{Binding SelectedRole.Ability, UpdateSourceTrigger=PropertyChanged}" 
                      TextWrapping="Wrap" AcceptsReturn="True" Height="80"
                      Padding="6,4" VerticalScrollBarVisibility="Auto">
-                                <TextBox.Style>
-                                    <Style TargetType="TextBox">
-                                        <Setter Property="BorderBrush" Value="#CCC"/>
-                                        <Setter Property="BorderThickness" Value="1"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding SelectedRole.Ability, Converter={StaticResource StringNotEmptyConverter}}" Value="False">
-                                                <Setter Property="BorderBrush" Value="#F44336"/>
-                                                <Setter Property="BorderThickness" Value="2"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBox.Style>
-                            </TextBox>
+                                    <TextBox.Style>
+                                        <Style TargetType="TextBox">
+                                            <Setter Property="BorderBrush" Value="#CCC"/>
+                                            <Setter Property="BorderThickness" Value="1"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding SelectedRole.Ability, Converter={StaticResource StringNotEmptyConverter}}" Value="False">
+                                                    <Setter Property="BorderBrush" Value="#F44336"/>
+                                                    <Setter Property="BorderThickness" Value="2"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBox.Style>
+                                </TextBox>
 
-                            <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Margin="0,10"/>
+                                <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Margin="0,10"/>
 
-                            <!-- 夜晚行動與說書人提示 -->
-                            <Grid Margin="0,0,0,8">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="12"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
+                                <!-- 夜晚行動與說書人提示 -->
+                                <Grid Margin="0,0,0,8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="12"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
 
-                                <!-- 左側：首個夜晚 -->
-                                <Grid Grid.Column="0">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="8"/>
-                                        <RowDefinition Height="*"/>
-                                    </Grid.RowDefinitions>
+                                    <!-- 左側：首個夜晚 -->
+                                    <Grid Grid.Column="0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="8"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
 
-                                    <!-- 首夜順序 -->
-                                    <DockPanel Grid.Row="0">
-                                        <TextBlock Text="首夜順序" FontWeight="SemiBold" DockPanel.Dock="Left" 
+                                        <!-- 首夜順序 -->
+                                        <DockPanel Grid.Row="0">
+                                            <TextBlock Text="首夜順序" FontWeight="SemiBold" DockPanel.Dock="Left" 
                                    VerticalAlignment="Center" Margin="0,0,8,0" Width="70"/>
-                                        <TextBox Text="{Binding SelectedRole.FirstNight, UpdateSourceTrigger=PropertyChanged}" 
+                                            <TextBox Text="{Binding SelectedRole.FirstNight, UpdateSourceTrigger=PropertyChanged}" 
                                  Padding="6,4" BorderBrush="#CCC" BorderThickness="1" VerticalAlignment="Center"/>
-                                    </DockPanel>
+                                        </DockPanel>
 
-                                    <!-- 首夜提示 -->
-                                    <DockPanel Grid.Row="2">
-                                        <TextBlock Text="首夜提示" FontWeight="SemiBold" FontSize="11" DockPanel.Dock="Left" 
+                                        <!-- 首夜提示 -->
+                                        <DockPanel Grid.Row="2">
+                                            <TextBlock Text="首夜提示" FontWeight="SemiBold" FontSize="11" DockPanel.Dock="Left" 
                                    VerticalAlignment="Top" Margin="0,4,8,0" Width="70"/>
-                                        <TextBox Text="{Binding SelectedRole.FirstNightReminder, UpdateSourceTrigger=PropertyChanged}" 
+                                            <TextBox Text="{Binding SelectedRole.FirstNightReminder, UpdateSourceTrigger=PropertyChanged}" 
                                  TextWrapping="Wrap" AcceptsReturn="True" Height="90"
                                  Padding="6,4" BorderBrush="#CCC" BorderThickness="1" 
                                  FontSize="11" VerticalScrollBarVisibility="Auto"/>
-                                    </DockPanel>
-                                </Grid>
+                                        </DockPanel>
+                                    </Grid>
 
-                                <!-- 右側：其他夜晚 -->
-                                <Grid Grid.Column="2">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="8"/>
-                                        <RowDefinition Height="*"/>
-                                    </Grid.RowDefinitions>
+                                    <!-- 右側：其他夜晚 -->
+                                    <Grid Grid.Column="2">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="8"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
 
-                                    <!-- 其他夜晚順序 -->
-                                    <DockPanel Grid.Row="0">
-                                        <TextBlock Text="其他夜晚" FontWeight="SemiBold" DockPanel.Dock="Left" 
+                                        <!-- 其他夜晚順序 -->
+                                        <DockPanel Grid.Row="0">
+                                            <TextBlock Text="其他夜晚" FontWeight="SemiBold" DockPanel.Dock="Left" 
                                    VerticalAlignment="Center" Margin="0,0,8,0" Width="70"/>
-                                        <TextBox Text="{Binding SelectedRole.OtherNight, UpdateSourceTrigger=PropertyChanged}" 
+                                            <TextBox Text="{Binding SelectedRole.OtherNight, UpdateSourceTrigger=PropertyChanged}" 
                                  Padding="6,4" BorderBrush="#CCC" BorderThickness="1" VerticalAlignment="Center"/>
-                                    </DockPanel>
+                                        </DockPanel>
 
-                                    <!-- 其他夜提示 -->
-                                    <DockPanel Grid.Row="2">
-                                        <TextBlock Text="其他夜提示" FontWeight="SemiBold" FontSize="11" DockPanel.Dock="Left" 
+                                        <!-- 其他夜提示 -->
+                                        <DockPanel Grid.Row="2">
+                                            <TextBlock Text="其他夜提示" FontWeight="SemiBold" FontSize="11" DockPanel.Dock="Left" 
                                    VerticalAlignment="Top" Margin="0,4,8,0" Width="70"/>
-                                        <TextBox Text="{Binding SelectedRole.OtherNightReminder, UpdateSourceTrigger=PropertyChanged}" 
+                                            <TextBox Text="{Binding SelectedRole.OtherNightReminder, UpdateSourceTrigger=PropertyChanged}" 
                                  TextWrapping="Wrap" AcceptsReturn="True" Height="90"
                                  Padding="6,4" BorderBrush="#CCC" BorderThickness="1" 
                                  FontSize="11" VerticalScrollBarVisibility="Auto"/>
-                                    </DockPanel>
+                                        </DockPanel>
+                                    </Grid>
                                 </Grid>
-                            </Grid>
 
-                            <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Margin="0,10"/>
+                                <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Margin="0,10"/>
 
-                            <!-- 🆕 提示標記編輯器 -->
-                            <TextBlock Text="提示標記" FontWeight="SemiBold" Margin="0,10,0,8"/>
+                                <!-- 🆕 提示標記編輯器 -->
+                                <TextBlock Text="提示標記" FontWeight="SemiBold" Margin="0,10,0,8"/>
 
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="12"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="12"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
 
-                                <!-- 左側：一般標記 -->
-                                <StackPanel Grid.Column="0">
-                                    <TextBlock Text="一般標記" FontWeight="SemiBold" FontSize="12" Margin="0,0,0,4"/>
+                                    <!-- 左側：一般標記 -->
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="一般標記" FontWeight="SemiBold" FontSize="12" Margin="0,0,0,4"/>
 
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                        <Button Content="➕ 新增" Padding="6,3" FontSize="11"
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                            <Button Content="➕ 新增" Padding="6,3" FontSize="11"
             Click="ManageReminder_Click" Tag="Add|Normal"
             Background="#4CAF50" Foreground="White" BorderThickness="0" Margin="0,0,6,0"/>
-                                        <Button Content="🗑️ 刪除" Padding="6,3" FontSize="11"
+                                            <Button Content="🗑️ 刪除" Padding="6,3" FontSize="11"
             Click="ManageReminder_Click" Tag="Remove|Normal"
             Background="#F44336" Foreground="White" BorderThickness="0"/>
-                                    </StackPanel>
+                                        </StackPanel>
 
-                                    <Border BorderBrush="#DDD" BorderThickness="1" 
+                                        <Border BorderBrush="#DDD" BorderThickness="1" 
         Height="100">
-                                        <ScrollViewer VerticalScrollBarVisibility="Auto">
-                                            <ItemsControl x:Name="remindersList" ItemsSource="{Binding SelectedRole.Reminders}">
-                                                <ItemsControl.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <Border BorderBrush="#EEE" BorderThickness="0,0,0,1" Padding="6,4" Background="White">
-                                                            <Grid>
-                                                                <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition Width="Auto"/>
-                                                                    <ColumnDefinition Width="6"/>
-                                                                    <ColumnDefinition Width="*"/>
-                                                                </Grid.ColumnDefinitions>
+                                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                                <ItemsControl x:Name="remindersList" ItemsSource="{Binding SelectedRole.Reminders}">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Border BorderBrush="#EEE" BorderThickness="0,0,0,1" Padding="6,4" Background="White">
+                                                                <Grid>
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="Auto"/>
+                                                                        <ColumnDefinition Width="6"/>
+                                                                        <ColumnDefinition Width="*"/>
+                                                                    </Grid.ColumnDefinitions>
 
-                                                                <!-- 綁定到 ReminderItem.IsSelected -->
-                                                                <CheckBox Grid.Column="0" 
+                                                                    <!-- 綁定到 ReminderItem.IsSelected -->
+                                                                    <CheckBox Grid.Column="0" 
                               IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}"
                               VerticalAlignment="Center"/>
 
-                                                                <!-- 綁定到 ReminderItem.Text -->
-                                                                <TextBox Grid.Column="2" 
+                                                                    <!-- 綁定到 ReminderItem.Text -->
+                                                                    <TextBox Grid.Column="2" 
                              Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}" 
                              BorderThickness="0" 
                              Background="Transparent"
                              Padding="4,2"
                              FontSize="11"
                              VerticalAlignment="Center"/>
-                                                            </Grid>
-                                                        </Border>
-                                                    </DataTemplate>
-                                                </ItemsControl.ItemTemplate>
-                                            </ItemsControl>
-                                        </ScrollViewer>
-                                    </Border>
-                                </StackPanel>
+                                                                </Grid>
+                                                            </Border>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </ScrollViewer>
+                                        </Border>
+                                    </StackPanel>
 
-                                <!-- 右側：全局標記 -->
-                                <StackPanel Grid.Column="2">
-                                    <TextBlock Text="全局標記" FontWeight="SemiBold" FontSize="12" Margin="0,0,0,4"/>
+                                    <!-- 右側：全局標記 -->
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="全局標記" FontWeight="SemiBold" FontSize="12" Margin="0,0,0,4"/>
 
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                        <Button Content="➕ 新增" Padding="6,3" FontSize="11"
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                            <Button Content="➕ 新增" Padding="6,3" FontSize="11"
             Click="ManageReminder_Click" Tag="Add|Global"
             Background="#4CAF50" Foreground="White" BorderThickness="0" Margin="0,0,6,0"/>
-                                        <Button Content="🗑️ 刪除" Padding="6,3" FontSize="11"
+                                            <Button Content="🗑️ 刪除" Padding="6,3" FontSize="11"
             Click="ManageReminder_Click" Tag="Remove|Global"
             Background="#F44336" Foreground="White" BorderThickness="0"/>
-                                    </StackPanel>
+                                        </StackPanel>
 
-                                    <Border BorderBrush="#DDD" BorderThickness="1" 
+                                        <Border BorderBrush="#DDD" BorderThickness="1" 
         Height="100">
-                                        <ScrollViewer VerticalScrollBarVisibility="Auto">
-                                            <ItemsControl x:Name="globalRemindersList" ItemsSource="{Binding SelectedRole.RemindersGlobal}">
-                                                <ItemsControl.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <Border BorderBrush="#EEE" BorderThickness="0,0,0,1" Padding="6,4" Background="White">
-                                                            <Grid>
-                                                                <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition Width="Auto"/>
-                                                                    <ColumnDefinition Width="6"/>
-                                                                    <ColumnDefinition Width="*"/>
-                                                                </Grid.ColumnDefinitions>
+                                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                                <ItemsControl x:Name="globalRemindersList" ItemsSource="{Binding SelectedRole.RemindersGlobal}">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Border BorderBrush="#EEE" BorderThickness="0,0,0,1" Padding="6,4" Background="White">
+                                                                <Grid>
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="Auto"/>
+                                                                        <ColumnDefinition Width="6"/>
+                                                                        <ColumnDefinition Width="*"/>
+                                                                    </Grid.ColumnDefinitions>
 
-                                                                <!-- 綁定到 ReminderItem.IsSelected -->
-                                                                <CheckBox Grid.Column="0" 
+                                                                    <!-- 綁定到 ReminderItem.IsSelected -->
+                                                                    <CheckBox Grid.Column="0" 
                               IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}"
                               VerticalAlignment="Center"/>
 
-                                                                <!-- 綁定到 ReminderItem.Text -->
-                                                                <TextBox Grid.Column="2" 
+                                                                    <!-- 綁定到 ReminderItem.Text -->
+                                                                    <TextBox Grid.Column="2" 
                              Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}" 
                              BorderThickness="0" 
                              Background="Transparent"
                              Padding="4,2"
                              FontSize="11"
                              VerticalAlignment="Center"/>
-                                                            </Grid>
-                                                        </Border>
-                                                    </DataTemplate>
-                                                </ItemsControl.ItemTemplate>
-                                            </ItemsControl>
-                                        </ScrollViewer>
-                                    </Border>
-                                </StackPanel>
-                            </Grid>
+                                                                </Grid>
+                                                            </Border>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </ScrollViewer>
+                                        </Border>
+                                    </StackPanel>
+                                </Grid>
 
-                            <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Margin="0,10"/>
+                                <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Margin="0,10"/>
 
 
-                            <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Margin="0,15"/>
+                                <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Margin="0,15"/>
 
-                            <!-- 🔗 相剋規則 (Jinxes) -->
-                            <TextBlock Text="🔗 相剋規則 (Jinxes)" FontWeight="SemiBold" FontSize="12" Margin="0,15,0,8"/>
+                                <!-- 🔗 相剋規則 (Jinxes) -->
+                                <TextBlock Text="🔗 相剋規則 (Jinxes)" FontWeight="SemiBold" FontSize="12" Margin="0,15,0,8"/>
 
-                            <!-- Jinxes 列表 -->
-                            <ItemsControl ItemsSource="{Binding SelectedRole.JinxItems}" Margin="0,0,0,8">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Border BorderBrush="#DDD" BorderThickness="1" Padding="8" Margin="0,0,0,6" Background="White">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                    <!-- "相剋角色:" 標籤 -->
-                                                    <ColumnDefinition Width="4"/>
-                                                    <!-- 間距 -->
-                                                    <ColumnDefinition Width="120"/>
-                                                    <!-- ComboBox -->
-                                                    <ColumnDefinition Width="8"/>
-                                                    <!-- 間距 -->
-                                                    <ColumnDefinition Width="Auto"/>
-                                                    <!-- "規則說明:" 標籤 -->
-                                                    <ColumnDefinition Width="4"/>
-                                                    <!-- 間距 -->
-                                                    <ColumnDefinition Width="*"/>
-                                                    <!-- TextBox 自動填滿 -->
-                                                    <ColumnDefinition Width="4"/>
-                                                    <!-- 間距 -->
-                                                    <ColumnDefinition Width="32"/>
-                                                    <!-- 刪除按鈕 -->
-                                                </Grid.ColumnDefinitions>
+                                <!-- Jinxes 列表 -->
+                                <ItemsControl ItemsSource="{Binding SelectedRole.JinxItems}" Margin="0,0,0,8">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border BorderBrush="#DDD" BorderThickness="1" Padding="8" Margin="0,0,0,6" Background="White">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <!-- "相剋角色:" 標籤 -->
+                                                        <ColumnDefinition Width="4"/>
+                                                        <!-- 間距 -->
+                                                        <ColumnDefinition Width="120"/>
+                                                        <!-- ComboBox -->
+                                                        <ColumnDefinition Width="8"/>
+                                                        <!-- 間距 -->
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <!-- "規則說明:" 標籤 -->
+                                                        <ColumnDefinition Width="4"/>
+                                                        <!-- 間距 -->
+                                                        <ColumnDefinition Width="*"/>
+                                                        <!-- TextBox 自動填滿 -->
+                                                        <ColumnDefinition Width="4"/>
+                                                        <!-- 間距 -->
+                                                        <ColumnDefinition Width="32"/>
+                                                        <!-- 刪除按鈕 -->
+                                                    </Grid.ColumnDefinitions>
 
-                                                <!-- 相剋角色標籤 -->
-                                                <TextBlock Grid.Column="0" 
+                                                    <!-- 相剋角色標籤 -->
+                                                    <TextBlock Grid.Column="0" 
                                Text="相剋角色:" 
                                VerticalAlignment="Center" 
                                FontSize="11"/>
 
-                                                <!-- 角色選擇 ComboBox -->
-                                                <ComboBox x:Name="cmbJinxTargetRole"
+                                                    <!-- 角色選擇 ComboBox -->
+                                                    <ComboBox x:Name="cmbJinxTargetRole"
           Grid.Column="2"
           ItemsSource="{Binding DataContext.AvailableRoleNamesForJinx, 
                         RelativeSource={RelativeSource AncestorType=Window}}"
@@ -1397,14 +1422,14 @@
           BorderBrush="#CCC"
           BorderThickness="1"/>
 
-                                                <!-- 規則說明標籤 -->
-                                                <TextBlock Grid.Column="4" 
+                                                    <!-- 規則說明標籤 -->
+                                                    <TextBlock Grid.Column="4" 
                                Text="規則說明:" 
                                VerticalAlignment="Center" 
                                FontSize="11"/>
 
-                                                <!-- 規則說明輸入框 -->
-                                                <TextBox Grid.Column="6"
+                                                    <!-- 規則說明輸入框 -->
+                                                    <TextBox Grid.Column="6"
                              Text="{Binding Reason, UpdateSourceTrigger=PropertyChanged}"
                              VerticalAlignment="Center"
                              Padding="6,4"
@@ -1415,8 +1440,8 @@
          GotFocus="JinxReason_GotFocus"
          LostFocus="JinxReason_LostFocus"/>
 
-                                                <!-- 刪除按鈕 -->
-                                                <Button Grid.Column="8" 
+                                                    <!-- 刪除按鈕 -->
+                                                    <Button Grid.Column="8" 
                             Content="🗑️" 
                             Width="32" Height="32"
                             Click="DeleteJinx_Click"
@@ -1426,14 +1451,14 @@
                             Background="#F44336" 
                             Foreground="White" 
                             BorderThickness="0"/>
-                                            </Grid>
-                                        </Border>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
 
-                            <!-- 新增 Jinx 按鈕 -->
-                            <Button Content="➕ 新增 Jinx" 
+                                <!-- 新增 Jinx 按鈕 -->
+                                <Button Content="➕ 新增 Jinx" 
         Width="120" 
         HorizontalAlignment="Left"
         Margin="0,0,0,8"
@@ -1443,16 +1468,16 @@
         Foreground="White" 
         BorderThickness="0"/>
 
-                            <!-- ⭐ 特殊功能編輯區塊 -->
-                            <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Margin="0,15,0,0"/>
+                                <!-- ⭐ 特殊功能編輯區塊 -->
+                                <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Margin="0,15,0,0"/>
 
-                            <TextBlock Text="⭐ 特殊功能 (Special)" 
+                                <TextBlock Text="⭐ 特殊功能 (Special)" 
            FontWeight="SemiBold" 
            FontSize="14" 
            Margin="0,15,0,8"/>
 
-                            <!-- 新增按鈕 -->
-                            <Button Content="➕ 新增特殊功能" 
+                                <!-- 新增按鈕 -->
+                                <Button Content="➕ 新增特殊功能" 
         Click="AddSpecial_Click"
         Margin="0,0,0,8" 
         Padding="8,4"
@@ -1461,175 +1486,175 @@
         Foreground="White" 
         BorderThickness="0"/>
 
-                            <!-- 特殊功能列表 -->
-                            <ItemsControl x:Name="SpecialItemsControl" 
+                                <!-- 特殊功能列表 -->
+                                <ItemsControl x:Name="SpecialItemsControl" 
               ItemsSource="{Binding SelectedRole.Special}"
               Margin="0,0,0,15">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Border BorderBrush="#E0E0E0" 
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border BorderBrush="#E0E0E0" 
                     BorderThickness="1" 
                     CornerRadius="4" 
                     Margin="0,0,0,8" 
                     Padding="10"
                     Background="#FAFAFA">
-                                            <Grid>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="Auto"/>
-                                                    <RowDefinition Height="Auto"/>
-                                                </Grid.RowDefinitions>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="35"/>
-                                                </Grid.ColumnDefinitions>
-
-                                                <!-- 主要內容區 -->
-                                                <Grid Grid.Row="0" Grid.Column="0">
+                                                <Grid>
                                                     <Grid.RowDefinitions>
                                                         <RowDefinition Height="Auto"/>
                                                         <RowDefinition Height="Auto"/>
                                                     </Grid.RowDefinitions>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="35"/>
+                                                    </Grid.ColumnDefinitions>
 
-                                                    <!-- 第一行：Type 和 Name 左右並排 -->
-                                                    <Grid Grid.Row="0" Margin="0,0,0,6">
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="*"/>
-                                                            <ColumnDefinition Width="8"/>
-                                                            <ColumnDefinition Width="*"/>
-                                                        </Grid.ColumnDefinitions>
+                                                    <!-- 主要內容區 -->
+                                                    <Grid Grid.Row="0" Grid.Column="0">
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition Height="Auto"/>
+                                                            <RowDefinition Height="Auto"/>
+                                                        </Grid.RowDefinitions>
 
-                                                        <!-- Type -->
-                                                        <DockPanel Grid.Column="0">
-                                                            <TextBlock Text="觸發時機" 
+                                                        <!-- 第一行：Type 和 Name 左右並排 -->
+                                                        <Grid Grid.Row="0" Margin="0,0,0,6">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="8"/>
+                                                                <ColumnDefinition Width="*"/>
+                                                            </Grid.ColumnDefinitions>
+
+                                                            <!-- Type -->
+                                                            <DockPanel Grid.Column="0">
+                                                                <TextBlock Text="觸發時機" 
                                            Width="65" 
                                            DockPanel.Dock="Left" 
                                            VerticalAlignment="Center" 
                                            FontWeight="SemiBold"
                                            FontSize="11"
                                            Margin="0,0,6,0"/>
-                                                            <ComboBox SelectedValue="{Binding Type, UpdateSourceTrigger=PropertyChanged}"
+                                                                <ComboBox SelectedValue="{Binding Type, UpdateSourceTrigger=PropertyChanged}"
                                           SelectedValuePath="Tag"
                                           Padding="6,3"
                                           BorderBrush="#CCC"
                                           FontSize="11">
-                                                                <ComboBoxItem Content="角色選擇時 (selection)" Tag="selection"/>
-                                                                <ComboBoxItem Content="點擊標記時 (ability)" Tag="ability"/>
-                                                                <ComboBoxItem Content="夜晚訊號時 (signal)" Tag="signal"/>
-                                                                <ComboBoxItem Content="投票時 (vote)" Tag="vote"/>
-                                                                <ComboBoxItem Content="遊戲結束前 (reveal)" Tag="reveal"/>
-                                                                <ComboBoxItem Content="玩家主動觸發 (player)" Tag="player"/>
-                                                            </ComboBox>
-                                                        </DockPanel>
+                                                                    <ComboBoxItem Content="角色選擇時 (selection)" Tag="selection"/>
+                                                                    <ComboBoxItem Content="點擊標記時 (ability)" Tag="ability"/>
+                                                                    <ComboBoxItem Content="夜晚訊號時 (signal)" Tag="signal"/>
+                                                                    <ComboBoxItem Content="投票時 (vote)" Tag="vote"/>
+                                                                    <ComboBoxItem Content="遊戲結束前 (reveal)" Tag="reveal"/>
+                                                                    <ComboBoxItem Content="玩家主動觸發 (player)" Tag="player"/>
+                                                                </ComboBox>
+                                                            </DockPanel>
 
-                                                        <!-- Name -->
-                                                        <DockPanel Grid.Column="2">
-                                                            <TextBlock Text="功能類型" 
+                                                            <!-- Name -->
+                                                            <DockPanel Grid.Column="2">
+                                                                <TextBlock Text="功能類型" 
                                            Width="65" 
                                            DockPanel.Dock="Left" 
                                            VerticalAlignment="Center" 
                                            FontWeight="SemiBold"
                                            FontSize="11"
                                            Margin="0,0,6,0"/>
-                                                            <ComboBox SelectedValue="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                                                                <ComboBox SelectedValue="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
                                           SelectedValuePath="Tag"
                                           Padding="6,3"
                                           BorderBrush="#CCC"
                                           FontSize="11">
-                                                                <ComboBoxItem Content="魔典相關 (grimoire)" Tag="grimoire"/>
-                                                                <ComboBoxItem Content="指定玩家 (pointing)" Tag="pointing"/>
-                                                                <ComboBoxItem Content="鬼魂投票 (ghost-votes)" Tag="ghost-votes"/>
-                                                                <ComboBoxItem Content="分發角色 (distribute-roles)" Tag="distribute-roles"/>
-                                                                <ComboBoxItem Content="禁用抽取 (bag-disabled)" Tag="bag-disabled"/>
-                                                                <ComboBoxItem Content="可重複 (bag-duplicate)" Tag="bag-duplicate"/>
-                                                                <ComboBoxItem Content="倍數效果 (multiplier)" Tag="multiplier"/>
-                                                                <ComboBoxItem Content="隱藏 (hidden)" Tag="hidden"/>
-                                                                <ComboBoxItem Content="替換角色 (replace-character)" Tag="replace-character"/>
-                                                                <ComboBoxItem Content="玩家能力 (player)" Tag="player"/>
-                                                                <ComboBoxItem Content="卡片提示 (card)" Tag="card"/>
-                                                                <ComboBoxItem Content="睜眼 (open-eyes)" Tag="open-eyes"/>
-                                                            </ComboBox>
-                                                        </DockPanel>
-                                                    </Grid>
+                                                                    <ComboBoxItem Content="魔典相關 (grimoire)" Tag="grimoire"/>
+                                                                    <ComboBoxItem Content="指定玩家 (pointing)" Tag="pointing"/>
+                                                                    <ComboBoxItem Content="鬼魂投票 (ghost-votes)" Tag="ghost-votes"/>
+                                                                    <ComboBoxItem Content="分發角色 (distribute-roles)" Tag="distribute-roles"/>
+                                                                    <ComboBoxItem Content="禁用抽取 (bag-disabled)" Tag="bag-disabled"/>
+                                                                    <ComboBoxItem Content="可重複 (bag-duplicate)" Tag="bag-duplicate"/>
+                                                                    <ComboBoxItem Content="倍數效果 (multiplier)" Tag="multiplier"/>
+                                                                    <ComboBoxItem Content="隱藏 (hidden)" Tag="hidden"/>
+                                                                    <ComboBoxItem Content="替換角色 (replace-character)" Tag="replace-character"/>
+                                                                    <ComboBoxItem Content="玩家能力 (player)" Tag="player"/>
+                                                                    <ComboBoxItem Content="卡片提示 (card)" Tag="card"/>
+                                                                    <ComboBoxItem Content="睜眼 (open-eyes)" Tag="open-eyes"/>
+                                                                </ComboBox>
+                                                            </DockPanel>
+                                                        </Grid>
 
-                                                    <!-- 第二行：Value、Time、Global 三欄並排 -->
-                                                    <Grid Grid.Row="1">
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="*"/>
-                                                            <ColumnDefinition Width="8"/>
-                                                            <ColumnDefinition Width="*"/>
-                                                            <ColumnDefinition Width="8"/>
-                                                            <ColumnDefinition Width="*"/>
-                                                        </Grid.ColumnDefinitions>
+                                                        <!-- 第二行：Value、Time、Global 三欄並排 -->
+                                                        <Grid Grid.Row="1">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="8"/>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="8"/>
+                                                                <ColumnDefinition Width="*"/>
+                                                            </Grid.ColumnDefinitions>
 
-                                                        <!-- Value -->
-                                                        <DockPanel Grid.Column="0">
-                                                            <TextBlock Text="參數值" 
+                                                            <!-- Value -->
+                                                            <DockPanel Grid.Column="0">
+                                                                <TextBlock Text="參數值" 
                                            Width="50" 
                                            DockPanel.Dock="Left" 
                                            VerticalAlignment="Center" 
                                            FontSize="11"
                                            Foreground="#666"
                                            Margin="0,0,6,0"/>
-                                                            <TextBox Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}" 
+                                                                <TextBox Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}" 
                                          Padding="4,2" 
                                          BorderBrush="#CCC" 
                                          BorderThickness="1" 
                                          FontSize="11"/>
-                                                        </DockPanel>
+                                                            </DockPanel>
 
-                                                        <!-- Time -->
-                                                        <DockPanel Grid.Column="2">
-                                                            <TextBlock Text="階段" 
+                                                            <!-- Time -->
+                                                            <DockPanel Grid.Column="2">
+                                                                <TextBlock Text="階段" 
                                            Width="40" 
                                            DockPanel.Dock="Left" 
                                            VerticalAlignment="Center" 
                                            FontSize="11"
                                            Foreground="#666"
                                            Margin="0,0,6,0"/>
-                                                            <ComboBox SelectedValue="{Binding Time, UpdateSourceTrigger=PropertyChanged}" 
+                                                                <ComboBox SelectedValue="{Binding Time, UpdateSourceTrigger=PropertyChanged}" 
                                           SelectedValuePath="Tag"
                                           Padding="4,2"
                                           BorderBrush="#CCC"
                                           FontSize="11">
-                                                                <ComboBoxItem Content="(無)" Tag=""/>
-                                                                <ComboBoxItem Content="遊戲前 (pregame)" Tag="pregame"/>
-                                                                <ComboBoxItem Content="白天 (day)" Tag="day"/>
-                                                                <ComboBoxItem Content="夜晚 (night)" Tag="night"/>
-                                                                <ComboBoxItem Content="首夜 (firstNight)" Tag="firstNight"/>
-                                                                <ComboBoxItem Content="首日 (firstDay)" Tag="firstDay"/>
-                                                                <ComboBoxItem Content="其他夜 (otherNight)" Tag="otherNight"/>
-                                                                <ComboBoxItem Content="其他日 (otherDay)" Tag="otherDay"/>
-                                                            </ComboBox>
-                                                        </DockPanel>
+                                                                    <ComboBoxItem Content="(無)" Tag=""/>
+                                                                    <ComboBoxItem Content="遊戲前 (pregame)" Tag="pregame"/>
+                                                                    <ComboBoxItem Content="白天 (day)" Tag="day"/>
+                                                                    <ComboBoxItem Content="夜晚 (night)" Tag="night"/>
+                                                                    <ComboBoxItem Content="首夜 (firstNight)" Tag="firstNight"/>
+                                                                    <ComboBoxItem Content="首日 (firstDay)" Tag="firstDay"/>
+                                                                    <ComboBoxItem Content="其他夜 (otherNight)" Tag="otherNight"/>
+                                                                    <ComboBoxItem Content="其他日 (otherDay)" Tag="otherDay"/>
+                                                                </ComboBox>
+                                                            </DockPanel>
 
-                                                        <!-- Global -->
-                                                        <DockPanel Grid.Column="4">
-                                                            <TextBlock Text="範圍" 
+                                                            <!-- Global -->
+                                                            <DockPanel Grid.Column="4">
+                                                                <TextBlock Text="範圍" 
                                            Width="40" 
                                            DockPanel.Dock="Left" 
                                            VerticalAlignment="Center" 
                                            FontSize="11"
                                            Foreground="#666"
                                            Margin="0,0,6,0"/>
-                                                            <ComboBox SelectedValue="{Binding Global, UpdateSourceTrigger=PropertyChanged}" 
+                                                                <ComboBox SelectedValue="{Binding Global, UpdateSourceTrigger=PropertyChanged}" 
                                           SelectedValuePath="Tag"
                                           Padding="4,2"
                                           BorderBrush="#CCC"
                                           FontSize="11">
-                                                                <ComboBoxItem Content="(無)" Tag=""/>
-                                                                <ComboBoxItem Content="鎮民 (townsfolk)" Tag="townsfolk"/>
-                                                                <ComboBoxItem Content="外來者 (outsider)" Tag="outsider"/>
-                                                                <ComboBoxItem Content="爪牙 (minion)" Tag="minion"/>
-                                                                <ComboBoxItem Content="惡魔 (demon)" Tag="demon"/>
-                                                                <ComboBoxItem Content="旅行者 (traveller)" Tag="traveller"/>
-                                                                <ComboBoxItem Content="死者 (dead)" Tag="dead"/>
-                                                            </ComboBox>
-                                                        </DockPanel>
+                                                                    <ComboBoxItem Content="(無)" Tag=""/>
+                                                                    <ComboBoxItem Content="鎮民 (townsfolk)" Tag="townsfolk"/>
+                                                                    <ComboBoxItem Content="外來者 (outsider)" Tag="outsider"/>
+                                                                    <ComboBoxItem Content="爪牙 (minion)" Tag="minion"/>
+                                                                    <ComboBoxItem Content="惡魔 (demon)" Tag="demon"/>
+                                                                    <ComboBoxItem Content="旅行者 (traveller)" Tag="traveller"/>
+                                                                    <ComboBoxItem Content="死者 (dead)" Tag="dead"/>
+                                                                </ComboBox>
+                                                            </DockPanel>
+                                                        </Grid>
                                                     </Grid>
-                                                </Grid>
 
-                                                <!-- 刪除按鈕 -->
-                                                <Button Grid.Row="0" Grid.Column="1"
+                                                    <!-- 刪除按鈕 -->
+                                                    <Button Grid.Row="0" Grid.Column="1"
                             Content="🗑️" 
                             Click="DeleteSpecial_Click"
                             Tag="{Binding}"
@@ -1643,18 +1668,20 @@
                             BorderThickness="1"
                             ToolTip="刪除"
                             FontSize="11"/>
-                                            </Grid>
-                                        </Border>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
 
-                            <!-- 備註（原風味文字） -->
-                            <TextBlock Text="備註" FontWeight="SemiBold" Margin="0,10,0,4"/>
-                            <TextBox Text="{Binding SelectedRole.Flavor, UpdateSourceTrigger=PropertyChanged}" 
+                                <!-- 備註（原風味文字） -->
+                                <TextBlock Text="備註" FontWeight="SemiBold" Margin="0,10,0,4"/>
+                                <TextBox Text="{Binding SelectedRole.Flavor, UpdateSourceTrigger=PropertyChanged}" 
                      TextWrapping="Wrap" AcceptsReturn="True" Height="60"
                      Padding="6,4" BorderBrush="#CCC" BorderThickness="1" 
                      FontSize="11" VerticalScrollBarVisibility="Auto"/>
+                            </StackPanel>
+                            <!-- ✅ 結束：ShowDetailFields 的 StackPanel -->
 
                             <!-- 底部說明 -->
                             <Border Background="#F0F8FF" Padding="12" Margin="0,15,0,0" CornerRadius="3">

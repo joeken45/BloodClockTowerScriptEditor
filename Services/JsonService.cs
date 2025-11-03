@@ -1,4 +1,5 @@
 ﻿using BloodClockTowerScriptEditor.Models;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -56,7 +57,66 @@ namespace BloodClockTowerScriptEditor.Services
 
                 foreach (var item in jArray)
                 {
+                    // ✅ 新增：判斷是否為官方 ID 字串或集石格式物件
+                    if (item.Type == JTokenType.String)
+                    {
+                        // 情況 1: BOTC 格式的簡化官方角色（如 "washerwoman"）
+                        string officialId = item.ToString();
+
+                        // 從資料庫查找對應的角色
+                        using var context = new Data.RoleTemplateContext();
+                        var template = context.RoleTemplates
+                            .Include(r => r.Reminders)
+                            .FirstOrDefault(r => r.OfficialId == officialId);
+
+                        if (template != null)
+                        {
+                            var role = template.ToRole();
+                            role.UseOfficialId = true;  // ✅ 標記為使用官方 ID
+                            allRoles.Add(role);
+                        }
+                        else
+                        {
+                            // 找不到對應角色，記錄警告
+                            System.Diagnostics.Debug.WriteLine($"⚠️ 找不到官方角色: {officialId}");
+                        }
+
+                        continue;
+                    }
+
                     string? id = item["id"]?.ToString();
+
+                    // ✅ 新增：判斷是否為集石格式的官方角色（只有 id 欄位，沒有其他欄位）
+                    if (!string.IsNullOrEmpty(id) && id != "_meta")
+                    {
+                        // 檢查是否只有 id 欄位（集石格式的官方角色）
+                        var jObject = item as JObject;
+                        if (jObject != null && jObject.Properties().Count() == 1 && jObject.Property("id") != null)
+                        {
+                            // 情況 2: 集石格式的簡化官方角色（如 {"id":"washerwoman"}）
+                            string officialId = id;
+
+                            // 從資料庫查找對應的角色
+                            using var context = new Data.RoleTemplateContext();
+                            var template = context.RoleTemplates
+                                .Include(r => r.Reminders)
+                                .FirstOrDefault(r => r.OfficialId == officialId);
+
+                            if (template != null)
+                            {
+                                var role = template.ToRole();
+                                role.UseOfficialId = true;  // ✅ 標記為使用官方 ID
+                                allRoles.Add(role);
+                            }
+                            else
+                            {
+                                // 找不到對應角色，記錄警告
+                                System.Diagnostics.Debug.WriteLine($"⚠️ 找不到官方角色: {officialId}");
+                            }
+
+                            continue;
+                        }
+                    }
 
                     // 檢查是否為元數據
                     if (id == "_meta")
@@ -168,6 +228,14 @@ namespace BloodClockTowerScriptEditor.Services
                 // === 處理角色 ===
                 foreach (var role in script.Roles)
                 {
+                    // ✅ 新增：判斷是否使用官方 ID
+                    if (role.UseOfficialId && !string.IsNullOrEmpty(role.OfficialId))
+                    {
+                        // 情況 1: 使用官方 ID → 只輸出 ID 字串
+                        jArray.Add(role.OfficialId);
+                        continue;
+                    }
+
                     JObject roleObj;
 
                     // 🆕 判斷是否為相剋規則
@@ -292,7 +360,15 @@ namespace BloodClockTowerScriptEditor.Services
                 .Where(r => r.FirstNight > 0)
                 .OrderBy(r => r.FirstNight)
                 .ThenBy(r => r.Name)
-                .Select(r => GetRoleOutputId(r))
+                .Select(r =>
+                {
+                    // ✅ 如果使用官方 ID，優先使用官方 ID
+                    if (r.UseOfficialId && !string.IsNullOrEmpty(r.OfficialId))
+                        return r.OfficialId;
+
+                    // 否則使用原邏輯
+                    return GetRoleOutputId(r);
+                })
                 .ToList();
 
             // 只在有角色時才設置（避免空陣列）
@@ -303,7 +379,15 @@ namespace BloodClockTowerScriptEditor.Services
                 .Where(r => r.OtherNight > 0)
                 .OrderBy(r => r.OtherNight)
                 .ThenBy(r => r.Name)
-                .Select(r => GetRoleOutputId(r))
+                .Select(r =>
+                {
+                    // ✅ 如果使用官方 ID，優先使用官方 ID
+                    if (r.UseOfficialId && !string.IsNullOrEmpty(r.OfficialId))
+                        return r.OfficialId;
+
+                    // 否則使用原邏輯
+                    return GetRoleOutputId(r);
+                })
                 .ToList();
 
             // 只在有角色時才設置（避免空陣列）

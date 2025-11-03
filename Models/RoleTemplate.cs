@@ -85,6 +85,13 @@ namespace BloodClockTowerScriptEditor.Models
         public bool IsOfficial { get; set; } = true;
 
         /// <summary>
+        /// 官方角色 ID（用於簡化輸出）
+        /// </summary>
+        [Column("official_id")]
+        [MaxLength(50)]
+        public string? OfficialId { get; set; }
+
+        /// <summary>
         /// UI 用：是否被選中（不儲存到資料庫）
         /// </summary>
         [NotMapped]
@@ -142,16 +149,15 @@ namespace BloodClockTowerScriptEditor.Models
                 Name = this.Name,
                 Team = Enum.Parse<TeamType>(this.Team, true),
                 Ability = this.Ability ?? string.Empty,
-                Image = string.IsNullOrEmpty(this.Image)
-    ? new List<string>()
-    : new List<string> { this.Image },
+                Image = string.IsNullOrEmpty(this.Image) ? new List<string>() : new List<string> { this.Image },
                 Edition = this.Edition,
                 Flavor = this.Flavor,
                 Setup = this.Setup,
                 FirstNight = this.FirstNight,
                 OtherNight = this.OtherNight,
                 FirstNightReminder = this.FirstNightReminder,
-                OtherNightReminder = this.OtherNightReminder
+                OtherNightReminder = this.OtherNightReminder,
+                OfficialId = this.OfficialId  // ✅ 新增此行
             };
 
             // 轉換提示標記

@@ -30,6 +30,8 @@ namespace BloodClockTowerScriptEditor.Models
         private string? _otherNightReminder;
         private List<JinxInfo>? _jinxes;
         private ObservableCollection<SpecialAbility>? _special;
+        private string? _officialId;
+        private bool _useOfficialId;
 
         // UI 相關私有欄位
         private int _displayOrder;
@@ -240,6 +242,57 @@ namespace BloodClockTowerScriptEditor.Models
 
         [JsonIgnore]
         public string? ImageUrl => Image.Count > 0 ? Image[0] : null;
+
+        /// <summary>
+        /// 官方角色 ID（如 "washerwoman"）
+        /// </summary>
+        [JsonIgnore]
+        public string? OfficialId
+        {
+            get => _officialId;
+            set
+            {
+                if (SetProperty(ref _officialId, value))
+                {
+                    OnPropertyChanged(nameof(ShowOfficialIdCheckBox));
+                }
+            }
+        }
+
+        /// <summary>
+        /// 是否使用官方 ID（勾選後簡化輸出）
+        /// </summary>
+        [JsonIgnore]
+        public bool UseOfficialId
+        {
+            get => _useOfficialId;
+            set
+            {
+                if (SetProperty(ref _useOfficialId, value))
+                {
+                    OnPropertyChanged(nameof(ShowDetailFields));
+                    OnPropertyChanged(nameof(IsNameReadOnly));
+                }
+            }
+        }
+
+        /// <summary>
+        /// 是否顯示「使用官方 ID」CheckBox
+        /// </summary>
+        [JsonIgnore]
+        public bool ShowOfficialIdCheckBox => !string.IsNullOrEmpty(OfficialId);
+
+        /// <summary>
+        /// 是否顯示詳細編輯欄位
+        /// </summary>
+        [JsonIgnore]
+        public bool ShowDetailFields => !UseOfficialId;
+
+        /// <summary>
+        /// 角色名稱是否唯讀
+        /// </summary>
+        [JsonIgnore]
+        public bool IsNameReadOnly => UseOfficialId;
 
         // ==================== 第五部分：圖片管理（Image ↔ ImageItems 雙向同步）====================
 
