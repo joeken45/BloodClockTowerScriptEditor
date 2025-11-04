@@ -3969,7 +3969,7 @@
   },
   {
     "name": "爪牙資訊",
-    "id": "M",
+    "id": "minioninfo",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/8/85/Mi.png/50px-Mi.png",
     "ability": "爪牙相認並得知誰是惡魔。",
     "setup": "FALSE",
@@ -3986,7 +3986,7 @@
   },
   {
     "name": "惡魔資訊",
-    "id": "D",
+    "id": "demoninfo",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/1/18/Di.png/50px-Di.png",
     "ability": "惡魔得知爪牙是哪些玩家並獲得三個不在場角色。",
     "setup": "FALSE",

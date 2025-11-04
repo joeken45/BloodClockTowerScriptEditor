@@ -17,17 +17,6 @@ namespace BloodClockTowerScriptEditor.Services
     {
         private readonly JsonSerializerSettings _settings;
 
-        /// <summary>
-        /// 必要階段角色名稱對應的輸出 ID
-        /// </summary>
-        private static readonly Dictionary<string, string> RequiredPhaseIdMapping = new()
-{
-    { "爪牙資訊", "minioninfo" },
-    { "惡魔資訊", "demoninfo" },
-    { "黎明", "dawn" },
-    { "黃昏", "dusk" }
-};
-
         public JsonService()
         {
             _settings = new JsonSerializerSettings
@@ -335,21 +324,7 @@ namespace BloodClockTowerScriptEditor.Services
             return (string.Empty, string.Empty, false);
         }
 
-        /// <summary>
-        /// 取得角色的輸出 ID（必要階段角色使用映射 ID）
-        /// </summary>
-        private string GetRoleOutputId(Role role)
-        {
-            // 檢查是否為必要階段角色
-            if (RequiredPhaseIdMapping.TryGetValue(role.Name, out string? mappedId))
-            {
-                return mappedId;
-            }
-
-            // 一般角色使用原本的 ID
-            return role.Id;
-        }
-
+       
         /// <summary>
         /// 生成 _meta 的 firstNight 和 otherNight 陣列
         /// </summary>
@@ -367,7 +342,7 @@ namespace BloodClockTowerScriptEditor.Services
                         return r.OfficialId;
 
                     // 否則使用原邏輯
-                    return GetRoleOutputId(r);
+                    return r.Id;
                 })
                 .ToList();
 
@@ -386,7 +361,7 @@ namespace BloodClockTowerScriptEditor.Services
                         return r.OfficialId;
 
                     // 否則使用原邏輯
-                    return GetRoleOutputId(r);
+                    return r.Id;
                 })
                 .ToList();
 

@@ -9,6 +9,7 @@ namespace BloodClockTowerScriptEditor.Views
     {
         private ScriptMeta _originalMeta;
         private ObservableCollection<StatusInfoEx> _tempStatusList;
+        private ObservableCollection<BootleggerRuleItem> _tempBootleggerList;
 
         public EditScriptMetaWindow(ScriptMeta meta)
         {
@@ -24,6 +25,21 @@ namespace BloodClockTowerScriptEditor.Views
             chkHideTitle.IsChecked = meta.HideTitle ?? false;
             txtBackground.Text = meta.Background ?? string.Empty;
             txtAlmanac.Text = meta.Almanac ?? string.Empty;
+
+            // 載入 Bootlegger 規則
+            _tempBootleggerList = new ObservableCollection<BootleggerRuleItem>();
+            if (meta.Bootlegger != null)
+            {
+                foreach (var rule in meta.Bootlegger)
+                {
+                    _tempBootleggerList.Add(new BootleggerRuleItem
+                    {
+                        Rule = rule,
+                        IsSelected = false
+                    });
+                }
+            }
+            bootleggerList.ItemsSource = _tempBootleggerList;
 
             // 複製狀態列表
             _tempStatusList = new ObservableCollection<StatusInfoEx>();
@@ -73,6 +89,41 @@ namespace BloodClockTowerScriptEditor.Views
                 catch
                 {
                     // 圖片載入失敗，保持空白
+                }
+            }
+        }
+
+        private void AddBootlegger_Click(object sender, RoutedEventArgs e)
+        {
+            _tempBootleggerList.Add(new BootleggerRuleItem
+            {
+                Rule = "請輸入自訂規則",
+                IsSelected = false
+            });
+        }
+
+        private void DeleteSelectedBootlegger_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedItems = _tempBootleggerList.Where(b => b.IsSelected).ToList();
+
+            if (selectedItems.Count == 0)
+            {
+                MessageBox.Show("請先勾選要刪除的規則", "提示",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            var result = MessageBox.Show(
+                $"確定要刪除 {selectedItems.Count} 個已勾選的規則嗎？",
+                "確認刪除",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                foreach (var item in selectedItems)
+                {
+                    _tempBootleggerList.Remove(item);
                 }
             }
         }
@@ -127,6 +178,11 @@ namespace BloodClockTowerScriptEditor.Views
             _originalMeta.Almanac = string.IsNullOrWhiteSpace(txtAlmanac.Text) ?
                 null : txtAlmanac.Text;
 
+            // 寫回 Bootlegger 規則
+            _originalMeta.Bootlegger = _tempBootleggerList.Count > 0
+                ? _tempBootleggerList.Select(b => b.Rule).ToList()
+                : null;
+
             // 寫回狀態列表
             _originalMeta.Status.Clear();
             foreach (var statusEx in _tempStatusList)
@@ -154,6 +210,13 @@ namespace BloodClockTowerScriptEditor.Views
     {
         public string Name { get; set; } = string.Empty;
         public string Skill { get; set; } = string.Empty;
+        public bool IsSelected { get; set; } = false;
+    }
+
+    // Bootlegger 規則項目
+    public class BootleggerRuleItem
+    {
+        public string Rule { get; set; } = string.Empty;
         public bool IsSelected { get; set; } = false;
     }
 }

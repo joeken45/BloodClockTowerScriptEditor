@@ -23,8 +23,8 @@ namespace BloodClockTowerScriptEditor.ViewModels
         /// </summary>
         private static readonly HashSet<string> RequiredPhaseIds = new()
 {
-    "M",      // 爪牙資訊
-    "D",      // 惡魔資訊
+    "minioninfo",      // 爪牙資訊
+    "demoninfo",      // 惡魔資訊
     "dawn",   // 黎明
     "dusk"    // 黃昏
 };
@@ -51,6 +51,8 @@ namespace BloodClockTowerScriptEditor.ViewModels
             // 🆕 初始化夜晚順序集合
             FirstNightRoles = new ObservableCollection<Role>();
             OtherNightRoles = new ObservableCollection<Role>();
+
+            SyncBootleggerToRoles();
         }
 
         // ==================== 公開屬性 ====================
@@ -238,14 +240,10 @@ namespace BloodClockTowerScriptEditor.ViewModels
         }
 
         [RelayCommand]
-        private async void LoadJson()  // ✅ 改為 async void
+        private async Task LoadJson()
         {
             try
             {
-                // 檢查未儲存的變更
-                if (!CheckUnsavedChanges())
-                    return;
-
                 var dialog = new OpenFileDialog
                 {
                     Filter = "JSON 檔案 (*.json)|*.json|所有檔案 (*.*)|*.*",
@@ -254,16 +252,17 @@ namespace BloodClockTowerScriptEditor.ViewModels
 
                 if (dialog.ShowDialog() == true)
                 {
-                    // 載入檔案內容
                     CurrentScript = _jsonService.LoadScript(dialog.FileName);
                     CurrentFilePath = dialog.FileName;
 
-                    // ✅ 新增：載入後合併必要階段角色
                     await MergeRequiredPhasesAsync();
+
+                    // ✅ 從角色同步到 Meta
+                    SyncRolesToBootlegger();
 
                     StatusMessage = $"已載入: {dialog.FileName}";
                     SelectedRole = null;
-                    IsDirty = false; // 載入後重置標記
+                    IsDirty = false;
                 }
             }
             catch (Exception ex)
@@ -614,6 +613,9 @@ namespace BloodClockTowerScriptEditor.ViewModels
             await Task.CompletedTask;
         }
 
+        /// <summary>
+        /// 編輯劇本資訊指令
+        /// </summary>
         [RelayCommand]
         private void EditScriptMeta()
         {
@@ -622,8 +624,11 @@ namespace BloodClockTowerScriptEditor.ViewModels
                 var dialog = new Views.EditScriptMetaWindow(CurrentScript.Meta);
                 if (dialog.ShowDialog() == true)
                 {
+                    // ✅ 同步 Bootlegger 到角色列表
+                    SyncBootleggerToRoles();
+
                     OnPropertyChanged(nameof(CurrentScript));
-                    IsDirty = true; // 加上這行
+                    IsDirty = true;
                     StatusMessage = "劇本資訊已更新";
                 }
             }
@@ -632,6 +637,105 @@ namespace BloodClockTowerScriptEditor.ViewModels
                 ShowError($"編輯劇本資訊失敗: {ex.Message}", "編輯失敗");
             }
         }
+
+        /// <summary>
+        /// 同步 Bootlegger 規則到角色列表（使用資料庫 ID + 流水號）
+        /// </summary>
+        private void SyncBootleggerToRoles()
+        {
+            // 從資料庫查詢私貨商人範本
+            RoleTemplate? template;
+            using (var context = new RoleTemplateContext())
+            {
+                template = context.RoleTemplates
+                    .Include(r => r.Reminders)
+                    .FirstOrDefault(r => r.Name == "私貨商人" || r.OfficialId == "bootlegger");
+            }
+
+            // 找不到範本就不處理
+            if (template == null)
+            {
+                System.Diagnostics.Debug.WriteLine("⚠️ 資料庫中找不到「私貨商人」範本，跳過同步");
+                return;
+            }
+
+            string baseId = template.Id;  // 例如: "L17"
+            const string BOOTLEGGER_NAME = "私貨商人";
+
+            // 移除所有舊的私貨商人角色
+            var existingBootleggers = CurrentScript.Roles
+                .Where(r => r.Name == BOOTLEGGER_NAME || r.Id.StartsWith(baseId + "_"))
+                .ToList();
+
+            foreach (var old in existingBootleggers)
+            {
+                CurrentScript.Roles.Remove(old);
+            }
+
+            // 如果 Meta 有規則，建立新角色
+            if (CurrentScript.Meta.Bootlegger != null && CurrentScript.Meta.Bootlegger.Count > 0)
+            {
+                for (int i = 0; i < CurrentScript.Meta.Bootlegger.Count; i++)
+                {
+                    string rule = CurrentScript.Meta.Bootlegger[i];
+                    string roleId = $"{baseId}_{i + 1}";  // L17_1, L17_2...
+
+                    var role = template.ToRole();  // 從範本建立角色
+                    role.Id = roleId;
+                    role.Ability = rule;  // 覆寫為該條規則
+                    role.UseOfficialId = false;
+
+                    CurrentScript.Roles.Add(role);
+                }
+
+                System.Diagnostics.Debug.WriteLine($"✅ 建立 {CurrentScript.Meta.Bootlegger.Count} 個私貨商人角色（{baseId}_1 ~ {baseId}_{CurrentScript.Meta.Bootlegger.Count}）");
+            }
+
+            UpdateFilteredRoles();
+        }
+
+        /// <summary>
+        /// 從角色同步回 Meta.Bootlegger（載入時使用）
+        /// </summary>
+        private void SyncRolesToBootlegger()
+        {
+            // 查詢資料庫取得基礎 ID
+            string? baseId;
+            using (var context = new RoleTemplateContext())
+            {
+                var template = context.RoleTemplates
+                    .FirstOrDefault(r => r.Name == "私貨商人" || r.OfficialId == "bootlegger");
+
+                baseId = template?.Id;
+            }
+
+            if (string.IsNullOrEmpty(baseId))
+            {
+                System.Diagnostics.Debug.WriteLine("⚠️ 找不到私貨商人範本，跳過同步");
+                return;
+            }
+
+            // 收集所有私貨商人角色
+            var bootleggerRoles = CurrentScript.Roles
+                .Where(r => r.Name == "私貨商人" || r.Id.StartsWith(baseId + "_"))
+                .OrderBy(r => r.Id)
+                .ToList();
+
+            if (bootleggerRoles.Count > 0)
+            {
+                var rules = bootleggerRoles
+                    .Select(r => r.Ability)
+                    .Where(ability => !string.IsNullOrWhiteSpace(ability))
+                    .ToList();
+
+                if (rules.Count > 0)
+                {
+                    CurrentScript.Meta.Bootlegger = rules;
+                    System.Diagnostics.Debug.WriteLine($"✅ 從 {bootleggerRoles.Count} 個私貨商人角色同步到 Meta");
+                }
+            }
+        }
+
 
         // ==================== 驗證方法 ====================
 
@@ -1093,11 +1197,11 @@ namespace BloodClockTowerScriptEditor.ViewModels
                 // 載入四個必要階段角色
                 var minionInfo = await context.RoleTemplates
                     .Include(r => r.Reminders)
-                    .FirstOrDefaultAsync(r => r.Id == "M");
+                    .FirstOrDefaultAsync(r => r.Id == "minioninfo");
 
                 var demonInfo = await context.RoleTemplates
                     .Include(r => r.Reminders)
-                    .FirstOrDefaultAsync(r => r.Id == "D");
+                    .FirstOrDefaultAsync(r => r.Id == "demoninfo");
 
                 var dawnInfo = await context.RoleTemplates
                     .Include(r => r.Reminders)
@@ -1152,8 +1256,8 @@ namespace BloodClockTowerScriptEditor.ViewModels
                 // 載入四個必要階段角色
                 var requiredPhases = new List<(string Id, RoleTemplate? Template)>
         {
-            ("M", await context.RoleTemplates.Include(r => r.Reminders).FirstOrDefaultAsync(r => r.Id == "M")),
-            ("D", await context.RoleTemplates.Include(r => r.Reminders).FirstOrDefaultAsync(r => r.Id == "D")),
+            ("minioninfo", await context.RoleTemplates.Include(r => r.Reminders).FirstOrDefaultAsync(r => r.Id == "minioninfo")),
+            ("demoninfo", await context.RoleTemplates.Include(r => r.Reminders).FirstOrDefaultAsync(r => r.Id == "demoninfo")),
             ("dawn", await context.RoleTemplates.Include(r => r.Reminders).FirstOrDefaultAsync(r => r.Id == "dawn")),
             ("dusk", await context.RoleTemplates.Include(r => r.Reminders).FirstOrDefaultAsync(r => r.Id == "dusk"))
         };
