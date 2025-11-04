@@ -283,7 +283,8 @@ namespace BloodClockTowerScriptEditor.Services
                 FirstNightReminder = item["firstNightReminder"]?.ToString(),
                 OtherNightReminder = item["otherNightReminder"]?.ToString(),
                 IsOfficial = isOfficial,
-                OfficialId = item["officialId"]?.ToString(),  // ✅ 新增此行
+                OfficialId = item["officialId"]?.ToString(),
+                SpecialJson = item["special"]?.ToString(Formatting.None),
                 CreatedDate = DateTime.Now,
                 UpdatedDate = DateTime.Now
             };
@@ -310,8 +311,9 @@ namespace BloodClockTowerScriptEditor.Services
             existing.OtherNight = ParseNightOrder(item["otherNight"]);
             existing.FirstNightReminder = item["firstNightReminder"]?.ToString();
             existing.OtherNightReminder = item["otherNightReminder"]?.ToString();
+            existing.OfficialId = item["officialId"]?.ToString();
+            existing.SpecialJson = item["special"]?.ToString(Formatting.None);
             existing.IsOfficial = isOfficial;
-            existing.OfficialId = item["officialId"]?.ToString();  // ✅ 新增此行
             existing.UpdatedDate = DateTime.Now;
 
             // 使用新的 ProcessReminders 方法（清除現有標記）

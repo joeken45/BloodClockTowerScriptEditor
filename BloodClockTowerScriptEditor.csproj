@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>Assets\app_icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,12 +26,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Resources\相剋規則.json" />
-    <EmbeddedResource Include="Resources\角色總表.json" />
+    <Content Include="Assets\app_icon.ico" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Assets\" />
+    <EmbeddedResource Include="Resources\相剋規則.json" />
+    <EmbeddedResource Include="Resources\角色總表.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -41,6 +42,21 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -92,6 +94,45 @@ namespace BloodClockTowerScriptEditor.Models
         public string? OfficialId { get; set; }
 
         /// <summary>
+        /// 特殊功能 JSON 字串（儲存為 JSON）
+        /// </summary>
+        [Column("special")]
+        public string? SpecialJson { get; set; }
+
+        /// <summary>
+        /// 特殊功能列表（不儲存到資料庫，用於程式內部）
+        /// </summary>
+        [NotMapped]
+        public List<Role.SpecialAbility>? Special
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(SpecialJson))
+                    return null;
+
+                try
+                {
+                    return JsonConvert.DeserializeObject<List<Role.SpecialAbility>>(SpecialJson);
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+            set
+            {
+                if (value == null || value.Count == 0)
+                {
+                    SpecialJson = null;
+                }
+                else
+                {
+                    SpecialJson = JsonConvert.SerializeObject(value);
+                }
+            }
+        }
+
+        /// <summary>
         /// UI 用：是否被選中（不儲存到資料庫）
         /// </summary>
         [NotMapped]
@@ -157,7 +198,8 @@ namespace BloodClockTowerScriptEditor.Models
                 OtherNight = this.OtherNight,
                 FirstNightReminder = this.FirstNightReminder,
                 OtherNightReminder = this.OtherNightReminder,
-                OfficialId = this.OfficialId  // ✅ 新增此行
+                OfficialId = this.OfficialId,
+                Special = this.Special != null ? new ObservableCollection<Role.SpecialAbility>(this.Special) : null
             };
 
             // 轉換提示標記

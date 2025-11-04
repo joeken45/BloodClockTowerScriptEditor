@@ -2957,7 +2957,7 @@
     "firstNightReminder": "",
     "otherNight": "52",
     "otherNightReminder": "喚醒亡骨魔，讓他攻擊一名玩家。",
-    "reminders": "死亡, 保留能力, 中毒",
+    "reminders": "死亡, 保留能力, 保留能力, 保留能力, 中毒, 中毒, 中毒",
     "remindersGlobal": "[]",
     "flavor": "夢殞春宵、死後能力保留、中毒、鄰近、持續偵測型能力、設定調整",
     "edition": "custom",
