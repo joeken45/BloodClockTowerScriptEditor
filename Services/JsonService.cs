@@ -254,6 +254,24 @@ namespace BloodClockTowerScriptEditor.Services
                             }
                         }
                     }
+                    // 🆕 判斷是否為私貨商人
+                    else if (role.Name == "私貨商人")
+                    {
+                        // 私貨商人：只輸出必要欄位
+                        roleObj = new JObject
+                        {
+                            ["id"] = role.Id,
+                            ["name"] = role.Name,
+                            ["team"] = role.Team.ToString().ToLower(),
+                            ["ability"] = role.Ability
+                        };
+
+                        // 可選：如果有圖片才輸出
+                        if (role.Image != null && role.Image.Count > 0 && !string.IsNullOrWhiteSpace(role.Image[0]))
+                        {
+                            roleObj["image"] = role.Image[0];
+                        }
+                    }
                     else
                     {
                         // 一般角色：完整序列化

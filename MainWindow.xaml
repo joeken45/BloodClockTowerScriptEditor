@@ -1060,8 +1060,8 @@
                             Margin="0,0,0,12"
                             Visibility="{Binding SelectedRole.ShowOfficialIdCheckBox, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
-                            <!-- ✅ 新增：包裹所有編輯欄位的 StackPanel -->
-                            <StackPanel Visibility="{Binding SelectedRole.ShowDetailFields, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <!-- ✅ 圖片 + 能力描述區塊（一般角色 + 私貨商人顯示）-->
+                            <StackPanel Visibility="{Binding SelectedRole.ShowImageAndAbility, Converter={StaticResource BoolToVisibilityConverter}}">
 
                                 <!-- 圖片 URL 列表 -->
                                 <TextBlock Text="圖片 URL:" FontWeight="SemiBold" Margin="0,0,0,4"/>
@@ -1082,31 +1082,31 @@
 
                                                     <!-- 預覽圖 -->
                                                     <Border Grid.Column="0" 
-                            Width="60" Height="60" 
-                            BorderBrush="#CCC" BorderThickness="1" 
-                            Background="#F9F9F9">
+                                                            Width="60" Height="60" 
+                                                            BorderBrush="#CCC" BorderThickness="1" 
+                                                            Background="#F9F9F9">
                                                         <Image Source="{Binding Url, Converter={StaticResource StringToImageSourceConverter}}" 
-                               Stretch="Uniform"/>
+                                                               Stretch="Uniform"/>
                                                     </Border>
 
                                                     <!-- URL 輸入框 -->
                                                     <TextBox Grid.Column="2" 
-                             Text="{Binding Url, UpdateSourceTrigger=PropertyChanged}"
-                             VerticalAlignment="Center" 
-                             Padding="6,4"
-                             BorderBrush="#CCC" 
-                             BorderThickness="1"
-                             TextChanged="ImageUrl_TextChanged"/>
+                                                             Text="{Binding Url, UpdateSourceTrigger=PropertyChanged}"
+                                                             VerticalAlignment="Center" 
+                                                             Padding="6,4"
+                                                             BorderBrush="#CCC" 
+                                                             BorderThickness="1"
+                                                             TextChanged="ImageUrl_TextChanged"/>
 
                                                     <!-- 刪除按鈕 -->
                                                     <Button Grid.Column="4" 
-                            Content="🗑️" 
-                            Width="32" Height="32"
-                            Click="DeleteImage_Click"
-                            ToolTip="刪除"
-                            Background="#F44336" 
-                            Foreground="White" 
-                            BorderThickness="0"/>
+                                                            Content="🗑️" 
+                                                            Width="32" Height="32"
+                                                            Click="DeleteImage_Click"
+                                                            ToolTip="刪除"
+                                                            Background="#F44336" 
+                                                            Foreground="White" 
+                                                            BorderThickness="0"/>
                                                 </Grid>
                                             </Border>
                                         </DataTemplate>
@@ -1121,17 +1121,16 @@
                                     </Grid.ColumnDefinitions>
 
                                     <Button Grid.Column="0" 
-        Content="➕ 新增圖片" 
-        Padding="12,6" 
-        Click="AddImage_Click"
-        Background="#4CAF50" 
-        Foreground="White" 
-        BorderThickness="0">
+                                            Content="➕ 新增圖片" 
+                                            Padding="12,6" 
+                                            Click="AddImage_Click"
+                                            Background="#4CAF50" 
+                                            Foreground="White" 
+                                            BorderThickness="0">
                                         <Button.Style>
                                             <Style TargetType="Button">
                                                 <Setter Property="IsEnabled" Value="True"/>
                                                 <Style.Triggers>
-                                                    <!-- ✅ Bug Fix: 改綁定到 ImageItems.Count -->
                                                     <DataTrigger Binding="{Binding SelectedRole.ImageItems.Count, Converter={StaticResource IntGreaterThanConverter}, ConverterParameter=2}" Value="True">
                                                         <Setter Property="IsEnabled" Value="False"/>
                                                     </DataTrigger>
@@ -1141,14 +1140,62 @@
                                     </Button>
 
                                     <TextBlock Grid.Column="1" 
-               Text="說明: 集石格式僅使用第一張圖片 | 最多 3 張" 
-               FontSize="11" 
-               Foreground="#666" 
-               VerticalAlignment="Center" 
-               Margin="12,0,0,0"/>
+                                               Text="說明: 集石格式僅使用第一張圖片 | 最多 3 張" 
+                                               FontSize="11" 
+                                               Foreground="#666" 
+                                               VerticalAlignment="Center" 
+                                               Margin="12,0,0,0"/>
                                 </Grid>
 
                                 <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Margin="0,4,0,10"/>
+
+                                <!-- 能力描述 -->
+                                <TextBlock Text="能力描述 *" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                                <TextBox Text="{Binding SelectedRole.Ability, UpdateSourceTrigger=PropertyChanged}" 
+                                         TextWrapping="Wrap" AcceptsReturn="True" Height="80"
+                                         Padding="6,4" VerticalScrollBarVisibility="Auto">
+                                    <TextBox.Style>
+                                        <Style TargetType="TextBox">
+                                            <Setter Property="BorderBrush" Value="#CCC"/>
+                                            <Setter Property="BorderThickness" Value="1"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding SelectedRole.Ability, Converter={StaticResource StringNotEmptyConverter}}" Value="False">
+                                                    <Setter Property="BorderBrush" Value="#F44336"/>
+                                                    <Setter Property="BorderThickness" Value="2"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBox.Style>
+                                </TextBox>
+
+                                <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Margin="0,10"/>
+
+                            </StackPanel>
+                            <!-- ✅ 結束：圖片 + 能力描述區塊 -->
+
+                            <!-- ✅ 私貨商人提示訊息（只有私貨商人顯示）-->
+                            <Border Background="#FFF3CD" 
+                                    BorderBrush="#FFC107" 
+                                    BorderThickness="1" 
+                                    Padding="10" 
+                                    Margin="0,0,0,12" 
+                                    CornerRadius="3"
+                                    Visibility="{Binding SelectedRole.IsBootleggerRole, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="💡" 
+                                               FontSize="14" 
+                                               VerticalAlignment="Center" 
+                                               Margin="0,0,6,0"/>
+                                    <TextBlock TextWrapping="Wrap" FontSize="11">
+                                        <Run Text="這是"/>
+                                        <Run Text="私貨商人規則" FontWeight="Bold"/>
+                                        <Run Text="，建議在「劇本 > 編輯劇本資訊」中統一管理所有規則。"/>
+                                    </TextBlock>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- ✅ 詳細欄位區塊（只有一般角色顯示，移除圖片和能力）-->
+                            <StackPanel Visibility="{Binding SelectedRole.ShowDetailFields, Converter={StaticResource BoolToVisibilityConverter}}">
 
                                 <!-- 第四行: 所屬版本 + 影響設置 -->
                                 <Grid Margin="0,0,0,8">
@@ -1173,27 +1220,6 @@
                                 </Grid>
 
                                 <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Margin="0,4,0,10"/>
-
-                                <!-- 能力描述 -->
-                                <TextBlock Text="能力描述 *" FontWeight="SemiBold" Margin="0,0,0,4"/>
-                                <TextBox Text="{Binding SelectedRole.Ability, UpdateSourceTrigger=PropertyChanged}" 
-                     TextWrapping="Wrap" AcceptsReturn="True" Height="80"
-                     Padding="6,4" VerticalScrollBarVisibility="Auto">
-                                    <TextBox.Style>
-                                        <Style TargetType="TextBox">
-                                            <Setter Property="BorderBrush" Value="#CCC"/>
-                                            <Setter Property="BorderThickness" Value="1"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding SelectedRole.Ability, Converter={StaticResource StringNotEmptyConverter}}" Value="False">
-                                                    <Setter Property="BorderBrush" Value="#F44336"/>
-                                                    <Setter Property="BorderThickness" Value="2"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBox.Style>
-                                </TextBox>
-
-                                <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Margin="0,10"/>
 
                                 <!-- 夜晚行動與說書人提示 -->
                                 <Grid Margin="0,0,0,8">

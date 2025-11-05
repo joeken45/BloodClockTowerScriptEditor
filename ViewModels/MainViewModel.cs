@@ -30,6 +30,7 @@ namespace BloodClockTowerScriptEditor.ViewModels
 };
         // ==================== 私有欄位 ====================
         private bool _isDirty; // 檔案是否有未儲存的變更
+        private bool _isSyncingBootlegger = false;  // 防止私貨商人循環同步
         private readonly JsonService _jsonService;
         private readonly JinxRuleService _jinxRuleService;
         private Script _currentScript;
@@ -599,6 +600,10 @@ namespace BloodClockTowerScriptEditor.ViewModels
                 }
 
                 CurrentScript.Roles.Remove(SelectedRole);
+
+                // ✅ 刪除後重新同步私貨商人
+                ReSyncBootleggerFromRoles();
+
                 SelectedRole = null;
 
                 // ✅ 只清理失效的集石格式（角色已不存在）
@@ -643,55 +648,65 @@ namespace BloodClockTowerScriptEditor.ViewModels
         /// </summary>
         private void SyncBootleggerToRoles()
         {
-            // 從資料庫查詢私貨商人範本
-            RoleTemplate? template;
-            using (var context = new RoleTemplateContext())
+            if (_isSyncingBootlegger) return;  // 防止循環同步
+
+            _isSyncingBootlegger = true;
+            try
             {
-                template = context.RoleTemplates
-                    .Include(r => r.Reminders)
-                    .FirstOrDefault(r => r.Name == "私貨商人" || r.OfficialId == "bootlegger");
-            }
-
-            // 找不到範本就不處理
-            if (template == null)
-            {
-                System.Diagnostics.Debug.WriteLine("⚠️ 資料庫中找不到「私貨商人」範本，跳過同步");
-                return;
-            }
-
-            string baseId = template.Id;  // 例如: "L17"
-            const string BOOTLEGGER_NAME = "私貨商人";
-
-            // 移除所有舊的私貨商人角色
-            var existingBootleggers = CurrentScript.Roles
-                .Where(r => r.Name == BOOTLEGGER_NAME || r.Id.StartsWith(baseId + "_"))
-                .ToList();
-
-            foreach (var old in existingBootleggers)
-            {
-                CurrentScript.Roles.Remove(old);
-            }
-
-            // 如果 Meta 有規則，建立新角色
-            if (CurrentScript.Meta.Bootlegger != null && CurrentScript.Meta.Bootlegger.Count > 0)
-            {
-                for (int i = 0; i < CurrentScript.Meta.Bootlegger.Count; i++)
+                // 從資料庫查詢私貨商人範本
+                RoleTemplate? template;
+                using (var context = new RoleTemplateContext())
                 {
-                    string rule = CurrentScript.Meta.Bootlegger[i];
-                    string roleId = $"{baseId}_{i + 1}";  // L17_1, L17_2...
-
-                    var role = template.ToRole();  // 從範本建立角色
-                    role.Id = roleId;
-                    role.Ability = rule;  // 覆寫為該條規則
-                    role.UseOfficialId = false;
-
-                    CurrentScript.Roles.Add(role);
+                    template = context.RoleTemplates
+                        .Include(r => r.Reminders)
+                        .FirstOrDefault(r => r.Name == "私貨商人" || r.OfficialId == "bootlegger");
                 }
 
-                System.Diagnostics.Debug.WriteLine($"✅ 建立 {CurrentScript.Meta.Bootlegger.Count} 個私貨商人角色（{baseId}_1 ~ {baseId}_{CurrentScript.Meta.Bootlegger.Count}）");
-            }
+                // 找不到範本就不處理
+                if (template == null)
+                {
+                    System.Diagnostics.Debug.WriteLine("⚠️ 資料庫中找不到「私貨商人」範本，跳過同步");
+                    return;
+                }
 
-            UpdateFilteredRoles();
+                string baseId = template.Id;  // 例如: "L17"
+                const string BOOTLEGGER_NAME = "私貨商人";
+
+                // 移除所有舊的私貨商人角色
+                var existingBootleggers = CurrentScript.Roles
+                    .Where(r => r.Name == BOOTLEGGER_NAME || r.Id.StartsWith(baseId + "_"))
+                    .ToList();
+
+                foreach (var old in existingBootleggers)
+                {
+                    CurrentScript.Roles.Remove(old);
+                }
+
+                // 如果 Meta 有規則，建立新角色
+                if (CurrentScript.Meta.Bootlegger != null && CurrentScript.Meta.Bootlegger.Count > 0)
+                {
+                    for (int i = 0; i < CurrentScript.Meta.Bootlegger.Count; i++)
+                    {
+                        string rule = CurrentScript.Meta.Bootlegger[i];
+                        string roleId = $"{baseId}_{i + 1}";  // L17_1, L17_2...
+
+                        var role = template.ToRole();  // 從範本建立角色
+                        role.Id = roleId;
+                        role.Ability = rule;  // 覆寫為該條規則
+                        role.UseOfficialId = false;
+
+                        CurrentScript.Roles.Add(role);
+                    }
+
+                    System.Diagnostics.Debug.WriteLine($"✅ 建立 {CurrentScript.Meta.Bootlegger.Count} 個私貨商人角色（{baseId}_1 ~ {baseId}_{CurrentScript.Meta.Bootlegger.Count}）");
+                }
+
+                UpdateFilteredRoles();
+            }
+            finally
+            {
+                _isSyncingBootlegger = false;
+            }
         }
 
         /// <summary>
@@ -699,40 +714,106 @@ namespace BloodClockTowerScriptEditor.ViewModels
         /// </summary>
         private void SyncRolesToBootlegger()
         {
-            // 查詢資料庫取得基礎 ID
-            string? baseId;
-            using (var context = new RoleTemplateContext())
+            if (_isSyncingBootlegger) return;  // 防止循環同步
+
+            _isSyncingBootlegger = true;
+            try
             {
-                var template = context.RoleTemplates
-                    .FirstOrDefault(r => r.Name == "私貨商人" || r.OfficialId == "bootlegger");
+                // 查詢資料庫取得基礎 ID
+                string? baseId;
+                using (var context = new RoleTemplateContext())
+                {
+                    var template = context.RoleTemplates
+                        .FirstOrDefault(r => r.Name == "私貨商人" || r.OfficialId == "bootlegger");
 
-                baseId = template?.Id;
-            }
+                    baseId = template?.Id;
+                }
 
-            if (string.IsNullOrEmpty(baseId))
-            {
-                System.Diagnostics.Debug.WriteLine("⚠️ 找不到私貨商人範本，跳過同步");
-                return;
-            }
+                if (string.IsNullOrEmpty(baseId))
+                {
+                    System.Diagnostics.Debug.WriteLine("⚠️ 找不到私貨商人範本，跳過同步");
+                    return;
+                }
 
-            // 收集所有私貨商人角色
-            var bootleggerRoles = CurrentScript.Roles
-                .Where(r => r.Name == "私貨商人" || r.Id.StartsWith(baseId + "_"))
-                .OrderBy(r => r.Id)
-                .ToList();
-
-            if (bootleggerRoles.Count > 0)
-            {
-                var rules = bootleggerRoles
-                    .Select(r => r.Ability)
-                    .Where(ability => !string.IsNullOrWhiteSpace(ability))
+                // 收集所有私貨商人角色
+                var bootleggerRoles = CurrentScript.Roles
+                    .Where(r => r.Name == "私貨商人" || r.Id.StartsWith(baseId + "_"))
+                    .OrderBy(r => r.Id)
                     .ToList();
 
-                if (rules.Count > 0)
+                if (bootleggerRoles.Count > 0)
                 {
-                    CurrentScript.Meta.Bootlegger = rules;
-                    System.Diagnostics.Debug.WriteLine($"✅ 從 {bootleggerRoles.Count} 個私貨商人角色同步到 Meta");
+                    var rules = bootleggerRoles
+                        .Select(r => r.Ability)
+                        .Where(ability => !string.IsNullOrWhiteSpace(ability))
+                        .ToList();
+
+                    if (rules.Count > 0)
+                    {
+                        CurrentScript.Meta.Bootlegger = rules;
+                        System.Diagnostics.Debug.WriteLine($"✅ 從 {bootleggerRoles.Count} 個私貨商人角色同步到 Meta");
+                    }
                 }
+                else
+                {
+                    // 沒有私貨商人角色時，清空 Meta
+                    CurrentScript.Meta.Bootlegger = null;
+                }
+            }
+            finally
+            {
+                _isSyncingBootlegger = false;
+            }
+        }
+
+        /// <summary>
+        /// 從所有私貨商人角色重新同步到 Meta.Bootlegger（角色編輯時使用）
+        /// </summary>
+        private void ReSyncBootleggerFromRoles()
+        {
+            if (_isSyncingBootlegger) return;  // 防止循環同步
+
+            _isSyncingBootlegger = true;
+            try
+            {
+                // 從資料庫取得基礎 ID
+                string? baseId;
+                using (var context = new RoleTemplateContext())
+                {
+                    baseId = context.RoleTemplates
+                        .FirstOrDefault(r => r.Name == "私貨商人")?.Id;
+                }
+
+                if (string.IsNullOrEmpty(baseId))
+                    return;
+
+                // 收集所有私貨商人角色
+                var bootleggers = CurrentScript.Roles
+                    .Where(r => r.Name == "私貨商人" || r.Id.StartsWith(baseId + "_"))
+                    .OrderBy(r => r.Id)
+                    .ToList();
+
+                // 更新 Meta
+                if (bootleggers.Count > 0)
+                {
+                    CurrentScript.Meta.Bootlegger = bootleggers
+                        .Select(r => r.Ability)
+                        .Where(a => !string.IsNullOrWhiteSpace(a))
+                        .ToList();
+
+                    System.Diagnostics.Debug.WriteLine($"🔄 從 {bootleggers.Count} 個私貨商人角色重新同步到 Meta");
+                }
+                else
+                {
+                    CurrentScript.Meta.Bootlegger = null;
+                    System.Diagnostics.Debug.WriteLine($"🔄 清空 Meta.Bootlegger（無私貨商人角色）");
+                }
+
+                IsDirty = true;
+            }
+            finally
+            {
+                _isSyncingBootlegger = false;
             }
         }
 
@@ -1006,7 +1087,14 @@ namespace BloodClockTowerScriptEditor.ViewModels
 
         private void OnRolePropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            // 任何角色屬性變更都標記為需要儲存
+            // ✅ 新增：監聽私貨商人 Ability 變更
+            if (sender is Role role && role.Name == "私貨商人" && e.PropertyName == nameof(Role.Ability))
+            {
+                System.Diagnostics.Debug.WriteLine($"✏️ 私貨商人 Ability 變更: {role.Id}");
+                ReSyncBootleggerFromRoles();
+            }
+
+            // 原有的 IsDirty 邏輯（保持不變）
             IsDirty = true;
         }
 

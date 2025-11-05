@@ -271,7 +271,7 @@ namespace BloodClockTowerScriptEditor.Models
                 if (SetProperty(ref _useOfficialId, value))
                 {
                     OnPropertyChanged(nameof(ShowDetailFields));
-                    OnPropertyChanged(nameof(IsNameReadOnly));
+                    OnPropertyChanged(nameof(ShowImageAndAbility));
                 }
             }
         }
@@ -280,19 +280,25 @@ namespace BloodClockTowerScriptEditor.Models
         /// 是否顯示「使用官方 ID」CheckBox
         /// </summary>
         [JsonIgnore]
-        public bool ShowOfficialIdCheckBox => !string.IsNullOrEmpty(OfficialId);
+        public bool ShowOfficialIdCheckBox => !string.IsNullOrEmpty(OfficialId) && !IsBootleggerRole;
 
         /// <summary>
-        /// 是否顯示詳細編輯欄位
+        /// 是否為私貨商人角色
         /// </summary>
         [JsonIgnore]
-        public bool ShowDetailFields => !UseOfficialId;
+        public bool IsBootleggerRole => Name == "私貨商人";
 
         /// <summary>
-        /// 角色名稱是否唯讀
+        /// 是否顯示圖片和能力欄位（一般角色 + 私貨商人）
         /// </summary>
         [JsonIgnore]
-        public bool IsNameReadOnly => UseOfficialId;
+        public bool ShowImageAndAbility => !UseOfficialId;
+
+        /// <summary>
+        /// 是否顯示詳細編輯欄位（一般角色 only）
+        /// </summary>
+        [JsonIgnore]
+        public bool ShowDetailFields => !UseOfficialId && !IsBootleggerRole;
 
         // ==================== 第五部分：圖片管理（Image ↔ ImageItems 雙向同步）====================
 
