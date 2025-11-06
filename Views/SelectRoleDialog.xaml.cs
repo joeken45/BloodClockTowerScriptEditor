@@ -15,14 +15,14 @@ namespace BloodClockTowerScriptEditor.Views
 {
     public partial class SelectRoleDialog : Window
     {
-        private List<RoleTemplate> _allRoles = new();
-        private List<RoleTemplate> _filteredRoles = new();
+        private List<RoleTemplate> _allRoles = [];
+        private List<RoleTemplate> _filteredRoles = [];
         private DispatcherTimer? _searchTimer;
 
         /// <summary>
         /// 使用者選擇的角色列表（多選）
         /// </summary>
-        public List<Role> SelectedRoles { get; private set; } = new();
+        public List<Role> SelectedRoles { get; private set; } = [];
 
         public SelectRoleDialog()
         {
@@ -79,12 +79,11 @@ namespace BloodClockTowerScriptEditor.Views
                     .Include(r => r.Reminders)
                     .ToListAsync();
 
-                _allRoles = roles
+                _allRoles = [.. roles
                     .OrderBy(r => r.IsOfficial ? 0 : 1)
                     .ThenBy(r => GetTeamOrder(r.Team))
                     .ThenBy(r => r.OriginalOrder)
-                    .ThenBy(r => r.CreatedDate)
-                    .ToList();
+                    .ThenBy(r => r.CreatedDate)];
 
                 // 初始化 IsSelected 屬性
                 foreach (var role in _allRoles)
@@ -100,7 +99,7 @@ namespace BloodClockTowerScriptEditor.Views
                 throw new Exception($"載入角色失敗: {ex.Message}", ex);
             }
         }
-        private int GetTeamOrder(string team)
+        private static int GetTeamOrder(string team)
         {
             return team?.ToLower() switch
             {
@@ -142,7 +141,7 @@ namespace BloodClockTowerScriptEditor.Views
                 string searchText = txtSearch?.Text?.ToLower()?.Trim() ?? "";
 
                 // 篩選角色
-                _filteredRoles = _allRoles.Where(r =>
+                _filteredRoles = [.. _allRoles.Where(r =>
                 {
                     // 來源篩選
                     if (showOfficial.HasValue && r.IsOfficial != showOfficial.Value)
@@ -165,10 +164,10 @@ namespace BloodClockTowerScriptEditor.Views
                     // 搜尋文字篩選
                     if (string.IsNullOrEmpty(searchText)) return true;
 
-                    return (r.Name?.ToLower().Contains(searchText) ?? false) ||
-                           (r.Ability?.ToLower().Contains(searchText) ?? false);
+                    return (r.Name?.ToLower().Contains(searchText, StringComparison.CurrentCultureIgnoreCase) ?? false) ||
+                           (r.Ability?.ToLower().Contains(searchText, StringComparison.CurrentCultureIgnoreCase) ?? false);
 
-                }).ToList();
+                })];
 
                 // 更新顯示
                 rolesList.ItemsSource = null;

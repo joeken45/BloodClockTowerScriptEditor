@@ -21,13 +21,13 @@ namespace BloodClockTowerScriptEditor.ViewModels
         /// <summary>
         /// 必要階段角色的 ID 列表（在角色列表中隱藏，但會出現在夜晚順序中）
         /// </summary>
-        private static readonly HashSet<string> RequiredPhaseIds = new()
-{
+        private static readonly HashSet<string> RequiredPhaseIds =
+[
     "minioninfo",      // 爪牙資訊
     "demoninfo",      // 惡魔資訊
     "dawn",   // 黎明
     "dusk"    // 黃昏
-};
+];
         // ==================== 私有欄位 ====================
         private bool _isDirty; // 檔案是否有未儲存的變更
         private bool _isSyncingBootlegger = false;  // 防止私貨商人循環同步
@@ -47,11 +47,11 @@ namespace BloodClockTowerScriptEditor.ViewModels
             _statusMessage = "就緒";
             _currentFilePath = string.Empty;
 
-            FilteredRoles = new ObservableCollection<Role>();
+            FilteredRoles = [];
 
             // 🆕 初始化夜晚順序集合
-            FirstNightRoles = new ObservableCollection<Role>();
-            OtherNightRoles = new ObservableCollection<Role>();
+            FirstNightRoles = [];
+            OtherNightRoles = [];
 
             SyncBootleggerToRoles();
         }
@@ -146,37 +146,37 @@ namespace BloodClockTowerScriptEditor.ViewModels
         /// <summary>
         /// 鎮民角色集合
         /// </summary>
-        public ObservableCollection<Role> TownsfolkRoles { get; } = new();
+        public ObservableCollection<Role> TownsfolkRoles { get; } = [];
 
         /// <summary>
         /// 外來者角色集合
         /// </summary>
-        public ObservableCollection<Role> OutsiderRoles { get; } = new();
+        public ObservableCollection<Role> OutsiderRoles { get; } = [];
 
         /// <summary>
         /// 爪牙角色集合
         /// </summary>
-        public ObservableCollection<Role> MinionRoles { get; } = new();
+        public ObservableCollection<Role> MinionRoles { get; } = [];
 
         /// <summary>
         /// 惡魔角色集合
         /// </summary>
-        public ObservableCollection<Role> DemonRoles { get; } = new();
+        public ObservableCollection<Role> DemonRoles { get; } = [];
 
         /// <summary>
         /// 旅行者角色集合
         /// </summary>
-        public ObservableCollection<Role> TravelerRoles { get; } = new();
+        public ObservableCollection<Role> TravelerRoles { get; } = [];
 
         /// <summary>
         /// 傳奇角色集合
         /// </summary>
-        public ObservableCollection<Role> FabledRoles { get; } = new();
+        public ObservableCollection<Role> FabledRoles { get; } = [];
 
         /// <summary>
         /// 相剋角色集合
         /// </summary>
-        public ObservableCollection<Role> JinxedRoles { get; } = new();
+        public ObservableCollection<Role> JinxedRoles { get; } = [];
 
         // ==================== 各類型數量屬性 ====================
 
@@ -399,14 +399,12 @@ namespace BloodClockTowerScriptEditor.ViewModels
 
                     var rolesToAdd = dialog.SelectedRoles;
 
-                    if (duplicates.Any())
+                    if (duplicates.Count != 0)
                     {
                         if (!ShowWarning($"以下角色已存在於劇本中：\n\n{string.Join("\n", duplicates)}\n\n是否仍要加入重複的角色？", "重複角色"))
                         {
                             // 只加入不重複的角色
-                            rolesToAdd = dialog.SelectedRoles
-                                .Where(r => !existingIds.Contains(r.Id))
-                                .ToList();
+                            rolesToAdd = [.. dialog.SelectedRoles.Where(r => !existingIds.Contains(r.Id))];
                         }
                     }
 
@@ -515,7 +513,7 @@ namespace BloodClockTowerScriptEditor.ViewModels
                                 if (role1 != null && role2 != null)
                                 {
                                     // 為 role1 加入 Jinx
-                                    role1.Jinxes ??= new List<Role.JinxInfo>();
+                                    role1.Jinxes ??= [];
                                     if (!role1.Jinxes.Any(j => j.Id == role2.Id))
                                     {
                                         role1.Jinxes.Add(new Role.JinxInfo
@@ -527,7 +525,7 @@ namespace BloodClockTowerScriptEditor.ViewModels
                                     }
 
                                     // 為 role2 加入 Jinx
-                                    role2.Jinxes ??= new List<Role.JinxInfo>();
+                                    role2.Jinxes ??= [];
                                     if (!role2.Jinxes.Any(j => j.Id == role1.Id))
                                     {
                                         role2.Jinxes.Add(new Role.JinxInfo
@@ -550,7 +548,7 @@ namespace BloodClockTowerScriptEditor.ViewModels
 
                                 if (!string.IsNullOrEmpty(rule.Image))
                                 {
-                                    jinxRole.Image = new List<string> { rule.Image };
+                                    jinxRole.Image = [rule.Image];
                                 }
 
                                 CurrentScript.Roles.Add(jinxRole);
@@ -822,10 +820,9 @@ namespace BloodClockTowerScriptEditor.ViewModels
                 // 更新 Meta
                 if (bootleggers.Count > 0)
                 {
-                    CurrentScript.Meta.Bootlegger = bootleggers
+                    CurrentScript.Meta.Bootlegger = [.. bootleggers
                         .Select(r => r.Ability)
-                        .Where(a => !string.IsNullOrWhiteSpace(a))
-                        .ToList();
+                        .Where(a => !string.IsNullOrWhiteSpace(a))];
 
                     System.Diagnostics.Debug.WriteLine($"🔄 從 {bootleggers.Count} 個私貨商人角色重新同步到 Meta");
                 }
@@ -874,13 +871,13 @@ namespace BloodClockTowerScriptEditor.ViewModels
                 .Select(g => g.Key)
                 .ToList();
 
-            if (duplicateIds.Any())
+            if (duplicateIds.Count != 0)
             {
                 errors.Add($"• 重複的角色 ID：{string.Join(", ", duplicateIds)}");
             }
 
             // 必填欄位和唯一性錯誤：直接阻止儲存
-            if (errors.Any())
+            if (errors.Count != 0)
             {
                 ShowError(string.Join("\n", errors), "無法儲存");
                 return false;
@@ -888,7 +885,7 @@ namespace BloodClockTowerScriptEditor.ViewModels
 
             // ✅ 夜晚順序衝突檢查：警告但允許繼續
             var conflicts = CheckNightOrderConflicts();
-            if (conflicts.Any())
+            if (conflicts.Count != 0)
             {
                 var message = "偵測到夜晚順序衝突：\n\n" + string.Join("\n", conflicts) + "\n\n是否仍要儲存？";
                 return ShowConfirm(message, "夜晚順序衝突");
@@ -1131,14 +1128,13 @@ namespace BloodClockTowerScriptEditor.ViewModels
         {
             get
             {
-                if (SelectedRole == null) return new List<string>();
+                if (SelectedRole == null) return [];
 
-                return CurrentScript.Roles
+                return [.. CurrentScript.Roles
                     .Where(r => r.Name != SelectedRole.Name &&      // 排除自己
                                r.Team != TeamType.Jinxed)           // 排除相剋物件
                     .Select(r => r.Name)
-                    .OrderBy(r => r)
-                    .ToList();
+                    .OrderBy(r => r)];
             }
         }
 
@@ -1151,18 +1147,17 @@ namespace BloodClockTowerScriptEditor.ViewModels
             {
                 // 🔴 只有在選擇相剋角色時才計算
                 if (SelectedRole == null || SelectedRole.Team != TeamType.Jinxed)
-                    return new List<string>();
+                    return [];
 
                 // 🔴 使用 _name 直接讀取，避免觸發 PropertyChanged
                 var role2Name = SelectedRole.JinxRole2Name;
 
-                return CurrentScript.Roles
+                return [.. CurrentScript.Roles
                     .Where(r => r.Team != TeamType.Jinxed &&                    // 排除相剋物件
                                !string.IsNullOrEmpty(r.Name) &&                 // 排除空名稱
                                r.Name != role2Name)                             // 排除角色2
                     .Select(r => r.Name)
-                    .OrderBy(r => r)
-                    .ToList();
+                    .OrderBy(r => r)];
             }
         }
 
@@ -1175,25 +1170,24 @@ namespace BloodClockTowerScriptEditor.ViewModels
             {
                 // 🔴 只有在選擇相剋角色時才計算
                 if (SelectedRole == null || SelectedRole.Team != TeamType.Jinxed)
-                    return new List<string>();
+                    return [];
 
                 // 🔴 使用 _name 直接讀取，避免觸發 PropertyChanged
                 var role1Name = SelectedRole.JinxRole1Name;
 
-                return CurrentScript.Roles
+                return [.. CurrentScript.Roles
                     .Where(r => r.Team != TeamType.Jinxed &&                    // 排除相剋物件
                                !string.IsNullOrEmpty(r.Name) &&                 // 排除空名稱
                                r.Name != role1Name)                             // 排除角色1
                     .Select(r => r.Name)
-                    .OrderBy(r => r)
-                    .ToList();
+                    .OrderBy(r => r)];
             }
         }
 
         /// <summary>
         /// 移除雙向 Jinx 的 Helper 方法
         /// </summary>
-        private void RemoveBidirectionalJinx(Role role1, Role role2)
+        private static void RemoveBidirectionalJinx(Role role1, Role role2)
         {
             // 移除 role1 → role2
             if (role1.Jinxes != null)
@@ -1369,16 +1363,16 @@ namespace BloodClockTowerScriptEditor.ViewModels
 
                 var requiredPhases = new List<(string Id, string[] Names, RoleTemplate? Template)>
         {
-            ("minioninfo", new[] { "爪牙資訊", "爪牙訊息" },
+            ("minioninfo", [ "爪牙資訊", "爪牙訊息" ],
                 await context.RoleTemplates.Include(r => r.Reminders).FirstOrDefaultAsync(r => r.Id == "minioninfo")),
 
-            ("demoninfo", new[] { "惡魔資訊", "惡魔訊息" },
+            ("demoninfo", [ "惡魔資訊", "惡魔訊息" ],
                 await context.RoleTemplates.Include(r => r.Reminders).FirstOrDefaultAsync(r => r.Id == "demoninfo")),
 
-            ("dawn", new[] { "黎明" },
+            ("dawn", [ "黎明" ],
                 await context.RoleTemplates.Include(r => r.Reminders).FirstOrDefaultAsync(r => r.Id == "dawn")),
 
-            ("dusk", new[] { "黃昏" },
+            ("dusk", [ "黃昏" ],
                 await context.RoleTemplates.Include(r => r.Reminders).FirstOrDefaultAsync(r => r.Id == "dusk"))
         };
 
@@ -1436,7 +1430,7 @@ namespace BloodClockTowerScriptEditor.ViewModels
         /// <summary>
         /// 顯示提示訊息
         /// </summary>
-        private void ShowInfo(string message, string title = "提示")
+        private static void ShowInfo(string message, string title = "提示")
         {
             MessageBox.Show(message, title, MessageBoxButton.OK, MessageBoxImage.Information);
         }
@@ -1444,7 +1438,7 @@ namespace BloodClockTowerScriptEditor.ViewModels
         /// <summary>
         /// 顯示確認對話框
         /// </summary>
-        private bool ShowConfirm(string message, string title = "確認")
+        private static bool ShowConfirm(string message, string title = "確認")
         {
             return MessageBox.Show(message, title, MessageBoxButton.YesNo, MessageBoxImage.Question)
                 == MessageBoxResult.Yes;
@@ -1453,7 +1447,7 @@ namespace BloodClockTowerScriptEditor.ViewModels
         /// <summary>
         /// 顯示警告對話框
         /// </summary>
-        private bool ShowWarning(string message, string title = "警告")
+        private static bool ShowWarning(string message, string title = "警告")
         {
             return MessageBox.Show(message, title, MessageBoxButton.YesNo, MessageBoxImage.Warning)
                 == MessageBoxResult.Yes;

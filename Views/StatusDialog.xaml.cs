@@ -10,17 +10,17 @@ namespace BloodClockTowerScriptEditor.Views
         /// <summary>
         /// 選擇的狀態列表
         /// </summary>
-        public List<StatusInfo> SelectedStatuses { get; private set; } = new();
+        public List<StatusInfo> SelectedStatuses { get; private set; } = [];
 
         /// <summary>
         /// 現有的狀態列表（用於檢查重複）
         /// </summary>
-        private List<StatusInfo> _existingStatuses;
+        private readonly List<StatusInfo> _existingStatuses;
 
         public StatusDialog(List<StatusInfo> existingStatuses)
         {
             InitializeComponent();
-            _existingStatuses = existingStatuses ?? new List<StatusInfo>();
+            _existingStatuses = existingStatuses ?? [];
         }
 
         /// <summary>

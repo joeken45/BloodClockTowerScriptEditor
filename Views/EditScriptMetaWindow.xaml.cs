@@ -9,9 +9,9 @@ namespace BloodClockTowerScriptEditor.Views
 {
     public partial class EditScriptMetaWindow : Window
     {
-        private ScriptMeta _originalMeta;
-        private ObservableCollection<StatusInfoEx> _tempStatusList;
-        private ObservableCollection<BootleggerRuleItem> _tempBootleggerList;
+        private readonly ScriptMeta _originalMeta;
+        private readonly ObservableCollection<StatusInfoEx> _tempStatusList;
+        private readonly ObservableCollection<BootleggerRuleItem> _tempBootleggerList;
 
         public EditScriptMetaWindow(ScriptMeta meta)
         {
@@ -29,7 +29,7 @@ namespace BloodClockTowerScriptEditor.Views
             txtAlmanac.Text = meta.Almanac ?? string.Empty;
 
             // 載入 Bootlegger 規則
-            _tempBootleggerList = new ObservableCollection<BootleggerRuleItem>();
+            _tempBootleggerList = [];
             if (meta.Bootlegger != null)
             {
                 foreach (var rule in meta.Bootlegger)
@@ -44,7 +44,7 @@ namespace BloodClockTowerScriptEditor.Views
             bootleggerList.ItemsSource = _tempBootleggerList;
 
             // 複製狀態列表
-            _tempStatusList = new ObservableCollection<StatusInfoEx>();
+            _tempStatusList = [];
             foreach (var status in meta.Status)
             {
                 _tempStatusList.Add(new StatusInfoEx
@@ -78,7 +78,7 @@ namespace BloodClockTowerScriptEditor.Views
         /// <summary>
         /// 更新圖片預覽
         /// </summary>
-        private void UpdateImagePreview(string url, System.Windows.Controls.Image imageControl)
+        private static void UpdateImagePreview(string url, System.Windows.Controls.Image imageControl)
         {
             imageControl.Source = null;
             if (!string.IsNullOrWhiteSpace(url))
@@ -142,12 +142,24 @@ namespace BloodClockTowerScriptEditor.Views
 
         private void AddStatus_Click(object sender, RoutedEventArgs e)
         {
-            _tempStatusList.Add(new StatusInfoEx
+            var dialog = new StatusDialog([.. _tempStatusList.Select(s => new StatusInfo
             {
-                Name = "新狀態",
-                Skill = "請輸入說明",
-                IsSelected = false
-            });
+                Name = s.Name,
+                Skill = s.Skill
+            })]);
+
+            if (dialog.ShowDialog() == true)
+            {
+                foreach (var status in dialog.SelectedStatuses)
+                {
+                    _tempStatusList.Add(new StatusInfoEx
+                    {
+                        Name = status.Name,
+                        Skill = status.Skill,
+                        IsSelected = false
+                    });
+                }
+            }
         }
 
         private void DeleteSelectedStatus_Click(object sender, RoutedEventArgs e)
@@ -192,7 +204,7 @@ namespace BloodClockTowerScriptEditor.Views
 
             // 寫回 Bootlegger 規則
             _originalMeta.Bootlegger = _tempBootleggerList.Count > 0
-                ? _tempBootleggerList.Select(b => b.Rule).ToList()
+                ? [.. _tempBootleggerList.Select(b => b.Rule)]
                 : null;
 
             // 寫回狀態列表

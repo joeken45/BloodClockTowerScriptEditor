@@ -101,91 +101,121 @@
                              VerticalAlignment="Center"/>
                 </Grid>
 
-                <!-- 私貨商人規則 -->
-                <Separator Margin="0,10,0,15"/>
-                <TextBlock Text="私貨商人規則" FontWeight="SemiBold" FontSize="14" Margin="0,0,0,10"/>
-
-                <Grid Margin="0,0,0,8">
+                <!-- ========== 私貨商人規則 ========== -->
+                <Grid Margin="0,0,0,10">
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <StackPanel Grid.Column="0" Orientation="Horizontal">
-                        <Button Content="➕ 新增規則" Click="AddBootlegger_Click" 
-                                Padding="8,4" Margin="0,0,8,0" Background="#4CAF50" Foreground="White" BorderThickness="0"/>
-                        <Button Content="🗑️ 刪除選取" Click="DeleteSelectedBootlegger_Click" 
-                                Padding="8,4" Background="#F44336" Foreground="White" BorderThickness="0"/>
+                    <TextBlock Grid.Column="0" Text="私貨商人規則" 
+                               FontWeight="SemiBold" FontSize="14" 
+                               VerticalAlignment="Center"/>
+
+                    <StackPanel Grid.Column="2" Orientation="Horizontal">
+                        <Button Content="➕ 新增" Padding="10,5" Margin="0,0,8,0"
+                                Click="AddBootlegger_Click"
+                                Background="#4CAF50" Foreground="White" BorderThickness="0"/>
+
+                        <Button Content="🗑️ 刪除已勾選" Padding="10,5"
+                                Click="DeleteSelectedBootlegger_Click"
+                                Background="#F44336" Foreground="White" BorderThickness="0"/>
                     </StackPanel>
                 </Grid>
 
-                <Border BorderBrush="#CCC" BorderThickness="1" Background="White" Height="150" Margin="0,0,0,12">
-                    <ListView x:Name="bootleggerList" 
-                              ScrollViewer.VerticalScrollBarVisibility="Auto"
-                              SelectionMode="Multiple">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <Grid Margin="0,4">
+                <ItemsControl x:Name="bootleggerList" Margin="0,0,0,15">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="#DDD" BorderThickness="1" Padding="10" 
+                                    Margin="0,0,0,8" Background="White">
+                                <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="30"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <CheckBox Grid.Column="0" IsChecked="{Binding IsSelected}" VerticalAlignment="Top" Margin="0,2,0,0"/>
-                                    <TextBox Grid.Column="1" Text="{Binding Rule, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                             TextWrapping="Wrap" AcceptsReturn="True" 
-                                             BorderThickness="0" Background="Transparent" Padding="4,0" MinHeight="24"
-                                             PreviewMouseLeftButtonDown="TextBox_PreviewMouseLeftButtonDown"/>
+
+                                    <CheckBox Grid.Column="0" IsChecked="{Binding IsSelected}" 
+                                              VerticalAlignment="Top" Margin="0,8,0,0"/>
+
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock Text="規則內容:" FontSize="11" Foreground="#666"/>
+                                        <TextBox Text="{Binding Rule, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                 Margin="0,2,0,0" Padding="5"
+                                                 TextWrapping="Wrap" AcceptsReturn="True" Height="60"
+                                                 VerticalScrollBarVisibility="Auto"/>
+                                    </StackPanel>
                                 </Grid>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </Border>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
 
-                <!-- ========== 狀態區 ========== -->
-                <Separator Margin="0,10,0,15"/>
-                <TextBlock Text="狀態列表" FontWeight="SemiBold" FontSize="14" Margin="0,0,0,10"/>
+                <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Margin="0,0,0,15"/>
 
-                <Grid Margin="0,0,0,8">
+
+                <!-- ========== 狀態列表 [集石] ========== -->
+                <Grid Margin="0,0,0,10">
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <StackPanel Grid.Column="0" Orientation="Horizontal">
-                        <Button Content="➕ 新增狀態" Click="AddStatus_Click" 
-                                Padding="8,4" Margin="0,0,8,0" Background="#4CAF50" Foreground="White" BorderThickness="0"/>
-                        <Button Content="🗑️ 刪除選取" Click="DeleteSelectedStatus_Click" 
-                                Padding="8,4" Background="#F44336" Foreground="White" BorderThickness="0"/>
+                    <TextBlock Grid.Column="0" Text="狀態列表 [集石]" 
+                               FontWeight="SemiBold" FontSize="14" 
+                               VerticalAlignment="Center"/>
+
+                    <StackPanel Grid.Column="2" Orientation="Horizontal">
+                        <Button Content="➕ 新增" Padding="10,5" Margin="0,0,8,0"
+                                Click="AddStatus_Click"
+                                Background="#4CAF50" Foreground="White" BorderThickness="0"/>
+
+                        <Button Content="🗑️ 刪除已勾選" Padding="10,5"
+                                Click="DeleteSelectedStatus_Click"
+                                Background="#F44336" Foreground="White" BorderThickness="0"/>
                     </StackPanel>
                 </Grid>
 
-                <Border BorderBrush="#CCC" BorderThickness="1" Background="White" Height="150" Margin="0,0,0,12">
-                    <ListView x:Name="statusList" 
-                              ScrollViewer.VerticalScrollBarVisibility="Auto"
-                              SelectionMode="Multiple">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <Grid Margin="0,4">
+                <!-- 狀態列表 -->
+                <ItemsControl x:Name="statusList" Margin="0,0,0,15">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="#DDD" BorderThickness="1" Padding="10" 
+                                    Margin="0,0,0,8" Background="White">
+                                <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="30"/>
-                                        <ColumnDefinition Width="100"/>
                                         <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="15"/>
+                                        <ColumnDefinition Width="1.5*"/>
                                     </Grid.ColumnDefinitions>
-                                    <CheckBox Grid.Column="0" IsChecked="{Binding IsSelected}" VerticalAlignment="Center"/>
-                                    <TextBox Grid.Column="1" Text="{Binding Name, Mode=TwoWay}" 
-                                             Margin="4,0" Padding="4" VerticalAlignment="Center"/>
-                                    <TextBox Grid.Column="2" Text="{Binding Skill, Mode=TwoWay}" 
-                                             Margin="4,0" Padding="4" TextWrapping="Wrap" AcceptsReturn="True"/>
-                                </Grid>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </Border>
 
-                <!-- 提示文字 -->
-                <TextBlock Text="註:首夜順序、其他夜晚順序的編輯功能在夜晚順序編輯器中"
-                           FontSize="10" Foreground="#999" Margin="0,5,0,0" 
-                           TextWrapping="Wrap"/>
+                                    <CheckBox Grid.Column="0" IsChecked="{Binding IsSelected}" 
+                                              VerticalAlignment="Top" Margin="0,8,0,0"/>
+
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock Text="名稱:" FontSize="11" Foreground="#666"/>
+                                        <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                 Margin="0,2,0,0" Padding="5"
+                                                 TextWrapping="Wrap"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="3">
+                                        <TextBlock Text="說明:" FontSize="11" Foreground="#666"/>
+                                        <TextBox Text="{Binding Skill, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                 Margin="0,2,0,0" Padding="5"
+                                                 TextWrapping="Wrap" AcceptsReturn="True" Height="60"
+                                                 VerticalScrollBarVisibility="Auto"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Margin="0,0,0,15"/>
+
             </StackPanel>
         </ScrollViewer>
 

@@ -79,8 +79,7 @@ namespace BloodClockTowerScriptEditor.Services
                     if (!string.IsNullOrEmpty(id) && id != "_meta")
                     {
                         // 檢查是否只有 id 欄位（集石格式的官方角色）
-                        var jObject = item as JObject;
-                        if (jObject != null && jObject.Properties().Count() == 1 && jObject.Property("id") != null)
+                        if (item is JObject jObject && jObject.Properties().Count() == 1 && jObject.Property("id") != null)
                         {
                             // 情況 2: 集石格式的簡化官方角色（如 {"id":"washerwoman"}）
                             string officialId = id;
@@ -298,8 +297,7 @@ namespace BloodClockTowerScriptEditor.Services
                             if (format == ExportFormat.JiShi)
                             {
                                 // 集石格式：取第一個值，輸出為字串
-                                var imageArray = roleObj["image"] as JArray;
-                                if (imageArray != null && imageArray.Count > 0)
+                                if (roleObj["image"] is JArray imageArray && imageArray.Count > 0)
                                 {
                                     roleObj["image"] = imageArray[0];
                                 }
@@ -327,13 +325,13 @@ namespace BloodClockTowerScriptEditor.Services
         /// <summary>
         /// 解析相剋規則名稱（載入劇本時使用）
         /// </summary>
-        private (string role1, string role2, bool isValid) ParseJinxNameForLoad(string name)
+        private static (string role1, string role2, bool isValid) ParseJinxNameForLoad(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
                 return (string.Empty, string.Empty, false);
 
             // 嘗試各種分隔符號
-            char[] separators = { '&', '＆', '+', 'x', 'X', '-', '|', '/' };
+            char[] separators = ['&', '＆', '+', 'x', 'X', '-', '|', '/'];
 
             foreach (var sep in separators)
             {
@@ -361,7 +359,7 @@ namespace BloodClockTowerScriptEditor.Services
         /// <summary>
         /// 生成 _meta 的 firstNight 和 otherNight 陣列
         /// </summary>
-        private void GenerateNightOrderArrays(Script script)
+        private static void GenerateNightOrderArrays(Script script)
         {
             // 生成 firstNight 陣列
             var firstNightRoles = script.Roles
