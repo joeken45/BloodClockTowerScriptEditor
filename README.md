@@ -90,8 +90,8 @@
 
 ## 📧 聯絡方式
 
-- GitHub: [@你的帳號](https://github.com/你的帳號)
-- Email: 你的Email
+- GitHub: [joeken45](https://github.com/joeken45)
+- Email: charlesyen7971@gmail.com
 
 ---
 
