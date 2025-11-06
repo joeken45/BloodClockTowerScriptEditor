@@ -1,6 +1,6 @@
-﻿using BloodClockTowerScriptEditor.Models;
+﻿using BloodClockTowerScriptEditor.Data;
+using BloodClockTowerScriptEditor.Models;
 using BloodClockTowerScriptEditor.Services;
-using BloodClockTowerScriptEditor.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Threading;
 
 namespace BloodClockTowerScriptEditor.Views
@@ -258,6 +259,25 @@ namespace BloodClockTowerScriptEditor.Views
             }
             rolesList.Items.Refresh();
             UpdateStatistics();
+        }
+
+        /// <summary>
+        /// 點擊整個角色項目區塊時切換勾選狀態
+        /// </summary>
+        private void RoleItem_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            // 取得點擊的 Border 對應的資料
+            if (sender is Border border && border.DataContext is RoleTemplate role)
+            {
+                // 如果點擊的是 CheckBox 本身，不處理（讓 CheckBox 自己處理）
+                if (e.OriginalSource is CheckBox)
+                    return;
+
+                // 切換勾選狀態
+                role.IsSelected = !role.IsSelected;
+                rolesList.Items.Refresh();
+                UpdateStatistics();
+            }
         }
 
         /// <summary>

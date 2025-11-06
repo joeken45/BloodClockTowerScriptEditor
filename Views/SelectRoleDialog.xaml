@@ -98,8 +98,10 @@
 
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Padding="10,8">
-                                <Grid>
+                        <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Padding="10,8"
+                                MouseLeftButtonUp="RoleItem_MouseLeftButtonUp"
+                                Background="Transparent">
+                            <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
                                         <!-- Checkbox -->

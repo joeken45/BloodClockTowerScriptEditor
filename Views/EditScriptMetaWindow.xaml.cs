@@ -1,7 +1,9 @@
-﻿using System.Collections.ObjectModel;
+﻿using BloodClockTowerScriptEditor.Models;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-using BloodClockTowerScriptEditor.Models;
+using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace BloodClockTowerScriptEditor.Views
 {
@@ -125,6 +127,16 @@ namespace BloodClockTowerScriptEditor.Views
                 {
                     _tempBootleggerList.Remove(item);
                 }
+            }
+        }
+
+        private void TextBox_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is TextBox textBox && !textBox.IsKeyboardFocusWithin)
+            {
+                textBox.SelectAll();
+                e.Handled = true;
+                textBox.Focus();
             }
         }
 

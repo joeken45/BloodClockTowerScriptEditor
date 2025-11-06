@@ -133,7 +133,8 @@
                                     <CheckBox Grid.Column="0" IsChecked="{Binding IsSelected}" VerticalAlignment="Top" Margin="0,2,0,0"/>
                                     <TextBox Grid.Column="1" Text="{Binding Rule, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                              TextWrapping="Wrap" AcceptsReturn="True" 
-                                             BorderThickness="0" Background="Transparent" Padding="4,0" MinHeight="24"/>
+                                             BorderThickness="0" Background="Transparent" Padding="4,0" MinHeight="24"
+                                             PreviewMouseLeftButtonDown="TextBox_PreviewMouseLeftButtonDown"/>
                                 </Grid>
                             </DataTemplate>
                         </ListView.ItemTemplate>

@@ -215,7 +215,22 @@ namespace BloodClockTowerScriptEditor.Services
                 jArray.Add(metaObj);
 
                 // === 處理角色 ===
-                foreach (var role in script.Roles)
+                // 🆕 先過濾並排序角色
+                var rolesToExport = script.Roles.AsEnumerable();
+
+                // BOTC格式：過濾掉必要階段角色
+                if (format == ExportFormat.BOTC)
+                {
+                    var excludeIds = new[] { "minioninfo", "demoninfo", "dawn", "dusk" };
+                    rolesToExport = rolesToExport.Where(r => !excludeIds.Contains(r.Id));
+                }
+
+                // 🆕 依照 Team 分組後，再依照 DisplayOrder 排序
+                rolesToExport = rolesToExport
+                    .OrderBy(r => r.Team)           // 先按 Team 排序
+                    .ThenBy(r => r.DisplayOrder);   // 同 Team 內按 DisplayOrder 排序
+
+                foreach (var role in rolesToExport)
                 {
                     // ✅ 新增：判斷是否使用官方 ID
                     if (role.UseOfficialId && !string.IsNullOrEmpty(role.OfficialId))
