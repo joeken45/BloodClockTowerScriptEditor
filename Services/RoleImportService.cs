@@ -20,10 +20,9 @@ namespace BloodClockTowerScriptEditor.Services
         /// 從 JSON 檔案匯入角色到資料庫
         /// </summary>
         /// <param name="jsonFilePath">JSON 檔案路徑</param>
-        /// <param name="category">分類標籤（如：官方、社群等）</param>
         /// <param name="isOfficial">是否為官方角色</param>
         /// <returns>匯入的角色數量</returns>
-        public async Task<int> ImportFromJsonAsync(string jsonFilePath, string category = "官方", bool isOfficial = true)
+        public static async Task<int> ImportFromJsonAsync(string jsonFilePath,  bool isOfficial = true)
         {
             if (!File.Exists(jsonFilePath))
             {
@@ -89,14 +88,14 @@ namespace BloodClockTowerScriptEditor.Services
                         {
                             // 🔄 更新現有角色
                             existing.OriginalOrder = orderIndex++;
-                            UpdateRoleTemplate(existing, item, category, isOfficial);
+                            UpdateRoleTemplate(existing, item, isOfficial);
                             updatedCount++;
                             System.Diagnostics.Debug.WriteLine($"✏️ 更新角色: {name} ({id})");
                         }
                         else
                         {
                             // ➕ 建立新角色
-                            var roleTemplate = CreateRoleTemplate(item, category, isOfficial);
+                            var roleTemplate = CreateRoleTemplate(item, isOfficial);
                             roleTemplate.OriginalOrder = orderIndex++;
                             context.RoleTemplates.Add(roleTemplate);
                             addedCount++;
@@ -128,13 +127,13 @@ namespace BloodClockTowerScriptEditor.Services
         /// <summary>
         /// 預處理 JSON 內容，修正常見格式問題
         /// </summary>
-        private string PreprocessJsonContent(string jsonContent)
+        private static string PreprocessJsonContent(string jsonContent)
         {
             // 移除 BOM (Byte Order Mark)
             jsonContent = jsonContent.Trim('\uFEFF', '\u200B');
 
             // 移除開頭的說明文字行
-            var lines = jsonContent.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            var lines = jsonContent.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
             var validLines = new System.Text.StringBuilder();
             bool foundStart = false;
 
@@ -147,13 +146,13 @@ namespace BloodClockTowerScriptEditor.Services
                     trimmedLine.StartsWith("說明") ||
                     trimmedLine.StartsWith("注意") ||
                     trimmedLine.StartsWith("//") ||
-                    trimmedLine.StartsWith("#"))
+                    trimmedLine.StartsWith('#'))
                 {
                     continue;
                 }
 
                 // 找到 JSON 陣列的開始
-                if (!foundStart && trimmedLine.StartsWith("["))
+                if (!foundStart && trimmedLine.StartsWith('['))
                 {
                     foundStart = true;
                 }
@@ -170,7 +169,7 @@ namespace BloodClockTowerScriptEditor.Services
         /// <summary>
         /// 安全解析夜晚順序（處理空字串、小數、null）
         /// </summary>
-        private double ParseNightOrder(JToken? token)  // ✅ 返回 double
+        private static double ParseNightOrder(JToken? token)  // ✅ 返回 double
         {
             if (token == null || token.Type == JTokenType.Null)
                 return 0.0;
@@ -188,7 +187,7 @@ namespace BloodClockTowerScriptEditor.Services
         /// <summary>
         /// 安全解析提示標記（支援字串、陣列、逗號分隔）
         /// </summary>
-        private List<string> ParseReminders(JToken? token)
+        private static List<string> ParseReminders(JToken? token)
         {
             var result = new List<string>();
 
@@ -214,8 +213,12 @@ namespace BloodClockTowerScriptEditor.Services
                 string? value = token.ToString();
                 if (!string.IsNullOrWhiteSpace(value))
                 {
+                    // ✅ 排除空陣列字串表示
+                    if (value.Trim() == "[]")
+                        return result;
+
                     // 用逗號分割
-                    var items = value.Split(new[] { ',', '，' }, StringSplitOptions.RemoveEmptyEntries);
+                    var items = value.Split([',', '，'], StringSplitOptions.RemoveEmptyEntries);
                     foreach (var item in items)
                     {
                         string trimmed = item.Trim();
@@ -231,7 +234,7 @@ namespace BloodClockTowerScriptEditor.Services
         /// <summary>
         /// 處理提示標記 (Reminders) - 統一處理邏輯（已更新使用 ParseReminders）
         /// </summary>
-        private void ProcessReminders(RoleTemplate roleTemplate, JToken item, bool clearExisting = false)
+        private static void ProcessReminders(RoleTemplate roleTemplate, JToken item, bool clearExisting = false)
         {
             if (clearExisting)
             {
@@ -266,7 +269,7 @@ namespace BloodClockTowerScriptEditor.Services
         /// <summary>
         /// 建立新的 RoleTemplate（已更新使用 ParseNightOrder）
         /// </summary>
-        private RoleTemplate CreateRoleTemplate(JToken item, string category, bool isOfficial)
+        private static RoleTemplate CreateRoleTemplate(JToken item,  bool isOfficial)
         {
             var roleTemplate = new RoleTemplate
             {
@@ -298,7 +301,7 @@ namespace BloodClockTowerScriptEditor.Services
         /// <summary>
         /// 更新現有 RoleTemplate（已更新使用 ParseNightOrder）
         /// </summary>
-        private void UpdateRoleTemplate(RoleTemplate existing, JToken item, string category, bool isOfficial)
+        private static void UpdateRoleTemplate(RoleTemplate existing, JToken item,  bool isOfficial)
         {
             existing.Name = item["name"]?.ToString() ?? existing.Name;
             existing.Team = item["team"]?.ToString() ?? existing.Team;
@@ -325,7 +328,7 @@ namespace BloodClockTowerScriptEditor.Services
         /// </summary>
         /// <param name="jsonFilePath">JSON 檔案路徑</param>
         /// <returns>匯入的相剋規則數量</returns>
-        public async Task<int> ImportJinxRulesFromJsonAsync(string jsonFilePath)
+        public static async Task<int> ImportJinxRulesFromJsonAsync(string jsonFilePath)
         {
             if (!File.Exists(jsonFilePath))
             {
@@ -420,7 +423,7 @@ namespace BloodClockTowerScriptEditor.Services
         /// <summary>
         /// 建立新的 JinxRule
         /// </summary>
-        private JinxRule CreateJinxRule(JToken item)
+        private static JinxRule CreateJinxRule(JToken item)
         {
             var jinxRule = new JinxRule
             {
@@ -442,7 +445,7 @@ namespace BloodClockTowerScriptEditor.Services
         /// <summary>
         /// 更新現有 JinxRule
         /// </summary>
-        private void UpdateJinxRule(JinxRule existing, JToken item)
+        private static void UpdateJinxRule(JinxRule existing, JToken item)
         {
             existing.Name = item["name"]?.ToString() ?? existing.Name;
             existing.Ability = item["ability"]?.ToString() ?? existing.Ability;

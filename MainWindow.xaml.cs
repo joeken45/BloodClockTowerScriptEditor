@@ -63,7 +63,7 @@ namespace BloodClockTowerScriptEditor
         /// <summary>
         /// 同步 JSON 資源到程式資料夾並匯入資料庫
         /// </summary>
-        private async Task<int> SyncResourceToFolderAsync(
+        private static async Task<int> SyncResourceToFolderAsync(
             string resourceFileName,
             string embeddedResourceName,
             Func<string, Task<int>> importAction)
@@ -97,30 +97,30 @@ namespace BloodClockTowerScriptEditor
         }
 
         // 然後原本的方法改成：
-        private async Task InitializeDefaultRolesAsync()
+        private static async Task InitializeDefaultRolesAsync()
         {
             var importService = new RoleImportService();
             await SyncResourceToFolderAsync(
                 "角色總表.json",
                 "BloodClockTowerScriptEditor.Resources.角色總表.json",
-                path => importService.ImportFromJsonAsync(path, "官方", true)
+                path => RoleImportService.ImportFromJsonAsync(path, true)
             );
         }
 
-        private async Task InitializeJinxRulesAsync()
+        private static async Task InitializeJinxRulesAsync()
         {
             var importService = new RoleImportService();
             await SyncResourceToFolderAsync(
                 "相剋規則.json",
                 "BloodClockTowerScriptEditor.Resources.相剋規則.json",
-                importService.ImportJinxRulesFromJsonAsync
+                RoleImportService.ImportJinxRulesFromJsonAsync
             );
         }
 
         /// <summary>
         /// 載入內嵌資源
         /// </summary>
-        private string LoadEmbeddedResource(string resourceName)
+        private static string LoadEmbeddedResource(string resourceName)
         {
             try
             {
@@ -153,7 +153,7 @@ namespace BloodClockTowerScriptEditor
         {
             MessageBox.Show(
                 "Blood on the Clocktower 劇本編輯器\n\n" +
-                "版本: 1.0.0 \n",
+                "版本: 0.0.1 \n",
                 "關於",
                 MessageBoxButton.OK,
                 MessageBoxImage.Information
@@ -165,8 +165,7 @@ namespace BloodClockTowerScriptEditor
             if (sender is Button button && button.Tag is string tag &&
                 button.DataContext is Role role)
             {
-                var viewModel = DataContext as MainViewModel;
-                if (viewModel != null)
+                if (DataContext is MainViewModel viewModel)
                 {
                     bool isFirstNight = tag.Contains("First");
                     bool isUp = tag.Contains("Up");
@@ -282,7 +281,7 @@ namespace BloodClockTowerScriptEditor
         /// <summary>
         /// 清空非相剋規則需要的欄位
         /// </summary>
-        private void ClearNonJinxedFields(Role role)
+        private static void ClearNonJinxedFields(Role role)
         {
             // 清空不必要的欄位，但保留基本資訊
             role.Edition = null;
@@ -348,7 +347,7 @@ namespace BloodClockTowerScriptEditor
                 return;
             }
 
-            var button = sender as Button;
+            FrameworkElement? button = sender as Button;
             if (button?.DataContext is ImageItem item)
             {
                 var displayUrl = string.IsNullOrWhiteSpace(item.Url) ? "(空白)" : item.Url;
@@ -399,7 +398,7 @@ namespace BloodClockTowerScriptEditor
             if (DataContext is not MainViewModel viewModel || viewModel.SelectedRole == null)
                 return;
 
-            var button = sender as Button;
+            FrameworkElement? button = sender as Button;
             if (button?.DataContext is JinxItem item)
             {
                 // 取得目標角色名稱用於顯示
@@ -419,7 +418,7 @@ namespace BloodClockTowerScriptEditor
 
                 var displayReason = string.IsNullOrEmpty(item.Reason)
                     ? "(無說明)"
-                    : (item.Reason.Length > 30 ? item.Reason.Substring(0, 30) + "..." : item.Reason);
+                    : (item.Reason.Length > 30 ? item.Reason[..30] + "..." : item.Reason);
 
                 var result = MessageBox.Show(
                     $"確定要刪除此相剋規則嗎？\n\n角色: {displayRole}\n規則: {displayReason}",
@@ -506,7 +505,7 @@ namespace BloodClockTowerScriptEditor
                             .FirstOrDefault(r => r.Name == name2 && r.Team != TeamType.Jinxed);
 
                         // 更新角色1
-                        if (role1 != null)
+                        if (role1 != null && role2 != null)
                         {
                             if (role1.Jinxes != null)
                             {
@@ -517,11 +516,11 @@ namespace BloodClockTowerScriptEditor
                                 }
                             }
 
-                            role1.UpdateJinxItemReason(role2?.Id, newAbility);
+                            role1.UpdateJinxItemReason(role2.Id, newAbility);
                         }
 
                         // 更新角色2
-                        if (role2 != null)
+                        if (role2 != null && role1 != null)
                         {
                             if (role2.Jinxes != null)
                             {
@@ -532,7 +531,7 @@ namespace BloodClockTowerScriptEditor
                                 }
                             }
 
-                            role2.UpdateJinxItemReason(role1?.Id, newAbility);
+                            role2.UpdateJinxItemReason(role1.Id, newAbility);
                         }
                     }
 
@@ -667,7 +666,7 @@ namespace BloodClockTowerScriptEditor
                 System.Diagnostics.Debug.WriteLine($"🔗 在 {targetRole.Name} 中建立與 {viewModel.SelectedRole.Name} 的相剋");
 
                 // 建立/更新 Jinxes
-                targetRole.Jinxes ??= new List<Role.JinxInfo>();
+                targetRole.Jinxes ??= [];
 
                 var existingJinx = targetRole.Jinxes.FirstOrDefault(j => j.Id == viewModel.SelectedRole.Id);
                 if (existingJinx != null)
@@ -699,7 +698,7 @@ namespace BloodClockTowerScriptEditor
         }
 
         // 改用複合 key：角色ID + 目標角色ID
-        private Dictionary<string, (Role editedRole, string targetRoleId, string oldReason)> _oldJinxReasons = new();
+        private readonly Dictionary<string, (Role editedRole, string targetRoleId, string oldReason)> _oldJinxReasons = [];
 
         /// <summary>
         /// BOTC 格式 Reason 獲得焦點時記住舊值
@@ -931,9 +930,7 @@ namespace BloodClockTowerScriptEditor
             }
             if (e.Data.GetDataPresent(typeof(Role)))
             {
-                var droppedRole = e.Data.GetData(typeof(Role)) as Role;
-
-                if (droppedRole == null || DataContext is not MainViewModel viewModel)
+                if (e.Data.GetData(typeof(Role)) is not Role droppedRole || DataContext is not MainViewModel viewModel)
                     return;
 
                 if (sender is ItemsControl itemsControl && itemsControl.Tag is string targetTeamStr)
@@ -969,12 +966,11 @@ namespace BloodClockTowerScriptEditor
         /// <summary>
         /// 取得放置目標（包含插入位置判斷）
         /// </summary>
-        private (Role? targetRole, bool insertAbove) GetDropTarget(ItemsControl itemsControl, Point mousePosition)
+        private static (Role? targetRole, bool insertAbove) GetDropTarget(ItemsControl itemsControl, Point mousePosition)
         {
             for (int i = 0; i < itemsControl.Items.Count; i++)
             {
-                var container = itemsControl.ItemContainerGenerator.ContainerFromIndex(i) as FrameworkElement;
-                if (container == null) continue;
+                if (itemsControl.ItemContainerGenerator.ContainerFromIndex(i) is not FrameworkElement container) continue;
 
                 var containerPos = container.TransformToAncestor(itemsControl).Transform(new Point(0, 0));
                 var containerBounds = new Rect(containerPos, container.RenderSize);
@@ -996,7 +992,7 @@ namespace BloodClockTowerScriptEditor
         /// <summary>
         /// 重新排序同類型內的角色
         /// </summary>
-        private void ReorderRolesInTeam(MainViewModel viewModel, TeamType team, Role movedRole, Role targetRole, bool insertAbove)
+        private static void ReorderRolesInTeam(MainViewModel viewModel, TeamType team, Role movedRole, Role targetRole, bool insertAbove)
         {
             var teamRoles = viewModel.CurrentScript.Roles
                 .Where(r => r.Team == team)
@@ -1085,9 +1081,7 @@ namespace BloodClockTowerScriptEditor
                     {
                         if (itemsControl.Items[i] == targetRole)
                         {
-                            var container = itemsControl.ItemContainerGenerator.ContainerFromIndex(i) as FrameworkElement;
-
-                            if (container != null)
+                            if (itemsControl.ItemContainerGenerator.ContainerFromIndex(i) is FrameworkElement container)
                             {
                                 DrawDropIndicator(itemsControl, container, insertAbove);
                             }
@@ -1185,7 +1179,7 @@ namespace BloodClockTowerScriptEditor
                 // 初始化 Special 列表（使用 ObservableCollection）
                 if (vm.SelectedRole.Special == null)
                 {
-                    vm.SelectedRole.Special = new System.Collections.ObjectModel.ObservableCollection<Role.SpecialAbility>();
+                    vm.SelectedRole.Special = [];
                 }
 
                 // 新增預設的特殊功能

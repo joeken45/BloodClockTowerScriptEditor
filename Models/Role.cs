@@ -18,13 +18,13 @@ namespace BloodClockTowerScriptEditor.Models
         private string _name = string.Empty;
         private TeamType _team = TeamType.Townsfolk;
         private string _ability = string.Empty;
-        private List<string> _image = new();
+        private List<string> _image = [];
         private string? _edition;
         private bool _setup;
         private double _firstNight;
         private double _otherNight;
-        private ObservableCollection<ReminderItem> _reminders = new();
-        private ObservableCollection<ReminderItem> _remindersGlobal = new();
+        private ObservableCollection<ReminderItem> _reminders = [];
+        private ObservableCollection<ReminderItem> _remindersGlobal = [];
         private string? _flavor;
         private string? _firstNightReminder;
         private string? _otherNightReminder;
@@ -101,7 +101,7 @@ namespace BloodClockTowerScriptEditor.Models
         public List<string> Image
         {
             get => _image;
-            set => SetProperty(ref _image, value ?? new());
+            set => SetProperty(ref _image, value ?? []);
         }
 
         [JsonProperty("edition", NullValueHandling = NullValueHandling.Ignore)]
@@ -312,7 +312,7 @@ namespace BloodClockTowerScriptEditor.Models
             {
                 if (_imageItems == null)
                 {
-                    _imageItems = new ObservableCollection<ImageItem>();
+                    _imageItems = [];
 
                     // 從 Image 初始化
                     foreach (var url in Image)
@@ -387,7 +387,7 @@ namespace BloodClockTowerScriptEditor.Models
             {
                 if (_jinxItems == null)
                 {
-                    _jinxItems = new ObservableCollection<JinxItem>();
+                    _jinxItems = [];
 
                     // 從 Jinxes 初始化
                     if (Jinxes != null)
@@ -440,11 +440,11 @@ namespace BloodClockTowerScriptEditor.Models
         {
             // 同步回 Jinxes 列表
             Jinxes = _jinxItems?.Count > 0
-                ? _jinxItems.Select(item => new JinxInfo
+                ? [.. _jinxItems.Select(item => new JinxInfo
                 {
                     Id = item.TargetRoleId,  // 暫時使用名稱，之後需轉換為 ID
                     Reason = item.Reason
-                }).ToList()
+                })]
                 : null;
 
             OnPropertyChanged(nameof(Jinxes));
@@ -461,11 +461,11 @@ namespace BloodClockTowerScriptEditor.Models
                 return;
             }
 
-            Jinxes = _jinxItems.Select(item => new JinxInfo
+            Jinxes = [.. _jinxItems.Select(item => new JinxInfo
             {
                 Id = item.TargetRoleId,
                 Reason = item.Reason
-            }).ToList();
+            })];
         }
 
         /// <summary>
@@ -529,7 +529,7 @@ namespace BloodClockTowerScriptEditor.Models
                     .Where(ji => string.IsNullOrEmpty(ji.TargetRoleId))
                     .ToList();
 
-                if (emptyItems.Any())
+                if (emptyItems.Count != 0)
                 {
                     foreach (var item in emptyItems)
                     {
