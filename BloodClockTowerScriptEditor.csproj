@@ -6,6 +6,17 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    
+    <!-- 版本資訊 -->
+    <Version>0.0.1</Version>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+
+    <!-- 應用程式資訊 -->
+    <Company>BJ</Company>
+    <Product>血染鐘樓劇本編輯器</Product>
+    <Description>Blood on the Clocktower Script Editor</Description>
+    <Copyright>Copyright © 2025</Copyright>
     <ApplicationIcon>Assets\app_icon.ico</ApplicationIcon>
   </PropertyGroup>
 
