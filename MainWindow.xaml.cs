@@ -1158,6 +1158,13 @@ namespace BloodClockTowerScriptEditor
         {
             if (sender is ListBox listBox && listBox.SelectedItem is Role role)
             {
+                // 🔒 禁止選取必要階段角色
+                if (MainViewModel.RequiredPhaseIds.Contains(role.Id))
+                {
+                    listBox.SelectedItem = null;
+                    return;
+                }
+
                 if (DataContext is MainViewModel viewModel)
                 {
                     // 只在選中新角色時才設定（避免清空時觸發）

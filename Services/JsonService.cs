@@ -179,6 +179,9 @@ namespace BloodClockTowerScriptEditor.Services
                     script.Roles.Add(role);
                 }
 
+                // 🆕 第二階段：從 BOTC Jinxes 生成集石格式相剋規則
+                GenerateJinxedRolesFromBotcJinxes(script);
+
                 return script;
             }
             catch (Exception ex)
@@ -221,13 +224,20 @@ namespace BloodClockTowerScriptEditor.Services
                 if (format == ExportFormat.BOTC)
                 {
                     var excludeIds = new[] { "minioninfo", "demoninfo", "dawn", "dusk" };
+                    rolesToExport = rolesToExport
+                                    .Where(r => !excludeIds.Contains(r.Id))      // 過濾必要階段
+                                    .Where(r => r.Team != TeamType.Jinxed);      // 🆕 過濾集石相剋規則
+                }
+                else if (format == ExportFormat.JiShi)
+                {
+                    var excludeIds = new[] { "minioninfo", "demoninfo" };
                     rolesToExport = rolesToExport.Where(r => !excludeIds.Contains(r.Id));
                 }
 
                 // 🆕 依照 Team 分組後，再依照 DisplayOrder 排序
                 rolesToExport = rolesToExport
-                    .OrderBy(r => r.Team)           // 先按 Team 排序
-                    .ThenBy(r => r.DisplayOrder);   // 同 Team 內按 DisplayOrder 排序
+                        .OrderBy(r => r.Team)           // 先按 Team 排序
+                        .ThenBy(r => r.DisplayOrder);   // 同 Team 內按 DisplayOrder 排序
 
                 foreach (var role in rolesToExport)
                 {
@@ -400,5 +410,67 @@ namespace BloodClockTowerScriptEditor.Services
             script.Meta.OtherNight = otherNightRoles.Count > 0 ? otherNightRoles : null;
         }
 
+        /// <summary>
+        /// 從 BOTC 格式的 Jinxes 自動生成集石格式的相剋規則
+        /// </summary>
+        private static void GenerateJinxedRolesFromBotcJinxes(Script script)
+        {
+            var processedPairs = new HashSet<string>(); // 防止重複建立
+            var jinxedRolesToAdd = new List<Role>();    // 🔑 先收集，再一次性加入
+
+            // 🔑 使用 ToList() 建立副本，避免遍歷時修改集合
+            foreach (var role in script.Roles.ToList().Where(r => r.Team != TeamType.Jinxed && r.Jinxes != null))
+            {
+                // 🔒 再次檢查 null（滿足編譯器要求）
+                if (role.Jinxes == null) continue;
+
+                foreach (var jinx in role.Jinxes)
+                {
+                    // 找到被相剋的角色
+                    var targetRole = script.Roles.FirstOrDefault(r =>
+                        r.Id == jinx.Id && r.Team != TeamType.Jinxed);
+
+                    if (targetRole == null) continue;
+
+                    // 🔑 使用排序後的 ID 組合作為唯一鍵（避免重複）
+                    string pairKey = string.Compare(role.Id, targetRole.Id) < 0
+                        ? $"{role.Id}_{targetRole.Id}"
+                        : $"{targetRole.Id}_{role.Id}";
+
+                    if (processedPairs.Contains(pairKey)) continue;
+                    processedPairs.Add(pairKey);
+
+                    // 檢查是否已存在集石格式
+                    string jinxName1 = $"{role.Name}&{targetRole.Name}";
+                    string jinxName2 = $"{targetRole.Name}&{role.Name}";
+
+                    bool alreadyExists = script.Roles.Any(r =>
+                        r.Team == TeamType.Jinxed &&
+                        (r.Name == jinxName1 || r.Name == jinxName2));
+
+                    if (alreadyExists) continue;
+
+                    // 🆕 建立集石格式相剋規則（先加到暫存清單）
+                    var jinxedRole = new Role
+                    {
+                        Id = $"{role.Id}_{targetRole.Id}_meta",
+                        Name = jinxName1,
+                        Team = TeamType.Jinxed,
+                        Ability = jinx.Reason ?? "",
+                        Image = []
+                    };
+
+                    jinxedRolesToAdd.Add(jinxedRole);
+                    System.Diagnostics.Debug.WriteLine($"✅ 準備生成集石相剋規則: {jinxName1}");
+                }
+            }
+
+            // 🔑 遍歷完成後，一次性加入所有相剋規則
+            foreach (var jinxedRole in jinxedRolesToAdd)
+            {
+                script.Roles.Add(jinxedRole);
+                System.Diagnostics.Debug.WriteLine($"✅ 已加入集石相剋規則: {jinxedRole.Name}");
+            }
+        }
     }
 }

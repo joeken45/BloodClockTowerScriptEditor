@@ -21,7 +21,7 @@ namespace BloodClockTowerScriptEditor.ViewModels
         /// <summary>
         /// 必要階段角色的 ID 列表（在角色列表中隱藏，但會出現在夜晚順序中）
         /// </summary>
-        private static readonly HashSet<string> RequiredPhaseIds =
+        public static readonly HashSet<string> RequiredPhaseIds =
 [
     "minioninfo",      // 爪牙資訊
     "demoninfo",      // 惡魔資訊
@@ -1058,32 +1058,37 @@ namespace BloodClockTowerScriptEditor.ViewModels
         /// </summary>
         public void MoveRoleUp(Role role, bool isFirstNight)
         {
+            // 🔒 禁止移動必要階段角色
+            if (RequiredPhaseIds.Contains(role.Id)) return;
+
             var list = isFirstNight ? FirstNightRoles : OtherNightRoles;
             var index = list.IndexOf(role);
 
             if (index <= 0) return; // 已在頂部
 
+            var above = list[index - 1];
+            var aboveOrder = isFirstNight ? above.FirstNight : above.OtherNight;
+
+            // 🆕 計算插入位置（在上一個角色之前）
             double newOrder;
 
             if (index == 1)
             {
-                // 第二個 → 第一個 - 0.001
-                var first = list[0];
-                var firstOrder = isFirstNight ? first.FirstNight : first.OtherNight;
-                newOrder = firstOrder - 0.001;
+                // 移到第一位：上一個角色 - 1
+                newOrder = aboveOrder - 1;
             }
             else
             {
-                // 其他 → 上上個 + 0.001
-                var target = list[index - 2];
-                var targetOrder = isFirstNight ? target.FirstNight : target.OtherNight;
-                newOrder = targetOrder + 0.001;
+                // 插入中間：計算上上個與上一個的中間值
+                var aboveAbove = list[index - 2];
+                var aboveAboveOrder = isFirstNight ? aboveAbove.FirstNight : aboveAbove.OtherNight;
+                newOrder = (aboveAboveOrder + aboveOrder) / 2.0;
             }
 
             if (isFirstNight)
-                role.FirstNight = Math.Round(newOrder, 3); // 保留三位小數
+                role.FirstNight = newOrder;
             else
-                role.OtherNight = Math.Round(newOrder, 3);
+                role.OtherNight = newOrder;
         }
 
         /// <summary>
@@ -1091,6 +1096,9 @@ namespace BloodClockTowerScriptEditor.ViewModels
         /// </summary>
         public void MoveRoleDown(Role role, bool isFirstNight)
         {
+            // 🔒 禁止移動必要階段角色
+            if (RequiredPhaseIds.Contains(role.Id)) return;
+
             var list = isFirstNight ? FirstNightRoles : OtherNightRoles;
             var index = list.IndexOf(role);
 
@@ -1099,13 +1107,26 @@ namespace BloodClockTowerScriptEditor.ViewModels
             var below = list[index + 1];
             var belowOrder = isFirstNight ? below.FirstNight : below.OtherNight;
 
-            // 下移 = 下一個 + 0.001
-            var newOrder = belowOrder + 0.001;
+            // 🆕 計算插入位置（在下一個角色之後）
+            double newOrder;
+
+            if (index == list.Count - 2)
+            {
+                // 移到最後一位：下一個角色 + 1
+                newOrder = belowOrder + 1;
+            }
+            else
+            {
+                // 插入中間：計算下一個與下下個的中間值
+                var belowBelow = list[index + 2];
+                var belowBelowOrder = isFirstNight ? belowBelow.FirstNight : belowBelow.OtherNight;
+                newOrder = (belowOrder + belowBelowOrder) / 2.0;
+            }
 
             if (isFirstNight)
-                role.FirstNight = Math.Round(newOrder, 3); // 保留三位小數
+                role.FirstNight = newOrder;
             else
-                role.OtherNight = Math.Round(newOrder, 3);
+                role.OtherNight = newOrder;
         }
 
         private void OnRolePropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
