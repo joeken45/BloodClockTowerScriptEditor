@@ -1,7 +1,7 @@
 [
   {
     "name": "洗衣婦",
-    "id": "T001",
+    "id": "townsfolk001",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/4/45/Washerwoman.png/200px-Washerwoman.png",
     "ability": "在你的首個夜晚，你會得知兩名玩家和一個鎮民角色：這兩名玩家之一是該角色。",
     "setup": false,
@@ -22,7 +22,7 @@
   },
   {
     "name": "圖書管理員",
-    "id": "T002",
+    "id": "townsfolk002",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/5/55/Librarian.png/200px-Librarian.png",
     "ability": "在你的首個夜晚，你會得知兩名玩家和一個外來者角色：這兩名玩家之一是該角色(或者你會得知沒有外來者在場)。",
     "setup": false,
@@ -43,7 +43,7 @@
   },
   {
     "name": "調查員",
-    "id": "T003",
+    "id": "townsfolk003",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/c/cb/Investigator.png/200px-Investigator.png",
     "ability": "在你的首個夜晚，你會得知兩名玩家和一個爪牙角色 ：這兩名玩家之一是該角色(或者你會得知沒有爪牙在場)。",
     "setup": false,
@@ -64,7 +64,7 @@
   },
   {
     "name": "廚師",
-    "id": "T004",
+    "id": "townsfolk004",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/e/e5/Chef.png/200px-Chef.png",
     "ability": "在你的首個夜晚，你會得知場上鄰座的邪惡玩家有多少對。",
     "setup": false,
@@ -82,7 +82,7 @@
   },
   {
     "name": "共情者",
-    "id": "T005",
+    "id": "townsfolk005",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/4/4e/Empath.png/200px-Empath.png",
     "ability": "每個夜晚，你會得知與你鄰近的兩名存活的玩家中邪惡玩家的數量。",
     "setup": false,
@@ -100,7 +100,7 @@
   },
   {
     "name": "占卜師",
-    "id": "T006",
+    "id": "townsfolk006",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/6/67/Fortuneteller.png/200px-Fortuneteller.png",
     "ability": "每個夜晚，你要選擇兩名玩家：你會得知他們之中是否有惡魔。會有一名善良玩家始終被你的能力當作＂惡魔＂（干預項）。",
     "setup": false,
@@ -120,7 +120,7 @@
   },
   {
     "name": "送葬者",
-    "id": "T007",
+    "id": "townsfolk007",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/c/c7/Undertaker.png/200px-Undertaker.png",
     "ability": "每個夜晚*，你會得知今天白天死於處決的玩家的角色。",
     "setup": false,
@@ -140,7 +140,7 @@
   },
   {
     "name": "僧侶",
-    "id": "T008",
+    "id": "townsfolk008",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/4/44/Monk.png/200px-Monk.png",
     "ability": "每個夜晚*，你要選擇除你以外的一名玩家：當晚惡魔的負面能力對他無效。",
     "setup": false,
@@ -160,7 +160,7 @@
   },
   {
     "name": "守鴉人",
-    "id": "T009",
+    "id": "townsfolk009",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/3/37/Ravenkeeper.png/300px-Ravenkeeper.png",
     "ability": "如果你在夜晚死亡，你會被喚醒，然後你要選擇一名玩家：你會得知他的角色。",
     "setup": false,
@@ -178,7 +178,7 @@
   },
   {
     "name": "貞潔者",
-    "id": "T010",
+    "id": "townsfolk010",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/4/43/Virgin.png/200px-Virgin.png",
     "ability": "當你首次被提名時，如果提名你的玩家是鎮民，他立刻被處決。",
     "setup": false,
@@ -198,7 +198,7 @@
   },
   {
     "name": "獵手",
-    "id": "T011",
+    "id": "townsfolk011",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/6/6e/Slayer.png/200px-Slayer.png",
     "ability": "每局遊戲限一次，你可以在白天時公開選擇一名玩家：如果他是惡魔，他死亡。",
     "setup": false,
@@ -218,7 +218,7 @@
   },
   {
     "name": "士兵",
-    "id": "T012",
+    "id": "townsfolk012",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/7/7b/Soldier.png/200px-Soldier.png",
     "ability": "惡魔的負面能力對你無效。",
     "setup": false,
@@ -236,7 +236,7 @@
   },
   {
     "name": "鎮長",
-    "id": "T013",
+    "id": "townsfolk013",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/2/20/Mayor.png/300px-Mayor.png",
     "ability": "如果只有三名玩家存活且白天沒有人被處決，你的陣營獲勝。如果你在夜晚即將死亡，可能會有一名其他玩家代替你死亡。",
     "setup": false,
@@ -254,7 +254,7 @@
   },
   {
     "name": "祖母",
-    "id": "T014",
+    "id": "townsfolk014",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/6/66/Grandmother.png/200px-Grandmother.png",
     "ability": "在你的首個夜晚，你會得知一名善良玩家和他的角色。如果惡魔殺死了他，你也會死亡。",
     "setup": false,
@@ -275,7 +275,7 @@
   },
   {
     "name": "水手",
-    "id": "T015",
+    "id": "townsfolk015",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/c/ce/Sailor.png/200px-Sailor.png",
     "ability": "每個夜晚，你要選擇一名存活的玩家：你或他之一會醉酒直到下個黃昏。你不會死亡。",
     "setup": false,
@@ -295,7 +295,7 @@
   },
   {
     "name": "侍女",
-    "id": "T016",
+    "id": "townsfolk016",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/0/00/Chambermaid.png/200px-Chambermaid.png",
     "ability": "每個夜晚，你要選擇除你以外的兩名存活的玩家：你會得知他們中有幾人在當晚因其自身能力而被喚醒。",
     "setup": false,
@@ -313,7 +313,7 @@
   },
   {
     "name": "驅魔人",
-    "id": "T017",
+    "id": "townsfolk017",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/a/ac/Exorcist.png/300px-Exorcist.png",
     "ability": "每個夜晚*，你要選擇一名玩家(與上個夜晚不同)：如果你選中了惡魔，他會得知你是驅魔人，但他當晚不會因其自身能力而被喚醒。",
     "setup": false,
@@ -333,7 +333,7 @@
   },
   {
     "name": "旅店老闆",
-    "id": "T018",
+    "id": "townsfolk018",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/3/32/Innkeeper.png/200px-Innkeeper.png",
     "ability": "每個夜晚*，你要選擇兩名玩名玩家：他們當晚不會死亡，但其中一人會醉酒到下個黃昏。",
     "setup": false,
@@ -355,7 +355,7 @@
   },
   {
     "name": "賭徒",
-    "id": "T019",
+    "id": "townsfolk019",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/8/8a/Gambler.png/200px-Gambler.png",
     "ability": "每個夜晚，你要選擇一名玩家並猜測他的角色 ：如果你猜錯了，你會死亡。",
     "setup": false,
@@ -375,7 +375,7 @@
   },
   {
     "name": "造謠者",
-    "id": "T020",
+    "id": "townsfolk020",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/a/a4/Gossip.png/200px-Gossip.png",
     "ability": "每個白天，你可以公開發表一個聲明。如果該聲明正確，在當晚會有一名玩家死亡。",
     "setup": false,
@@ -395,7 +395,7 @@
   },
   {
     "name": "侍臣",
-    "id": "T021",
+    "id": "townsfolk021",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/d/d9/Courtier.png/200px-Courtier.png",
     "ability": "每局遊戲限一次，在夜晚時，你可以選擇一個角色：如果該角色在場，該角色之一從當晚開始醉酒三天三夜。",
     "setup": false,
@@ -418,7 +418,7 @@
   },
   {
     "name": "教授",
-    "id": "T022",
+    "id": "townsfolk022",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/b/b1/Professor.png/200px-Professor.png",
     "ability": "每局遊戲限一次，在夜晚時*，你可以選擇一名死亡的玩家：如果他是鎮民，你會將他起死回生（復活）。",
     "setup": false,
@@ -439,7 +439,7 @@
   },
   {
     "name": "吟遊詩人",
-    "id": "T023",
+    "id": "townsfolk023",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/6/66/Minstrel.png/200px-Minstrel.png",
     "ability": "當一名爪牙死於處決時，除了你和旅行者以外的所有其他玩家醉酒直到明天黃昏。",
     "setup": false,
@@ -459,7 +459,7 @@
   },
   {
     "name": "茶藝師",
-    "id": "T024",
+    "id": "townsfolk024",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/b/bc/Tealady.png/200px-Tealady.png",
     "ability": "如果與你鄰近的兩名存活的玩家是善良的，他們不會死亡。",
     "setup": false,
@@ -480,7 +480,7 @@
   },
   {
     "name": "和平主義者",
-    "id": "T025",
+    "id": "townsfolk025",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/4/4a/Pacifist.png/200px-Pacifist.png",
     "ability": "被處決的善良玩家可能不會死亡。",
     "setup": false,
@@ -498,7 +498,7 @@
   },
   {
     "name": "弄臣",
-    "id": "T026",
+    "id": "townsfolk026",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/7/70/Fool.png/300px-Fool.png",
     "ability": "當你首次將要死亡時，你不會死亡。",
     "setup": false,
@@ -516,7 +516,7 @@
   },
   {
     "name": "鐘錶匠",
-    "id": "T027",
+    "id": "townsfolk027",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/7/74/Clockmaker.png/200px-Clockmaker.png",
     "ability": "在你的首個夜晚，你會得知惡魔與爪牙之間最近的距離。(鄰座的玩家距離為1)",
     "setup": false,
@@ -534,7 +534,7 @@
   },
   {
     "name": "築夢師",
-    "id": "T028",
+    "id": "townsfolk028",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/2/29/Dreamer.png/200px-Dreamer.png",
     "ability": "每個夜晚，你要選擇除你及旅行者以外的一名玩家：你會得知一個善良角色和一個邪惡角色，該玩家是其中一個角色。",
     "setup": false,
@@ -552,7 +552,7 @@
   },
   {
     "name": "舞蛇人",
-    "id": "T029",
+    "id": "townsfolk029",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/a/ab/Snakecharmer.png/200px-Snakecharmer.png",
     "ability": "每個夜晚，你要選擇一名存活的玩家：如果你選中了惡魔，你和他交換角色和陣營，然後他中毒。",
     "setup": false,
@@ -572,7 +572,7 @@
   },
   {
     "name": "數學家",
-    "id": "T030",
+    "id": "townsfolk030",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/0/06/Mathematician.png/200px-Mathematician.png",
     "ability": "每個夜晚，你會得知有多少名玩家的能力因為其他角色的能力而未正常生效。(從上個黎明到你被喚醒時)",
     "setup": false,
@@ -597,7 +597,7 @@
   },
   {
     "name": "賣花女孩",
-    "id": "T031",
+    "id": "townsfolk031",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/5/5b/Flowergirl.png/200px-Flowergirl.png",
     "ability": "每個夜晚*，你會得知在今天白天時是否有惡魔投過票。",
     "setup": false,
@@ -618,7 +618,7 @@
   },
   {
     "name": "城鎮公告員",
-    "id": "T032",
+    "id": "townsfolk032",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/b/b7/Towncrier.png/200px-Towncrier.png",
     "ability": "每個夜晚*，你會得知在今天白天時是否有爪牙發起過提名。",
     "setup": false,
@@ -639,7 +639,7 @@
   },
   {
     "name": "神諭者",
-    "id": "T033",
+    "id": "townsfolk033",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/1/17/Oracle.png/200px-Oracle.png",
     "ability": "每個夜晚*，你會得知有多少名死亡的玩家是邪惡的。",
     "setup": false,
@@ -657,7 +657,7 @@
   },
   {
     "name": "博學者",
-    "id": "T034",
+    "id": "townsfolk034",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/5/53/Savant.png/200px-Savant.png",
     "ability": "每個白天，你可以私下詢問說書人以得知兩條信息 ：一個是正確的，一個是錯誤的。",
     "setup": false,
@@ -675,7 +675,7 @@
   },
   {
     "name": "女裁縫",
-    "id": "T035",
+    "id": "townsfolk035",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/a/ae/Seamstress.png/200px-Seamstress.png",
     "ability": "每局遊戲限一次，在夜晚時，你可以選擇除你以外的兩名玩家：你會得知他們是否為同一陣營。",
     "setup": false,
@@ -695,7 +695,7 @@
   },
   {
     "name": "哲學家",
-    "id": "T036",
+    "id": "townsfolk036",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/e/e0/Philosopher.png/200px-Philosopher.png",
     "ability": "每局遊戲限一次，在夜晚時，你可以選擇一個善良角色：你獲得該角色的能力。如果這個角色在場，他醉酒。",
     "setup": false,
@@ -717,7 +717,7 @@
   },
   {
     "name": "藝術家",
-    "id": "T037",
+    "id": "townsfolk037",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/a/a5/Artist.png/200px-Artist.png",
     "ability": "每局遊戲限一次，在白天時，你可以私下詢問說書人一個是非問題，你會得知該問題的答案。",
     "setup": false,
@@ -737,7 +737,7 @@
   },
   {
     "name": "雜耍藝人",
-    "id": "T038",
+    "id": "townsfolk038",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/b/be/Juggler.png/200px-Juggler.png",
     "ability": "在你的首個白天，你可以公開猜測任意玩家的角色最多五次。在當晚，你會得知猜測正確的角色數量。",
     "setup": false,
@@ -761,7 +761,7 @@
   },
   {
     "name": "賢者",
-    "id": "T039",
+    "id": "townsfolk039",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/f/f8/Sage.png/200px-Sage.png",
     "ability": "如果惡魔殺死了你，在當晚你會被喚醒並得知兩名玩家，其中一名是殺死你的那個惡魔。",
     "setup": false,
@@ -779,7 +779,7 @@
   },
   {
     "name": "半獸人",
-    "id": "T040",
+    "id": "townsfolk040",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/c/c1/Lycanthrope.png/200px-Lycanthrope.png",
     "ability": "每個夜晚*，你要選擇一名存活玩家：如果他是善良的，他死亡，並且當晚惡魔不會造成死亡。會有一名善良玩家始終被當作邪惡陣營。",
     "setup": false,
@@ -800,7 +800,7 @@
   },
   {
     "name": "報喪女妖",
-    "id": "T041",
+    "id": "townsfolk041",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/d/d3/Banshee.png/200px-Banshee.png",
     "ability": "如果惡魔殺死了你，所有玩家都會得知此事。從現在開始，你每天可以發起兩次提名，每次投票時可以投兩票。",
     "setup": false,
@@ -820,7 +820,7 @@
   },
   {
     "name": "唱詩男孩",
-    "id": "T042",
+    "id": "townsfolk042",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/f/f3/Choirboy.png/300px-Choirboy.png",
     "ability": "如果惡魔殺死了國王，你會得知哪名玩家是惡魔。[+國王]",
     "setup": true,
@@ -838,7 +838,7 @@
   },
   {
     "name": "傳教士",
-    "id": "T043",
+    "id": "townsfolk043",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/4/44/Preacher.png/200px-Preacher.png",
     "ability": "每個夜晚，你要選擇一名玩家 ：如果選中了爪牙，他會得知被傳教土選中。所有被你選中的爪牙失去能力。",
     "setup": false,
@@ -861,7 +861,7 @@
   },
   {
     "name": "村夫",
-    "id": "T044",
+    "id": "townsfolk044",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/7/78/Villageidiot.png/200px-Villageidiot.png",
     "ability": "每個夜晚，你要選擇一名玩家 ：你會得知他的陣營。[+0~2村夫，復數村夫中有一人醉酒]",
     "setup": true,
@@ -881,7 +881,7 @@
   },
   {
     "name": "工程師",
-    "id": "T045",
+    "id": "townsfolk045",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/d/d8/Engineer.png/200px-Engineer.png",
     "ability": "每局遊戲限一次，在夜晚時，你可以選擇讓惡魔變成你選擇的惡魔角色，或讓所有爪牙變成你選擇的爪牙角色。",
     "setup": false,
@@ -901,7 +901,7 @@
   },
   {
     "name": "貴族",
-    "id": "T046",
+    "id": "townsfolk046",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/5/59/Noble.png/200px-Noble.png",
     "ability": "在你的首個夜晚，你會得知三名玩家 ：其中有且只有一名玩家是邪惡的。",
     "setup": false,
@@ -923,7 +923,7 @@
   },
   {
     "name": "公主",
-    "id": "T047",
+    "id": "townsfolk047",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/f/f2/Princess.png/300px-Princess.png",
     "ability": "在你的首個白天，如果你提名並處決了一名玩家，當晚惡魔不會造成傷亡。",
     "setup": false,
@@ -943,7 +943,7 @@
   },
   {
     "name": "國王",
-    "id": "T048",
+    "id": "townsfolk048",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/1/1d/King.png/300px-King.png",
     "ability": "每個夜晚，如果死亡的玩家數量大於或等於存活的玩家數量，你會得知一個存活的角色。惡魔知道你是國王。",
     "setup": false,
@@ -961,7 +961,7 @@
   },
   {
     "name": "將軍",
-    "id": "T049",
+    "id": "townsfolk049",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/6/6d/General.png/200px-General.png",
     "ability": "每個夜晚，你會得知說書人認為哪個陣營當前更有優勢(善良/邪惡/均勢)。",
     "setup": false,
@@ -979,7 +979,7 @@
   },
   {
     "name": "煉金術士",
-    "id": "T050",
+    "id": "townsfolk050",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/5/5b/Alchemist.png/200px-Alchemist.png",
     "ability": "你擁有一個爪牙角色的能力。當你使用能力時，說書人可能會要求你更換選擇。",
     "setup": false,
@@ -999,7 +999,7 @@
   },
   {
     "name": "魔術師",
-    "id": "T051",
+    "id": "townsfolk051",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/c/ca/Magician.png/200px-Magician.png",
     "ability": "惡魔會以為你是爪牙。爪牙會以為你是惡魔。",
     "setup": false,
@@ -1017,7 +1017,7 @@
   },
   {
     "name": "農夫",
-    "id": "T052",
+    "id": "townsfolk052",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/3/3d/Farmer.png/200px-Farmer.png",
     "ability": "當你在夜晚死亡時，一名存活的善良玩家會變成農夫。",
     "setup": false,
@@ -1035,7 +1035,7 @@
   },
   {
     "name": "女祭司",
-    "id": "T053",
+    "id": "townsfolk053",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/8/86/Highpriestess.png/200px-Highpriestess.png",
     "ability": "每個夜晚，你會得知一名說書人認為你最應該與其交流的玩家。",
     "setup": false,
@@ -1053,7 +1053,7 @@
   },
   {
     "name": "氣球駕駛員",
-    "id": "T054",
+    "id": "townsfolk054",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/3/35/Balloonist.png/200px-Balloonist.png",
     "ability": "每個夜晚，你會得知一名與上個夜晚得知的玩家角色類型不同的玩家。[+0~1外來者]",
     "setup": true,
@@ -1073,7 +1073,7 @@
   },
   {
     "name": "騎士",
-    "id": "T055",
+    "id": "townsfolk055",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/6/6b/Knight.png/300px-Knight.png",
     "ability": "在你的首個夜晚，你會得知兩名非惡魔玩家。",
     "setup": false,
@@ -1094,7 +1094,7 @@
   },
   {
     "name": "賞金獵人",
-    "id": "T056",
+    "id": "townsfolk056",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/e/ee/Bountyhunter.png/200px-Bountyhunter.png",
     "ability": "在你的首個夜晚，你會得知一名邪惡玩家。每當你得知的玩家死亡，你會在當晚得知另一名邪惡玩家。[會有一名鎮民轉變為邪惡陣營]",
     "setup": true,
@@ -1114,7 +1114,7 @@
   },
   {
     "name": "失憶者",
-    "id": "T057",
+    "id": "townsfolk057",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/5/55/Amnesiac.png/200px-Amnesiac.png",
     "ability": "你不知道你的能力是什麽。每個白天你可以找說書人猜測一次，你會得知你的猜測有多準確。",
     "setup": false,
@@ -1134,7 +1134,7 @@
   },
   {
     "name": "食人族",
-    "id": "T058",
+    "id": "townsfolk058",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/e/ed/Cannibal.png/200px-Cannibal.png",
     "ability": "你擁有上個死於處決的玩家的能力。如果該玩家屬於邪惡陣營，你中毒直到下個善良玩家死於處決。",
     "setup": false,
@@ -1155,7 +1155,7 @@
   },
   {
     "name": "事務官",
-    "id": "T059",
+    "id": "townsfolk059",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/e/ee/Steward.png/200px-Steward.png",
     "ability": "在你的首個夜晚，你會得知一名善良玩家。",
     "setup": false,
@@ -1175,7 +1175,7 @@
   },
   {
     "name": "守夜人",
-    "id": "T060",
+    "id": "townsfolk060",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/3/3f/Nightwatchman.png/200px-Nightwatchman.png",
     "ability": "每局遊戲限一次，在夜晚時，你可以選擇一名玩家：他會得知你是守夜人。",
     "setup": false,
@@ -1195,7 +1195,7 @@
   },
   {
     "name": "無神論者",
-    "id": "T061",
+    "id": "townsfolk061",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/d/d7/Atheist.png/200px-Atheist.png",
     "ability": "說書人可以打破遊戲規則，如果說書人被處決，善良陣營獲勝，即使你已死亡。[無邪惡角色在場]",
     "setup": true,
@@ -1213,7 +1213,7 @@
   },
   {
     "name": "戲法師",
-    "id": "T062",
+    "id": "townsfolk062",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/d/d6/Alsaahir.png/200px-Alsaahir.png",
     "ability": "每個白天，你可以公開進行一次誰是爪牙，誰是惡魔的猜測。如果你猜對，善良陣營獲勝。",
     "setup": false,
@@ -1231,7 +1231,7 @@
   },
   {
     "name": "小精靈",
-    "id": "T063",
+    "id": "townsfolk063",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/2/22/Pixie.png/200px-Pixie.png",
     "ability": "在你的首個夜晚，你會得知一個在場的鎮民角色。如果你＂瘋狂＂地證明你是該角色，當他死亡時你獲得該角色的能力。",
     "setup": false,
@@ -1252,7 +1252,7 @@
   },
   {
     "name": "修行者",
-    "id": "T064",
+    "id": "townsfolk064",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/3/3e/Shugenja.png/200px-Shugenja.png",
     "ability": "在你的首個夜晚，你會得知距離最近的邪惡玩家位於你的順時針還是逆時針方向。如果兩側的邪惡玩家與你距離相等，你得知的信息由說書人決定。",
     "setup": false,
@@ -1270,7 +1270,7 @@
   },
   {
     "name": "巡山人",
-    "id": "T065",
+    "id": "townsfolk065",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/7/75/Huntsman.png/200px-Huntsman.png",
     "ability": "每局遊戲限一次，在夜晚時，你可以選擇一名存活的玩家：如果你選中了落難少女，她會變成一個不在場的鎮民角色。[+落難少女]",
     "setup": true,
@@ -1290,7 +1290,7 @@
   },
   {
     "name": "異教領袖",
-    "id": "T066",
+    "id": "townsfolk066",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/e/e1/Cultleader.png/300px-Cultleader.png",
     "ability": "每個夜晚，你會轉變為與你鄰近的一名存活的玩家的陣營。每個白天，你可以提議所有玩家加入你的教派，如果所有善良玩家同意加入，你的陣營獲勝。",
     "setup": false,
@@ -1308,7 +1308,7 @@
   },
   {
     "name": "罌粟種植者",
-    "id": "T067",
+    "id": "townsfolk067",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/4/42/Poppygrower.png/200px-Poppygrower.png",
     "ability": "爪牙和惡魔互相不認識。如果你死亡，當晚他們會互相認識。",
     "setup": false,
@@ -1328,7 +1328,7 @@
   },
   {
     "name": "漁夫",
-    "id": "T068",
+    "id": "townsfolk068",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/f/f0/Fisherman.png/200px-Fisherman.png",
     "ability": "每局遊戲限一次，在白天時，你可以讓說書人給你一些能幫助你的陣營獲勝的建議。",
     "setup": false,
@@ -1348,7 +1348,7 @@
   },
   {
     "name": "雜技演員",
-    "id": "T069",
+    "id": "townsfolk069",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/8/8f/Acrobat.png/200px-Acrobat.png",
     "ability": "每個夜晚*，你要選擇一名玩家：如果當晚他醉酒或中毒，你死亡。",
     "setup": false,
@@ -1369,7 +1369,7 @@
   },
   {
     "name": "半仙",
-    "id": "T070",
+    "id": "townsfolk070",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/b/b7/Banxian.png/200px-Banxian.png",
     "ability": "任何在夜晚使用自身能力選擇你的其他玩家，會改為選中另一名邪惡玩家作為替代。",
     "setup": false,
@@ -1387,7 +1387,7 @@
   },
   {
     "name": "變臉師",
-    "id": "T071",
+    "id": "townsfolk071",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/4/49/Bianlianshi.png/300px-Bianlianshi.png",
     "ability": "每個白天，如果你＂瘋狂＂地證明自己是一個善良角色(與之前不同)，你可能會在當晚獲得那個角色的能力，直到下個黃昏。",
     "setup": false,
@@ -1407,7 +1407,7 @@
   },
   {
     "name": "打更人",
-    "id": "T072",
+    "id": "townsfolk072",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/d/db/Dagengren.png/300px-Dagengren.png",
     "ability": "每個夜晚*，你要猜測今晚首個死亡的玩家與你的距離。如果你猜測正確，則除你以外的所有玩家今晚不會死亡，但你可能會死亡。",
     "setup": false,
@@ -1428,7 +1428,7 @@
   },
   {
     "name": "店小二",
-    "id": "T073",
+    "id": "townsfolk073",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/8/8d/Dianxiaoer.png/200px-Dianxiaoer.png",
     "ability": "在你的首個夜晚，你會得知兩名善良玩家。他們之中會有一人醉酒，即使你已死亡。",
     "setup": false,
@@ -1449,7 +1449,7 @@
   },
   {
     "name": "歌伶",
-    "id": "T074",
+    "id": "townsfolk074",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/5/54/Geling.png/200px-Geling.png",
     "ability": "每局遊戲限一次，在白天時，你可以提議所有玩家觀看你的演出，並從同意參加的玩家中選擇你的觀眾。如果惡魔成為了觀眾，你會在當晚死亡。",
     "setup": false,
@@ -1470,7 +1470,7 @@
   },
   {
     "name": "和尚",
-    "id": "T075",
+    "id": "townsfolk075",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/a/ae/Heshang.png/300px-Heshang.png",
     "ability": "每個夜晚，當有邪惡玩家的能力首次選擇或影響與你鄰近的存活玩家時，改為此次能力不生效並持續至下個黎明，且你會得知你的能力被觸發。",
     "setup": false,
@@ -1490,7 +1490,7 @@
   },
   {
     "name": "錦衣衛",
-    "id": "T076",
+    "id": "townsfolk076",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/3/38/Jinyiwei.png/200px-Jinyiwei.png",
     "ability": "每個夜晚*，你要選擇一名玩家：如果他在下個黃昏前死亡，你代替他死亡。",
     "setup": false,
@@ -1510,7 +1510,7 @@
   },
   {
     "name": "郎中",
-    "id": "T077",
+    "id": "townsfolk077",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/e/eb/Langzhong.png/300px-Langzhong.png",
     "ability": "每個夜晚，你要選擇一名除你以外玩家：你會得知一個與他能力相關的詞語。",
     "setup": false,
@@ -1528,7 +1528,7 @@
   },
   {
     "name": "欽天監",
-    "id": "T078",
+    "id": "townsfolk078",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/1/13/Qintianjian.png/300px-Qintianjian.png",
     "ability": "在你的首個夜晚， 你會得知離你最近的邪惡玩家位於你的哪一側(左/右/相同)。如果與你鄰近的玩家中有邪惡陣營，你會得知錯誤信息作為替代。",
     "setup": false,
@@ -1546,7 +1546,7 @@
   },
   {
     "name": "悟道者",
-    "id": "T079",
+    "id": "townsfolk079",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/a/a7/Wudaozhe.png/200px-Wudaozhe.png",
     "ability": "你以為你是一個外來者，但你實際上不是。如果有邪惡玩家的能力選擇或影響了你，你會立即變成一個不在場的鎮民角色。",
     "setup": true,
@@ -1566,7 +1566,7 @@
   },
   {
     "name": "戲子",
-    "id": "T080",
+    "id": "townsfolk080",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/1/13/Xizi.png/200px-Xizi.png",
     "ability": "所有戲子互相認識。不論在場的戲子數量多少或存活與否，勝負結果會被對調。[所有善良玩家都是戲子]",
     "setup": true,
@@ -1584,7 +1584,7 @@
   },
   {
     "name": "熊孩子",
-    "id": "T081",
+    "id": "townsfolk081",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/7/7a/Xionghaizi.png/300px-Xionghaizi.png",
     "ability": "每個夜晚，你要選擇一個鎮民角色：他的能力會產生錯誤信息，直到下個黃昏。",
     "setup": false,
@@ -1604,7 +1604,7 @@
   },
   {
     "name": "陰陽師",
-    "id": "T082",
+    "id": "townsfolk082",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/d/d2/Yinyangshi.png/300px-Yinyangshi.png",
     "ability": "在你的首個夜晚，你會得知兩個善良角色和兩個邪惡角色，其中有且只有兩個角色在場。",
     "setup": false,
@@ -1631,7 +1631,7 @@
   },
   {
     "name": "秉筆",
-    "id": "T083",
+    "id": "townsfolk083",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/2/2b/Bingbi.png/300px-Bingbi.png",
     "ability": "如果你在白天死亡，當晚你會得知一名善良玩家。如果你在夜晚死亡，當晚你會得知一名邪惡玩家。",
     "setup": false,
@@ -1651,7 +1651,7 @@
   },
   {
     "name": "寵妃",
-    "id": "T084",
+    "id": "townsfolk084",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/3/30/Chongfei.png/75px-Chongfei.png",
     "ability": "每局遊戲限一次，說書人會在關於你的事情上打破規則。隨後，你會秘密得知說書人為此做了什麽。",
     "setup": false,
@@ -1671,7 +1671,7 @@
   },
   {
     "name": "刀客",
-    "id": "T085",
+    "id": "townsfolk085",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/4/44/Daoke.png/200px-Daoke.png",
     "ability": "在你的首個夜晚，你會得知一個在場的爪牙角色。每局遊戲限一次，你可以在白天公開選擇一名玩家如果他是你得知的角色，他死亡。",
     "setup": false,
@@ -1692,7 +1692,7 @@
   },
   {
     "name": "道士",
-    "id": "T086",
+    "id": "townsfolk086",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/0/07/Daoshi.png/300px-Daoshi.png",
     "ability": "每個夜晚*，你要選擇一名玩家 ：如果你選中了惡魔，你死亡，然後他醉酒直到下個黎明。",
     "setup": false,
@@ -1713,7 +1713,7 @@
   },
   {
     "name": "方士",
-    "id": "T087",
+    "id": "townsfolk087",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/f/f5/Fangshi.png/300px-Fangshi.png",
     "ability": "在你的首個夜晚，你要選擇一個數字。在該數字對應的那一個夜晚，你會得知對應數量的在場角色。",
     "setup": false,
@@ -1733,7 +1733,7 @@
   },
   {
     "name": "風水師",
-    "id": "T088",
+    "id": "townsfolk088",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/7/73/Fengshuishi.png/75px-Fengshuishi.png",
     "ability": "在你的首個夜晚，你會得知一名玩家的角色類型。每個夜晚*，你會從他的順時針方向得知下一名非旅行者玩家的角色類型。",
     "setup": false,
@@ -1753,7 +1753,7 @@
   },
   {
     "name": "狸貓",
-    "id": "T089",
+    "id": "townsfolk089",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/a/a6/Limao.png/300px-Limao.png",
     "ability": "每個夜晚*，你要選擇一名玩家：如果他是善良角色且當晚被邪惡角色殺死，你和他交換角色。",
     "setup": false,
@@ -1773,7 +1773,7 @@
   },
   {
     "name": "掮客",
-    "id": "T090",
+    "id": "townsfolk090",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/5/5b/Qianke.png/300px-Qianke.png",
     "ability": "每個夜晚，你要選擇兩名存活玩家：如果他們陣營相同，今晚任何玩家使用自身能力選擇他們之一作為目標時，改為選中另一名玩家。",
     "setup": false,
@@ -1793,7 +1793,7 @@
   },
   {
     "name": "染坊坊主",
-    "id": "T091",
+    "id": "townsfolk091",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/0/05/Ranfangfangzhu.png/75px-Ranfangfangzhu.png",
     "ability": "如果你在夜晚死亡，惡魔的能力變成＂每個夜晚*，可能會有一名玩家死亡。＂",
     "setup": false,
@@ -1813,7 +1813,7 @@
   },
   {
     "name": "史官",
-    "id": "T092",
+    "id": "townsfolk092",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/8/8a/Shiguan.png/200px-Shiguan.png",
     "ability": "每個夜晚*，如果今天白天有玩家死於處決，你會得知存活鎮民的數量。",
     "setup": false,
@@ -1833,7 +1833,7 @@
   },
   {
     "name": "提刑官",
-    "id": "T093",
+    "id": "townsfolk093",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/1/15/Tixingguan.png/200px-Tixingguan.png",
     "ability": "在你首次提名玩家後，你會在當晚得知他的角色。外來者會被你的能力當作爪牙或惡魔角色。",
     "setup": false,
@@ -1854,7 +1854,7 @@
   },
   {
     "name": "巡察",
-    "id": "T094",
+    "id": "townsfolk094",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/c/cf/Xuncha.png/200px-Xuncha.png",
     "ability": "每個夜晚*，你要選擇兩個善良角色：如果他們都存活，他們當晚不會死亡。",
     "setup": false,
@@ -1875,7 +1875,7 @@
   },
   {
     "name": "偃師",
-    "id": "T095",
+    "id": "townsfolk095",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/d/d4/Yanshi.png/75px-Yanshi.png",
     "ability": "如果你在夜晚死亡，你與一名存活的爪牙交換角色。",
     "setup": false,
@@ -1893,7 +1893,7 @@
   },
   {
     "name": "驛使",
-    "id": "T096",
+    "id": "townsfolk096",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/6/64/Yishi.png/75px-Yishi.png",
     "ability": "每個白天，你可以公開聲明一個角色。在當晚，你會得知該角色是否在場。如果你因此得知了否，你失去此能力。",
     "setup": false,
@@ -1914,7 +1914,7 @@
   },
   {
     "name": "引路人",
-    "id": "T097",
+    "id": "townsfolk097",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/0/03/Yinluren.png/300px-Yinluren.png",
     "ability": "每個夜晚，你要選擇至多三名玩家：你會得知今晚是否有邪惡玩家的能力選擇或影響了他們之中的玩家。",
     "setup": false,
@@ -1932,7 +1932,7 @@
   },
   {
     "name": "俑匠",
-    "id": "T098",
+    "id": "townsfolk098",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/4/47/Yongjiang.png/75px-Yongjiang.png",
     "ability": "如果已死亡玩家中沒有邪惡玩家，你只會死於處決。",
     "setup": false,
@@ -1950,7 +1950,7 @@
   },
   {
     "name": "鴆",
-    "id": "T099",
+    "id": "townsfolk099",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/4/43/Zhen.png/200px-Zhen.png",
     "ability": "每局遊戲限一次，在夜晚時，你可以選擇一個鎮民角色：如果他在場，他醉酒並死亡。",
     "setup": false,
@@ -1971,7 +1971,7 @@
   },
   {
     "name": "知府",
-    "id": "T100",
+    "id": "townsfolk100",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/c/c5/Zhifu.png/200px-Zhifu.png",
     "ability": "每個夜晚*，你會得知今天是否有非鎮民且非旅行者的玩家死亡。",
     "setup": false,
@@ -1991,7 +1991,7 @@
   },
   {
     "name": "戲子(改)",
-    "id": "T101",
+    "id": "townsfolk101",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/1/13/Xizi.png/200px-Xizi.png",
     "ability": "其他善良玩家醉酒(旅行者除外)，你們互相認識且無法轉變陣營，對調勝負結果，即使你失去能力。",
     "setup": false,
@@ -2011,7 +2011,7 @@
   },
   {
     "name": "管家",
-    "id": "O01",
+    "id": "outsider01",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/8/82/Butler.png/200px-Butler.png",
     "ability": "每個夜晚，你要選擇除你以外的一名玩家：明天白天，只有他投票時你才能投票。",
     "setup": false,
@@ -2031,7 +2031,7 @@
   },
   {
     "name": "酒鬼",
-    "id": "O02",
+    "id": "outsider02",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/1/14/Drunk.png/200px-Drunk.png",
     "ability": "你不知道你是酒鬼。你以為你是一個鎮民角色，但其實你不是。",
     "setup": true,
@@ -2051,7 +2051,7 @@
   },
   {
     "name": "陌客",
-    "id": "O03",
+    "id": "outsider03",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/0/02/Recluse.png/200px-Recluse.png",
     "ability": "你可能會被當作邪惡陣營、爪牙角色或惡魔角色，即使你已死亡。",
     "setup": false,
@@ -2069,7 +2069,7 @@
   },
   {
     "name": "聖徒",
-    "id": "O04",
+    "id": "outsider04",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/b/bc/Saint.png/200px-Saint.png",
     "ability": "如果你死於處決，你的陣營落敗。",
     "setup": false,
@@ -2087,7 +2087,7 @@
   },
   {
     "name": "修補匠",
-    "id": "O05",
+    "id": "outsider05",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/e/ec/Tinker.png/200px-Tinker.png",
     "ability": "你隨時可能死亡。",
     "setup": false,
@@ -2107,7 +2107,7 @@
   },
   {
     "name": "月之子",
-    "id": "O06",
+    "id": "outsider06",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/7/7d/Moonchild.png/200px-Moonchild.png",
     "ability": "當你得知你死亡時，你要公開選擇一名存活的玩家。如果他是善良的，在當晚他會死亡。",
     "setup": false,
@@ -2127,7 +2127,7 @@
   },
   {
     "name": "莽夫",
-    "id": "O07",
+    "id": "outsider07",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/c/cd/Goon.png/300px-Goon.png",
     "ability": "每個夜晚，首個使用其自身能力選擇了你的玩家會醉酒直到下個黃昏。你會轉變為他的陣營。",
     "setup": false,
@@ -2147,7 +2147,7 @@
   },
   {
     "name": "瘋子",
-    "id": "O08",
+    "id": "outsider08",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/8/89/Lunatic.png/200px-Lunatic.png",
     "ability": "你以為你是一個惡魔，但其實你不是。惡魔知道你是瘋子以及你在每個夜晚選擇了哪些玩家",
     "setup": true,
@@ -2169,7 +2169,7 @@
   },
   {
     "name": "畸形秀演員",
-    "id": "O09",
+    "id": "outsider09",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/5/58/Mutant.png/200px-Mutant.png",
     "ability": "如果你＂瘋狂＂地證明自己是外來者，你可能被處決。",
     "setup": false,
@@ -2187,7 +2187,7 @@
   },
   {
     "name": "心上人",
-    "id": "O10",
+    "id": "outsider10",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/c/c2/Sweetheart.png/200px-Sweetheart.png",
     "ability": "當你死亡時，會有一名玩家開始醉酒。",
     "setup": false,
@@ -2207,7 +2207,7 @@
   },
   {
     "name": "理髮師",
-    "id": "O11",
+    "id": "outsider11",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/3/3a/Barber.png/200px-Barber.png",
     "ability": "如果你死亡，在當晚惡魔可以選擇兩名玩家(不能選擇其他惡魔)交換角色。",
     "setup": false,
@@ -2227,7 +2227,7 @@
   },
   {
     "name": "呆瓜",
-    "id": "O12",
+    "id": "outsider12",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/f/f6/Klutz.png/200px-Klutz.png",
     "ability": "當你得知你死亡時，你要公開選擇一名存活的玩家：如果他是邪惡的，你的陣營落敗。",
     "setup": false,
@@ -2245,7 +2245,7 @@
   },
   {
     "name": "告密者",
-    "id": "O13",
+    "id": "outsider13",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/0/0c/Snitch.png/200px-Snitch.png",
     "ability": "爪牙會在其首個夜晚得知三個不在場的善良角色。",
     "setup": false,
@@ -2263,7 +2263,7 @@
   },
   {
     "name": "解謎大師",
-    "id": "O14",
+    "id": "outsider14",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/1/1b/Puzzlemaster.png/200px-Puzzlemaster.png",
     "ability": "一名玩家醉酒，即使你已死亡。每局遊戲限一次，你可以猜測誰是那個醉酒的玩家，如果猜對了，你會得知誰是惡魔，但如果猜錯了，你會得知錯誤的＂誰是惡魔＂信息。",
     "setup": false,
@@ -2284,7 +2284,7 @@
   },
   {
     "name": "狂熱者",
-    "id": "O15",
+    "id": "outsider15",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/1/1a/Zealot.png/300px-Zealot.png",
     "ability": "如果有大於等於五名玩家存活，你必須在所有提名中投票。",
     "setup": false,
@@ -2302,7 +2302,7 @@
   },
   {
     "name": "落難少女",
-    "id": "O16",
+    "id": "outsider16",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/b/b6/Damsel.png/200px-Damsel.png",
     "ability": "所有爪牙都知道落難少女在場。每局遊戲限一次，任意爪牙可以公開猜測你是落難少女，如果猜對，你的陣營落敗。",
     "setup": false,
@@ -2322,7 +2322,7 @@
   },
   {
     "name": "帽匠",
-    "id": "O17",
+    "id": "outsider17",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/e/ee/Hatter.png/200px-Hatter.png",
     "ability": "如果你死亡，當晚爪牙和惡魔玩家可以選擇變成新的爪牙和惡魔角色。",
     "setup": false,
@@ -2342,7 +2342,7 @@
   },
   {
     "name": "魔像",
-    "id": "O18",
+    "id": "outsider18",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/c/ce/Golem.png/200px-Golem.png",
     "ability": "每局遊戲你只能發起提名一次。當你發起提名時，如果被你提名的玩家不是惡魔，他死亡。",
     "setup": false,
@@ -2362,7 +2362,7 @@
   },
   {
     "name": "食人魔",
-    "id": "O19",
+    "id": "outsider19",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/c/c5/Ogre.png/200px-Ogre.png",
     "ability": "在你的首個夜晚，你要選擇除你以外的一名玩家：你轉變為他的陣營，即使你已醉酒或中毒，但你不知道你轉變後的陣營。",
     "setup": false,
@@ -2382,7 +2382,7 @@
   },
   {
     "name": "瘟疫醫生",
-    "id": "O20",
+    "id": "outsider20",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/2/2d/Plaguedoctor.png/200px-Plaguedoctor.png",
     "ability": "當你死亡時，說書人會獲得一個爪牙能力。",
     "setup": false,
@@ -2402,7 +2402,7 @@
   },
   {
     "name": "異端分子",
-    "id": "O21",
+    "id": "outsider21",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/8/81/Heretic.png/200px-Heretic.png",
     "ability": "對調勝負結果，即使你已死亡。",
     "setup": false,
@@ -2420,7 +2420,7 @@
   },
   {
     "name": "隱士",
-    "id": "O22",
+    "id": "outsider22",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/1/1e/Hermit.png/300px-Hermit.png",
     "ability": "你擁有所有外來者能力[-0~1外來者]",
     "setup": false,
@@ -2442,7 +2442,7 @@
   },
   {
     "name": "政客",
-    "id": "O23",
+    "id": "outsider23",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/9/91/Politician.png/200px-Politician.png",
     "ability": "如果你是對你的陣營落敗負最大責任的人，你轉變陣營並獲勝，即使你已死亡。",
     "setup": false,
@@ -2460,7 +2460,7 @@
   },
   {
     "name": "逆臣",
-    "id": "O24",
+    "id": "outsider24",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/5/51/Nichen.png/300px-Nichen.png",
     "ability": "在你的首個夜晚，你要選擇除你以外的一名玩家：如果他先死於處決，你轉變為邪惡；如果你先死於處決，他轉變為邪惡。",
     "setup": false,
@@ -2480,7 +2480,7 @@
   },
   {
     "name": "煞星",
-    "id": "O25",
+    "id": "outsider25",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/b/b9/Shaxing.png/200px-Shaxing.png",
     "ability": "如果你死亡，當晚與你鄰近的存活玩家之一可能會死亡。",
     "setup": false,
@@ -2500,7 +2500,7 @@
   },
   {
     "name": "使節",
-    "id": "O26",
+    "id": "outsider26",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/6/67/Shijie.png/300px-Shijie.png",
     "ability": "每個夜晚限一次，一名玩家在使用自身能力選擇邪惡玩家時會改為選中你，即使你已死亡。",
     "setup": false,
@@ -2520,7 +2520,7 @@
   },
   {
     "name": "書生",
-    "id": "O27",
+    "id": "outsider27",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/d/db/Shusheng.png/300px-Shusheng.png",
     "ability": "惡魔知道書生在場。每局遊戲限一次，惡魔可以拜訪說書人並猜測你是書生。如果惡魔猜測正確，即使你已死亡，當晚該惡魔可以選擇一名玩家：他死亡。",
     "setup": false,
@@ -2541,7 +2541,7 @@
   },
   {
     "name": "酒保",
-    "id": "O28",
+    "id": "outsider28",
     "image": "https://i.postimg.cc/MHjx31Sb/image.png",
     "ability": "與你鄰近的善良玩家之一醉酒，即使你已死亡。",
     "setup": false,
@@ -2561,7 +2561,7 @@
   },
   {
     "name": "入殮師",
-    "id": "O29",
+    "id": "outsider29",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/9/9b/Rulianshi.png/200px-Rulianshi.png",
     "ability": "如果你提名了惡魔且他死於這次處決，你會變成邪惡的惡魔。當剩餘存活玩家小於等於四人時(旅行者除外)，你失去能力。",
     "setup": false,
@@ -2581,7 +2581,7 @@
   },
   {
     "name": "書僮",
-    "id": "O30",
+    "id": "outsider30",
     "image": "https://i.postimg.cc/8zfywVDR/image.png",
     "ability": "在你的首個夜晚，你要選擇除你以外的一名玩家：除首個夜晚以外，當他被邪惡玩家的能力選擇或影響時，你會在當晚死亡。",
     "setup": false,
@@ -2602,7 +2602,7 @@
   },
   {
     "name": "投毒者",
-    "id": "M01",
+    "id": "minion01",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/7/74/Poisoner.png/200px-Poisoner.png",
     "ability": "每個夜晚，你要選擇一名玩家：他在當晚和明天白天中毒。",
     "setup": false,
@@ -2622,7 +2622,7 @@
   },
   {
     "name": "間諜",
-    "id": "M02",
+    "id": "minion02",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/3/36/Spy.png/200px-Spy.png",
     "ability": "每個夜晚，你能查看魔典。你可能會被當作善良陣營、鎮民角色或外來者角色，即使你已死亡。",
     "setup": false,
@@ -2640,7 +2640,7 @@
   },
   {
     "name": "紅唇女郎",
-    "id": "M03",
+    "id": "minion03",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/a/ac/Scarletwoman.png/200px-Scarletwoman.png",
     "ability": "如果大於等於五名玩家存活時(旅行者不計算在內)惡魔死亡，你變成那個惡魔。",
     "setup": false,
@@ -2660,7 +2660,7 @@
   },
   {
     "name": "男爵",
-    "id": "M04",
+    "id": "minion04",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/4/40/Baron.png/200px-Baron.png",
     "ability": "會有額外的外來者在場。[+2外來者]",
     "setup": true,
@@ -2678,7 +2678,7 @@
   },
   {
     "name": "教父",
-    "id": "M05",
+    "id": "minion05",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/d/dd/Godfather.png/200px-Godfather.png",
     "ability": "在你的首個夜晚，你會得知有哪些外來者角色在場。如果有外來者在白天死亡，你會在當晚被喚醒並且你要選擇一名玩家：他死亡。[-1或+1外來者]",
     "setup": true,
@@ -2699,7 +2699,7 @@
   },
   {
     "name": "魔鬼代言人",
-    "id": "M06",
+    "id": "minion06",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/5/5d/Devilsadvocate.png/200px-Devilsadvocate.png",
     "ability": "每個夜晚，你要選擇一名存活的玩家(與上個夜晚不同)：如果明天白天他被處決，他不會死亡。",
     "setup": false,
@@ -2719,7 +2719,7 @@
   },
   {
     "name": "刺客",
-    "id": "M07",
+    "id": "minion07",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/6/69/Assassin.png/200px-Assassin.png",
     "ability": "每局遊戲限一次，在夜晚時*，你可以選擇一名玩家：他死亡，即使因為任何原因讓他不會死亡。",
     "setup": false,
@@ -2740,7 +2740,7 @@
   },
   {
     "name": "主謀",
-    "id": "M08",
+    "id": "minion08",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/1/19/Mastermind.png/200px-Mastermind.png",
     "ability": "如果惡魔因為死於處決而因此導致遊戲結束時，再額外進行一個夜晚和一個白天。在那個白天如果有玩家被處決，他的陣營落敗。",
     "setup": false,
@@ -2758,7 +2758,7 @@
   },
   {
     "name": "鏡像雙子",
-    "id": "M09",
+    "id": "minion09",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/8/8e/Eviltwin.png/200px-Eviltwin.png",
     "ability": "你與一名對立陣營的玩家互相知道對方是什麼角色。如果其中善良玩家被處決，邪惡陣營獲勝。如果你們都存活，善良陣營無法獲勝。",
     "setup": false,
@@ -2778,7 +2778,7 @@
   },
   {
     "name": "女巫",
-    "id": "M10",
+    "id": "minion10",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/e/e6/Witch.png/200px-Witch.png",
     "ability": "每個夜晚，你要選擇一名玩家：如果他明天白天發起提名，他死亡。如果只有三名存活的玩家，你失去此能力。",
     "setup": false,
@@ -2798,7 +2798,7 @@
   },
   {
     "name": "洗腦師",
-    "id": "M11",
+    "id": "minion11",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/4/4d/Cerenovus.png/200px-Cerenovus.png",
     "ability": "每個夜晚，你要選擇一名玩家和一個善良角色。他明天白天和夜晚需要＂瘋狂＂地證明自己是這個角色，不然他可能被處決。",
     "setup": false,
@@ -2818,7 +2818,7 @@
   },
   {
     "name": "麻臉巫婆",
-    "id": "M12",
+    "id": "minion12",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/d/de/Pithag.png/200px-Pithag.png",
     "ability": "每個夜晚*，你要選擇一名玩家和一個角色，如果該角色不在場，他變成該角色。如果因此創造了一個惡魔，當晚的死亡由說書人決定。",
     "setup": false,
@@ -2836,7 +2836,7 @@
   },
   {
     "name": "哥布林",
-    "id": "M13",
+    "id": "minion13",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/d/d2/Goblin.png/200px-Goblin.png",
     "ability": "如果你在被提名後公開聲明自己是哥布林且在那個白天被處決，你的陣營獲勝。",
     "setup": false,
@@ -2856,7 +2856,7 @@
   },
   {
     "name": "寡婦",
-    "id": "M14",
+    "id": "minion14",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/1/1e/Widow.png/200px-Widow.png",
     "ability": "在你的首個夜晚，你能查看魔典並選擇一名玩家：他中毒。隨後，始終會有一名善良玩家知道寡婦在場。",
     "setup": false,
@@ -2883,7 +2883,7 @@
   },
   {
     "name": "街頭風琴手",
-    "id": "M15",
+    "id": "minion15",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/f/ff/Organgrinder.png/200px-Organgrinder.png",
     "ability": "所有玩家在投票時閉眼，且票數會秘密統計。每個夜晚，你要選擇自己是否醉酒，直到你下次選擇。",
     "setup": false,
@@ -2904,7 +2904,7 @@
   },
   {
     "name": "精神病患者",
-    "id": "M16",
+    "id": "minion16",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/6/63/Psychopath.png/200px-Psychopath.png",
     "ability": "每個白天，在提名開始前，你可以公開選擇一名玩家：他死亡。如果你被處決，提名你的玩家需要和你猜拳，只有你輸了你才會死亡。",
     "setup": false,
@@ -2922,7 +2922,7 @@
   },
   {
     "name": "科學怪人",
-    "id": "M17",
+    "id": "minion17",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/f/f1/Boffin.png/200px-Boffin.png",
     "ability": "惡魔擁有一個不在場的善良角色的能力，即使他醉酒或中毒。你和他都知道他獲得了什麽能力。",
     "setup": true,
@@ -2940,7 +2940,7 @@
   },
   {
     "name": "恐懼之靈",
-    "id": "M18",
+    "id": "minion18",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/7/77/Fearmonger.png/300px-Fearmonger.png",
     "ability": "每個夜晚，你要選擇一名玩家：如果你提名他且他被處決，他的陣營落敗。當你首次選擇或更換目標時，所有玩家都會得知你選擇了新的玩家。",
     "setup": false,
@@ -2960,7 +2960,7 @@
   },
   {
     "name": "靈言師",
-    "id": "M19",
+    "id": "minion19",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/1/19/Mezepheles.png/200px-Mezepheles.png",
     "ability": "在你的首個夜晚，你會得知一個關鍵詞。首個說出該關鍵詞的善良玩家會在當晚轉變為邪惡陣營。",
     "setup": false,
@@ -2981,7 +2981,7 @@
   },
   {
     "name": "提線木偶",
-    "id": "M20",
+    "id": "minion20",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/3/3d/Marionette.png/200px-Marionette.png",
     "ability": "你以為你是一個善良角色，但其實你不是。惡魔會知道你是提線木偶。[提線木偶會與惡魔鄰座]",
     "setup": true,
@@ -3001,7 +3001,7 @@
   },
   {
     "name": "亡魂",
-    "id": "M21",
+    "id": "minion21",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/7/7c/Wraith.png/300px-Wraith.png",
     "ability": "你可以在夜晚睜眼。當其他邪惡玩家被喚醒時，你也會被喚醒。",
     "setup": false,
@@ -3019,7 +3019,7 @@
   },
   {
     "name": "維齊爾",
-    "id": "M22",
+    "id": "minion22",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/0/09/Vizier.png/200px-Vizier.png",
     "ability": "所有玩家都知道你是維齊爾。你在白天時不會死亡。如果一次提名中有善良玩家投票，你可以讓被提名者立即被處決。",
     "setup": false,
@@ -3037,7 +3037,7 @@
   },
   {
     "name": "巫師",
-    "id": "M23",
+    "id": "minion23",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/c/c7/Wizard.png/300px-Wizard.png",
     "ability": "每局遊戲限一次，你可以向說書人許願。如果願望被實現，可能會伴隨著代價和線索。",
     "setup": false,
@@ -3057,7 +3057,7 @@
   },
   {
     "name": "限",
-    "id": "M24",
+    "id": "minion24",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/b/b9/Xaan.png/200px-Xaan.png",
     "ability": "在等同初始外來者數量的夜晚，所有鎮民玩家中毒直到下個黃昏。[任意數量外來者]",
     "setup": true,
@@ -3080,7 +3080,7 @@
   },
   {
     "name": "鷹身女妖",
-    "id": "M25",
+    "id": "minion25",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/1/1b/Harpy.png/200px-Harpy.png",
     "ability": "每個夜晚，你要選擇兩名玩家：明天第一名玩家需要＂瘋狂＂地證明第二名玩家是邪惡的，否則他們之中可能會有人死亡。",
     "setup": false,
@@ -3101,7 +3101,7 @@
   },
   {
     "name": "炸彈人",
-    "id": "M26",
+    "id": "minion26",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/b/b0/Boomdandy.png/300px-Boomdandy.png",
     "ability": "如果你被處決，除三名玩家以外的其他所有玩家均會死亡。倒數十聲後，被最多玩家手指指著的玩家死亡。",
     "setup": false,
@@ -3119,7 +3119,7 @@
   },
   {
     "name": "召喚師",
-    "id": "M27",
+    "id": "minion27",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/2/2f/Summoner.png/300px-Summoner.png",
     "ability": "在首個夜晚，你會得知三個偽裝。在第三個夜晚，你要選擇一名玩家：他變成由你選擇的邪惡惡魔。[無惡魔在場]",
     "setup": true,
@@ -3141,7 +3141,7 @@
   },
   {
     "name": "趕屍人",
-    "id": "M28",
+    "id": "minion28",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/7/7f/Ganshiren.png/200px-Ganshiren.png",
     "ability": "與你鄰近的兩名鎮民玩家會在其首次死亡時被當作仍然存活。[-1外來者]",
     "setup": true,
@@ -3162,7 +3162,7 @@
   },
   {
     "name": "狐媚娘",
-    "id": "M29",
+    "id": "minion29",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/9/94/Humeiniang.png/300px-Humeiniang.png",
     "ability": "在你的首個夜晚，你要選擇一名玩家：他會知道狐媚娘在場。如果你死於處決，當晚他轉變為邪惡陣營。",
     "setup": false,
@@ -3182,7 +3182,7 @@
   },
   {
     "name": "禁衛軍",
-    "id": "M30",
+    "id": "minion30",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/5/55/Jinweijun.png/200px-Jinweijun.png",
     "ability": "＂瘋狂＂地想要死亡的玩家可能會立即被處決。",
     "setup": false,
@@ -3200,7 +3200,7 @@
   },
   {
     "name": "養蠱人",
-    "id": "M31",
+    "id": "minion31",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/8/80/Yangguren.png/300px-Yangguren.png",
     "ability": "在你存活時提名你的玩家會在當晚死亡，即使你已死亡。",
     "setup": false,
@@ -3220,7 +3220,7 @@
   },
   {
     "name": "蠱雕",
-    "id": "M32",
+    "id": "minion32",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/5/56/Gudiao.png/75px-Gudiao.png",
     "ability": "每個夜晚，你要選擇左或右：你得知該方向上的的下一名存活善良玩家角色，他中毒且其它善良玩家以為他是邪惡的蠱雕，直到下個黃昏。",
     "setup": false,
@@ -3240,7 +3240,7 @@
   },
   {
     "name": "畫皮",
-    "id": "M33",
+    "id": "minion33",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/5/59/Huapi.png/300px-Huapi.png",
     "ability": "在你的首個夜晚，你要選擇一名存活玩家：他死亡但會被當作存活。當他下一次死亡時，他重生，隨後你重獲能力。",
     "setup": false,
@@ -3261,7 +3261,7 @@
   },
   {
     "name": "禁衛軍(改)",
-    "id": "M34",
+    "id": "minion34",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/5/55/Jinweijun.png/200px-Jinweijun.png",
     "ability": "在你的首個夜晚，你要選擇存活或死亡。＂瘋狂＂地想要這樣做的玩家可能會立即被處決。",
     "setup": false,
@@ -3282,7 +3282,7 @@
   },
   {
     "name": "孟婆",
-    "id": "M35",
+    "id": "minion35",
     "image": "https://i.postimg.cc/Mp6ZnYQs/image.png",
     "ability": "每個夜晚*，你要選擇一名玩家：如果他存活，那麽他要選擇讓自己失去能力，或死亡並保留能力直到下個黃昏。",
     "setup": false,
@@ -3304,7 +3304,7 @@
   },
   {
     "name": "釀酒師",
-    "id": "M36",
+    "id": "minion36",
     "image": "https://i.postimg.cc/4NqPYFtm/image.png",
     "ability": "每個夜晚，你要選擇一個鎮民角色：當他下一次通過自身能力獲取信息時，改為得知你給出的信息。",
     "setup": false,
@@ -3325,7 +3325,7 @@
   },
   {
     "name": "小惡魔",
-    "id": "D01",
+    "id": "demon01",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/b/b3/Imp.png/200px-Imp.png",
     "ability": "每個夜晚*，你要選擇一名玩家：他死亡。如果你以這種方式自殺，一名爪牙會變成小惡魔。",
     "setup": false,
@@ -3345,7 +3345,7 @@
   },
   {
     "name": "僵怖",
-    "id": "D02",
+    "id": "demon02",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/7/7b/Zombuul.png/200px-Zombuul.png",
     "ability": "每個夜晚*，如果今天白天沒有人死亡，你會被喚醒並要選擇一名玩家：他死亡。當你首次死亡後，你仍存活，但會被當作死亡。",
     "setup": false,
@@ -3366,7 +3366,7 @@
   },
   {
     "name": "普卡",
-    "id": "D03",
+    "id": "demon03",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/4/45/Pukka.png/200px-Pukka.png",
     "ability": "每個夜晚，你要選擇一名玩家：他中毒。上個因你的能力中毒的玩家會死亡並回復健康。",
     "setup": false,
@@ -3387,7 +3387,7 @@
   },
   {
     "name": "沙巴洛斯",
-    "id": "D04",
+    "id": "demon04",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/5/5c/Shabaloth.png/200px-Shabaloth.png",
     "ability": "每個夜晚*，你要選擇兩名玩家：他們死亡。你上個夜晚選擇過且當前死亡的玩家之一可能會被你反芻。",
     "setup": false,
@@ -3409,7 +3409,7 @@
   },
   {
     "name": "珀",
-    "id": "D05",
+    "id": "demon05",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/b/bf/Po.png/200px-Po.png",
     "ability": "每個夜晚*，你可以選擇一名玩家：他死亡。如果你上次選擇時沒有選擇任何玩家，當晚你要選擇三名玩家：他們死亡。",
     "setup": false,
@@ -3432,7 +3432,7 @@
   },
   {
     "name": "方古",
-    "id": "D06",
+    "id": "demon06",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/9/97/Fanggu.png/200px-Fanggu.png",
     "ability": "每個夜晚*，你要選擇一名玩家：他死亡。被該能力殺死的外來者改為變成邪惡的方古且你代替他死亡，但每局遊戲僅能成功轉化一次。[+1外來者]",
     "setup": true,
@@ -3453,7 +3453,7 @@
   },
   {
     "name": "亡骨魔",
-    "id": "D07",
+    "id": "demon07",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/f/fc/Vigormortis.png/200px-Vigormortis.png",
     "ability": "每個夜晚*，你要選擇一名玩家：他死亡。被你殺死的爪牙保留他的能力，且與他鄰近的兩名鎮民之一中毒。[-1外來者]",
     "setup": true,
@@ -3479,7 +3479,7 @@
   },
   {
     "name": "諾-達鯴",
-    "id": "D08",
+    "id": "demon08",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/1/16/Nodashii.png/200px-Nodashii.png",
     "ability": "每個夜晚*，你要選擇一名玩家：他死亡。與你鄰近的兩名鎮民中毒。",
     "setup": false,
@@ -3501,7 +3501,7 @@
   },
   {
     "name": "渦流",
-    "id": "D09",
+    "id": "demon09",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/7/78/Vortox.png/200px-Vortox.png",
     "ability": "每個夜晚*，你要選擇一名玩家：他死亡。鎮民玩家的能力都會產生錯誤信息。如果白天沒人被處決，邪惡陣營獲勝。",
     "setup": false,
@@ -3521,7 +3521,7 @@
   },
   {
     "name": "奧赫",
-    "id": "D10",
+    "id": "demon10",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/9/96/Ojo.png/200px-Ojo.png",
     "ability": "每個夜晚*，你要選擇一個角色：他死亡。如果該角色不在場，則由說書人來決定誰會被你殺死。",
     "setup": false,
@@ -3541,7 +3541,7 @@
   },
   {
     "name": "暴亂",
-    "id": "D11",
+    "id": "demon11",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/c/c0/Riot.png/300px-Riot.png",
     "ability": "在第三個白天，所有爪牙會變成暴亂，當天被提名的玩家會立即死亡且必須再次提名一名存活的玩家。",
     "setup": false,
@@ -3563,7 +3563,7 @@
   },
   {
     "name": "堤豐之首",
-    "id": "D12",
+    "id": "demon12",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/1/18/Lordoftyphon.png/200px-Lordoftyphon.png",
     "ability": "每個夜晚*，你要選擇一名玩家：他死亡。[邪惡玩家全部鄰座，你靠近正中，+1爪牙，-或+任意數量外來者]",
     "setup": true,
@@ -3583,7 +3583,7 @@
   },
   {
     "name": "哈迪寂亞",
-    "id": "D13",
+    "id": "demon13",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/0/09/Alhadikhia.png/200px-Alhadikhia.png",
     "ability": "每個夜晚*，你可以選擇三名玩家(所有玩家都會得知你選了誰)：他們分別秘密決定自己的生死，然後如果他們都存活則都死亡。",
     "setup": false,
@@ -3611,7 +3611,7 @@
   },
   {
     "name": "軍團",
-    "id": "D14",
+    "id": "demon14",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/2/25/Legion.png/200px-Legion.png",
     "ability": "每個夜晚*，可能有一名玩家死亡。如果一項提名只有邪惡玩家投票，投票無效。你也會被當作是爪牙。[半數以上玩家為軍團]",
     "setup": true,
@@ -3632,7 +3632,7 @@
   },
   {
     "name": "卡扎力",
-    "id": "D15",
+    "id": "demon15",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/4/46/Kazali.png/200px-Kazali.png",
     "ability": "每個夜晚*，你要選擇一名玩家：他死亡。[由你決定誰是什麽爪牙，-或+任意數量外來者]",
     "setup": true,
@@ -3652,7 +3652,7 @@
   },
   {
     "name": "利維坦",
-    "id": "D16",
+    "id": "demon16",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/0/0a/Leviathan.png/300px-Leviathan.png",
     "ability": "如果多於一名善良玩家被處決，邪惡陣營獲勝。所有玩家都知道利維坦在場。在第五個白天結束時，邪惡陣營獲勝。",
     "setup": false,
@@ -3677,7 +3677,7 @@
   },
   {
     "name": "痢蛭",
-    "id": "D17",
+    "id": "demon17",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/7/70/Lleech.png/200px-Lleech.png",
     "ability": "每個夜晚*，你要選擇一名玩家：他死亡。在你的首個夜晚，你要選擇一名存活的玩家：他中毒，只有當他處於死亡狀態時你才會立即死亡。",
     "setup": false,
@@ -3698,7 +3698,7 @@
   },
   {
     "name": "小怪寶",
-    "id": "D18",
+    "id": "demon18",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/3/39/Lilmonsta.png/200px-Lilmonsta.png",
     "ability": "每個夜晚，所有爪牙要秘密決定由哪名玩家來照看小怪寶並且＂是惡魔＂。每個夜晚*，可能會有一名玩家死亡。[+1爪牙]",
     "setup": true,
@@ -3719,7 +3719,7 @@
   },
   {
     "name": "牙噶巴卜",
-    "id": "D19",
+    "id": "demon19",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/5/50/Yaggababble.png/300px-Yaggababble.png",
     "ability": "在你的首個夜晚，你會得知一段秘密短語。每次你在白天公開說出這段短語，當天便可能會有一名玩家在這之後死亡。",
     "setup": false,
@@ -3739,7 +3739,7 @@
   },
   {
     "name": "混沌",
-    "id": "D20",
+    "id": "demon20",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/4/49/Hundun.png/300px-Hundun.png",
     "ability": "每個夜晚*，你要選擇一名玩家：他死亡。如果你以這種方式殺死了一名與你鄰近的鎮民玩家，除旅行者外所有善良玩家會中毒直到下個黃昏。",
     "setup": false,
@@ -3760,7 +3760,7 @@
   },
   {
     "name": "窮奇",
-    "id": "D21",
+    "id": "demon21",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/1/13/Qiongqi.png/200px-Qiongqi.png",
     "ability": "每個夜晚*，你要選擇一名玩家：他死亡。如果今天白天有外來者死亡，當晚改為你要選擇一名玩家：他死亡，但被當作仍然存活，隨後會有一名其他玩家死亡。[+1外來者]",
     "setup": true,
@@ -3784,7 +3784,7 @@
   },
   {
     "name": "饕餮",
-    "id": "D22",
+    "id": "demon22",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/8/85/Taotie.png/300px-Taotie.png",
     "ability": "每個夜晚*，你要選擇任意數量的非旅行者玩家或一名旅行者玩家：如果他們的角色類型均不相同，他們死亡。[+1外來者]",
     "setup": true,
@@ -3806,7 +3806,7 @@
   },
   {
     "name": "檮杌",
-    "id": "D23",
+    "id": "demon23",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/5/52/Taowu.png/200px-Taowu.png",
     "ability": "每個夜晚*，你要選擇一名玩家：他死亡。當你將要死亡時，改為一名存活且具有能力的爪牙失去能力。你不會得知惡魔信息。",
     "setup": false,
@@ -3829,7 +3829,7 @@
   },
   {
     "name": "暴君",
-    "id": "D24",
+    "id": "demon24",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/c/c5/Baojun.png/300px-Baojun.png",
     "ability": "每個夜晚*，你可以選擇至多兩名玩家：他們死亡。你選擇的玩家數量不能與上個夜晚死亡的玩家數量相同(超過二人時算作二人)。",
     "setup": false,
@@ -3850,7 +3850,7 @@
   },
   {
     "name": "典獄長",
-    "id": "D25",
+    "id": "demon25",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/d/db/Dianyuzhang.png/75px-Dianyuzhang.png",
     "ability": "每個夜晚，你要選擇至多三名玩家：如果明天白天他們之一死於處決，被你上次選擇的其他玩家會在當晚死亡。否則，當晚他們之中會有一名玩家死亡。",
     "setup": false,
@@ -3873,7 +3873,7 @@
   },
   {
     "name": "姑獲鳥",
-    "id": "D26",
+    "id": "demon26",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/3/38/Guhuoniao.png/50px-Guhuoniao.png",
     "ability": "每個夜晚*，你要選擇一名玩家：他死亡。你可能會擁有上一個死於處決的爪牙的能力。",
     "setup": false,
@@ -3894,7 +3894,7 @@
   },
   {
     "name": "奸佞",
-    "id": "D27",
+    "id": "demon27",
     "image": "https://i.postimg.cc/KvxYM9FC/image.png",
     "ability": "每個夜晚*，你要選擇一名玩家：他死亡。如果你今天白天沒有投票，今晚你可以行動兩次。",
     "setup": false,
@@ -3915,7 +3915,7 @@
   },
   {
     "name": "閻羅",
-    "id": "D28",
+    "id": "demon28",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/c/c8/Yanluo.png/75px-Yanluo.png",
     "ability": "在你的首個夜晚，你能查看魔典並選擇一名玩家：他在第三個夜晚死亡，即使因為任何原因讓他不會死亡。每個夜晚，你要選擇一名玩家：上個夜晚被你選擇的玩家死亡。",
     "setup": false,
@@ -3936,7 +3936,7 @@
   },
   {
     "name": "末日預言者",
-    "id": "F01",
+    "id": "fabled01",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/6/6c/Doomsayer.png/300px-Doomsayer.png",
     "ability": "如果大於等於四名玩家存活，每名當前存活的玩家可以公開要求你殺死一名與他陣營相同的玩家（每名玩家限一次）。",
     "setup": false,
@@ -3954,7 +3954,7 @@
   },
   {
     "name": "玩具匠",
-    "id": "F02",
+    "id": "fabled02",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/3/30/Toymaker.png/300px-Toymaker.png",
     "ability": "惡魔可以在夜晚選擇放棄攻擊（每局遊戲至少一次）。邪惡玩家照常獲取初始資訊。",
     "setup": false,
@@ -3974,7 +3974,7 @@
   },
   {
     "name": "天使",
-    "id": "F03",
+    "id": "fabled03",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/8/83/Angel.png/300px-Angel.png",
     "ability": "對新玩家的死亡負最大責任的人，可能會遭遇一些不好的事情。",
     "setup": false,
@@ -3995,7 +3995,7 @@
   },
   {
     "name": "佛教徒",
-    "id": "F04",
+    "id": "fabled04",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/6/6b/Buddhist.png/300px-Buddhist.png",
     "ability": "每個白天的前兩分鐘老玩家不能發言。",
     "setup": false,
@@ -4013,7 +4013,7 @@
   },
   {
     "name": "革命者",
-    "id": "F05",
+    "id": "fabled05",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/a/ac/Revolutionary.png/300px-Revolutionary.png",
     "ability": "公開聲明一對鄰座玩家本局遊戲一直保持同一陣營。每局遊戲限一次，他們中的一人可能被當作其他的角色/陣營。",
     "setup": false,
@@ -4033,7 +4033,7 @@
   },
   {
     "name": "地獄藏書員",
-    "id": "F06",
+    "id": "fabled06",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/6/69/Hellslibrarian.png/300px-Hellslibrarian.png",
     "ability": "當說書人宣佈安靜時，仍在說話的玩家可能會遭遇一些不好的事情。",
     "setup": false,
@@ -4053,7 +4053,7 @@
   },
   {
     "name": "小提琴手",
-    "id": "F07",
+    "id": "fabled07",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/f/fc/Fiddler.png/300px-Fiddler.png",
     "ability": "每局遊戲限一次，惡魔可以秘密選擇一名對立陣營的玩家，所有玩家要表決：這兩名玩家中誰的陣營獲勝。（平局邪惡陣營獲勝）",
     "setup": false,
@@ -4071,7 +4071,7 @@
   },
   {
     "name": "騙人精",
-    "id": "F08",
+    "id": "fabled08",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/9/90/Fibbin.png/300px-Fibbin.png",
     "ability": "每局遊戲限一次，一名善良玩家可能會得知“有問題”的資訊。",
     "setup": false,
@@ -4091,7 +4091,7 @@
   },
   {
     "name": "公爵夫人",
-    "id": "F09",
+    "id": "fabled09",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/1/12/Duchess.png/300px-Duchess.png",
     "ability": "每個白天，三名玩家可以一起拜訪你。當晚*，他們會得知他們之中有幾個是邪惡的，但其中一人的資訊是錯的。",
     "setup": false,
@@ -4112,7 +4112,7 @@
   },
   {
     "name": "哨兵",
-    "id": "F10",
+    "id": "fabled10",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/9/91/Sentinel.png/200px-Sentinel.png",
     "ability": "在初始設置時，可能會額外增加或減少一個外來者。",
     "setup": true,
@@ -4130,7 +4130,7 @@
   },
   {
     "name": "聖潔之魂",
-    "id": "F11",
+    "id": "fabled11",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/9/9f/Spiritofivory.png/200px-Spiritofivory.png",
     "ability": "遊戲過程中邪惡玩家的總數最多能比初始設置多一名。",
     "setup": false,
@@ -4150,7 +4150,7 @@
   },
   {
     "name": "燈神",
-    "id": "F12",
+    "id": "fabled12",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/c/c4/Djinn.png/300px-Djinn.png",
     "ability": "使用燈神的相克規則。所有玩家都會知道其內容。",
     "setup": false,
@@ -4168,7 +4168,7 @@
   },
   {
     "name": "失敗的上帝",
-    "id": "F13",
+    "id": "fabled13",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/4/4d/Deusexfiasco_new.png/300px-Deusexfiasco_new.png",
     "ability": "每局遊戲至少一次，說書人將會出現失誤，但會糾正並公開承認自己曾處理有誤。",
     "setup": false,
@@ -4188,7 +4188,7 @@
   },
   {
     "name": "擺渡人",
-    "id": "F14",
+    "id": "fabled14",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/c/c8/Ferryman.png/200px-Ferryman.png",
     "ability": "在遊戲的最後一天，所有已死亡玩家會重新獲得投票標記。",
     "setup": false,
@@ -4206,7 +4206,7 @@
   },
   {
     "name": "麒麟",
-    "id": "F15",
+    "id": "fabled15",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/9/9b/Qilin.png/300px-Qilin.png",
     "ability": "在遊戲的最後一天，最幸運的玩家身上會發生一些好的事情。",
     "setup": false,
@@ -4226,7 +4226,7 @@
   },
   {
     "name": "赦令承旨",
-    "id": "F16",
+    "id": "fabled16",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/1/1e/Shelingchengzhi.png/75px-Shelingchengzhi.png",
     "ability": "解除所有角色能力在進行選擇時的限制條件。",
     "setup": false,
@@ -4244,7 +4244,7 @@
   },
   {
     "name": "暴風捕手",
-    "id": "L01",
+    "id": "loric01",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/3/30/Stormcatcher.png/300px-Stormcatcher.png",
     "ability": "遊戲開始時，你要宣佈一個善良角色。如果該角色在場，他只能死於處決，但所有邪惡玩家會在首個夜晚得知他是哪一名玩家。",
     "setup": false,
@@ -4264,7 +4264,7 @@
   },
   {
     "name": "首席律師",
-    "id": "L02",
+    "id": "loric02",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/9/9a/Big_wig.png/300px-Big_wig.png",
     "ability": "每個被提名者要選擇一名玩家：在投票前，只有他可以發言，並且他要「瘋狂」地證明被提名者是善良的，否則他可能死亡。",
     "setup": false,
@@ -4282,7 +4282,7 @@
   },
   {
     "name": "私貨商人",
-    "id": "L03",
+    "id": "loric03",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/9/97/Bootlegger.png/300px-Bootlegger.png",
     "ability": "這個劇本包含有自製角色或自製規則。",
     "setup": false,
@@ -4300,7 +4300,7 @@
   },
   {
     "name": "遺忘之門",
-    "id": "L04",
+    "id": "loric04",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/1/1f/Tor.png/300px-Tor.png",
     "ability": "玩家不知道自己的角色和陣營。當他們死亡時才會得知這些資訊。",
     "setup": false,
@@ -4318,7 +4318,7 @@
   },
   {
     "name": "園丁",
-    "id": "L05",
+    "id": "loric05",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/1/19/Gardener.png/300px-Gardener.png",
     "ability": "由說書人來為一名或更多玩家派發角色。",
     "setup": false,
@@ -4336,7 +4336,7 @@
   },
   {
     "name": "官員",
-    "id": "R01",
+    "id": "traveler01",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/5/5c/Bureaucrat.png/300px-Bureaucrat.png",
     "ability": "每個夜晚，你要選擇除你以外的一名玩家：明天白天，他的投票算作三票。",
     "setup": false,
@@ -4356,7 +4356,7 @@
   },
   {
     "name": "乞丐",
-    "id": "R02",
+    "id": "traveler02",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/f/fa/Beggar.png/300px-Beggar.png",
     "ability": "你只能使用投票標記才能投票。死亡的玩家可以將他的投票標記給你，如果他這麼做，你會得知他的陣營。你不會中毒和醉酒。",
     "setup": false,
@@ -4374,7 +4374,7 @@
   },
   {
     "name": "槍手",
-    "id": "R03",
+    "id": "traveler03",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/c/c2/Gunslinger.png/300px-Gunslinger.png",
     "ability": "每個白天，當首次投票被統計後，你可以選擇一名剛投過票的玩家：他死亡。",
     "setup": false,
@@ -4392,7 +4392,7 @@
   },
   {
     "name": "竊賊",
-    "id": "R04",
+    "id": "traveler04",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/f/fc/Thief.png/300px-Thief.png",
     "ability": "每個夜晚，你要選擇除你以外的一名玩家：明天白天他的投票會被算作負數。",
     "setup": false,
@@ -4412,7 +4412,7 @@
   },
   {
     "name": "替罪羊",
-    "id": "R05",
+    "id": "traveler05",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/0/0b/Scapegoat.png/200px-Scapegoat.png",
     "ability": "如果你的陣營的一名玩家被處決，你可能會代替他被處決。",
     "setup": false,
@@ -4430,7 +4430,7 @@
   },
   {
     "name": "法官",
-    "id": "R06",
+    "id": "traveler06",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/8/8a/Judge.png/300px-Judge.png",
     "ability": "每局遊戲限一次，如果其他玩家發起了提名，你可以選擇讓本次提名直接執行處決或讓投票無效。",
     "setup": false,
@@ -4450,7 +4450,7 @@
   },
   {
     "name": "女舍監",
-    "id": "R07",
+    "id": "traveler07",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/8/85/Matron.png/300px-Matron.png",
     "ability": "每個白天，你可以選擇至多三對玩家交換座位。玩家不能離開座位私聊。",
     "setup": false,
@@ -4468,7 +4468,7 @@
   },
   {
     "name": "巫毒師",
-    "id": "R08",
+    "id": "traveler08",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/6/62/Voudon.png/200px-Voudon.png",
     "ability": "只有你和死亡的玩家可以投票，且投票不需要使用投票標記。忽略票數需要過半的要求。",
     "setup": false,
@@ -4486,7 +4486,7 @@
   },
   {
     "name": "學徒",
-    "id": "R09",
+    "id": "traveler09",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/6/66/Apprentice.png/200px-Apprentice.png",
     "ability": "在你的首個夜晚，如果你是善良的，你會獲得一個鎮民角色的能力；如果你是邪惡的，你會獲得一個爪牙角色的能力。",
     "setup": false,
@@ -4506,7 +4506,7 @@
   },
   {
     "name": "主教",
-    "id": "R10",
+    "id": "traveler10",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/f/f0/Bishop.png/300px-Bishop.png",
     "ability": "只有說書人可以發起提名。每個白天說書人至少要提名一名你對立陣營的玩家。",
     "setup": false,
@@ -4527,7 +4527,7 @@
   },
   {
     "name": "怪咖",
-    "id": "R11",
+    "id": "traveler11",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/d/d5/Deviant.png/300px-Deviant.png",
     "ability": "如果你表現得很有趣，當天你不能被流放。",
     "setup": false,
@@ -4545,7 +4545,7 @@
   },
   {
     "name": "集骨者",
-    "id": "R12",
+    "id": "traveler12",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/4/48/Bonecollector.png/300px-Bonecollector.png",
     "ability": "每局遊戲限一次，在夜晚時*，你可以選擇一名死亡的玩家：他重新獲得能力直到下個黃昏。",
     "setup": false,
@@ -4566,7 +4566,7 @@
   },
   {
     "name": "咖啡師",
-    "id": "R13",
+    "id": "traveler13",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/0/05/Barista.png/300px-Barista.png",
     "ability": "每個夜晚，直至下個黃昏，由說書人二選一：1）一名玩家解除並免受醉酒和中毒影響，且會得知正確資訊；2）一名玩家的能力可以生效兩次。該玩家會得知是哪個效果。",
     "setup": false,
@@ -4589,7 +4589,7 @@
   },
   {
     "name": "流鶯",
-    "id": "R14",
+    "id": "traveler14",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/8/89/Harlot.png/300px-Harlot.png",
     "ability": "每個夜晚*，你要選擇一名存活的玩家：如果他同意，你會得知他的角色，但是你們兩個可能同時死亡。",
     "setup": false,
@@ -4609,7 +4609,7 @@
   },
   {
     "name": "屠夫",
-    "id": "R15",
+    "id": "traveler15",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/f/fb/Butcher.png/300px-Butcher.png",
     "ability": "每個白天，首次處決後，你可以再次發起提名。",
     "setup": false,
@@ -4627,7 +4627,7 @@
   },
   {
     "name": "黑幫",
-    "id": "R16",
+    "id": "traveler16",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/4/44/Gangster.png/200px-Gangster.png",
     "ability": "每個白天限一次，你可以殺死與你鄰近的兩名存活的玩家中的一名，但需要另一邊那個存活的玩家同意。",
     "setup": false,
@@ -4645,7 +4645,7 @@
   },
   {
     "name": "侏儒",
-    "id": "R17",
+    "id": "traveler17",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/7/78/Gnome.png/200px-Gnome.png",
     "ability": "當你加入遊戲時，所有玩家會得知一名與你陣營相同的玩家。每當他被提名時，你可以殺死提名者。",
     "setup": false,
@@ -4665,7 +4665,7 @@
   },
   {
     "name": "叫花子",
-    "id": "R18",
+    "id": "traveler18",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/2/22/Jiaohuazi.png/300px-Jiaohuazi.png",
     "ability": "每個白天限一次，你可以公開選擇一名其他玩家，讓他選擇一個非惡魔角色：你可能會獲得這個角色的能力，直到下個黎明。",
     "setup": false,
@@ -4687,7 +4687,7 @@
   },
   {
     "name": "刁民",
-    "id": "R19",
+    "id": "traveler19",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/5/59/Diaomin.png/75px-Diaomin.png",
     "ability": "曾在白天粗暴地打斷過你的發言的玩家之一會在當晚醉酒，即使你已死亡。",
     "setup": false,

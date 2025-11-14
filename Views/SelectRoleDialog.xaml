@@ -18,6 +18,7 @@
         <SolidColorBrush x:Key="DemonBrush" Color="#8B0000"/>
         <SolidColorBrush x:Key="TravelerBrush" Color="#808080"/>
         <SolidColorBrush x:Key="FabledBrush" Color="#FFC107"/>
+        <SolidColorBrush x:Key="LoricBrush" Color="#4CAF50"/>
     </Window.Resources>
 
     <Grid>
@@ -68,6 +69,8 @@
                               Checked="Filter_Changed" Unchecked="Filter_Changed" Margin="0,0,15,0"/>
                     <CheckBox x:Name="chkFabled" Content="傳奇" IsChecked="True" 
                               Checked="Filter_Changed" Unchecked="Filter_Changed" Margin="0,0,15,0"/>
+                    <CheckBox x:Name="chkLoric" Content="奇遇" IsChecked="True"    
+                        Checked="Filter_Changed" Unchecked="Filter_Changed" Margin="0,0,15,0"/>
                 </WrapPanel>
 
                 <!-- 來源篩選 -->
@@ -147,8 +150,11 @@
                                                     </DataTrigger>
                                                     <DataTrigger Binding="{Binding Team}" Value="fabled">
                                                         <Setter Property="Background" Value="{StaticResource FabledBrush}"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Team}" Value="loric">
+                                                    <Setter Property="Background" Value="{StaticResource LoricBrush}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
                                             </Style>
                                         </Border.Style>
                                     </Border>

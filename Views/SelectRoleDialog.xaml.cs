@@ -109,7 +109,8 @@ namespace BloodClockTowerScriptEditor.Views
                 "demon" => 3,
                 "traveler" => 4,
                 "fabled" => 5,
-                _ => 6
+                "loric" => 6,    
+                _ => 7           
             };
         }
 
@@ -130,6 +131,7 @@ namespace BloodClockTowerScriptEditor.Views
                 bool showDemon = chkDemon?.IsChecked ?? true;
                 bool showTraveler = chkTraveler?.IsChecked ?? true;
                 bool showFabled = chkFabled?.IsChecked ?? true;
+                bool showLoric = chkLoric?.IsChecked ?? true;
 
                 // 來源篩選
                 bool? showOfficial = null;
@@ -156,6 +158,7 @@ namespace BloodClockTowerScriptEditor.Views
                         "demon" => showDemon,
                         "traveler" => showTraveler,
                         "fabled" => showFabled,
+                        "loric" => showLoric,
                         _ => true
                     };
 

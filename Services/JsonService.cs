@@ -291,12 +291,17 @@ namespace BloodClockTowerScriptEditor.Services
                     // 🆕 判斷是否為私貨商人
                     else if (role.Name == "私貨商人")
                     {
+                        string team = role.Team.ToString().ToLower();
+                        if (format == ExportFormat.JiShi && role.Team == TeamType.Loric)
+                        {
+                            team = "fabled";
+                        }
                         // 私貨商人：只輸出必要欄位
                         roleObj = new JObject
                         {
                             ["id"] = role.Id,
                             ["name"] = role.Name,
-                            ["team"] = role.Team.ToString().ToLower(),
+                            ["team"] = team,
                             ["ability"] = role.Ability
                         };
 

@@ -84,6 +84,7 @@
                             <ComboBoxItem Content="惡魔" Tag="demon"/>
                             <ComboBoxItem Content="旅行者" Tag="traveler"/>
                             <ComboBoxItem Content="傳奇" Tag="fabled"/>
+                            <ComboBoxItem Content="奇遇" Tag="loric"/>
                         </ComboBox>
                     </DockPanel>
 

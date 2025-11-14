@@ -28,6 +28,7 @@
         <SolidColorBrush x:Key="DemonBrush" Color="#8B0000"/>
         <SolidColorBrush x:Key="TravelerBrush" Color="#808080"/>
         <SolidColorBrush x:Key="FabledBrush" Color="#FFC107"/>
+        <SolidColorBrush x:Key="LoricBrush" Color="#4CAF50"/>
 
         <!-- 標籤樣式 -->
         <Style x:Key="LabelStyle" TargetType="TextBlock">
@@ -230,7 +231,7 @@
                                 <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
                                     <StackPanel>
                                         <!-- 🎨 鎮民 -->
-                                        <Border x:Name="borderTownsfolk" BorderBrush="#368CE1" BorderThickness="2" Margin="0,0,0,10" CornerRadius="4"
+                                        <Border x:Name="borderTownsfolk" BorderBrush="{StaticResource TownsfolkBrush}" BorderThickness="2" Margin="0,0,0,10" CornerRadius="4"
                 Visibility="{Binding TownsfolkCount, Converter={StaticResource CountToVisibilityConverter}}">
                                             <Grid>
                                                 <Grid.RowDefinitions>
@@ -238,7 +239,7 @@
                                                     <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
 
-                                                <Border Grid.Row="0" Background="#368CE1" Padding="10" Cursor="Hand"
+                                                <Border Grid.Row="0" Background="{StaticResource TownsfolkBrush}" Padding="10" Cursor="Hand"
                         MouseLeftButtonDown="TeamHeader_Click" Tag="Townsfolk">
                                                     <Grid>
                                                         <TextBlock FontWeight="Bold" Foreground="White">
@@ -280,7 +281,7 @@
 
                                                                     <Border Grid.Column="1" Width="40" Height="40" 
                                             Background="#F0F0F0" 
-                                            BorderBrush="#368CE1" BorderThickness="1"
+                                            BorderBrush="{StaticResource TownsfolkBrush}" BorderThickness="1"
                                             Margin="0,0,10,0">
                                                                         <Image Source="{Binding ImageUrl, Converter={StaticResource StringToImageSourceConverter}}" 
                                                Stretch="Uniform"/>
@@ -309,7 +310,7 @@
                                         </Border>
 
                                         <!-- 🎨 外來者 -->
-                                        <Border x:Name="borderOutsider" BorderBrush="#71A8D6" BorderThickness="2" Margin="0,0,0,10" CornerRadius="4"
+                                        <Border x:Name="borderOutsider" BorderBrush="{StaticResource OutsiderBrush}" BorderThickness="2" Margin="0,0,0,10" CornerRadius="4"
                 Visibility="{Binding OutsidersCount, Converter={StaticResource CountToVisibilityConverter}}">
                                             <Grid>
                                                 <Grid.RowDefinitions>
@@ -317,7 +318,7 @@
                                                     <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
 
-                                                <Border Grid.Row="0" Background="#71A8D6" Padding="10" Cursor="Hand"
+                                                <Border Grid.Row="0" Background="{StaticResource OutsiderBrush}" Padding="10" Cursor="Hand"
                         MouseLeftButtonDown="TeamHeader_Click" Tag="Outsider">
                                                     <Grid>
                                                         <TextBlock FontWeight="Bold" Foreground="White">
@@ -359,7 +360,7 @@
 
                                                                     <Border Grid.Column="1" Width="40" Height="40" 
                                             Background="#F0F0F0" 
-                                            BorderBrush="#71A8D6" BorderThickness="1"
+                                            BorderBrush="{StaticResource OutsiderBrush}" BorderThickness="1"
                                             Margin="0,0,10,0">
                                                                         <Image Source="{Binding ImageUrl, Converter={StaticResource StringToImageSourceConverter}}" 
                                                Stretch="Uniform"/>
@@ -388,7 +389,7 @@
                                         </Border>
 
                                         <!-- 🎨 爪牙 -->
-                                        <Border x:Name="borderMinion" BorderBrush="#DC3545" BorderThickness="2" Margin="0,0,0,10" CornerRadius="4"
+                                        <Border x:Name="borderMinion" BorderBrush="{StaticResource MinionBrush}" BorderThickness="2" Margin="0,0,0,10" CornerRadius="4"
                 Visibility="{Binding MinionsCount, Converter={StaticResource CountToVisibilityConverter}}">
                                             <Grid>
                                                 <Grid.RowDefinitions>
@@ -396,7 +397,7 @@
                                                     <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
 
-                                                <Border Grid.Row="0" Background="#DC3545" Padding="10" Cursor="Hand"
+                                                <Border Grid.Row="0" Background="{StaticResource MinionBrush}" Padding="10" Cursor="Hand"
                         MouseLeftButtonDown="TeamHeader_Click" Tag="Minion">
                                                     <Grid>
                                                         <TextBlock FontWeight="Bold" Foreground="White">
@@ -438,7 +439,7 @@
 
                                                                     <Border Grid.Column="1" Width="40" Height="40" 
                                             Background="#F0F0F0" 
-                                            BorderBrush="#DC3545" BorderThickness="1"
+                                            BorderBrush="{StaticResource MinionBrush}" BorderThickness="1"
                                             Margin="0,0,10,0">
                                                                         <Image Source="{Binding ImageUrl, Converter={StaticResource StringToImageSourceConverter}}" 
                                                Stretch="Uniform"/>
@@ -467,7 +468,7 @@
                                         </Border>
 
                                         <!-- 🎨 惡魔 -->
-                                        <Border x:Name="borderDemon" BorderBrush="#8B0000" BorderThickness="2" Margin="0,0,0,10" CornerRadius="4"
+                                        <Border x:Name="borderDemon" BorderBrush="{StaticResource DemonBrush}" BorderThickness="2" Margin="0,0,0,10" CornerRadius="4"
                 Visibility="{Binding DemonsCount, Converter={StaticResource CountToVisibilityConverter}}">
                                             <Grid>
                                                 <Grid.RowDefinitions>
@@ -475,7 +476,7 @@
                                                     <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
 
-                                                <Border Grid.Row="0" Background="#8B0000" Padding="10" Cursor="Hand"
+                                                <Border Grid.Row="0" Background="{StaticResource DemonBrush}" Padding="10" Cursor="Hand"
                         MouseLeftButtonDown="TeamHeader_Click" Tag="Demon">
                                                     <Grid>
                                                         <TextBlock FontWeight="Bold" Foreground="White">
@@ -517,7 +518,7 @@
 
                                                                     <Border Grid.Column="1" Width="40" Height="40" 
                                             Background="#F0F0F0" 
-                                            BorderBrush="#8B0000" BorderThickness="1"
+                                            BorderBrush="{StaticResource DemonBrush}" BorderThickness="1"
                                             Margin="0,0,10,0">
                                                                         <Image Source="{Binding ImageUrl, Converter={StaticResource StringToImageSourceConverter}}" 
                                                Stretch="Uniform"/>
@@ -546,7 +547,7 @@
                                         </Border>
 
                                         <!-- 🎨 旅行者 -->
-                                        <Border x:Name="borderTraveler" BorderBrush="#6c757d" BorderThickness="2" Margin="0,0,0,10" CornerRadius="4"
+                                        <Border x:Name="borderTraveler" BorderBrush="{StaticResource TravelerBrush}" BorderThickness="2" Margin="0,0,0,10" CornerRadius="4"
                 Visibility="{Binding TravelersCount, Converter={StaticResource CountToVisibilityConverter}}">
                                             <Grid>
                                                 <Grid.RowDefinitions>
@@ -554,7 +555,7 @@
                                                     <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
 
-                                                <Border Grid.Row="0" Background="#6c757d" Padding="10" Cursor="Hand"
+                                                <Border Grid.Row="0" Background="{StaticResource TravelerBrush}" Padding="10" Cursor="Hand"
                         MouseLeftButtonDown="TeamHeader_Click" Tag="Traveler">
                                                     <Grid>
                                                         <TextBlock FontWeight="Bold" Foreground="White">
@@ -596,7 +597,7 @@
 
                                                                     <Border Grid.Column="1" Width="40" Height="40" 
                                             Background="#F0F0F0" 
-                                            BorderBrush="#6c757d" BorderThickness="1"
+                                            BorderBrush="{StaticResource TravelerBrush}" BorderThickness="1"
                                             Margin="0,0,10,0">
                                                                         <Image Source="{Binding ImageUrl, Converter={StaticResource StringToImageSourceConverter}}" 
                                                Stretch="Uniform"/>
@@ -625,7 +626,7 @@
                                         </Border>
 
                                         <!-- 🎨 傳奇 -->
-                                        <Border x:Name="borderFabled" BorderBrush="#FFC107" BorderThickness="2" Margin="0,0,0,10" CornerRadius="4"
+                                        <Border x:Name="borderFabled" BorderBrush="{StaticResource FabledBrush}" BorderThickness="2" Margin="0,0,0,10" CornerRadius="4"
                 Visibility="{Binding FabledCount, Converter={StaticResource CountToVisibilityConverter}}">
                                             <Grid>
                                                 <Grid.RowDefinitions>
@@ -633,7 +634,7 @@
                                                     <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
 
-                                                <Border Grid.Row="0" Background="#FFC107" Padding="10" Cursor="Hand"
+                                                <Border Grid.Row="0" Background="{StaticResource FabledBrush}" Padding="10" Cursor="Hand"
                         MouseLeftButtonDown="TeamHeader_Click" Tag="Fabled">
                                                     <Grid>
                                                         <TextBlock FontWeight="Bold" Foreground="White">
@@ -675,7 +676,7 @@
 
                                                                     <Border Grid.Column="1" Width="40" Height="40" 
                                             Background="#F0F0F0" 
-                                            BorderBrush="#FFC107" BorderThickness="1"
+                                            BorderBrush="{StaticResource FabledBrush}" BorderThickness="1"
                                             Margin="0,0,10,0">
                                                                         <Image Source="{Binding ImageUrl, Converter={StaticResource StringToImageSourceConverter}}" 
                                                Stretch="Uniform"/>
@@ -704,7 +705,7 @@
                                         </Border>
 
                                         <!-- 🎨 奇遇 (Loric) -->
-                                        <Border x:Name="borderLoric" BorderBrush="#4CAF50" BorderThickness="2" Margin="0,0,0,10" CornerRadius="4"
+                                        <Border x:Name="borderLoric" BorderBrush="{StaticResource LoricBrush}" BorderThickness="2" Margin="0,0,0,10" CornerRadius="4"
         Visibility="{Binding LoricCount, Converter={StaticResource CountToVisibilityConverter}}">
                                             <Grid>
                                                 <Grid.RowDefinitions>
@@ -712,7 +713,7 @@
                                                     <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
 
-                                                <Border Grid.Row="0" Background="#4CAF50" Padding="10" Cursor="Hand"
+                                                <Border Grid.Row="0" Background="{StaticResource LoricBrush}" Padding="10" Cursor="Hand"
                 MouseLeftButtonDown="TeamHeader_Click" Tag="Loric">
                                                     <Grid>
                                                         <TextBlock FontWeight="Bold" Foreground="White">
@@ -754,7 +755,7 @@
 
                                                                     <Border Grid.Column="1" Width="40" Height="40" 
                                     Background="#F0F0F0" 
-                                    BorderBrush="#4CAF50" BorderThickness="1"
+                                    BorderBrush="{StaticResource LoricBrush}" BorderThickness="1"
                                     Margin="0,0,10,0">
                                                                         <Image Source="{Binding ImageUrl, Converter={StaticResource StringToImageSourceConverter}}" 
                                        Stretch="Uniform"/>
@@ -1114,6 +1115,7 @@
                                         <models:TeamType>Demon</models:TeamType>
                                         <models:TeamType>Traveler</models:TeamType>
                                         <models:TeamType>Fabled</models:TeamType>
+                                        <models:TeamType>Loric</models:TeamType>
                                         <!-- 🔴 移除 Jinxed -->
                                     </ComboBox>
                                 </DockPanel>
@@ -1254,7 +1256,7 @@
 
                             <!-- ✅ 私貨商人提示訊息（只有私貨商人顯示）-->
                             <Border Background="#FFF3CD" 
-                                    BorderBrush="#FFC107" 
+                                    BorderBrush="{StaticResource FabledBrush}" 
                                     BorderThickness="1" 
                                     Padding="10" 
                                     Margin="0,0,0,12" 
