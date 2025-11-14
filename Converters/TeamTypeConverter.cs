@@ -22,6 +22,7 @@ namespace BloodClockTowerScriptEditor.Converters
                     TeamType.Demon => "惡魔",
                     TeamType.Traveler => "旅行者",
                     TeamType.Fabled => "傳奇",
+                    TeamType.Loric => "奇遇",
                     TeamType.Jinxed => "相剋",
                     _ => "未知"
                 };
@@ -41,6 +42,7 @@ namespace BloodClockTowerScriptEditor.Converters
                     "惡魔" => TeamType.Demon,
                     "旅行者" => TeamType.Traveler,
                     "傳奇" => TeamType.Fabled,
+                    "奇遇" => TeamType.Loric, 
                     "相剋" => TeamType.Jinxed,
                     _ => TeamType.Townsfolk
                 };

@@ -174,6 +174,11 @@ namespace BloodClockTowerScriptEditor.ViewModels
         public ObservableCollection<Role> FabledRoles { get; } = [];
 
         /// <summary>
+        /// 奇遇角色列表
+        /// </summary>
+        public ObservableCollection<Role> LoricRoles { get; } = [];
+
+        /// <summary>
         /// 相剋角色集合
         /// </summary>
         public ObservableCollection<Role> JinxedRoles { get; } = [];
@@ -209,6 +214,11 @@ namespace BloodClockTowerScriptEditor.ViewModels
         /// 傳奇數量
         /// </summary>
         public int FabledCount => FabledRoles.Count;
+
+        /// <summary>
+        /// 奇遇角色數量
+        /// </summary>
+        public int LoricCount => LoricRoles.Count;
 
         /// <summary>
         /// 相剋數量
@@ -938,6 +948,7 @@ namespace BloodClockTowerScriptEditor.ViewModels
             DemonRoles.Clear();
             TravelerRoles.Clear();
             FabledRoles.Clear();
+            LoricRoles.Clear();  
             JinxedRoles.Clear();
 
             // 按 Team 和 DisplayOrder 排序後分類
@@ -983,6 +994,9 @@ namespace BloodClockTowerScriptEditor.ViewModels
                     case TeamType.Fabled:
                         FabledRoles.Add(role);
                         break;
+                    case TeamType.Loric: 
+                        LoricRoles.Add(role);
+                        break;
                     case TeamType.Jinxed:
                         JinxedRoles.Add(role);
                         break;
@@ -996,6 +1010,7 @@ namespace BloodClockTowerScriptEditor.ViewModels
             OnPropertyChanged(nameof(DemonsCount));
             OnPropertyChanged(nameof(TravelersCount));
             OnPropertyChanged(nameof(FabledCount));
+            OnPropertyChanged(nameof(LoricCount));  
             OnPropertyChanged(nameof(JinxedCount));
         }
 

@@ -22,7 +22,7 @@ namespace BloodClockTowerScriptEditor.Services
         /// <param name="jsonFilePath">JSON 檔案路徑</param>
         /// <param name="isOfficial">是否為官方角色</param>
         /// <returns>匯入的角色數量</returns>
-        public static async Task<int> ImportFromJsonAsync(string jsonFilePath,  bool isOfficial = true)
+        public static async Task<int> ImportFromJsonAsync(string jsonFilePath, bool isOfficial = true)
         {
             if (!File.Exists(jsonFilePath))
             {
@@ -63,18 +63,11 @@ namespace BloodClockTowerScriptEditor.Services
                     try
                     {
                         // 解析 JSON 物件
-                        string? id = item["id"]?.ToString();
+                        string? officialId = item["officialId"]?.ToString();
                         string? name = item["name"]?.ToString();
-                        string? team = item["team"]?.ToString();
-
-                        // 跳過範例資料
-                        if (name != null && (name.Contains("範例") || name.Contains("名稱1")))
-                        {
-                            continue;
-                        }
 
                         // 基本驗證
-                        if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(name) || string.IsNullOrEmpty(team))
+                        if (string.IsNullOrEmpty(officialId) || string.IsNullOrEmpty(name))
                         {
                             continue; // 跳過無效資料
                         }
@@ -82,7 +75,7 @@ namespace BloodClockTowerScriptEditor.Services
                         // 🆕 檢查是否已存在 (用 Id 和 Name 雙重判斷)
                         var existing = await context.RoleTemplates
                             .Include(r => r.Reminders)
-                            .FirstOrDefaultAsync(r => r.Id == id && r.Name == name);
+                            .FirstOrDefaultAsync(r => r.OfficialId == officialId && r.Name == name);
 
                         if (existing != null)
                         {
@@ -90,7 +83,7 @@ namespace BloodClockTowerScriptEditor.Services
                             existing.OriginalOrder = orderIndex++;
                             UpdateRoleTemplate(existing, item, isOfficial);
                             updatedCount++;
-                            System.Diagnostics.Debug.WriteLine($"✏️ 更新角色: {name} ({id})");
+                            System.Diagnostics.Debug.WriteLine($"✏️ 更新角色: {name} ({officialId})");
                         }
                         else
                         {
@@ -99,7 +92,7 @@ namespace BloodClockTowerScriptEditor.Services
                             roleTemplate.OriginalOrder = orderIndex++;
                             context.RoleTemplates.Add(roleTemplate);
                             addedCount++;
-                            System.Diagnostics.Debug.WriteLine($"➕ 新增角色: {name} ({id})");
+                            System.Diagnostics.Debug.WriteLine($"➕ 新增角色: {name} ({officialId})");
                         }
 
                         importCount++;
@@ -269,7 +262,7 @@ namespace BloodClockTowerScriptEditor.Services
         /// <summary>
         /// 建立新的 RoleTemplate（已更新使用 ParseNightOrder）
         /// </summary>
-        private static RoleTemplate CreateRoleTemplate(JToken item,  bool isOfficial)
+        private static RoleTemplate CreateRoleTemplate(JToken item, bool isOfficial)
         {
             var roleTemplate = new RoleTemplate
             {
@@ -301,7 +294,7 @@ namespace BloodClockTowerScriptEditor.Services
         /// <summary>
         /// 更新現有 RoleTemplate（已更新使用 ParseNightOrder）
         /// </summary>
-        private static void UpdateRoleTemplate(RoleTemplate existing, JToken item,  bool isOfficial)
+        private static void UpdateRoleTemplate(RoleTemplate existing, JToken item, bool isOfficial)
         {
             existing.Name = item["name"]?.ToString() ?? existing.Name;
             existing.Team = item["team"]?.ToString() ?? existing.Team;

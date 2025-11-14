@@ -20,7 +20,7 @@ namespace BloodClockTowerScriptEditor.Models
         public Script()
         {
             _meta = new ScriptMeta();
-            _roles = new ObservableCollection<Role>();
+            _roles = [];
 
             // 監聽集合變化
             _roles.CollectionChanged += Roles_CollectionChanged;
@@ -78,6 +78,9 @@ namespace BloodClockTowerScriptEditor.Models
         public IEnumerable<Role> Fabled => Roles.Where(r => r.Team == TeamType.Fabled);
 
         [JsonIgnore]
+        public IEnumerable<Role> Loric => Roles.Where(r => r.Team == TeamType.Loric);
+
+        [JsonIgnore]
         public IEnumerable<Role> Jinxes => Roles.Where(r => r.Team == TeamType.Jinxed);
 
         // ==================== 統計資訊 ====================
@@ -121,6 +124,7 @@ namespace BloodClockTowerScriptEditor.Models
             OnPropertyChanged(nameof(Demons));
             OnPropertyChanged(nameof(Travelers));
             OnPropertyChanged(nameof(Fabled));
+            OnPropertyChanged(nameof(Loric)); 
             OnPropertyChanged(nameof(Jinxes));
             OnPropertyChanged(nameof(TotalRoleCount));
             OnPropertyChanged(nameof(TownsfolkCount));

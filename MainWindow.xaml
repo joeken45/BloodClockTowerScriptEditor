@@ -703,6 +703,85 @@
                                             </Grid>
                                         </Border>
 
+                                        <!-- 🎨 奇遇 (Loric) -->
+                                        <Border x:Name="borderLoric" BorderBrush="#4CAF50" BorderThickness="2" Margin="0,0,0,10" CornerRadius="4"
+        Visibility="{Binding LoricCount, Converter={StaticResource CountToVisibilityConverter}}">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+
+                                                <Border Grid.Row="0" Background="#4CAF50" Padding="10" Cursor="Hand"
+                MouseLeftButtonDown="TeamHeader_Click" Tag="Loric">
+                                                    <Grid>
+                                                        <TextBlock FontWeight="Bold" Foreground="White">
+                    <Run Text="奇遇 ("/>
+                    <Run Text="{Binding LoricCount, Mode=OneWay}"/>
+                    <Run Text=")"/>
+                                                        </TextBlock>
+                                                        <TextBlock x:Name="iconLoric" Text="▼" Foreground="White" 
+                           HorizontalAlignment="Right" FontSize="14"/>
+                                                    </Grid>
+                                                </Border>
+
+                                                <ItemsControl x:Name="listLoric" Grid.Row="1" 
+                      ItemsSource="{Binding LoricRoles}"
+                      Background="White"
+                      AllowDrop="True"
+                      Drop="TeamList_Drop"
+                      DragOver="TeamList_DragOver"
+                      DragLeave="TeamList_DragLeave"
+                      Tag="Loric">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Border BorderBrush="#EEE" BorderThickness="0,0,0,1" 
+                            Padding="10,8" Background="White"
+                            MouseLeftButtonDown="RoleItem_MouseDown"
+                            MouseMove="RoleItem_MouseMove"
+                            Cursor="Hand">
+                                                                <Grid>
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="Auto"/>
+                                                                        <ColumnDefinition Width="Auto"/>
+                                                                        <ColumnDefinition Width="*"/>
+                                                                        <ColumnDefinition Width="Auto"/>
+                                                                    </Grid.ColumnDefinitions>
+
+                                                                    <TextBlock Grid.Column="0" Text="⋮⋮" 
+                                       Foreground="#999" FontSize="14" 
+                                       VerticalAlignment="Center" Margin="0,0,10,0"/>
+
+                                                                    <Border Grid.Column="1" Width="40" Height="40" 
+                                    Background="#F0F0F0" 
+                                    BorderBrush="#4CAF50" BorderThickness="1"
+                                    Margin="0,0,10,0">
+                                                                        <Image Source="{Binding ImageUrl, Converter={StaticResource StringToImageSourceConverter}}" 
+                                       Stretch="Uniform"/>
+                                                                    </Border>
+
+                                                                    <TextBlock Grid.Column="2" Text="{Binding Name}" 
+                                       VerticalAlignment="Center" 
+                                       FontWeight="SemiBold"/>
+
+                                                                    <StackPanel Grid.Column="3" Orientation="Horizontal" Margin="10,0,0,0">
+                                                                        <Button Content="▲" Width="24" Height="24"
+                                        FontSize="10" Padding="0" Margin="0,0,2,0"
+                                        Click="MoveRoleInTeam_Click" Tag="Up"
+                                        ToolTip="上移"/>
+                                                                        <Button Content="▼" Width="24" Height="24"
+                                        FontSize="10" Padding="0"
+                                        Click="MoveRoleInTeam_Click" Tag="Down"
+                                        ToolTip="下移"/>
+                                                                    </StackPanel>
+                                                                </Grid>
+                                                            </Border>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </Grid>
+                                        </Border>
+
                                         <!-- 🎨 相剋 -->
                                         <Border x:Name="borderJinxed" BorderBrush="#9C27B0" BorderThickness="2" Margin="0,0,0,10" CornerRadius="4"
                 Visibility="{Binding JinxedCount, Converter={StaticResource CountToVisibilityConverter}}">

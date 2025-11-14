@@ -56,7 +56,8 @@ namespace BloodClockTowerScriptEditor.Services
                         using var context = new Data.RoleTemplateContext();
                         var template = context.RoleTemplates
                             .Include(r => r.Reminders)
-                            .FirstOrDefault(r => r.OfficialId == officialId);
+                            .FirstOrDefault(r => r.OfficialId == officialId 
+                            || r.OfficialId!.Replace("_", "") == officialId);
 
                         if (template != null)
                         {
@@ -241,11 +242,20 @@ namespace BloodClockTowerScriptEditor.Services
 
                 foreach (var role in rolesToExport)
                 {
-                    // ✅ 新增：判斷是否使用官方 ID
+                    // ✅ 修改這段：判斷是否使用官方 ID
                     if (role.UseOfficialId && !string.IsNullOrEmpty(role.OfficialId))
                     {
-                        // 情況 1: 使用官方 ID → 只輸出 ID 字串
-                        jArray.Add(role.OfficialId);
+                        // 🆕 根據匯出格式調整 ID
+                        string officialId = role.OfficialId;
+
+                        if (format == ExportFormat.BOTC)
+                        {
+                            // BOTC格式：移除下劃線
+                            officialId = officialId.Replace("_", "");
+                        }
+                        // 集石格式：保持原樣 (含下劃線)
+
+                        jArray.Add(officialId);
                         continue;
                     }
 
@@ -300,6 +310,12 @@ namespace BloodClockTowerScriptEditor.Services
                     {
                         // 一般角色：完整序列化
                         roleObj = JObject.FromObject(role, serializer);
+
+                        // 🆕 處理 Loric 類型 (集石格式轉換)
+                        if (format == ExportFormat.JiShi && role.Team == TeamType.Loric)
+                        {
+                            roleObj["team"] = "fabled";
+                        }
 
                         // 處理 Image 欄位
                         if (roleObj["image"] != null)
@@ -471,6 +487,48 @@ namespace BloodClockTowerScriptEditor.Services
                 script.Roles.Add(jinxedRole);
                 System.Diagnostics.Debug.WriteLine($"✅ 已加入集石相剋規則: {jinxedRole.Name}");
             }
+        }
+
+        /// <summary>
+        /// 將集石格式ID轉換為BOTC格式ID (移除下劃線)
+        /// </summary>
+        /// <param name="jiShiId">集石格式ID (例如: storm_catcher)</param>
+        /// <returns>BOTC格式ID (例如: stormcatcher)</returns>
+        private static string ConvertJiShiIdToBotc(string jiShiId)
+        {
+            if (string.IsNullOrEmpty(jiShiId))
+                return jiShiId;
+
+            return jiShiId.Replace("_", "");
+        }
+
+        /// <summary>
+        /// 嘗試從集石格式ID找到對應的角色
+        /// 如果原ID找不到,會嘗試移除下劃線後再查找
+        /// </summary>
+        /// <param name="id">原始ID</param>
+        /// <param name="roles">角色集合</param>
+        /// <returns>找到的角色,找不到則返回null</returns>
+        private static Role? FindRoleByIdWithFallback(string id, IEnumerable<Role> roles)
+        {
+            if (string.IsNullOrEmpty(id))
+                return null;
+
+            // 1. 先嘗試直接匹配
+            var role = roles.FirstOrDefault(r => r.Id == id);
+            if (role != null)
+                return role;
+
+            // 2. 嘗試移除下劃線後匹配 (集石 -> BOTC)
+            string botcId = ConvertJiShiIdToBotc(id);
+            role = roles.FirstOrDefault(r => r.Id == botcId);
+            if (role != null)
+                return role;
+
+            // 3. 嘗試加入下劃線後匹配 (BOTC -> 集石)
+            // 這部分較複雜,暫時不實作,因為無法確定下劃線位置
+
+            return null;
         }
     }
 }

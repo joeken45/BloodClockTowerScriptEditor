@@ -25,6 +25,9 @@ namespace BloodClockTowerScriptEditor.Models
         [EnumMember(Value = "fabled")]
         Fabled,
 
+        [EnumMember(Value = "loric")]
+        Loric,
+
         [EnumMember(Value = "a jinxed")]
         Jinxed
     }

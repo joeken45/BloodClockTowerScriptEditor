@@ -154,6 +154,7 @@ namespace BloodClockTowerScriptEditor.Models
                     "demon" => "惡魔",
                     "traveler" => "旅行者",
                     "fabled" => "傳奇",
+                    "loric" => "奇遇",  
                     _ => "未知"
                 };
             }
@@ -177,7 +178,7 @@ namespace BloodClockTowerScriptEditor.Models
         /// <summary>
         /// 提示標記（導航屬性）
         /// </summary>
-        public List<RoleReminder> Reminders { get; set; } = new();
+        public List<RoleReminder> Reminders { get; set; } = [];
 
         /// <summary>
         /// 轉換為 Role 模型
@@ -190,7 +191,7 @@ namespace BloodClockTowerScriptEditor.Models
                 Name = this.Name,
                 Team = Enum.Parse<TeamType>(this.Team, true),
                 Ability = this.Ability ?? string.Empty,
-                Image = string.IsNullOrEmpty(this.Image) ? new List<string>() : new List<string> { this.Image },
+                Image = string.IsNullOrEmpty(this.Image) ? [] : [this.Image],
                 Edition = this.Edition,
                 Flavor = this.Flavor,
                 Setup = this.Setup,
