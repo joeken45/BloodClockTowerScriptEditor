@@ -5,7 +5,7 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/4/45/Washerwoman.png/200px-Washerwoman.png",
     "ability": "在你的首個夜晚，你會得知兩名玩家和一個鎮民角色：這兩名玩家之一是該角色。",
     "setup": false,
-    "firstNight": 3033.0,
+    "firstNight": 3039.0,
     "firstNightReminder": "喚醒洗衣婦，對她指向兩名玩家，並展示一個鎮民角色標記。這兩名玩家其中之一是這個鎮民。",
     "otherNight": 0.0,
     "otherNightReminder": "",
@@ -26,7 +26,7 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/5/55/Librarian.png/200px-Librarian.png",
     "ability": "在你的首個夜晚，你會得知兩名玩家和一個外來者角色：這兩名玩家之一是該角色(或者你會得知沒有外來者在場)。",
     "setup": false,
-    "firstNight": 3034.0,
+    "firstNight": 3040.0,
     "firstNightReminder": "喚醒圖書管理員，對他指向兩名玩家，並展示一個外來者角色標記。這兩名玩家其中之一是這個外來者。",
     "otherNight": 0.0,
     "otherNightReminder": "",
@@ -47,7 +47,7 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/c/cb/Investigator.png/200px-Investigator.png",
     "ability": "在你的首個夜晚，你會得知兩名玩家和一個爪牙角色 ：這兩名玩家之一是該角色(或者你會得知沒有爪牙在場)。",
     "setup": false,
-    "firstNight": 3035.0,
+    "firstNight": 3041.0,
     "firstNightReminder": "喚醒調查員，對他指向兩名玩家，並展示一個爪牙角色標記。這兩名玩家其中之一是這個爪牙。",
     "otherNight": 0.0,
     "otherNightReminder": "",
@@ -68,7 +68,7 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/e/e5/Chef.png/200px-Chef.png",
     "ability": "在你的首個夜晚，你會得知場上鄰座的邪惡玩家有多少對。",
     "setup": false,
-    "firstNight": 3036.0,
+    "firstNight": 3042.0,
     "firstNightReminder": "喚醒廚師，對他用手勢比劃數字來告知他鄰座邪惡玩家有幾對。",
     "otherNight": 0.0,
     "otherNightReminder": "",
@@ -86,9 +86,9 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/4/4e/Empath.png/200px-Empath.png",
     "ability": "每個夜晚，你會得知與你鄰近的兩名存活的玩家中邪惡玩家的數量。",
     "setup": false,
-    "firstNight": 3037.0,
+    "firstNight": 3043.0,
     "firstNightReminder": "喚醒共情者，對他用手勢比劃數字來告知他與他鄰近的存活玩家中有幾人是邪惡玩家。",
-    "otherNight": 88.0,
+    "otherNight": 97.0,
     "otherNightReminder": "喚醒共情者，對他用手勢比劃數字來告知他與他鄰近的存活玩家中有幾人是邪惡玩家。",
     "reminders": [],
     "remindersGlobal": [],
@@ -104,9 +104,9 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/6/67/Fortuneteller.png/200px-Fortuneteller.png",
     "ability": "每個夜晚，你要選擇兩名玩家：你會得知他們之中是否有惡魔。會有一名善良玩家始終被你的能力當作＂惡魔＂（干預項）。",
     "setup": false,
-    "firstNight": 3038.0,
+    "firstNight": 3044.0,
     "firstNightReminder": "喚醒占卜師，讓他選擇兩名玩家。以點頭或搖頭告知他是否選中了惡魔。",
-    "otherNight": 89.0,
+    "otherNight": 98.0,
     "otherNightReminder": "喚醒占卜師，讓他選擇兩名玩家。以點頭或搖頭告知他是否選中了惡魔。",
     "reminders": [
       "干擾項"
@@ -116,7 +116,7 @@
     "edition": "custom",
     "team": "townsfolk",
     "special": [],
-    "officialId": "fortune_teller"
+    "officialId": "fortuneteller"
   },
   {
     "name": "送葬者",
@@ -126,7 +126,7 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 91.0,
+    "otherNight": 100.0,
     "otherNightReminder": "如果今天白天有玩家死於處決，喚醒送葬者，對他展示那名玩家的角色標記。",
     "reminders": [
       "死於今日"
@@ -146,7 +146,7 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 24.0,
+    "otherNight": 26.0,
     "otherNightReminder": "喚醒僧侶，讓他選擇除自己以外的一名玩家，那名玩家今晚免受惡魔負面效果影響。",
     "reminders": [
       "保護"
@@ -166,7 +166,7 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 78.0,
+    "otherNight": 86.0,
     "otherNightReminder": "如果守鴉人死於夜晚，喚醒守鴉人，讓他選擇一名玩家。對他展示這名玩家的角色標記。",
     "reminders": [],
     "remindersGlobal": [],
@@ -258,9 +258,9 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/6/66/Grandmother.png/200px-Grandmother.png",
     "ability": "在你的首個夜晚，你會得知一名善良玩家和他的角色。如果惡魔殺死了他，你也會死亡。",
     "setup": false,
-    "firstNight": 3041.0,
+    "firstNight": 3047.0,
     "firstNightReminder": "喚醒祖母，對她指向一名善良玩家，並展示該玩家的角色標記。",
-    "otherNight": 75.0,
+    "otherNight": 83.0,
     "otherNightReminder": "如果惡魔殺死了孫子，祖母死亡。",
     "reminders": [
       "孫子",
@@ -279,7 +279,7 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/c/ce/Sailor.png/200px-Sailor.png",
     "ability": "每個夜晚，你要選擇一名存活的玩家：你或他之一會醉酒直到下個黃昏。你不會死亡。",
     "setup": false,
-    "firstNight": 3006.0,
+    "firstNight": 3007.0,
     "firstNightReminder": "喚醒水手，讓他選擇一名玩家。決定他倆其中誰因為水手能力醉酒。",
     "otherNight": 8.0,
     "otherNightReminder": "喚醒水手，讓他選擇一名玩家。決定他倆其中誰因為水手能力醉酒。",
@@ -299,9 +299,9 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/0/00/Chambermaid.png/200px-Chambermaid.png",
     "ability": "每個夜晚，你要選擇除你以外的兩名存活的玩家：你會得知他們中有幾人在當晚因其自身能力而被喚醒。",
     "setup": false,
-    "firstNight": 3064.0,
+    "firstNight": 3072.0,
     "firstNightReminder": "喚醒侍女，讓她選擇兩名除自己以外的存活玩家。用手勢比劃數字來告知她這些玩家中因自己能力而喚醒的玩家數量。",
-    "otherNight": 112.0,
+    "otherNight": 123.0,
     "otherNightReminder": "喚醒侍女，讓她選擇兩名除自己以外的存活玩家。用手勢比劃數字來告知她這些玩家中因自己能力而喚醒的玩家數量。",
     "reminders": [],
     "remindersGlobal": [],
@@ -319,7 +319,7 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 39.0,
+    "otherNight": 41.0,
     "otherNightReminder": "喚醒驅魔人，讓他選擇一名與上一晚不同的玩家。如果他選中了惡魔，則在驅魔人入睡後通知該惡魔誰是驅魔人。",
     "reminders": [
       "被選擇"
@@ -339,7 +339,7 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 14.0,
+    "otherNight": 16.0,
     "otherNightReminder": "喚醒旅店老闆，讓他選擇兩名玩家。這兩名玩家今晚不死，同時需要決定他倆其中誰因為旅店老闆能力醉酒。",
     "reminders": [
       "不會死亡",
@@ -361,7 +361,7 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 21.0,
+    "otherNight": 23.0,
     "otherNightReminder": "喚醒賭徒，讓他進行猜測。如果猜測錯誤，他死亡。",
     "reminders": [
       "死亡"
@@ -381,7 +381,7 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 71.0,
+    "otherNight": 79.0,
     "otherNightReminder": "如果造謠者今天白天的聲明正確，一名玩家死亡。",
     "reminders": [
       "死亡"
@@ -399,9 +399,9 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/d/d9/Courtier.png/200px-Courtier.png",
     "ability": "每局遊戲限一次，在夜晚時，你可以選擇一個角色：如果該角色在場，該角色之一從當晚開始醉酒三天三夜。",
     "setup": false,
-    "firstNight": 3015.0,
+    "firstNight": 3018.0,
     "firstNightReminder": "喚醒侍臣，他可以搖頭不使用能力，或選擇角色列表上的一個任意角色，該角色對應的玩家之一醉酒。",
-    "otherNight": 15.0,
+    "otherNight": 17.0,
     "otherNightReminder": "如果侍臣未曾使用能力，喚醒侍臣，他可以搖頭不使用能力，或選擇角色列表上的一個任意角色，該角色對應的玩家之一醉酒。",
     "reminders": [
       "失去能力",
@@ -424,7 +424,7 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 85.0,
+    "otherNight": 94.0,
     "otherNightReminder": "如果教授未曾使用能力且在城鎮廣場上有玩家死亡，喚醒教授，他可以搖頭不使用能力，或選擇一名已死亡的玩家。如果該玩家是鎮民，該玩家被起死回生。",
     "reminders": [
       "復活",
@@ -476,7 +476,7 @@
     "edition": "custom",
     "team": "townsfolk",
     "special": [],
-    "officialId": "tea_lady"
+    "officialId": "tealady"
   },
   {
     "name": "和平主義者",
@@ -520,7 +520,7 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/7/74/Clockmaker.png/200px-Clockmaker.png",
     "ability": "在你的首個夜晚，你會得知惡魔與爪牙之間最近的距離。(鄰座的玩家距離為1)",
     "setup": false,
-    "firstNight": 3042.0,
+    "firstNight": 3048.0,
     "firstNightReminder": "喚醒鐘錶匠，對他用手勢比劃數字來告知他惡魔與爪牙之間的最近距離。",
     "otherNight": 0.0,
     "otherNightReminder": "",
@@ -538,9 +538,9 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/2/29/Dreamer.png/200px-Dreamer.png",
     "ability": "每個夜晚，你要選擇除你及旅行者以外的一名玩家：你會得知一個善良角色和一個邪惡角色，該玩家是其中一個角色。",
     "setup": false,
-    "firstNight": 3043.0,
+    "firstNight": 3049.0,
     "firstNightReminder": "喚醒築夢師，讓他選擇一名除自己以外的非旅行者玩家。對他展示一善一惡兩個角色標記。",
-    "otherNight": 93.0,
+    "otherNight": 102.0,
     "otherNightReminder": "喚醒築夢師，讓他選擇一名除自己以外的非旅行者玩家。對他展示一善一惡兩個角色標記。",
     "reminders": [],
     "remindersGlobal": [],
@@ -556,9 +556,9 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/a/ab/Snakecharmer.png/200px-Snakecharmer.png",
     "ability": "每個夜晚，你要選擇一名存活的玩家：如果你選中了惡魔，你和他交換角色和陣營，然後他中毒。",
     "setup": false,
-    "firstNight": 3017.0,
+    "firstNight": 3020.0,
     "firstNightReminder": "喚醒舞蛇人，讓他選擇一名存活玩家。如果選中惡魔則執行角色和陣營的交換，並在舞蛇人入睡後通知舊惡魔角色變化。",
-    "otherNight": 23.0,
+    "otherNight": 25.0,
     "otherNightReminder": "喚醒舞蛇人，讓他選擇一名存活玩家。如果選中惡魔則執行角色和陣營的交換，並在舞蛇人入睡後通知舊惡魔角色變化。",
     "reminders": [
       "中毒"
@@ -568,7 +568,7 @@
     "edition": "custom",
     "team": "townsfolk",
     "special": [],
-    "officialId": "snake_charmer"
+    "officialId": "snakecharmer"
   },
   {
     "name": "數學家",
@@ -576,9 +576,9 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/0/06/Mathematician.png/200px-Mathematician.png",
     "ability": "每個夜晚，你會得知有多少名玩家的能力因為其他角色的能力而未正常生效。(從上個黎明到你被喚醒時)",
     "setup": false,
-    "firstNight": 3066.0,
+    "firstNight": 3074.0,
     "firstNightReminder": "喚醒數學家，用手勢比劃數字來告訴他今天有多少玩家的能力未正常生效。",
-    "otherNight": 114.0,
+    "otherNight": 125.0,
     "otherNightReminder": "喚醒數學家，用手勢比劃數字來告訴他今天有多少玩家的能力未正常生效。",
     "reminders": [
       "未正常生效",
@@ -603,7 +603,7 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 94.0,
+    "otherNight": 103.0,
     "otherNightReminder": "喚醒賣花女孩，以點頭或搖頭告知她今天白天是否有惡魔參與投票。",
     "reminders": [
       "惡魔未投票",
@@ -624,7 +624,7 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 95.0,
+    "otherNight": 104.0,
     "otherNightReminder": "喚醒城鎮公告員，以點頭或搖頭告知他今天白天是否有爪牙發起提名。",
     "reminders": [
       "爪牙未提名",
@@ -635,7 +635,7 @@
     "edition": "custom",
     "team": "townsfolk",
     "special": [],
-    "officialId": "town_crier"
+    "officialId": "towncrier"
   },
   {
     "name": "神諭者",
@@ -645,7 +645,7 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 96.0,
+    "otherNight": 105.0,
     "otherNightReminder": "喚醒神諭者，對他用手勢比劃數字來告知他當前死亡玩家中邪惡玩家的數量。",
     "reminders": [],
     "remindersGlobal": [],
@@ -679,9 +679,9 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/a/ae/Seamstress.png/200px-Seamstress.png",
     "ability": "每局遊戲限一次，在夜晚時，你可以選擇除你以外的兩名玩家：你會得知他們是否為同一陣營。",
     "setup": false,
-    "firstNight": 3044.0,
+    "firstNight": 3050.0,
     "firstNightReminder": "喚醒女裁縫，她可以搖頭不使用能力，或選擇除自己以外的兩名玩家。以點頭或搖頭告知她選擇的玩家是否為同一陣營。",
-    "otherNight": 97.0,
+    "otherNight": 106.0,
     "otherNightReminder": "如果女裁縫未曾使用能力，喚醒女裁縫，她可以搖頭不使用能力，或選擇除自己以外的兩名玩家。以點頭或搖頭告知她選擇的玩家是否為同一陣營。",
     "reminders": [
       "失去能力"
@@ -743,7 +743,7 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 98.0,
+    "otherNight": 107.0,
     "otherNightReminder": "如果雜耍藝人在今天白天使用了能力，喚醒雜耍藝人，對他用手勢比劃數字來告知他白天猜測正確的次數。",
     "reminders": [
       "猜測正確",
@@ -767,7 +767,7 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 79.0,
+    "otherNight": 87.0,
     "otherNightReminder": "如果賢者被惡魔殺死，喚醒賢者，對他指向兩名玩家。其中之一是殺死賢者的惡魔。",
     "reminders": [],
     "remindersGlobal": [],
@@ -785,7 +785,7 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 41.0,
+    "otherNight": 43.0,
     "otherNightReminder": "喚醒半獸人，讓他選擇一名玩家。如果該玩家是善良玩家，該玩家死亡，且當晚惡魔不會造成死亡。",
     "reminders": [
       "失足",
@@ -806,7 +806,7 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 84.0,
+    "otherNight": 92.0,
     "otherNightReminder": "如果惡魔殺死了報喪女妖，宣佈“報喪女妖覺醒了”，並使用“具有能力”標記報喪女妖。",
     "reminders": [
       "具有能力"
@@ -826,7 +826,7 @@
     "setup": true,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 82.0,
+    "otherNight": 90.0,
     "otherNightReminder": "如果惡魔殺死了國王，喚醒唱詩男孩，對他指向惡魔。",
     "reminders": [],
     "remindersGlobal": [],
@@ -842,7 +842,7 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/4/44/Preacher.png/200px-Preacher.png",
     "ability": "每個夜晚，你要選擇一名玩家 ：如果選中了爪牙，他會得知被傳教土選中。所有被你選中的爪牙失去能力。",
     "setup": false,
-    "firstNight": 3008.0,
+    "firstNight": 3009.0,
     "firstNightReminder": "喚醒傳教士，讓他選擇一名玩家。如果他選中了爪牙，該爪牙失去能力。在傳教士入睡後通知該爪牙被傳教士選中。",
     "otherNight": 10.0,
     "otherNightReminder": "喚醒傳教士，讓他選擇一名玩家。如果他選中了爪牙，該爪牙失去能力。在傳教士入睡後通知該爪牙被傳教士選中。",
@@ -865,9 +865,9 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/7/78/Villageidiot.png/200px-Villageidiot.png",
     "ability": "每個夜晚，你要選擇一名玩家 ：你會得知他的陣營。[+0~2村夫，復數村夫中有一人醉酒]",
     "setup": true,
-    "firstNight": 3053.0,
+    "firstNight": 3060.0,
     "firstNightReminder": "喚醒村夫，讓他指向一名玩家，用手勢告訴他那名玩家的陣營。",
-    "otherNight": 101.0,
+    "otherNight": 112.0,
     "otherNightReminder": "喚醒村夫，讓他指向一名玩家，用手勢告訴他那名玩家的陣營。",
     "reminders": [
       "醉酒"
@@ -877,7 +877,7 @@
     "edition": "custom",
     "team": "townsfolk",
     "special": [],
-    "officialId": "village_idiot"
+    "officialId": "villageidiot"
   },
   {
     "name": "工程師",
@@ -885,7 +885,7 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/d/d8/Engineer.png/200px-Engineer.png",
     "ability": "每局遊戲限一次，在夜晚時，你可以選擇讓惡魔變成你選擇的惡魔角色，或讓所有爪牙變成你選擇的爪牙角色。",
     "setup": false,
-    "firstNight": 3007.0,
+    "firstNight": 3008.0,
     "firstNightReminder": "喚醒工程師，他可以搖頭不使用能力，或選擇角色列表上的惡魔或爪牙角色，來執行同角色類型的這些玩家的角色變化。",
     "otherNight": 9.0,
     "otherNightReminder": "如果工程師未曾使用能力，喚醒工程師，他可以搖頭不使用能力，或選擇角色列表上的惡魔或爪牙角色，來執行同角色類型的這些玩家的角色變化。",
@@ -905,7 +905,7 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/5/59/Noble.png/200px-Noble.png",
     "ability": "在你的首個夜晚，你會得知三名玩家 ：其中有且只有一名玩家是邪惡的。",
     "setup": false,
-    "firstNight": 3047.0,
+    "firstNight": 3053.0,
     "firstNightReminder": "喚醒貴族，對他指向三名玩家。這三名玩家中有且僅有一名是邪惡玩家。",
     "otherNight": 0.0,
     "otherNightReminder": "",
@@ -929,7 +929,7 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 42.0,
+    "otherNight": 44.0,
     "otherNightReminder": "如果公主在今天白天提名並處決了一名玩家，當晚惡魔不會造成死亡。",
     "reminders": [
       "沒有死亡"
@@ -949,7 +949,7 @@
     "setup": false,
     "firstNight": 3001.0,
     "firstNightReminder": "如果國王在場，對惡魔展示國王角色標記並指向國王玩家。",
-    "otherNight": 102.0,
+    "otherNight": 113.0,
     "otherNightReminder": "如果滿足國王的喚醒條件，喚醒國王，對他展示一個存活的角色標記。",
     "reminders": [],
     "remindersGlobal": [],
@@ -965,9 +965,9 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/6/6d/General.png/200px-General.png",
     "ability": "每個夜晚，你會得知說書人認為哪個陣營當前更有優勢(善良/邪惡/均勢)。",
     "setup": false,
-    "firstNight": 3062.0,
+    "firstNight": 3070.0,
     "firstNightReminder": "喚醒將軍，對他用手勢比劃當前的優勢陣營。",
-    "otherNight": 108.0,
+    "otherNight": 119.0,
     "otherNightReminder": "喚醒將軍，對他用手勢比劃當前的優勢陣營。",
     "reminders": [],
     "remindersGlobal": [],
@@ -1023,7 +1023,7 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 83.0,
+    "otherNight": 91.0,
     "otherNightReminder": "如果農夫死於夜晚，喚醒一名存活的善良玩家告知他角色變化。",
     "reminders": [],
     "remindersGlobal": [],
@@ -1039,9 +1039,9 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/8/86/Highpriestess.png/200px-Highpriestess.png",
     "ability": "每個夜晚，你會得知一名說書人認為你最應該與其交流的玩家。",
     "setup": false,
-    "firstNight": 3059.0,
+    "firstNight": 3067.0,
     "firstNightReminder": "喚醒女祭司，對她指向一名玩家。",
-    "otherNight": 107.0,
+    "otherNight": 118.0,
     "otherNightReminder": "喚醒女祭司，對她指向一名玩家。",
     "reminders": [],
     "remindersGlobal": [],
@@ -1049,7 +1049,7 @@
     "edition": "custom",
     "team": "townsfolk",
     "special": [],
-    "officialId": "high_priestess"
+    "officialId": "highpriestess"
   },
   {
     "name": "氣球駕駛員",
@@ -1057,9 +1057,9 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/3/35/Balloonist.png/200px-Balloonist.png",
     "ability": "每個夜晚，你會得知一名與上個夜晚得知的玩家角色類型不同的玩家。[+0~1外來者]",
     "setup": true,
-    "firstNight": 3048.0,
+    "firstNight": 3054.0,
     "firstNightReminder": "喚醒氣球駕駛員，對他指向一名玩家。",
-    "otherNight": 99.0,
+    "otherNight": 108.0,
     "otherNightReminder": "喚醒氣球駕駛員，對他指向一名玩家，這名玩家與之前氣球駕駛員得知過的玩家屬於不同的角色類型。",
     "reminders": [
       "得知"
@@ -1077,7 +1077,7 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/6/6b/Knight.png/300px-Knight.png",
     "ability": "在你的首個夜晚，你會得知兩名非惡魔玩家。",
     "setup": false,
-    "firstNight": 3046.0,
+    "firstNight": 3052.0,
     "firstNightReminder": "喚醒騎士，對他指向兩名非惡魔玩家。",
     "otherNight": 0.0,
     "otherNightReminder": "",
@@ -1098,9 +1098,9 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/e/ee/Bountyhunter.png/200px-Bountyhunter.png",
     "ability": "在你的首個夜晚，你會得知一名邪惡玩家。每當你得知的玩家死亡，你會在當晚得知另一名邪惡玩家。[會有一名鎮民轉變為邪惡陣營]",
     "setup": true,
-    "firstNight": 3054.0,
+    "firstNight": 3061.0,
     "firstNightReminder": "（在進入首個夜晚時立即通知賞金獵人轉變的那個鎮民他的陣營發生了變化）喚醒賞金獵人，對他指向一名邪惡玩家。",
-    "otherNight": 103.0,
+    "otherNight": 114.0,
     "otherNightReminder": "如果賞金獵人之前得知的玩家死亡，喚醒賞金獵人，對他指向一名新的邪惡玩家。",
     "reminders": [
       "得知"
@@ -1110,7 +1110,7 @@
     "edition": "custom",
     "team": "townsfolk",
     "special": [],
-    "officialId": "bounty_hunter"
+    "officialId": "bountyhunter"
   },
   {
     "name": "失憶者",
@@ -1159,7 +1159,7 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/e/ee/Steward.png/200px-Steward.png",
     "ability": "在你的首個夜晚，你會得知一名善良玩家。",
     "setup": false,
-    "firstNight": 3045.0,
+    "firstNight": 3051.0,
     "firstNightReminder": "喚醒事務官，對他指向一名善良玩家。",
     "otherNight": 0.0,
     "otherNightReminder": "",
@@ -1179,9 +1179,9 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/3/3f/Nightwatchman.png/200px-Nightwatchman.png",
     "ability": "每局遊戲限一次，在夜晚時，你可以選擇一名玩家：他會得知你是守夜人。",
     "setup": false,
-    "firstNight": 3055.0,
+    "firstNight": 3062.0,
     "firstNightReminder": "喚醒守夜人，他可以搖頭不使用能力，或選擇一名玩家。如果守夜人選擇了玩家，則在守夜人入睡後通知那名玩家誰是守夜人。",
-    "otherNight": 104.0,
+    "otherNight": 115.0,
     "otherNightReminder": "如果守夜人未曾使用能力，喚醒守夜人，他可以搖頭不使用能力，或選擇一名玩家。如果守夜人選擇了玩家，則在守夜人入睡後通知那名玩家誰是守夜人。",
     "reminders": [
       "失去能力"
@@ -1235,7 +1235,7 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/2/22/Pixie.png/200px-Pixie.png",
     "ability": "在你的首個夜晚，你會得知一個在場的鎮民角色。如果你＂瘋狂＂地證明你是該角色，當他死亡時你獲得該角色的能力。",
     "setup": false,
-    "firstNight": 3031.0,
+    "firstNight": 3036.0,
     "firstNightReminder": "喚醒小精靈，對他展示一個在場鎮民角色標記。",
     "otherNight": 0.0,
     "otherNightReminder": "",
@@ -1256,7 +1256,7 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/3/3e/Shugenja.png/200px-Shugenja.png",
     "ability": "在你的首個夜晚，你會得知距離最近的邪惡玩家位於你的順時針還是逆時針方向。如果兩側的邪惡玩家與你距離相等，你得知的信息由說書人決定。",
     "setup": false,
-    "firstNight": 3060.0,
+    "firstNight": 3068.0,
     "firstNightReminder": "喚醒修行者，對他指向對應方向來告知他最近的邪惡玩家的方向。",
     "otherNight": 0.0,
     "otherNightReminder": "",
@@ -1274,9 +1274,9 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/7/75/Huntsman.png/200px-Huntsman.png",
     "ability": "每局遊戲限一次，在夜晚時，你可以選擇一名存活的玩家：如果你選中了落難少女，她會變成一個不在場的鎮民角色。[+落難少女]",
     "setup": true,
-    "firstNight": 3032.0,
+    "firstNight": 3037.0,
     "firstNightReminder": "喚醒巡山人，他可以搖頭不使用能力，或選擇一名玩家。如果巡山人選中了落難少女，則在巡山人入睡後通知落難少女角色變化。",
-    "otherNight": 86.0,
+    "otherNight": 95.0,
     "otherNightReminder": "如果巡山人未曾使用能力，喚醒巡山人，他可以搖頭不使用能力，或選擇一名玩家。如果巡山人選中了落難少女，則在巡山人入睡後通知落難少女角色變化。",
     "reminders": [
       "失去能力"
@@ -1294,9 +1294,9 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/e/e1/Cultleader.png/300px-Cultleader.png",
     "ability": "每個夜晚，你會轉變為與你鄰近的一名存活的玩家的陣營。每個白天，你可以提議所有玩家加入你的教派，如果所有善良玩家同意加入，你的陣營獲勝。",
     "setup": false,
-    "firstNight": 3056.0,
+    "firstNight": 3063.0,
     "firstNightReminder": "如果異教領袖的陣營發生了變化，將他喚醒並通知他最新陣營。",
-    "otherNight": 105.0,
+    "otherNight": 116.0,
     "otherNightReminder": "如果異教領袖的陣營發生了變化，將他喚醒並通知他最新陣營。",
     "reminders": [],
     "remindersGlobal": [],
@@ -1304,7 +1304,7 @@
     "edition": "custom",
     "team": "townsfolk",
     "special": [],
-    "officialId": "cult_leader"
+    "officialId": "cultleader"
   },
   {
     "name": "罌粟種植者",
@@ -1324,7 +1324,7 @@
     "edition": "custom",
     "team": "townsfolk",
     "special": [],
-    "officialId": "poppy_grower"
+    "officialId": "poppygrower"
   },
   {
     "name": "漁夫",
@@ -1354,7 +1354,7 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 22.0,
+    "otherNight": 24.0,
     "otherNightReminder": "喚醒雜技演員，讓他選擇一名玩家。如果當晚這名玩家醉酒或中毒，雜技演員死亡。",
     "reminders": [
       "被選擇",
@@ -1413,7 +1413,7 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 17.0,
+    "otherNight": 19.0,
     "otherNightReminder": "喚醒打更人，讓他進行猜測，並放置提示標記到對應玩家旁。",
     "reminders": [
       "警惕",
@@ -1432,7 +1432,7 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/8/8d/Dianxiaoer.png/200px-Dianxiaoer.png",
     "ability": "在你的首個夜晚，你會得知兩名善良玩家。他們之中會有一人醉酒，即使你已死亡。",
     "setup": false,
-    "firstNight": 3051.0,
+    "firstNight": 3057.0,
     "firstNightReminder": "喚醒店小二，對他指向兩名善良玩家。",
     "otherNight": 0.0,
     "otherNightReminder": "",
@@ -1455,7 +1455,7 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 69.0,
+    "otherNight": 77.0,
     "otherNightReminder": "如果歌伶今天白天使用了自己的能力且惡魔成為了觀眾，歌伶死亡。",
     "reminders": [
       "失去能力",
@@ -1496,7 +1496,7 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 18.0,
+    "otherNight": 20.0,
     "otherNightReminder": "喚醒錦衣衛，讓他選擇一名玩家。他現在開始保護那名玩家。",
     "reminders": [
       "保護"
@@ -1514,9 +1514,9 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/e/eb/Langzhong.png/300px-Langzhong.png",
     "ability": "每個夜晚，你要選擇一名除你以外玩家：你會得知一個與他能力相關的詞語。",
     "setup": false,
-    "firstNight": 3050.0,
+    "firstNight": 3056.0,
     "firstNightReminder": "喚醒郎中，讓他指向一名玩家。對郎中展示一個與該玩家能力相關的詞語。",
-    "otherNight": 100.0,
+    "otherNight": 109.0,
     "otherNightReminder": "喚醒郎中，讓他指向一名玩家。對郎中展示一個與該玩家能力相關的詞語。",
     "reminders": [],
     "remindersGlobal": [],
@@ -1532,7 +1532,7 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/1/13/Qintianjian.png/300px-Qintianjian.png",
     "ability": "在你的首個夜晚， 你會得知離你最近的邪惡玩家位於你的哪一側(左/右/相同)。如果與你鄰近的玩家中有邪惡陣營，你會得知錯誤信息作為替代。",
     "setup": false,
-    "firstNight": 3061.0,
+    "firstNight": 3069.0,
     "firstNightReminder": "喚醒欽天監，對他指向對應方向來告知他最近的邪惡玩家的方向。",
     "otherNight": 0.0,
     "otherNightReminder": "",
@@ -1588,9 +1588,9 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/7/7a/Xionghaizi.png/300px-Xionghaizi.png",
     "ability": "每個夜晚，你要選擇一個鎮民角色：他的能力會產生錯誤信息，直到下個黃昏。",
     "setup": false,
-    "firstNight": 3030.0,
+    "firstNight": 3035.0,
     "firstNightReminder": "喚醒熊孩子，讓他選擇角色列表上的一個鎮民角色，該角色會產生錯誤資訊。",
-    "otherNight": 25.0,
+    "otherNight": 27.0,
     "otherNightReminder": "喚醒熊孩子，讓他選擇角色列表上的一個鎮民角色，該角色會產生錯誤資訊。",
     "reminders": [
       "搗蛋"
@@ -1608,7 +1608,7 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/d/d2/Yinyangshi.png/300px-Yinyangshi.png",
     "ability": "在你的首個夜晚，你會得知兩個善良角色和兩個邪惡角色，其中有且只有兩個角色在場。",
     "setup": false,
-    "firstNight": 3049.0,
+    "firstNight": 3055.0,
     "firstNightReminder": "喚醒陰陽師，對他展示兩個善良角色和兩個邪惡角色。",
     "otherNight": 0.0,
     "otherNightReminder": "",
@@ -1637,7 +1637,7 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 80.0,
+    "otherNight": 88.0,
     "otherNightReminder": "如果秉筆在白天死亡，喚醒秉筆，對他指向一名善良玩家；如果秉筆在夜晚死亡，喚醒秉筆，對他指向一名邪惡玩家。",
     "reminders": [
       "死於今日"
@@ -1675,7 +1675,7 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/4/44/Daoke.png/200px-Daoke.png",
     "ability": "在你的首個夜晚，你會得知一個在場的爪牙角色。每局遊戲限一次，你可以在白天公開選擇一名玩家如果他是你得知的角色，他死亡。",
     "setup": false,
-    "firstNight": 3052.0,
+    "firstNight": 3058.0,
     "firstNightReminder": "喚醒刀客，對他展示一個在場的爪牙角色標記。",
     "otherNight": 0.0,
     "otherNightReminder": "",
@@ -1698,7 +1698,7 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 40.0,
+    "otherNight": 42.0,
     "otherNightReminder": "喚醒道士，讓他選擇一名玩家。如果該玩家是惡魔，道士死亡，該玩家醉酒。",
     "reminders": [
       "死亡",
@@ -1717,9 +1717,9 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/f/f5/Fangshi.png/300px-Fangshi.png",
     "ability": "在你的首個夜晚，你要選擇一個數字。在該數字對應的那一個夜晚，你會得知對應數量的在場角色。",
     "setup": false,
-    "firstNight": 3063.0,
+    "firstNight": 3071.0,
     "firstNightReminder": "喚醒方士，讓他選擇一個數字。如果他選擇了當晚對應的數字，向他展示對應數量在場的角色標記。",
-    "otherNight": 109.0,
+    "otherNight": 120.0,
     "otherNightReminder": "在對應數字的夜晚，喚醒方士，向他展示對應數量在場的角色標記。",
     "reminders": [
       "得知"
@@ -1737,10 +1737,10 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/7/73/Fengshuishi.png/75px-Fengshuishi.png",
     "ability": "在你的首個夜晚，你會得知一名玩家的角色類型。每個夜晚*，你會從他的順時針方向得知下一名非旅行者玩家的角色類型。",
     "setup": false,
-    "firstNight": 0.0,
-    "firstNightReminder": "",
-    "otherNight": 0.0,
-    "otherNightReminder": "",
+    "firstNight": 3059.0,
+    "firstNightReminder": "在首個夜晚，喚醒風水師，告知他「標記」提示標記旁的玩家角色類型，並將標記順時針一名玩家。",
+    "otherNight": 111.0,
+    "otherNightReminder": "喚醒風水師，告知他「標記」提示標記旁的玩家類型，並將標記順時針移動一名玩家。",
     "reminders": [
       "標記"
     ],
@@ -1759,7 +1759,7 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 19.0,
+    "otherNight": 21.0,
     "otherNightReminder": "喚醒狸貓，讓他選擇一名玩家。如果這名玩家是善良角色且在當晚被邪惡角色能力殺死，狸貓與他交換角色。",
     "reminders": [
       "太子"
@@ -1777,7 +1777,7 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/5/5b/Qianke.png/300px-Qianke.png",
     "ability": "每個夜晚，你要選擇兩名存活玩家：如果他們陣營相同，今晚任何玩家使用自身能力選擇他們之一作為目標時，改為選中另一名玩家。",
     "setup": false,
-    "firstNight": 3005.0,
+    "firstNight": 3006.0,
     "firstNightReminder": "喚醒掮客，讓他選擇兩名玩家，如果這兩名玩家陣營相同，放置“熟客”標記。",
     "otherNight": 7.0,
     "otherNightReminder": "喚醒掮客，讓他選擇兩名玩家，如果這兩名玩家陣營相同，放置“熟客”標記。",
@@ -1819,7 +1819,7 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 110.0,
+    "otherNight": 121.0,
     "otherNightReminder": "如果白天有玩家死於處決，喚醒史官。對他用手勢比劃存活的鎮民玩家的數量。",
     "reminders": [
       "死於今日"
@@ -1839,7 +1839,7 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 92.0,
+    "otherNight": 101.0,
     "otherNightReminder": "如果今天白天提刑官發起過提名，喚醒提刑官，對他展示那名玩家的角色標記。",
     "reminders": [
       "已提名",
@@ -1860,7 +1860,7 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 20.0,
+    "otherNight": 22.0,
     "otherNightReminder": "喚醒巡察，讓他選擇角色列表上的兩個善良角色的圖示。如果對應的兩名玩家都存活，他們今晚不死。",
     "reminders": [
       "不會死亡",
@@ -1899,8 +1899,8 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 0.0,
-    "otherNightReminder": "",
+    "otherNight": 110.0,
+    "otherNightReminder": "在每個白天，如果驛使聲明使用他的能力，如果驛使聲明的角色在場，放置「猜測正確」提示標記在驛使角色標記旁。當晚，喚醒驛使。如果他猜測正確，對他點頭表示「是」，對他搖頭表示「否」，如果你對他搖頭，放置一枚「失去能力」的標記在其角色旁。",
     "reminders": [
       "猜測正確",
       "失去能力"
@@ -1918,9 +1918,9 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/0/03/Yinluren.png/300px-Yinluren.png",
     "ability": "每個夜晚，你要選擇至多三名玩家：你會得知今晚是否有邪惡玩家的能力選擇或影響了他們之中的玩家。",
     "setup": false,
-    "firstNight": 3065.0,
+    "firstNight": 3073.0,
     "firstNightReminder": "喚醒引路人，讓他選擇一至三名玩家，以點頭或搖頭告知他選擇的玩家中是否有玩家在當晚被邪惡玩家的能力選擇或影響過。",
-    "otherNight": 113.0,
+    "otherNight": 124.0,
     "otherNightReminder": "喚醒引路人，讓他選擇一至三名玩家，以點頭或搖頭告知他選擇的玩家中是否有玩家在當晚被邪惡玩家的能力選擇或影響過。",
     "reminders": [],
     "remindersGlobal": [],
@@ -1956,7 +1956,7 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 70.0,
+    "otherNight": 78.0,
     "otherNightReminder": "如果鴆未曾使用能力，喚醒鴆，他可以搖頭不使用能力，或選擇一個鎮民角色。",
     "reminders": [
       "中毒",
@@ -1977,7 +1977,7 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 111.0,
+    "otherNight": 122.0,
     "otherNightReminder": "喚醒知府，以點頭或搖頭告知他今天白天和當晚是否有非鎮民且非旅行者的玩家死亡。",
     "reminders": [
       "客死他鄉"
@@ -1995,8 +1995,8 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/1/13/Xizi.png/200px-Xizi.png",
     "ability": "其他善良玩家醉酒(旅行者除外)，你們互相認識且無法轉變陣營，對調勝負結果，即使你失去能力。",
     "setup": false,
-    "firstNight": 0.0,
-    "firstNightReminder": "",
+    "firstNight": 3005.0,
+    "firstNightReminder": "同時喚醒所有除了旅行者之外的善良玩家，讓他們互認。如有必要，可以向他們展示「該角色的能力對你生效」訊息標記並展示戲子(改)角色標記。然後讓他們重新入睡。",
     "otherNight": 0.0,
     "otherNightReminder": "",
     "reminders": [
@@ -2007,7 +2007,7 @@
     "edition": "custom",
     "team": "townsfolk",
     "special": [],
-    "officialId": "xizi_new"
+    "officialId": "xizinew"
   },
   {
     "name": "管家",
@@ -2015,9 +2015,9 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/8/82/Butler.png/200px-Butler.png",
     "ability": "每個夜晚，你要選擇除你以外的一名玩家：明天白天，只有他投票時你才能投票。",
     "setup": false,
-    "firstNight": 3039.0,
+    "firstNight": 3045.0,
     "firstNightReminder": "喚醒管家，讓他選擇一名除自己以外的玩家，那名玩家成為他的主人。",
-    "otherNight": 90.0,
+    "otherNight": 99.0,
     "otherNightReminder": "喚醒管家，讓他選擇一名除自己以外的玩家，那名玩家成為他的主人。",
     "reminders": [
       "主人"
@@ -2093,7 +2093,7 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 72.0,
+    "otherNight": 80.0,
     "otherNightReminder": "在夜晚的任意時機，你都可以決定殺死修補匠。這裡只是一個提示以免遺忘修補匠。",
     "reminders": [
       "死亡"
@@ -2113,7 +2113,7 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 73.0,
+    "otherNight": 81.0,
     "otherNightReminder": "如果月之子在今天白天的時候使用自己的能力選擇了一名善良玩家，那名玩家死亡。",
     "reminders": [
       "死亡"
@@ -2153,7 +2153,7 @@
     "setup": true,
     "firstNight": 2004.0,
     "firstNightReminder": "喚醒瘋子並向他提供惡魔資訊。如可能，則讓瘋子進行相應的惡魔行動。隨後在惡魔資訊環節對惡魔提供瘋子的相關資訊。",
-    "otherNight": 38.0,
+    "otherNight": 40.0,
     "otherNightReminder": "如果瘋子以為的惡魔會在當晚行動，喚醒瘋子，並讓他以惡魔的方式行動。",
     "reminders": [
       "被選擇"
@@ -2193,7 +2193,7 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 77.0,
+    "otherNight": 85.0,
     "otherNightReminder": "如果心上人死亡，一名玩家醉酒。",
     "reminders": [
       "醉酒"
@@ -2213,7 +2213,7 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 76.0,
+    "otherNight": 84.0,
     "otherNightReminder": "如果理髮師死于白天，喚醒惡魔讓他決定是否使用理髮師的能力。如果理髮師死於夜晚，（如果讓除攻擊理髮師以外的惡魔進行選擇則需要等當前惡魔入睡後）讓一名惡魔決定是否使用理髮師的能力。",
     "reminders": [
       "今晚理髮"
@@ -2366,7 +2366,7 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/c/c5/Ogre.png/200px-Ogre.png",
     "ability": "在你的首個夜晚，你要選擇除你以外的一名玩家：你轉變為他的陣營，即使你已醉酒或中毒，但你不知道你轉變後的陣營。",
     "setup": false,
-    "firstNight": 3058.0,
+    "firstNight": 3066.0,
     "firstNightReminder": "喚醒食人魔，讓他選擇一名玩家。如果他選擇了邪惡玩家，將他的角色標記在魔典中倒置以表示他轉變為邪惡陣營。",
     "otherNight": 0.0,
     "otherNightReminder": "",
@@ -2388,7 +2388,7 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 81.0,
+    "otherNight": 89.0,
     "otherNightReminder": "如果瘟疫醫生死亡，說書人獲得一項爪牙能力。",
     "reminders": [
       "說書人能力"
@@ -2398,7 +2398,7 @@
     "edition": "custom",
     "team": "outsider",
     "special": [],
-    "officialId": "plague_doctor"
+    "officialId": "plaguedoctor"
   },
   {
     "name": "異端分子",
@@ -2464,9 +2464,9 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/5/51/Nichen.png/300px-Nichen.png",
     "ability": "在你的首個夜晚，你要選擇除你以外的一名玩家：如果他先死於處決，你轉變為邪惡；如果你先死於處決，他轉變為邪惡。",
     "setup": false,
-    "firstNight": 3040.0,
+    "firstNight": 3046.0,
     "firstNightReminder": "喚醒逆臣，讓他選擇一名除自己以外的玩家，那名玩家現在與他不共戴天。",
-    "otherNight": 34.0,
+    "otherNight": 36.0,
     "otherNightReminder": "如果逆臣或他的目標玩家，這兩人之一死於處決，喚醒另一名玩家並通知他陣營變化。",
     "reminders": [
       "不共載天"
@@ -2486,7 +2486,7 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 74.0,
+    "otherNight": 82.0,
     "otherNightReminder": "如果煞星死亡，決定是否讓一名與他鄰近的存活玩家死亡。",
     "reminders": [
       "死亡"
@@ -2526,7 +2526,7 @@
     "setup": false,
     "firstNight": 3003.0,
     "firstNightReminder": "如果書生在場，對惡魔展示書生角色標記。",
-    "otherNight": 65.0,
+    "otherNight": 71.0,
     "otherNightReminder": "如果惡魔猜中了書生，讓惡魔選擇一名玩家，該玩家死亡。",
     "reminders": [
       "已猜測",
@@ -2567,7 +2567,7 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 35.0,
+    "otherNight": 37.0,
     "otherNightReminder": "如果入殮師的能力曾被觸發，喚醒他並告知他變成了哪個惡魔角色。",
     "reminders": [
       "是惡魔"
@@ -2585,10 +2585,10 @@
     "image": "https://i.postimg.cc/8zfywVDR/image.png",
     "ability": "在你的首個夜晚，你要選擇除你以外的一名玩家：除首個夜晚以外，當他被邪惡玩家的能力選擇或影響時，你會在當晚死亡。",
     "setup": false,
-    "firstNight": 0.0,
-    "firstNightReminder": "",
-    "otherNight": 0.0,
-    "otherNightReminder": "",
+    "firstNight": 3038.0,
+    "firstNightReminder": "喚醒書僮，讓其選擇一名玩家，在其選擇的玩家標記旁放置「選擇」。",
+    "otherNight": 93.0,
+    "otherNightReminder": "如果標記有「選擇」的玩家被邪惡玩家能力選擇或影響時，在書僮旁放置「死亡」標記。",
     "reminders": [
       "選擇",
       "死亡"
@@ -2606,7 +2606,7 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/7/74/Poisoner.png/200px-Poisoner.png",
     "ability": "每個夜晚，你要選擇一名玩家：他在當晚和明天白天中毒。",
     "setup": false,
-    "firstNight": 3013.0,
+    "firstNight": 3014.0,
     "firstNightReminder": "喚醒投毒者，讓他選擇一名玩家，那名玩家中毒。",
     "otherNight": 13.0,
     "otherNightReminder": "喚醒投毒者，讓他選擇一名玩家，那名玩家中毒。",
@@ -2626,9 +2626,9 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/3/36/Spy.png/200px-Spy.png",
     "ability": "每個夜晚，你能查看魔典。你可能會被當作善良陣營、鎮民角色或外來者角色，即使你已死亡。",
     "setup": false,
-    "firstNight": 3057.0,
+    "firstNight": 3064.0,
     "firstNightReminder": "喚醒間諜，讓他查看魔典。",
-    "otherNight": 106.0,
+    "otherNight": 117.0,
     "otherNightReminder": "喚醒間諜，讓他查看魔典。",
     "reminders": [],
     "remindersGlobal": [],
@@ -2646,7 +2646,7 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 36.0,
+    "otherNight": 38.0,
     "otherNightReminder": "如果紅唇女郎的能力曾被觸發，喚醒她並告知她變成了哪個惡魔角色。",
     "reminders": [
       "是惡魔"
@@ -2656,7 +2656,7 @@
     "edition": "custom",
     "team": "minion",
     "special": [],
-    "officialId": "scarlet_woman"
+    "officialId": "scarletwoman"
   },
   {
     "name": "男爵",
@@ -2682,9 +2682,9 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/d/dd/Godfather.png/200px-Godfather.png",
     "ability": "在你的首個夜晚，你會得知有哪些外來者角色在場。如果有外來者在白天死亡，你會在當晚被喚醒並且你要選擇一名玩家：他死亡。[-1或+1外來者]",
     "setup": true,
-    "firstNight": 3018.0,
+    "firstNight": 3021.0,
     "firstNightReminder": "喚醒教父，對他展示外來者角色標記，告訴他有哪些外來者在場。",
-    "otherNight": 67.0,
+    "otherNight": 73.0,
     "otherNightReminder": "如果今天白天有外來者死亡，喚醒教父，讓他攻擊一名玩家。",
     "reminders": [
       "死於今日",
@@ -2703,9 +2703,9 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/5/5d/Devilsadvocate.png/200px-Devilsadvocate.png",
     "ability": "每個夜晚，你要選擇一名存活的玩家(與上個夜晚不同)：如果明天白天他被處決，他不會死亡。",
     "setup": false,
-    "firstNight": 3020.0,
+    "firstNight": 3023.0,
     "firstNightReminder": "喚醒魔鬼代言人，讓他選擇一名玩家，那名玩家處決不死。",
-    "otherNight": 27.0,
+    "otherNight": 29.0,
     "otherNightReminder": "喚醒魔鬼代言人，讓他選擇一名與上一晚不同的玩家，那名玩家處決不死。",
     "reminders": [
       "處決不死"
@@ -2715,7 +2715,7 @@
     "edition": "custom",
     "team": "minion",
     "special": [],
-    "officialId": "devils_advocate"
+    "officialId": "devilsadvocate"
   },
   {
     "name": "刺客",
@@ -2725,7 +2725,7 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 66.0,
+    "otherNight": 72.0,
     "otherNightReminder": "如果刺客未曾使用能力，喚醒刺客，他可以搖頭不使用能力，或選擇攻擊一名玩家。",
     "reminders": [
       "死亡",
@@ -2762,7 +2762,7 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/8/8e/Eviltwin.png/200px-Eviltwin.png",
     "ability": "你與一名對立陣營的玩家互相知道對方是什麼角色。如果其中善良玩家被處決，邪惡陣營獲勝。如果你們都存活，善良陣營無法獲勝。",
     "setup": false,
-    "firstNight": 3021.0,
+    "firstNight": 3024.0,
     "firstNightReminder": "分別獨自喚醒鏡像雙子和對立雙子，告知他們由於鏡像雙子能力而得知的資訊。",
     "otherNight": 0.0,
     "otherNightReminder": "",
@@ -2774,7 +2774,7 @@
     "edition": "custom",
     "team": "minion",
     "special": [],
-    "officialId": "evil_twin"
+    "officialId": "eviltwin"
   },
   {
     "name": "女巫",
@@ -2782,9 +2782,9 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/e/e6/Witch.png/200px-Witch.png",
     "ability": "每個夜晚，你要選擇一名玩家：如果他明天白天發起提名，他死亡。如果只有三名存活的玩家，你失去此能力。",
     "setup": false,
-    "firstNight": 3022.0,
+    "firstNight": 3026.0,
     "firstNightReminder": "喚醒女巫，讓她選擇一名玩家，那名玩家被詛咒。",
-    "otherNight": 28.0,
+    "otherNight": 30.0,
     "otherNightReminder": "喚醒女巫，讓她選擇一名玩家，那名玩家被詛咒。",
     "reminders": [
       "被詛咒"
@@ -2802,9 +2802,9 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/4/4d/Cerenovus.png/200px-Cerenovus.png",
     "ability": "每個夜晚，你要選擇一名玩家和一個善良角色。他明天白天和夜晚需要＂瘋狂＂地證明自己是這個角色，不然他可能被處決。",
     "setup": false,
-    "firstNight": 3023.0,
+    "firstNight": 3027.0,
     "firstNightReminder": "喚醒洗腦師，讓他選擇一名玩家和角色列表上的一個善良角色，那名玩家明天需要“瘋狂”證明自己是那個角色。在洗腦師入睡後通知那名玩家被洗腦。",
-    "otherNight": 29.0,
+    "otherNight": 31.0,
     "otherNightReminder": "喚醒洗腦師，讓他選擇一名玩家和角色列表上的一個善良角色，那名玩家明天需要“瘋狂”證明自己是那個角色。在洗腦師入睡後通知那名玩家被洗腦。",
     "reminders": [
       "瘋狂"
@@ -2860,7 +2860,7 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/1/1e/Widow.png/200px-Widow.png",
     "ability": "在你的首個夜晚，你能查看魔典並選擇一名玩家：他中毒。隨後，始終會有一名善良玩家知道寡婦在場。",
     "setup": false,
-    "firstNight": 3014.0,
+    "firstNight": 3015.0,
     "firstNightReminder": "喚醒寡婦，讓她查看魔典。在她查看完畢後讓她選擇一名玩家，那名玩家中毒。隨後如果寡婦未醉酒中毒，喚醒一名善良玩家，對他展示寡婦角色標記。",
     "otherNight": 0.0,
     "otherNightReminder": "",
@@ -2887,9 +2887,9 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/f/ff/Organgrinder.png/200px-Organgrinder.png",
     "ability": "所有玩家在投票時閉眼，且票數會秘密統計。每個夜晚，你要選擇自己是否醉酒，直到你下次選擇。",
     "setup": false,
-    "firstNight": 3019.0,
+    "firstNight": 3022.0,
     "firstNightReminder": "讓街頭風琴手選擇自己是否醉酒。如果他點頭，標記街頭風琴手醉酒。",
-    "otherNight": 26.0,
+    "otherNight": 28.0,
     "otherNightReminder": "讓街頭風琴手選擇自己是否醉酒。如果他點頭，標記街頭風琴手醉酒。如果他搖頭，移除街頭風琴手的醉酒標記。",
     "reminders": [
       "即將被處決",
@@ -2900,7 +2900,7 @@
     "edition": "custom",
     "team": "minion",
     "special": [],
-    "officialId": "organ_grinder"
+    "officialId": "organgrinder"
   },
   {
     "name": "精神病患者",
@@ -2944,9 +2944,9 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/7/77/Fearmonger.png/300px-Fearmonger.png",
     "ability": "每個夜晚，你要選擇一名玩家：如果你提名他且他被處決，他的陣營落敗。當你首次選擇或更換目標時，所有玩家都會得知你選擇了新的玩家。",
     "setup": false,
-    "firstNight": 3024.0,
+    "firstNight": 3028.0,
     "firstNightReminder": "喚醒恐懼之靈，讓他選擇一名玩家，隨後通知所有玩家恐懼之靈選擇了一名玩家。",
-    "otherNight": 30.0,
+    "otherNight": 32.0,
     "otherNightReminder": "喚醒恐懼之靈，讓他選擇一名玩家，隨後如果恐懼之靈的目標發生了變更，通知所有玩家恐懼之靈選擇了一名玩家。",
     "reminders": [
       "恐懼"
@@ -2964,9 +2964,9 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/1/19/Mezepheles.png/200px-Mezepheles.png",
     "ability": "在你的首個夜晚，你會得知一個關鍵詞。首個說出該關鍵詞的善良玩家會在當晚轉變為邪惡陣營。",
     "setup": false,
-    "firstNight": 3026.0,
+    "firstNight": 3030.0,
     "firstNightReminder": "喚醒靈言師，對他展示他的關鍵字。",
-    "otherNight": 32.0,
+    "otherNight": 34.0,
     "otherNightReminder": "如果首次有善良玩家說出了靈言師的關鍵字，喚醒該玩家並通知他陣營變化。",
     "reminders": [
       "轉為邪惡",
@@ -3041,9 +3041,9 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/c/c7/Wizard.png/300px-Wizard.png",
     "ability": "每局遊戲限一次，你可以向說書人許願。如果願望被實現，可能會伴隨著代價和線索。",
     "setup": false,
-    "firstNight": 3016.0,
+    "firstNight": 3019.0,
     "firstNightReminder": "如果有必要，讓巫師的能力生效。",
-    "otherNight": 16.0,
+    "otherNight": 18.0,
     "otherNightReminder": "如果有必要，讓巫師的能力生效。",
     "reminders": [
       "?"
@@ -3061,7 +3061,7 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/b/b9/Xaan.png/200px-Xaan.png",
     "ability": "在等同初始外來者數量的夜晚，所有鎮民玩家中毒直到下個黃昏。[任意數量外來者]",
     "setup": true,
-    "firstNight": 3012.0,
+    "firstNight": 3013.0,
     "firstNightReminder": "在等同初始外來者數量的夜晚，所有鎮民中毒。",
     "otherNight": 12.0,
     "otherNightReminder": "在等同初始外來者數量的夜晚，所有鎮民中毒。",
@@ -3084,9 +3084,9 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/1/1b/Harpy.png/200px-Harpy.png",
     "ability": "每個夜晚，你要選擇兩名玩家：明天第一名玩家需要＂瘋狂＂地證明第二名玩家是邪惡的，否則他們之中可能會有人死亡。",
     "setup": false,
-    "firstNight": 3025.0,
+    "firstNight": 3029.0,
     "firstNightReminder": "喚醒鷹身女妖，讓她選擇兩名玩家，第一名玩家明天需要“瘋狂”證明第二名玩家邪惡。在鷹身女妖入睡後通知第一名玩家被鷹身女妖選中。",
-    "otherNight": 31.0,
+    "otherNight": 33.0,
     "otherNightReminder": "喚醒鷹身女妖，讓她選擇兩名玩家，第一名玩家明天需要“瘋狂”證明第二名玩家邪惡。在鷹身女妖入睡後通知第一名玩家被鷹身女妖選中。",
     "reminders": [
       "瘋狂",
@@ -3125,7 +3125,7 @@
     "setup": true,
     "firstNight": 2003.0,
     "firstNightReminder": "喚醒召喚師，對他展示三個不在場的善良角色標記。",
-    "otherNight": 37.0,
+    "otherNight": 39.0,
     "otherNightReminder": "如果這是遊戲中的第三個夜晚，喚醒召喚師，讓他選擇一名玩家和一個惡魔角色，那名玩家變成由他選擇的邪惡惡魔。",
     "reminders": [
       "第一晚",
@@ -3166,9 +3166,9 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/9/94/Humeiniang.png/300px-Humeiniang.png",
     "ability": "在你的首個夜晚，你要選擇一名玩家：他會知道狐媚娘在場。如果你死於處決，當晚他轉變為邪惡陣營。",
     "setup": false,
-    "firstNight": 3027.0,
+    "firstNight": 3031.0,
     "firstNightReminder": "喚醒狐媚娘，讓她選擇一名玩家。在狐媚娘入睡後通知那名玩家狐媚娘在場。",
-    "otherNight": 33.0,
+    "otherNight": 35.0,
     "otherNightReminder": "如果狐媚娘死于處決，喚醒她選擇的玩家並通知他陣營變化。",
     "reminders": [
       "被魅惑"
@@ -3206,7 +3206,7 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 68.0,
+    "otherNight": 74.0,
     "otherNightReminder": "今天白天提名了存活的養蠱人的玩家死亡。",
     "reminders": [
       "蠱"
@@ -3224,10 +3224,10 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/5/56/Gudiao.png/75px-Gudiao.png",
     "ability": "每個夜晚，你要選擇左或右：你得知該方向上的的下一名存活善良玩家角色，他中毒且其它善良玩家以為他是邪惡的蠱雕，直到下個黃昏。",
     "setup": false,
-    "firstNight": 0.0,
-    "firstNightReminder": "",
-    "otherNight": 0.0,
-    "otherNightReminder": "",
+    "firstNight": 3016.0,
+    "firstNightReminder": "喚醒蠱雕，讓其選擇一個方向。將他的「中毒」標記移動至那個方向上的下一個存活玩家的角色標記旁。隨後對他只向那名玩家，並展示「他是」提示標記和該玩家的角色標記。",
+    "otherNight": 14.0,
+    "otherNightReminder": "喚醒蠱雕，讓其選擇一個方向。將他的「中毒」標記移動至那個方向上的下一個存活玩家的角色標記旁。隨後對他只向那名玩家，並展示「他是」提示標記和該玩家的角色標記。",
     "reminders": [
       "中毒"
     ],
@@ -3244,10 +3244,10 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/5/59/Huapi.png/300px-Huapi.png",
     "ability": "在你的首個夜晚，你要選擇一名存活玩家：他死亡但會被當作存活。當他下一次死亡時，他重生，隨後你重獲能力。",
     "setup": false,
-    "firstNight": 3011.0,
+    "firstNight": 3012.0,
     "firstNightReminder": "喚醒畫皮，讓他攻擊一名存活玩家，該玩家變成活屍。",
-    "otherNight": 0.0,
-    "otherNightReminder": "",
+    "otherNight": 75.0,
+    "otherNightReminder": "如果畫皮有「重獲能力」，喚醒畫皮，讓他選擇一名存活玩家，將「以為存活」放置於該玩家旁。讓畫皮重新入睡。",
     "reminders": [
       "以為存活",
       "重獲能力"
@@ -3265,8 +3265,8 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/5/55/Jinweijun.png/200px-Jinweijun.png",
     "ability": "在你的首個夜晚，你要選擇存活或死亡。＂瘋狂＂地想要這樣做的玩家可能會立即被處決。",
     "setup": false,
-    "firstNight": 0.0,
-    "firstNightReminder": "",
+    "firstNight": 3025.0,
+    "firstNightReminder": "喚醒禁衛軍，給他展示「求生」和「求死」標記，讓其選擇一枚，並讓他重新入睡。",
     "otherNight": 0.0,
     "otherNightReminder": "",
     "reminders": [
@@ -3288,8 +3288,8 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 0.0,
-    "otherNightReminder": "",
+    "otherNight": 76.0,
+    "otherNightReminder": "喚醒孟婆，讓其選擇一名玩家，隨後讓孟婆閉眼。喚醒孟婆選擇的玩家，依次向他展示「該角色的能力對你生效」訊息標記、孟婆的角色，隨後讓其用點頭或搖頭來表示想要生死。如果其點頭，放置「失去能力」標記，放置「保留能力」標記。",
     "reminders": [
       "失去能力",
       "死亡",
@@ -3308,10 +3308,10 @@
     "image": "https://i.postimg.cc/4NqPYFtm/image.png",
     "ability": "每個夜晚，你要選擇一個鎮民角色：當他下一次通過自身能力獲取信息時，改為得知你給出的信息。",
     "setup": false,
-    "firstNight": 0.0,
-    "firstNightReminder": "",
-    "otherNight": 0.0,
-    "otherNightReminder": "",
+    "firstNight": 3017.0,
+    "firstNightReminder": "喚醒釀酒師，讓其選擇一個角色並給出該角色對應的訊息形式。如果該角色在場，在對應的角色標記放置「微醺」提示標記。如有必要，紀錄該訊息形式做為備忘，但不要將這一訊息展示給任何能看魔典的玩家。",
+    "otherNight": 15.0,
+    "otherNightReminder": "喚醒釀酒師，讓其選擇一個角色並給出該角色對應的訊息形式。如果該角色在場，在對應的角色標記放置「微醺」提示標記。如有必要，紀錄該訊息形式做為備忘，但不要將這一訊息展示給任何能看魔典的玩家。",
     "reminders": [
       "微醺",
       "微醺"
@@ -3331,7 +3331,7 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 44.0,
+    "otherNight": 46.0,
     "otherNightReminder": "喚醒小惡魔，讓他攻擊一名玩家。如果他成功自殺，則在他入睡後通知一名爪牙角色變化。",
     "reminders": [
       "死亡"
@@ -3351,7 +3351,7 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 45.0,
+    "otherNight": 47.0,
     "otherNightReminder": "如果白天無人死亡，喚醒僵怖，讓他攻擊一名玩家。",
     "reminders": [
       "死於今日",
@@ -3370,9 +3370,9 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/4/45/Pukka.png/200px-Pukka.png",
     "ability": "每個夜晚，你要選擇一名玩家：他中毒。上個因你的能力中毒的玩家會死亡並回復健康。",
     "setup": false,
-    "firstNight": 3028.0,
+    "firstNight": 3032.0,
     "firstNightReminder": "喚醒普卡，讓他選擇一名玩家，那名玩家中毒。",
-    "otherNight": 46.0,
+    "otherNight": 48.0,
     "otherNightReminder": "喚醒普卡，讓他選擇一名玩家，該玩家中毒。上一個被普卡中毒的玩家死亡。",
     "reminders": [
       "中毒",
@@ -3393,7 +3393,7 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 47.0,
+    "otherNight": 49.0,
     "otherNightReminder": "決定上一夜被沙巴洛斯選擇的玩家是否被反芻。然後喚醒沙巴洛斯，讓他攻擊兩名玩家。",
     "reminders": [
       "死亡",
@@ -3415,7 +3415,7 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 48.0,
+    "otherNight": 50.0,
     "otherNightReminder": "喚醒珀，他可以攻擊一名玩家或不進行攻擊，如果他上一次選擇了不進行攻擊，則此次必須攻擊三名玩家。",
     "reminders": [
       "攻擊三次",
@@ -3438,7 +3438,7 @@
     "setup": true,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 49.0,
+    "otherNight": 51.0,
     "otherNightReminder": "喚醒方古，讓他攻擊一名玩家。如果該玩家是外來者並成功轉化，則方古死亡，在他入睡後通知那名外來者角色變化。",
     "reminders": [
       "死亡",
@@ -3449,7 +3449,7 @@
     "edition": "custom",
     "team": "demon",
     "special": [],
-    "officialId": "fang_gu"
+    "officialId": "fanggu"
   },
   {
     "name": "亡骨魔",
@@ -3459,7 +3459,7 @@
     "setup": true,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 52.0,
+    "otherNight": 54.0,
     "otherNightReminder": "喚醒亡骨魔，讓他攻擊一名玩家。",
     "reminders": [
       "死亡",
@@ -3485,7 +3485,7 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 50.0,
+    "otherNight": 52.0,
     "otherNightReminder": "喚醒諾-達鯴，讓他攻擊一名玩家。",
     "reminders": [
       "中毒",
@@ -3497,7 +3497,7 @@
     "edition": "custom",
     "team": "demon",
     "special": [],
-    "officialId": "no_dashii"
+    "officialId": "nodashii"
   },
   {
     "name": "渦流",
@@ -3507,7 +3507,7 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 51.0,
+    "otherNight": 53.0,
     "otherNightReminder": "喚醒渦流，讓他攻擊一名玩家。",
     "reminders": [
       "死亡"
@@ -3527,7 +3527,7 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 53.0,
+    "otherNight": 55.0,
     "otherNightReminder": "喚醒奧赫，讓他選擇角色列表上的一個角色。該角色對應的玩家死亡，如果該角色不在場，替奧赫決定今晚誰會因為奧赫能力死亡。",
     "reminders": [
       "死亡"
@@ -3569,7 +3569,7 @@
     "setup": true,
     "firstNight": 2.0,
     "firstNightReminder": "將位於堤豐之首兩側的對應數量的玩家變成邪惡的爪牙，並分別喚醒他們通知他們的角色和陣營變化。",
-    "otherNight": 54.0,
+    "otherNight": 56.0,
     "otherNightReminder": "喚醒堤豐之首，讓他攻擊一名玩家。",
     "reminders": [
       "死亡"
@@ -3579,7 +3579,7 @@
     "edition": "custom",
     "team": "demon",
     "special": [],
-    "officialId": "lord_of_typhon"
+    "officialId": "lordoftyphon"
   },
   {
     "name": "哈迪寂亞",
@@ -3589,7 +3589,7 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 55.0,
+    "otherNight": 57.0,
     "otherNightReminder": "喚醒哈迪寂亞，讓他選擇三名玩家。執行哈迪寂亞的能力流程（參考哈迪寂亞的百科頁面）。",
     "reminders": [
       "1",
@@ -3617,7 +3617,7 @@
     "setup": true,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 43.0,
+    "otherNight": 45.0,
     "otherNightReminder": "決定今晚誰會因為軍團能力死亡。",
     "reminders": [
       "即將被處決",
@@ -3638,7 +3638,7 @@
     "setup": true,
     "firstNight": 9.0,
     "firstNightReminder": "喚醒卡扎力，讓他選擇玩家變成邪惡爪牙。",
-    "otherNight": 59.0,
+    "otherNight": 61.0,
     "otherNightReminder": "喚醒卡扎力，讓他攻擊一名玩家。",
     "reminders": [
       "死亡"
@@ -3681,9 +3681,9 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/7/70/Lleech.png/200px-Lleech.png",
     "ability": "每個夜晚*，你要選擇一名玩家：他死亡。在你的首個夜晚，你要選擇一名存活的玩家：他中毒，只有當他處於死亡狀態時你才會立即死亡。",
     "setup": false,
-    "firstNight": 3010.0,
+    "firstNight": 3011.0,
     "firstNightReminder": "喚醒痢蛭，讓他選擇一名玩家以寄生。",
-    "otherNight": 56.0,
+    "otherNight": 58.0,
     "otherNightReminder": "喚醒痢蛭，讓他攻擊一名玩家。",
     "reminders": [
       "中毒",
@@ -3702,9 +3702,9 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/3/39/Lilmonsta.png/200px-Lilmonsta.png",
     "ability": "每個夜晚，所有爪牙要秘密決定由哪名玩家來照看小怪寶並且＂是惡魔＂。每個夜晚*，可能會有一名玩家死亡。[+1爪牙]",
     "setup": true,
-    "firstNight": 3009.0,
+    "firstNight": 3010.0,
     "firstNightReminder": "喚醒所有爪牙選擇由誰照看小怪寶。",
-    "otherNight": 57.0,
+    "otherNight": 59.0,
     "otherNightReminder": "喚醒所有爪牙選擇由誰照看小怪寶。隨後，決定今晚誰會因為小怪寶能力死亡。",
     "reminders": [],
     "remindersGlobal": [
@@ -3715,7 +3715,7 @@
     "edition": "custom",
     "team": "demon",
     "special": [],
-    "officialId": "lil_monsta"
+    "officialId": "lilmonsta"
   },
   {
     "name": "牙噶巴卜",
@@ -3723,9 +3723,9 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/5/50/Yaggababble.png/300px-Yaggababble.png",
     "ability": "在你的首個夜晚，你會得知一段秘密短語。每次你在白天公開說出這段短語，當天便可能會有一名玩家在這之後死亡。",
     "setup": false,
-    "firstNight": 3029.0,
+    "firstNight": 3033.0,
     "firstNightReminder": "喚醒牙噶巴卜，對他展示他的秘密短語。",
-    "otherNight": 58.0,
+    "otherNight": 60.0,
     "otherNightReminder": "根據已放置的提示標記數量，選擇最多等同於該數量的玩家死亡。該夜晚行動只是一個提示，死亡的造成時機可以是白天，也可以是夜晚的任何時候。",
     "reminders": [
       "死亡"
@@ -3745,7 +3745,7 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 60.0,
+    "otherNight": 62.0,
     "otherNightReminder": "喚醒混沌，讓他攻擊一名玩家。如果他殺死了自己鄰近的鎮民，所有善良玩家中毒。",
     "reminders": [
       "善良中毒",
@@ -3766,7 +3766,7 @@
     "setup": true,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 61.0,
+    "otherNight": 63.0,
     "otherNightReminder": "喚醒窮奇，讓他攻擊一名玩家。如果今天白天有外來者死亡，他攻擊並殺死的玩家成為活屍，隨後決定今晚誰會因為窮奇能力死亡。",
     "reminders": [
       "死於今日",
@@ -3790,7 +3790,7 @@
     "setup": true,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 62.0,
+    "otherNight": 64.0,
     "otherNightReminder": "喚醒饕餮，讓他選擇任意數量的非旅行者玩家或一名旅行者玩家。如果這些玩家角色類型不同，他們死亡。",
     "reminders": [
       "死亡",
@@ -3812,7 +3812,7 @@
     "setup": false,
     "firstNight": 2005.0,
     "firstNightReminder": "如果檮杌在場，跳過他的惡魔資訊環節。",
-    "otherNight": 63.0,
+    "otherNight": 65.0,
     "otherNightReminder": "喚醒檮杌，讓他攻擊一名玩家。",
     "reminders": [
       "死亡",
@@ -3835,7 +3835,7 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 64.0,
+    "otherNight": 66.0,
     "otherNightReminder": "喚醒暴君，他可以選擇不攻擊或者至多攻擊兩名玩家，他不能選擇與上個夜晚死亡玩家數量相同的人數（超過兩名玩家死亡則算作兩名玩家）。",
     "reminders": [
       "死亡",
@@ -3854,10 +3854,10 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/d/db/Dianyuzhang.png/75px-Dianyuzhang.png",
     "ability": "每個夜晚，你要選擇至多三名玩家：如果明天白天他們之一死於處決，被你上次選擇的其他玩家會在當晚死亡。否則，當晚他們之中會有一名玩家死亡。",
     "setup": false,
-    "firstNight": 0.0,
-    "firstNightReminder": "",
-    "otherNight": 0.0,
-    "otherNightReminder": "",
+    "firstNight": 3034.0,
+    "firstNightReminder": "喚醒典獄長，讓其選擇至多三名玩家。在這些玩家角色標記旁放置「囚禁」提示標記。",
+    "otherNight": 67.0,
+    "otherNightReminder": "如果今天白天被處決的玩家標記有「囚禁」，則其他標記有囚禁的玩家死亡。否則，將其中一人標記為死亡。移除所有「囚禁」提示標記。喚醒典獄長，讓其選擇至多三名玩家。在這些玩家角色標記旁放置「囚禁」提示標記。",
     "reminders": [
       "死亡",
       "囚禁",
@@ -3879,8 +3879,8 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 0.0,
-    "otherNightReminder": "",
+    "otherNight": 70.0,
+    "otherNightReminder": "喚醒姑獲鳥，讓其選擇一名玩家，在玩家角色標記旁放置「死亡」提示標記。",
     "reminders": [
       "死亡",
       "死於處決"
@@ -3900,8 +3900,8 @@
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
-    "otherNight": 0.0,
-    "otherNightReminder": "",
+    "otherNight": 68.0,
+    "otherNightReminder": "喚醒奸佞，讓其選擇一名玩家。如果白天奸佞未投票，改為讓其選擇兩名玩家。標記他選擇的玩家死亡。",
     "reminders": [
       "死亡",
       "已投票"
@@ -3919,10 +3919,10 @@
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/c/c8/Yanluo.png/75px-Yanluo.png",
     "ability": "在你的首個夜晚，你能查看魔典並選擇一名玩家：他在第三個夜晚死亡，即使因為任何原因讓他不會死亡。每個夜晚，你要選擇一名玩家：上個夜晚被你選擇的玩家死亡。",
     "setup": false,
-    "firstNight": 0.0,
-    "firstNightReminder": "",
-    "otherNight": 0.0,
-    "otherNightReminder": "",
+    "firstNight": 3065.0,
+    "firstNightReminder": "首個夜晚，喚醒閻羅並讓他按自己意願的時長來查看魔典。讓閻羅選擇一名玩家，放置「選擇」",
+    "otherNight": 69.0,
+    "otherNightReminder": "讓閻羅選擇一名玩家，放置「即將死亡」標記在其他圖標旁。",
     "reminders": [
       "選擇",
       "即將死亡"
@@ -4049,7 +4049,7 @@
     "edition": "custom",
     "team": "fabled",
     "special": [],
-    "officialId": "hells_librarian"
+    "officialId": "hellslibrarian"
   },
   {
     "name": "小提琴手",
@@ -4146,7 +4146,7 @@
     "edition": "custom",
     "team": "fabled",
     "special": [],
-    "officialId": "spirit_of_ivory"
+    "officialId": "spiritofivory"
   },
   {
     "name": "燈神",
@@ -4169,7 +4169,7 @@
   {
     "name": "失敗的上帝",
     "id": "fabled13",
-    "image": "https://clocktower-wiki.gstonegames.com/images/thumb/4/4d/Deusexfiasco_new.png/300px-Deusexfiasco_new.png",
+    "image": "https://clocktower-wiki.gstonegames.com/images/thumb/4/4d/Deusexfiasconew.png/300px-Deusexfiasconew.png",
     "ability": "每局遊戲至少一次，說書人將會出現失誤，但會糾正並公開承認自己曾處理有誤。",
     "setup": false,
     "firstNight": 0.0,
@@ -4260,12 +4260,12 @@
     "edition": "custom",
     "team": "loric",
     "special": [],
-    "officialId": "storm_catcher"
+    "officialId": "stormcatcher"
   },
   {
     "name": "首席律師",
     "id": "loric02",
-    "image": "https://clocktower-wiki.gstonegames.com/images/thumb/9/9a/Big_wig.png/300px-Big_wig.png",
+    "image": "https://clocktower-wiki.gstonegames.com/images/thumb/9/9a/Bigwig.png/300px-Bigwig.png",
     "ability": "每個被提名者要選擇一名玩家：在投票前，只有他可以發言，並且他要「瘋狂」地證明被提名者是善良的，否則他可能死亡。",
     "setup": false,
     "firstNight": 0.0,
@@ -4278,7 +4278,7 @@
     "edition": "custom",
     "team": "loric",
     "special": [],
-    "officialId": "big_wig"
+    "officialId": "bigwig"
   },
   {
     "name": "私貨商人",
@@ -4562,7 +4562,7 @@
     "edition": "custom",
     "team": "traveler",
     "special": [],
-    "officialId": "bone_collector"
+    "officialId": "bonecollector"
   },
   {
     "name": "咖啡師",
@@ -4721,7 +4721,7 @@
     "edition": "custom",
     "team": "fabled",
     "special": [],
-    "officialId": ""
+    "officialId": "minioninfo"
   },
   {
     "name": "惡魔資訊",
@@ -4739,7 +4739,7 @@
     "edition": "custom",
     "team": "fabled",
     "special": [],
-    "officialId": ""
+    "officialId": "demoninfo"
   },
   {
     "name": "黃昏",
@@ -4757,7 +4757,7 @@
     "edition": "custom",
     "team": "fabled",
     "special": [],
-    "officialId": ""
+    "officialId": "dusk"
   },
   {
     "name": "黎明",
@@ -4775,6 +4775,6 @@
     "edition": "custom",
     "team": "fabled",
     "special": [],
-    "officialId": ""
+    "officialId": "dawn"
   }
 ]
