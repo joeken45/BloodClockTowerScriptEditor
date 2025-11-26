@@ -2,7 +2,7 @@
 
 所有重要的專案變更都會記錄在此檔案中。
 
-格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/0.0.1/)，
+格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，
 版本號遵循 [語義化版本](https://semver.org/lang/zh-TW/)。
 
 ## [Unreleased]
@@ -65,6 +65,21 @@
 
 ### 修復 🐛
 - 修改官方ID與BOTC相同並支援集石與BOTC格式
+
+### 安全性 🔒
+- 無已知安全問題
+
+---
+## [0.0.4] - 2025-11-24
+
+### 新增 🚀
+- 無
+
+### 改進 🌟
+- 無
+
+### 修復 🐛
+- 角色總表.json 修正賭徒錯誤敘述、修正弄臣標記，新增部分角色BOTC特殊能力
 
 ### 安全性 🔒
 - 無已知安全問題

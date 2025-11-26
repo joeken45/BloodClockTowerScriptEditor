@@ -1,4 +1,4 @@
-![版本](https://img.shields.io/badge/version-0.0.1-blue)
+![版本](https://img.shields.io/badge/version-0.0.4-blue)
 ![平台](https://img.shields.io/badge/platform-Windows-lightgrey)
 ![授權](https://img.shields.io/badge/license-MIT-green)
 
@@ -8,7 +8,7 @@
 
 前往 [Releases 頁面](https://github.com/joeken45/BloodClockTowerScriptEditor/releases) 下載最新版本。
 
-**最新版本：** [v1.0.0](https://github.com/joeken45/BloodClockTowerScriptEditor/releases/tag/v0.0.1)
+**最新版本：** [v0.0.4](https://github.com/joeken45/BloodClockTowerScriptEditor/releases/tag/v0.0.4)
 
 ## ✨ 功能特色
 
@@ -81,11 +81,14 @@
 - 劇本資訊介面優化
 - 角色總表.json 更新 夜晚階段定位 爪牙資訊=2000 惡魔資訊 =3000
 - 夜間順序移動優化且重要階段(黎明、黃昏、爪牙資訊、惡魔資訊)不可移動、編輯
-- 
+
 ### v0.0.3 (2025-11-15)
 - 新增奇遇角色類別與相關設置與操作介面
 - 修改官方ID
 - 角色總表.json 對山雨欲來相關角色加入夜間順序與說明
+
+### v0.0.4 (2025-11-24)
+- 角色總表.json 修正角色敘述、標記缺失，新增部分BOTC特殊能力
 
 完整更新日誌請參考 [CHANGELOG.md](CHANGELOG.md)
 
