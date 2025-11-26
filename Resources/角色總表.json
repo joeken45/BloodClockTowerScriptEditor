@@ -357,7 +357,7 @@
     "name": "賭徒",
     "id": "townsfolk019",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/8/8a/Gambler.png/200px-Gambler.png",
-    "ability": "每個夜晚，你要選擇一名玩家並猜測他的角色 ：如果你猜錯了，你會死亡。",
+    "ability": "每個夜晚*，你要選擇一名玩家並猜測他的角色 ：如果你猜錯了，你會死亡。",
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
@@ -506,7 +506,9 @@
     "firstNightReminder": "",
     "otherNight": 0.0,
     "otherNightReminder": "",
-    "reminders": [],
+    "reminders": [
+      "失去能力"
+    ],
     "remindersGlobal": [],
     "flavor": "黯月初升、免死、限次能力",
     "edition": "custom",
@@ -712,7 +714,12 @@
     "flavor": "備註",
     "edition": "custom",
     "team": "townsfolk",
-    "special": [],
+    "special": [
+      {
+        "type": "reveal",
+        "name": "replace-character"
+      }
+    ],
     "officialId": "philosopher"
   },
   {
@@ -994,7 +1001,12 @@
     "flavor": "實驗性角色、獲得能力、設定調整",
     "edition": "custom",
     "team": "townsfolk",
-    "special": [],
+    "special": [
+      {
+        "type": "reveal",
+        "name": "replace-character"
+      }
+    ],
     "officialId": "alchemist"
   },
   {
@@ -2046,7 +2058,16 @@
     "flavor": "暗流湧動、認知覆蓋、設定調整",
     "edition": "custom",
     "team": "outsider",
-    "special": [],
+    "special": [
+      {
+        "type": "reveal",
+        "name": "replace-character"
+      },
+      {
+        "type": "selection",
+        "name": "bag-disabled"
+      }
+    ],
     "officialId": "drunk"
   },
   {
@@ -2635,7 +2656,13 @@
     "flavor": "暗流湧動、獲取資訊、互動干擾、死後能力保留",
     "edition": "custom",
     "team": "minion",
-    "special": [],
+    "special": [
+      {
+        "name": "grimoire",
+        "type": "signal",
+        "time": "night"
+      }
+    ],
     "officialId": "spy"
   },
   {
@@ -2996,7 +3023,16 @@
     "flavor": "實驗性角色、認知覆蓋、設定調整、暴露角色、鄰近",
     "edition": "custom",
     "team": "minion",
-    "special": [],
+    "special": [
+      {
+        "type": "reveal",
+        "name": "replace-character"
+      },
+      {
+        "type": "selection",
+        "name": "bag-disabled"
+      }
+    ],
     "officialId": "marionette"
   },
   {
@@ -3931,7 +3967,13 @@
     "flavor": "山雨欲來、額外死亡、投票",
     "edition": "custom",
     "team": "demon",
-    "special": [],
+    "special": [
+      {
+        "name": "grimoire",
+        "type": "signal",
+        "time": "night"
+      }
+    ],
     "officialId": "yanluo"
   },
   {
