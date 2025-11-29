@@ -548,21 +548,21 @@ namespace BloodClockTowerScriptEditor.ViewModels
                                 }
 
                                 // ✅ 步驟 2: 建立集石格式角色
-                                var jinxRole = new Role
-                                {
-                                    Id = rule.Id,
-                                    Name = rule.Name,
-                                    Team = TeamType.Jinxed,
-                                    Ability = rule.Ability ?? ""
-                                };
+                                //var jinxRole = new Role
+                                //{
+                                //    Id = rule.Id,
+                                //    Name = rule.Name,
+                                //    Team = TeamType.Jinxed,
+                                //    Ability = rule.Ability ?? ""
+                                //};
 
-                                if (!string.IsNullOrEmpty(rule.Image))
-                                {
-                                    jinxRole.Image = [rule.Image];
-                                }
+                                //if (role1 != null)
+                                //{
+                                //    jinxRole.Image = role1.Image;
+                                //}
 
-                                CurrentScript.Roles.Add(jinxRole);
-                                System.Diagnostics.Debug.WriteLine($"✅ 加入相剋規則: {jinxRole.Name}");
+                                //CurrentScript.Roles.Add(jinxRole);
+                                //System.Diagnostics.Debug.WriteLine($"✅ 加入相剋規則: {jinxRole.Name}");
                             }
                         }
 

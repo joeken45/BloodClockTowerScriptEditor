@@ -21,7 +21,7 @@ namespace BloodClockTowerScriptEditor.Models
         private string _demon = "惡魔";
         private string _traveler = "旅行者";
         private string _aJinxed = "相剋規則";
-        private List<StatusInfo> _status = new();
+        private List<StatusInfo> _status = [];
         // === BOTC 專用 (選用) ===
         private bool? _hideTitle;
         private string? _background;

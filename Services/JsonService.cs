@@ -471,7 +471,7 @@ namespace BloodClockTowerScriptEditor.Services
                         Name = jinxName1,
                         Team = TeamType.Jinxed,
                         Ability = jinx.Reason ?? "",
-                        Image = []
+                        Image = role.Image,
                     };
 
                     jinxedRolesToAdd.Add(jinxedRole);

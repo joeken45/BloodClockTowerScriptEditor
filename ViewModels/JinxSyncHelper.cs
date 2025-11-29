@@ -46,9 +46,9 @@ namespace BloodClockTowerScriptEditor.ViewModels
 
             // 移除多餘的集石規則
             var validJinxIds = new HashSet<string>();
-            foreach (var pair in jinxPairs)
+            foreach (var (id1, name1, id2, name2, reason) in jinxPairs)
             {
-                validJinxIds.Add($"{pair.id1}_{pair.id2}_meta");
+                validJinxIds.Add($"{id1}_{id2}_meta");
             }
 
             foreach (var role in existingJinxedRoles)
@@ -61,29 +61,32 @@ namespace BloodClockTowerScriptEditor.ViewModels
             }
 
             // 加入或更新集石規則
-            foreach (var pair in jinxPairs)
+            foreach (var (id1, name1, id2, name2, reason) in jinxPairs)
             {
-                string jinxId = $"{pair.id1}_{pair.id2}_meta";
-                string jinxName = $"{pair.name1}&{pair.name2}";
+                string jinxId = $"{id1}_{id2}_meta";
+                string jinxName = $"{name1}&{name2}";
 
                 var existing = script.Roles.FirstOrDefault(r => r.Id == jinxId);
                 if (existing != null)
                 {
                     // 更新現有規則
                     existing.Name = jinxName;
-                    existing.Ability = pair.reason;
+                    existing.Ability = reason;
                     System.Diagnostics.Debug.WriteLine($"✏️ 更新集石相剋規則: {jinxName}");
                 }
                 else
                 {
+                    // 找到目標角色
+                    var targetRole = script.Roles.FirstOrDefault(r => r.Id == id1 && r.Team != TeamType.Jinxed);
+                    if (targetRole == null) continue;
                     // 建立新規則
                     var newJinxRole = new Role
                     {
                         Id = jinxId,
                         Name = jinxName,
                         Team = TeamType.Jinxed,
-                        Ability = pair.reason,
-                        Image = new List<string>()
+                        Ability = reason,
+                        Image = targetRole == null ? []: targetRole.Image
                     };
                     script.Roles.Add(newJinxRole);
                     System.Diagnostics.Debug.WriteLine($"✅ 加入集石相剋規則: {jinxName}");
@@ -91,29 +94,29 @@ namespace BloodClockTowerScriptEditor.ViewModels
             }
 
             // 3. 雙向同步所有角色的 Jinxes
-            foreach (var pair in jinxPairs)
+            foreach (var (id1, name1, id2, name2, reason) in jinxPairs)
             {
                 // 確保雙方都有對方的 Jinx
-                var role1 = script.Roles.FirstOrDefault(r => r.Id == pair.id1 && r.Team != TeamType.Jinxed);
-                var role2 = script.Roles.FirstOrDefault(r => r.Id == pair.id2 && r.Team != TeamType.Jinxed);
+                var role1 = script.Roles.FirstOrDefault(r => r.Id == id1 && r.Team != TeamType.Jinxed);
+                var role2 = script.Roles.FirstOrDefault(r => r.Id == id2 && r.Team != TeamType.Jinxed);
 
                 if (role1 != null)
                 {
-                    role1.Jinxes ??= new List<Role.JinxInfo>();
-                    if (!role1.Jinxes.Any(j => j.Id == pair.id2))
+                    role1.Jinxes ??= [];
+                    if (!role1.Jinxes.Any(j => j.Id == id2))
                     {
-                        role1.Jinxes.Add(new Role.JinxInfo { Id = pair.id2, Reason = pair.reason });
-                        System.Diagnostics.Debug.WriteLine($"🔗 {role1.Name} 加入與 {pair.name2} 的相剋");
+                        role1.Jinxes.Add(new Role.JinxInfo { Id = id2, Reason = reason });
+                        System.Diagnostics.Debug.WriteLine($"🔗 {role1.Name} 加入與 {name2} 的相剋");
                     }
                 }
 
                 if (role2 != null)
                 {
-                    role2.Jinxes ??= new List<Role.JinxInfo>();
-                    if (!role2.Jinxes.Any(j => j.Id == pair.id1))
+                    role2.Jinxes ??= [];
+                    if (!role2.Jinxes.Any(j => j.Id == id1))
                     {
-                        role2.Jinxes.Add(new Role.JinxInfo { Id = pair.id1, Reason = pair.reason });
-                        System.Diagnostics.Debug.WriteLine($"🔗 {role2.Name} 加入與 {pair.name1} 的相剋");
+                        role2.Jinxes.Add(new Role.JinxInfo { Id = id1, Reason = reason });
+                        System.Diagnostics.Debug.WriteLine($"🔗 {role2.Name} 加入與 {name1} 的相剋");
                     }
                 }
             }
@@ -172,10 +175,10 @@ namespace BloodClockTowerScriptEditor.ViewModels
                 if (role1 == null || role2 == null) continue;
 
                 // 為兩個角色都加入 Jinx
-                role1.Jinxes ??= new List<Role.JinxInfo>();
+                role1.Jinxes ??= [];
                 role1.Jinxes.Add(new Role.JinxInfo { Id = role2.Id, Reason = jinxRole.Ability });
 
-                role2.Jinxes ??= new List<Role.JinxInfo>();
+                role2.Jinxes ??= [];
                 role2.Jinxes.Add(new Role.JinxInfo { Id = role1.Id, Reason = jinxRole.Ability });
 
                 System.Diagnostics.Debug.WriteLine($"🔗 從集石規則建立: {name1} ↔ {name2}");
