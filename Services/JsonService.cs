@@ -231,7 +231,7 @@ namespace BloodClockTowerScriptEditor.Services
                 }
                 else if (format == ExportFormat.JiShi)
                 {
-                    var excludeIds = new[] { "minioninfo", "demoninfo" };
+                    var excludeIds = new[] { "minioninfo", "demoninfo", "dawn", "dusk" };
                     rolesToExport = rolesToExport.Where(r => !excludeIds.Contains(r.Id));
                 }
 
@@ -331,6 +331,25 @@ namespace BloodClockTowerScriptEditor.Services
                                 }
                             }
                             // BOTC 格式：保持陣列原樣
+                        }
+
+                        // 🆕 BOTC 格式：只保留主要角色的 Jinxes
+                        if (format == ExportFormat.BOTC && roleObj["jinxes"] is JArray jinxesArray)
+                        {
+                            var primaryJinxTargetIds = script.Roles
+                                .Where(r => r.Team == TeamType.Jinxed && r.JinxRole1Name == role.Name)
+                                .Select(r => script.Roles.FirstOrDefault(x => x.Name == r.JinxRole2Name && x.Team != TeamType.Jinxed)?.Id)
+                                .Where(id => id != null)
+                                .ToHashSet();
+
+                            var filteredJinxes = jinxesArray
+                                .Where(j => primaryJinxTargetIds.Contains(j["id"]?.ToString()))
+                                .ToList();
+
+                            if (filteredJinxes.Count > 0)
+                                roleObj["jinxes"] = new JArray(filteredJinxes);
+                            else
+                                roleObj.Remove("jinxes");
                         }
                     }
 

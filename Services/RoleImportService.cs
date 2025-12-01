@@ -72,18 +72,36 @@ namespace BloodClockTowerScriptEditor.Services
                             continue; // 跳過無效資料
                         }
 
-                        // 🆕 檢查是否已存在 (用 Id 和 Name 雙重判斷)
+                        // 🆕 檢查是否已存在 (用 OfficialId 和 Name 雙重判斷)
                         var existing = await context.RoleTemplates
                             .Include(r => r.Reminders)
                             .FirstOrDefaultAsync(r => r.OfficialId == officialId && r.Name == name);
 
                         if (existing != null)
                         {
-                            // 🔄 更新現有角色
-                            existing.OriginalOrder = orderIndex++;
-                            UpdateRoleTemplate(existing, item, isOfficial);
-                            updatedCount++;
-                            System.Diagnostics.Debug.WriteLine($"✏️ 更新角色: {name} ({officialId})");
+                            string? newId = item["id"]?.ToString();
+
+                            // 🆕 檢查 Id 是否變更
+                            if (!string.IsNullOrEmpty(newId) && existing.Id != newId)
+                            {
+                                // Id 變更：刪除舊記錄，建立新記錄
+                                context.RoleTemplates.Remove(existing);
+
+                                var roleTemplate = CreateRoleTemplate(item, isOfficial);
+                                roleTemplate.OriginalOrder = orderIndex++;
+                                context.RoleTemplates.Add(roleTemplate);
+
+                                updatedCount++;
+                                System.Diagnostics.Debug.WriteLine($"🔄 重建角色 (Id變更): {name} ({existing.Id} → {newId})");
+                            }
+                            else
+                            {
+                                // Id 未變更：正常更新
+                                existing.OriginalOrder = orderIndex++;
+                                UpdateRoleTemplate(existing, item, isOfficial);
+                                updatedCount++;
+                                System.Diagnostics.Debug.WriteLine($"✏️ 更新角色: {name} ({officialId})");
+                            }
                         }
                         else
                         {
