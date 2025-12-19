@@ -347,19 +347,15 @@ namespace BloodClockTowerScriptEditor.Services
             }
 
             int importCount = 0;
-            int updatedCount = 0;
-            int addedCount = 0;
 
             try
             {
                 // 讀取 JSON 內容
                 string jsonContent = await File.ReadAllTextAsync(jsonFilePath);
-
                 // 預處理 JSON 內容 (重用現有方法)
                 jsonContent = PreprocessJsonContent(jsonContent);
 
                 JArray jArray;
-
                 try
                 {
                     // 嘗試解析為 JSON 陣列
@@ -374,54 +370,36 @@ namespace BloodClockTowerScriptEditor.Services
 
                 using var context = new JinxRuleContext();
 
+                // 🆕 清除所有現有相剋規則（以 JSON 為主）
+                context.JinxRules.RemoveRange(context.JinxRules);
+
                 foreach (var item in jArray)
                 {
                     try
                     {
-                        // 解析 JSON 物件
                         string? id = item["id"]?.ToString();
                         string? name = item["name"]?.ToString();
 
-                        // 基本驗證：只檢查 id 和 name
                         if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(name))
                         {
                             System.Diagnostics.Debug.WriteLine($"⚠️ 跳過無效資料: id={id}, name={name}");
                             continue;
                         }
 
-                        // 檢查是否已存在 (用 Id 判斷)
-                        var existing = await context.JinxRules
-                            .FirstOrDefaultAsync(j => j.Id == id);
-
-                        if (existing != null)
-                        {
-                            // 更新現有規則
-                            UpdateJinxRule(existing, item);
-                            updatedCount++;
-                            System.Diagnostics.Debug.WriteLine($"✏️ 更新相剋規則: {name} ({id})");
-                        }
-                        else
-                        {
-                            // 建立新規則
-                            var jinxRule = CreateJinxRule(item);
-                            context.JinxRules.Add(jinxRule);
-                            addedCount++;
-                            System.Diagnostics.Debug.WriteLine($"➕ 新增相剋規則: {name} ({id})");
-                        }
-
+                        // 直接新增
+                        var jinxRule = CreateJinxRule(item);
+                        context.JinxRules.Add(jinxRule);
                         importCount++;
+                        System.Diagnostics.Debug.WriteLine($"➕ 新增相剋規則: {name} ({id})");
                     }
                     catch (Exception ex)
                     {
-                        // 記錄錯誤但繼續處理其他規則
                         System.Diagnostics.Debug.WriteLine($"❌ 匯入相剋規則時發生錯誤：{ex.Message}");
                     }
                 }
 
-                // 儲存變更
                 await context.SaveChangesAsync();
-
-                System.Diagnostics.Debug.WriteLine($"📊 相剋規則匯入統計: 總計 {importCount} 個 (新增 {addedCount} / 更新 {updatedCount})");
+                System.Diagnostics.Debug.WriteLine($"📊 相剋規則匯入完成: 共 {importCount} 個");
 
                 return importCount;
             }
