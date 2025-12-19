@@ -365,7 +365,7 @@ namespace BloodClockTowerScriptEditor.ViewModels
                 {
                     Filter = "JSON 檔案 (*.json)|*.json|所有檔案 (*.*)|*.*",
                     Title = "另存劇本檔案",
-                    FileName = "script.json"
+                    FileName = CurrentScript.Meta.Name == "" ? "未命名劇本.json" : CurrentScript.Meta.Name + ".json"
                 };
 
                 if (dialog.ShowDialog() == true)
@@ -948,7 +948,7 @@ namespace BloodClockTowerScriptEditor.ViewModels
             DemonRoles.Clear();
             TravelerRoles.Clear();
             FabledRoles.Clear();
-            LoricRoles.Clear();  
+            LoricRoles.Clear();
             JinxedRoles.Clear();
 
             // 按 Team 和 DisplayOrder 排序後分類
@@ -994,7 +994,7 @@ namespace BloodClockTowerScriptEditor.ViewModels
                     case TeamType.Fabled:
                         FabledRoles.Add(role);
                         break;
-                    case TeamType.Loric: 
+                    case TeamType.Loric:
                         LoricRoles.Add(role);
                         break;
                     case TeamType.Jinxed:
@@ -1010,7 +1010,7 @@ namespace BloodClockTowerScriptEditor.ViewModels
             OnPropertyChanged(nameof(DemonsCount));
             OnPropertyChanged(nameof(TravelersCount));
             OnPropertyChanged(nameof(FabledCount));
-            OnPropertyChanged(nameof(LoricCount));  
+            OnPropertyChanged(nameof(LoricCount));
             OnPropertyChanged(nameof(JinxedCount));
         }
 
