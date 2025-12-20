@@ -1578,7 +1578,16 @@
     "flavor": "華燈初上、認知覆蓋、設定調整、角色變化、影響",
     "edition": "custom",
     "team": "townsfolk",
-    "special": [],
+    "special": [
+      {
+        "type": "reveal",
+        "name": "replace-character"
+      },
+      {
+        "type": "selection",
+        "name": "bag-disabled"
+      }
+    ],
     "officialId": "wudaozhe"
   },
   {
@@ -1596,7 +1605,12 @@
     "flavor": "華燈初上、設置調整、特殊勝利失敗條件、死後能力保留、持續檢測型能力",
     "edition": "custom",
     "team": "townsfolk",
-    "special": [],
+    "special": [
+      {
+        "type": "selection",
+        "name": "bag-duplicate"
+      }
+    ],
     "officialId": "xizi"
   },
   {
@@ -2934,7 +2948,13 @@
     "flavor": "實驗性角色、投票、暴露角色、醉酒",
     "edition": "custom",
     "team": "minion",
-    "special": [],
+    "special": [
+      {
+        "name": "hidden",
+        "type": "vote",
+        "time": "day"
+      }
+    ],
     "officialId": "organgrinder"
   },
   {
@@ -3058,7 +3078,13 @@
     "flavor": "實驗性角色、暴露角色",
     "edition": "custom",
     "team": "minion",
-    "special": [],
+    "special": [
+      {
+        "name": "open-eyes",
+        "type": "player",
+        "time": "night"
+      }
+    ],
     "officialId": "wraith"
   },
   {
@@ -3158,7 +3184,13 @@
     "flavor": "實驗性角色、處決、額外死亡",
     "edition": "custom",
     "team": "minion",
-    "special": [],
+    "special": [
+      {
+        "name": "pointing",
+        "type": "ability",
+        "time": "day"
+      }
+    ],
     "officialId": "boomdandy"
   },
   {
@@ -3671,7 +3703,12 @@
     "flavor": "實驗性角色、投票、設定調整、互動干擾",
     "edition": "custom",
     "team": "demon",
-    "special": [],
+    "special": [
+      {
+        "type": "selection",
+        "name": "bag-duplicate"
+      }
+    ],
     "officialId": "legion"
   },
   {
@@ -4424,7 +4461,13 @@
     "flavor": "暗流湧動、投票",
     "edition": "custom",
     "team": "traveler",
-    "special": [],
+    "special": [
+      {
+        "name": "multiplier",
+        "type": "vote",
+        "value": "3"
+      }
+    ],
     "officialId": "bureaucrat"
   },
   {
@@ -4480,7 +4523,13 @@
     "flavor": "暗流湧動、投票",
     "edition": "custom",
     "team": "traveler",
-    "special": [],
+    "special": [
+      {
+        "name": "multiplier",
+        "type": "vote",
+        "value": "-1"
+      }
+    ],
     "officialId": "thief"
   },
   {

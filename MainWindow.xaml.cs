@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace BloodClockTowerScriptEditor
 {
@@ -153,7 +154,7 @@ namespace BloodClockTowerScriptEditor
         {
             MessageBox.Show(
                 "Blood on the Clocktower 劇本編輯器\n\n" +
-                "版本: 0.0.4 \n",
+                "版本: 0.0.5 \n",
                 "關於",
                 MessageBoxButton.OK,
                 MessageBoxImage.Information
@@ -305,6 +306,11 @@ namespace BloodClockTowerScriptEditor
         // ==================== 私有欄位 ====================
         private Role? _draggedRole = null;
         private System.Windows.Shapes.Line? _dropIndicatorLine = null;  // ✅ 改為指示線
+        private DispatcherTimer? _autoScrollTimer;
+        private ScrollViewer? _dragScrollViewer;
+        private double _autoScrollDirection = 0;
+        private const double AutoScrollThreshold = 40; // 距離邊緣多少像素開始捲動
+        private const double AutoScrollSpeed = 5;      // 每次捲動的像素數
 
         // ==================== 圖片管理方法 ====================
 
@@ -905,15 +911,17 @@ namespace BloodClockTowerScriptEditor
             {
                 if (sender is Border border)
                 {
-                    // ✅ 加在這裡：開始拖曳時才變透明
                     border.Opacity = 0.5;
 
-                    // 執行拖放操作
                     DragDrop.DoDragDrop(border, _draggedRole, DragDropEffects.Move);
 
                     // 恢復透明度
                     border.Opacity = 1.0;
                     _draggedRole = null;
+
+                    // ✅ 新增：清理自動捲動
+                    StopAutoScrollTimer();
+                    _dragScrollViewer = null;
                 }
             }
         }
@@ -1066,6 +1074,9 @@ namespace BloodClockTowerScriptEditor
         {
             if (_draggedRole == null) return;
 
+            // ✅ 新增：自動捲動處理
+            HandleAutoScroll(sender, e);
+
             if (sender is ItemsControl itemsControl)
             {
                 var mousePosition = e.GetPosition(itemsControl);
@@ -1103,6 +1114,101 @@ namespace BloodClockTowerScriptEditor
             if (sender is ItemsControl itemsControl)
             {
                 RemoveDropIndicator(itemsControl);
+            }
+
+            // ✅ 新增：停止自動捲動
+            StopAutoScrollTimer();
+        }
+
+        /// <summary>
+        /// 處理拖曳時的自動捲動
+        /// </summary>
+        private void HandleAutoScroll(object sender, DragEventArgs e)
+        {
+            // 尋找包含 ItemsControl 的 ScrollViewer
+            if (_dragScrollViewer == null && sender is DependencyObject dep)
+            {
+                _dragScrollViewer = FindParentScrollViewer(dep);
+            }
+
+            if (_dragScrollViewer == null) return;
+
+            var mousePos = e.GetPosition(_dragScrollViewer);
+            double scrollViewerHeight = _dragScrollViewer.ActualHeight;
+
+            // 判斷是否在邊緣區域
+            if (mousePos.Y < AutoScrollThreshold)
+            {
+                // 靠近頂部，向上捲動
+                _autoScrollDirection = -AutoScrollSpeed;
+                StartAutoScrollTimer();
+            }
+            else if (mousePos.Y > scrollViewerHeight - AutoScrollThreshold)
+            {
+                // 靠近底部，向下捲動
+                _autoScrollDirection = AutoScrollSpeed;
+                StartAutoScrollTimer();
+            }
+            else
+            {
+                // 不在邊緣區域，停止捲動
+                StopAutoScrollTimer();
+            }
+        }
+
+        /// <summary>
+        /// 尋找父層的 ScrollViewer
+        /// </summary>
+        private static ScrollViewer? FindParentScrollViewer(DependencyObject child)
+        {
+            DependencyObject? parent = VisualTreeHelper.GetParent(child);
+            while (parent != null)
+            {
+                if (parent is ScrollViewer sv)
+                    return sv;
+                parent = VisualTreeHelper.GetParent(parent);
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// 啟動自動捲動計時器
+        /// </summary>
+        private void StartAutoScrollTimer()
+        {
+            if (_autoScrollTimer == null)
+            {
+                _autoScrollTimer = new DispatcherTimer
+                {
+                    Interval = TimeSpan.FromMilliseconds(20)
+                };
+                _autoScrollTimer.Tick += AutoScrollTimer_Tick;
+            }
+
+            if (!_autoScrollTimer.IsEnabled)
+            {
+                _autoScrollTimer.Start();
+            }
+        }
+
+        /// <summary>
+        /// 停止自動捲動計時器
+        /// </summary>
+        private void StopAutoScrollTimer()
+        {
+            _autoScrollTimer?.Stop();
+            _autoScrollDirection = 0;
+        }
+
+        /// <summary>
+        /// 自動捲動計時器事件
+        /// </summary>
+        private void AutoScrollTimer_Tick(object? sender, EventArgs e)
+        {
+            if (_dragScrollViewer != null && _autoScrollDirection != 0)
+            {
+                _dragScrollViewer.ScrollToVerticalOffset(
+                    _dragScrollViewer.VerticalOffset + _autoScrollDirection);
             }
         }
 

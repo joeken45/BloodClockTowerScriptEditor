@@ -8,9 +8,9 @@
     <UseWPF>true</UseWPF>
     
     <!-- 版本資訊 -->
-    <Version>0.0.4</Version>
+    <Version>0.0.5</Version>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.2.9</FileVersion>
+    <FileVersion>1.0.3.2</FileVersion>
 
     <!-- 應用程式資訊 -->
     <Company>BJ</Company>

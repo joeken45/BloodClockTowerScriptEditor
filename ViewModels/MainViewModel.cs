@@ -365,7 +365,9 @@ namespace BloodClockTowerScriptEditor.ViewModels
                 {
                     Filter = "JSON 檔案 (*.json)|*.json|所有檔案 (*.*)|*.*",
                     Title = "另存劇本檔案",
-                    FileName = CurrentScript.Meta.Name == "" ? "未命名劇本.json" : CurrentScript.Meta.Name + ".json"
+                    FileName = (CurrentScript.Meta.Name == "" ? "未命名劇本.json" :
+                    CurrentScript.Meta.Name +
+                    (formatDialog.SelectedFormat == ExportFormat.BOTC ? "(BOTC)" : "") + ".json")
                 };
 
                 if (dialog.ShowDialog() == true)

@@ -1,4 +1,4 @@
-![版本](https://img.shields.io/badge/version-0.0.4-blue)
+![版本](https://img.shields.io/badge/version-0.0.5-blue)
 ![平台](https://img.shields.io/badge/platform-Windows-lightgrey)
 ![授權](https://img.shields.io/badge/license-MIT-green)
 
@@ -8,7 +8,7 @@
 
 前往 [Releases 頁面](https://github.com/joeken45/BloodClockTowerScriptEditor/releases) 下載最新版本。
 
-**最新版本：** [v0.0.4](https://github.com/joeken45/BloodClockTowerScriptEditor/releases/tag/v0.0.4)
+**最新版本：** [v0.0.5](https://github.com/joeken45/BloodClockTowerScriptEditor/releases/tag/v0.0.5)
 
 ## ✨ 功能特色
 
@@ -92,6 +92,11 @@
 - 角色總表.json 修正角色敘述、標記缺失，新增部分BOTC特殊能力
 - 集石格式也不會匯出 黎明、黃昏
 - BOTC格式匯出時 相剋規則只會輸出在主要角色
+
+### v0.0.5 (2025-12-20)
+- 相剋規則.json、角色總表.json 更新/修正
+- 另存新檔時自動賦予劇本名稱
+- 角色位置拖曳至邊界會自動滾動
 
 完整更新日誌請參考 [CHANGELOG.md](CHANGELOG.md)
 
