@@ -4387,6 +4387,24 @@
     "officialId": "bootlegger"
   },
   {
+    "name": "印度教教徒",
+    "id": "hindu_custom",
+    "image": "https://clocktower-wiki.gstonegames.com/images/thumb/b/b4/Hindu.png/300px-Hindu.png",
+    "ability": "最先死亡的四名玩家會立刻以相同陣營的旅行者轉世重生。",
+    "setup": false,
+    "firstNight": 0.0,
+    "firstNightReminder": "",
+    "otherNight": 0.0,
+    "otherNightReminder": "",
+    "reminders": [],
+    "remindersGlobal": [],
+    "flavor": "奇遇角色、復活、角色變化、死亡觸發能力",
+    "edition": "custom",
+    "team": "loric",
+    "special": [],
+    "officialId": "hindu"
+  },
+  {
     "name": "異術士",
     "id": "zenomancer_custom",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/8/81/Zenomancer.png/300px-Zenomancer.png",
