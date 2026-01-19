@@ -1704,15 +1704,14 @@
     "name": "刀客",
     "id": "daoke_custom",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/4/44/Daoke.png/200px-Daoke.png",
-    "ability": "在你的首個夜晚，你會得知一個在場的爪牙角色。每局遊戲限一次，你可以在白天時公開選擇一名玩家：如果他是你得知的角色，在當晚他會死亡。",
+    "ability": "在你的首個夜晚，你會得知一個在場的爪牙角色。每局遊戲限一次，你可以在白天時公開選擇一名玩家：如果他是你得知的角色，他死亡。",
     "setup": false,
     "firstNight": 3059.0,
     "firstNightReminder": "喚醒刀客，對他展示一個在場的爪牙角色標記。",
-    "otherNight": 79.0,
-    "otherNightReminder": "如果刀客在今天白天的時候使用自己的能力選擇了一名他得知的爪牙玩家，或者，他得知的爪牙不在場但那名玩家是爪牙，那名玩家死亡。",
+    "otherNight": 0.0,
+    "otherNightReminder": "",
     "reminders": [
       "得知",
-      "死亡",
       "失去能力"
     ],
     "remindersGlobal": [],
@@ -1846,7 +1845,7 @@
   {
     "name": "史官",
     "id": "shiguan_custom",
-    "image": "https://clocktower-wiki.gstonegames.com/images/thumb/8/8a/Shiguan.png/200px-Shiguan.png",
+    "image": "https://clocktower-wiki.gstonegames.com/images/thumb/8/8a/Shiguan.png/300px-Shiguan.png",
     "ability": "每個夜晚*，如果今天白天有玩家死於處決，你會得知存活鎮民的數量。",
     "setup": false,
     "firstNight": 0.0,
@@ -1887,7 +1886,7 @@
   {
     "name": "巡察",
     "id": "xuncha_custom",
-    "image": "https://clocktower-wiki.gstonegames.com/images/thumb/c/cf/Xuncha.png/200px-Xuncha.png",
+    "image": "https://clocktower-wiki.gstonegames.com/images/thumb/c/cf/Xuncha.png/300px-Xuncha.png",
     "ability": "每個夜晚*，你要選擇兩個善良角色：如果他們都存活，他們當晚不會死亡。",
     "setup": false,
     "firstNight": 0.0,
@@ -1985,7 +1984,7 @@
   {
     "name": "鴆",
     "id": "zhen_custom",
-    "image": "https://clocktower-wiki.gstonegames.com/images/thumb/4/43/Zhen.png/200px-Zhen.png",
+    "image": "https://clocktower-wiki.gstonegames.com/images/thumb/4/43/Zhen.png/300px-Zhen.png",
     "ability": "每局遊戲限一次，在夜晚時，你可以選擇一個鎮民角色：如果他在場，他醉酒並死亡。",
     "setup": false,
     "firstNight": 0.0,
@@ -2006,7 +2005,7 @@
   {
     "name": "知府",
     "id": "zhifu_custom",
-    "image": "https://clocktower-wiki.gstonegames.com/images/thumb/c/c5/Zhifu.png/200px-Zhifu.png",
+    "image": "https://clocktower-wiki.gstonegames.com/images/thumb/c/c5/Zhifu.png/300px-Zhifu.png",
     "ability": "每個夜晚*，你會得知今天是否有非鎮民且非旅行者的玩家死亡。",
     "setup": false,
     "firstNight": 0.0,
@@ -3359,7 +3358,7 @@
   {
     "name": "孟婆",
     "id": "mengpo_custom",
-    "image": "https://i.postimg.cc/Mp6ZnYQs/image.png",
+    "image": "https://clocktower-wiki.gstonegames.com/images/thumb/e/e4/Mengpo.png/75px-Mengpo.png",
     "ability": "每個夜晚*，你要選擇一名玩家：如果他存活，那麽他要選擇讓自己失去能力，或死亡並保留能力直到下個黃昏。",
     "setup": false,
     "firstNight": 0.0,
@@ -3911,7 +3910,7 @@
   {
     "name": "暴君",
     "id": "baojun_custom",
-    "image": "https://clocktower-wiki.gstonegames.com/images/thumb/c/c5/Baojun.png/300px-Baojun.png",
+    "image": "https://clocktower-wiki.gstonegames.com/images/thumb/8/8c/Baojun_new.png/300px-Baojun_new.png",
     "ability": "每個夜晚*，你可以選擇至多兩名玩家：他們死亡。你選擇的玩家數量不能與上個夜晚死亡的玩家數量相同(超過二人時算作二人)。",
     "setup": false,
     "firstNight": 0.0,
@@ -4349,6 +4348,24 @@
     "team": "loric",
     "special": [],
     "officialId": "stormcatcher"
+  },
+  {
+    "name": "教皇",
+    "id": "pope_custom",
+    "image": "https://clocktower-wiki.gstonegames.com/images/thumb/2/26/Pope.png/300px-Pope.png",
+    "ability": "會有重複的善良角色在場。他們也可能是惡魔的偽裝。",
+    "setup": true,
+    "firstNight": 0.0,
+    "firstNightReminder": "",
+    "otherNight": 0.0,
+    "otherNightReminder": "",
+    "reminders": [],
+    "remindersGlobal": [],
+    "flavor": "奇遇角色、設置調整",
+    "edition": "custom",
+    "team": "loric",
+    "special": [],
+    "officialId": "pope"
   },
   {
     "name": "首席律師",
