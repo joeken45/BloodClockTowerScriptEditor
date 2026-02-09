@@ -1,4 +1,4 @@
-![版本](https://img.shields.io/badge/version-0.0.5-blue)
+![版本](https://img.shields.io/badge/version-0.0.6-blue)
 ![平台](https://img.shields.io/badge/platform-Windows-lightgrey)
 ![授權](https://img.shields.io/badge/license-MIT-green)
 
@@ -8,7 +8,7 @@
 
 前往 [Releases 頁面](https://github.com/joeken45/BloodClockTowerScriptEditor/releases) 下載最新版本。
 
-**最新版本：** [v0.0.5](https://github.com/joeken45/BloodClockTowerScriptEditor/releases/tag/v0.0.5)
+**最新版本：** [v0.0.6](https://github.com/joeken45/BloodClockTowerScriptEditor/releases/tag/v0.0.6)
 
 ## ✨ 功能特色
 
