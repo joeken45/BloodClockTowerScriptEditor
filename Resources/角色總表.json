@@ -4350,6 +4350,26 @@
     "officialId": "stormcatcher"
   },
   {
+    "name": "腹語師",
+    "id": "ventriloquist_custom",
+    "image": "https://clocktower-wiki.gstonegames.com/images/thumb/3/35/Ventriloquist.png/300px-Ventriloquist.png",
+    "ability": "如果一名玩家在被提名時“瘋狂”的證明自己是一個新的角色，他可能不會死於當天的處決。",
+    "setup": false,
+    "firstNight": 0.0,
+    "firstNightReminder": "",
+    "otherNight": 0.0,
+    "otherNightReminder": "",
+    "reminders": [
+      "瘋狂"
+    ],
+    "remindersGlobal": [],
+    "flavor": "奇遇角色、提名、瘋狂、處決、免死",
+    "edition": "custom",
+    "team": "loric",
+    "special": [],
+    "officialId": "ventriloquist"
+  },
+  {
     "name": "教皇",
     "id": "pope_custom",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/2/26/Pope.png/300px-Pope.png",
@@ -4799,6 +4819,26 @@
     "team": "traveler",
     "special": [],
     "officialId": "gangster"
+  },
+  {
+    "name": "笑匠",
+    "id": "cacklejack_custom",
+    "image": "https://clocktower-wiki.gstonegames.com/images/thumb/5/5f/Cacklejack.png/300px-Cacklejack.png",
+    "ability": "每個白天，你要選擇一名玩家：一名其他玩家會在當晚改變角色。",
+    "setup": false,
+    "firstNight": 0.0,
+    "firstNightReminder": "",
+    "otherNight": 0.0,
+    "otherNightReminder": "",
+    "reminders": [
+      "不是我"
+    ],
+    "remindersGlobal": [],
+    "flavor": "實驗性角色、回溯型能力、角色變化",
+    "edition": "custom",
+    "team": "traveler",
+    "special": [],
+    "officialId": "cacklejack"
   },
   {
     "name": "侏儒",
