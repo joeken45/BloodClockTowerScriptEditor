@@ -3794,7 +3794,14 @@
     "flavor": "實驗性角色、互動干擾、設定調整、暴露角色",
     "edition": "custom",
     "team": "demon",
-    "special": [],
+    "special": [
+      {
+        "type": "ability",
+        "name": "pointing",
+        "global": "minion",
+        "time": "night"
+      }
+    ],
     "officialId": "lilmonsta"
   },
   {
