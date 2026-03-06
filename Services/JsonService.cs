@@ -56,8 +56,9 @@ namespace BloodClockTowerScriptEditor.Services
                         using var context = new Data.RoleTemplateContext();
                         var template = context.RoleTemplates
                             .Include(r => r.Reminders)
-                            .FirstOrDefault(r => r.OfficialId == officialId 
-                            || r.OfficialId!.Replace("_", "") == officialId);
+                            .FirstOrDefault(r => r.OfficialId == officialId
+                            || r.OfficialId!.Replace("_", "") == officialId
+                            || r.OfficialId == officialId.Replace("_", ""));
 
                         if (template != null)
                         {
@@ -89,7 +90,9 @@ namespace BloodClockTowerScriptEditor.Services
                             using var context = new Data.RoleTemplateContext();
                             var template = context.RoleTemplates
                                 .Include(r => r.Reminders)
-                                .FirstOrDefault(r => r.OfficialId == officialId);
+                                .FirstOrDefault(r => r.OfficialId == officialId
+                                || r.OfficialId!.Replace("_", "") == officialId
+                                || r.OfficialId == officialId.Replace("_", ""));
 
                             if (template != null)
                             {
@@ -398,7 +401,7 @@ namespace BloodClockTowerScriptEditor.Services
             return (string.Empty, string.Empty, false);
         }
 
-       
+
         /// <summary>
         /// 生成 _meta 的 firstNight 和 otherNight 陣列
         /// </summary>

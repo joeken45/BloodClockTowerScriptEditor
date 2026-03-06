@@ -1,6 +1,7 @@
 ﻿using BloodClockTowerScriptEditor.Models;
 using BloodClockTowerScriptEditor.Services;
 using BloodClockTowerScriptEditor.ViewModels;
+using Microsoft.Win32;
 using System;
 using System.IO;
 using System.Reflection;
@@ -142,6 +143,53 @@ namespace BloodClockTowerScriptEditor
             {
                 System.Diagnostics.Debug.WriteLine($"❌ 讀取內嵌資源失敗: {ex.Message}");
                 return string.Empty;
+            }
+        }
+        private async void ExportPdf_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new SaveFileDialog
+            {
+                Filter = "PDF 檔案 (*.pdf)|*.pdf",
+                Title = "輸出 PDF 劇本單",
+                FileName = (DataContext as MainViewModel)?.CurrentScript?.Meta?.Name + ".pdf"
+            };
+
+            if (dialog.ShowDialog() != true) return;
+
+            var vm = DataContext as MainViewModel;
+            if (vm?.CurrentScript == null) return;
+
+            var loadingWindow = new Window
+            {
+                Title = "輸出中",
+                Width = 280,
+                Height = 100,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                Owner = this,
+                ResizeMode = ResizeMode.NoResize,
+                WindowStyle = WindowStyle.None,
+                Content = new System.Windows.Controls.TextBlock
+                {
+                    Text = "⏳ PDF 輸出中，請稍候...",
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    FontSize = 14
+                }
+            };
+
+            loadingWindow.Show();
+
+            try
+            {
+                var pdfService = new PdfService();
+                await Task.Run(() => pdfService.ExportScript(vm.CurrentScript, dialog.FileName));
+                loadingWindow.Close();
+                MessageBox.Show("PDF 輸出成功！", "完成", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                loadingWindow.Close();
+                MessageBox.Show($"PDF 輸出失敗：{ex.Message}", "錯誤", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

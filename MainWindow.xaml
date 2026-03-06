@@ -116,7 +116,15 @@
                 </MenuItem>
 
                 <Separator/>
+                <!-- 🆕 輸出 PDF -->
+                <MenuItem Header="輸出PDF(_P)" Click="ExportPdf_Click"
+                          InputGestureText="Ctrl+P">
+                    <MenuItem.Icon>
+                        <TextBlock Text="🖨️" FontSize="14"/>
+                    </MenuItem.Icon>
+                </MenuItem>
 
+                <Separator/>
                 <!-- 原有的結束 -->
                 <MenuItem Header="結束(_X)" Click="Exit_Click">
                     <MenuItem.Icon>
