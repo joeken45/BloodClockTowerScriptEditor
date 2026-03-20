@@ -4377,6 +4377,24 @@
     "officialId": "ventriloquist"
   },
   {
+    "name": "詭詐傑克",
+    "id": "knaves_custom",
+    "image": "https://clocktower-wiki.gstonegames.com/images/thumb/5/5d/Knaves.png/300px-Knaves.png",
+    "ability": "場上有兩位說書人：一人說真話，一人說假話。每局遊戲限一次，他們可能會在黃昏互換。",
+    "setup": false,
+    "firstNight": 0.0,
+    "firstNightReminder": "",
+    "otherNight": 0.0,
+    "otherNightReminder": "",
+    "reminders": [],
+    "remindersGlobal": [],
+    "flavor": "奇遇角色、能力效果干擾",
+    "edition": "custom",
+    "team": "loric",
+    "special": [],
+    "officialId": "knaves"
+  },
+  {
     "name": "教皇",
     "id": "pope_custom",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/2/26/Pope.png/300px-Pope.png",
@@ -4393,6 +4411,24 @@
     "team": "loric",
     "special": [],
     "officialId": "pope"
+  },
+  {
+    "name": "訥神",
+    "id": "godofug_custom",
+    "image": "https://clocktower-wiki.gstonegames.com/images/thumb/f/f7/Godofug.png/300px-Godofug.png",
+    "ability": "會有一頂訥帽。當玩家戴著訥帽的時候，只能說單音節詞，但投票算作兩票。如果違反規則，訥帽會被轉移。",
+    "setup": false,
+    "firstNight": 0.0,
+    "firstNightReminder": "",
+    "otherNight": 0.0,
+    "otherNightReminder": "",
+    "reminders": [],
+    "remindersGlobal": [],
+    "flavor": "奇遇角色、投票",
+    "edition": "custom",
+    "team": "loric",
+    "special": [],
+    "officialId": "godofug"
   },
   {
     "name": "首席律師",

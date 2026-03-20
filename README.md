@@ -1,4 +1,4 @@
-![版本](https://img.shields.io/badge/version-0.0.7-blue)
+![版本](https://img.shields.io/badge/version-0.0.8-blue)
 ![平台](https://img.shields.io/badge/platform-Windows-lightgrey)
 ![授權](https://img.shields.io/badge/license-MIT-green)
 
@@ -8,7 +8,7 @@
 
 前往 [Releases 頁面](https://github.com/joeken45/BloodClockTowerScriptEditor/releases) 下載最新版本。
 
-**最新版本：** [v0.0.7](https://github.com/joeken45/BloodClockTowerScriptEditor/releases/tag/v0.0.6)
+**最新版本：** [v0.0.8](https://github.com/joeken45/BloodClockTowerScriptEditor/releases/tag/v0.0.8)
 
 ## ✨ 功能特色
 
@@ -105,6 +105,11 @@
 - 角色總表.json 新增角色/修正
 - 輸出PDF 功能
 - 集石劇本編輯工具產出的官方ID 正常讀取
+
+### v0.0.8 (2026-03-21)
+- 角色總表.json 新增角色
+- 角色列表、首夜順序、其他夜晚順序 分頁角色排序按鈕優化
+- 首夜順序、其他夜晚順序 無法輸入小數點 修正
 
 完整更新日誌請參考 [CHANGELOG.md](CHANGELOG.md)
 
