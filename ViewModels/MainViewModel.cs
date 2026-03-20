@@ -1075,37 +1075,19 @@ namespace BloodClockTowerScriptEditor.ViewModels
         /// </summary>
         public void MoveRoleUp(Role role, bool isFirstNight)
         {
-            // 🔒 禁止移動必要階段角色
             if (RequiredPhaseIds.Contains(role.Id)) return;
 
             var list = isFirstNight ? FirstNightRoles : OtherNightRoles;
             var index = list.IndexOf(role);
-
-            if (index <= 0) return; // 已在頂部
+            if (index <= 0) return;
 
             var above = list[index - 1];
             var aboveOrder = isFirstNight ? above.FirstNight : above.OtherNight;
 
-            // 🆕 計算插入位置（在上一個角色之前）
-            double newOrder;
+            if (isFirstNight) role.FirstNight = aboveOrder - 0.0005;
+            else role.OtherNight = aboveOrder - 0.0005;
 
-            if (index == 1)
-            {
-                // 移到第一位：上一個角色 - 1
-                newOrder = aboveOrder - 1;
-            }
-            else
-            {
-                // 插入中間：計算上上個與上一個的中間值
-                var aboveAbove = list[index - 2];
-                var aboveAboveOrder = isFirstNight ? aboveAbove.FirstNight : aboveAbove.OtherNight;
-                newOrder = (aboveAboveOrder + aboveOrder) / 2.0;
-            }
-
-            if (isFirstNight)
-                role.FirstNight = newOrder;
-            else
-                role.OtherNight = newOrder;
+            RenormalizeNightOrder(isFirstNight);
         }
 
         /// <summary>
@@ -1113,37 +1095,127 @@ namespace BloodClockTowerScriptEditor.ViewModels
         /// </summary>
         public void MoveRoleDown(Role role, bool isFirstNight)
         {
-            // 🔒 禁止移動必要階段角色
             if (RequiredPhaseIds.Contains(role.Id)) return;
 
             var list = isFirstNight ? FirstNightRoles : OtherNightRoles;
             var index = list.IndexOf(role);
-
-            if (index >= list.Count - 1) return; // 已在底部
+            if (index >= list.Count - 1) return;
 
             var below = list[index + 1];
             var belowOrder = isFirstNight ? below.FirstNight : below.OtherNight;
 
-            // 🆕 計算插入位置（在下一個角色之後）
-            double newOrder;
+            if (isFirstNight) role.FirstNight = belowOrder + 0.0005;
+            else role.OtherNight = belowOrder + 0.0005;
 
-            if (index == list.Count - 2)
+            RenormalizeNightOrder(isFirstNight);
+        }
+
+        private void RenormalizeNightOrder(bool isFirstNight)
+        {
+            UpdateNightOrderLists();
+
+            var list = isFirstNight ? FirstNightRoles : OtherNightRoles;
+
+            // 找出定標點（必要階段角色）的索引與 order 值
+            var anchorEntries = list
+                .Select((r, i) => new { r, i })
+                .Where(x => RequiredPhaseIds.Contains(x.r.Id))
+                .Select(x => (index: x.i, value: isFirstNight ? x.r.FirstNight : x.r.OtherNight))
+                .OrderBy(x => x.index)
+                .ToList();
+
+            if (anchorEntries.Count == 0) return;
+
+            // 建立區段邊界
+            var boundaries = new List<(int start, int end, double startVal)>();
+
+            if (anchorEntries[0].index > 0)
+                boundaries.Add((-1, anchorEntries[0].index, 0));
+
+            for (int i = 0; i < anchorEntries.Count - 1; i++)
+                boundaries.Add((anchorEntries[i].index, anchorEntries[i + 1].index, anchorEntries[i].value));
+
+            if (anchorEntries[^1].index < list.Count - 1)
+                boundaries.Add((anchorEntries[^1].index, list.Count, anchorEntries[^1].value));
+
+            foreach (var (start, end, startVal) in boundaries)
             {
-                // 移到最後一位：下一個角色 + 1
-                newOrder = belowOrder + 1;
-            }
-            else
-            {
-                // 插入中間：計算下一個與下下個的中間值
-                var belowBelow = list[index + 2];
-                var belowBelowOrder = isFirstNight ? belowBelow.FirstNight : belowBelow.OtherNight;
-                newOrder = (belowOrder + belowBelowOrder) / 2.0;
+                var segRoles = list
+                    .Skip(start + 1)
+                    .Take(end - start - 1)
+                    .Where(r => !RequiredPhaseIds.Contains(r.Id))
+                    .ToList();
+
+                if (start == -1)
+                {
+                    // dusk 上方區段：從 0.999 往下遞減，最後一個最靠近 dusk
+                    for (int i = 0; i < segRoles.Count; i++)
+                    {
+                        var newVal = 0.999 - (segRoles.Count - 1 - i) * 0.001;
+                        if (isFirstNight) segRoles[i].FirstNight = newVal;
+                        else segRoles[i].OtherNight = newVal;
+                    }
+                }
+                else
+                {
+                    // 一般區段：從 startVal + 1 整數遞增
+                    for (int i = 0; i < segRoles.Count; i++)
+                    {
+                        var newVal = (double)(startVal + i + 1);
+                        if (isFirstNight) segRoles[i].FirstNight = newVal;
+                        else segRoles[i].OtherNight = newVal;
+                    }
+                }
             }
 
-            if (isFirstNight)
-                role.FirstNight = newOrder;
-            else
-                role.OtherNight = newOrder;
+            UpdateNightOrderLists();
+            IsDirty = true;
+        }
+
+        /// <summary>
+        /// 在同陣營內上移角色
+        /// </summary>
+        public void MoveRoleInTeamUp(Role role)
+        {
+            var teamRoles = CurrentScript.Roles
+                .Where(r => r.Team == role.Team)
+                .OrderBy(r => r.DisplayOrder)
+                .ToList();
+
+            int index = teamRoles.IndexOf(role);
+            if (index <= 0) return;
+
+            teamRoles.RemoveAt(index);
+            teamRoles.Insert(index - 1, role);
+
+            for (int i = 0; i < teamRoles.Count; i++)
+                teamRoles[i].DisplayOrder = i;
+
+            UpdateFilteredRoles();
+            IsDirty = true;
+        }
+
+        /// <summary>
+        /// 在同陣營內下移角色
+        /// </summary>
+        public void MoveRoleInTeamDown(Role role)
+        {
+            var teamRoles = CurrentScript.Roles
+                .Where(r => r.Team == role.Team)
+                .OrderBy(r => r.DisplayOrder)
+                .ToList();
+
+            int index = teamRoles.IndexOf(role);
+            if (index >= teamRoles.Count - 1) return;
+
+            teamRoles.RemoveAt(index);
+            teamRoles.Insert(index + 1, role);
+
+            for (int i = 0; i < teamRoles.Count; i++)
+                teamRoles[i].DisplayOrder = i;
+
+            UpdateFilteredRoles();
+            IsDirty = true;
         }
 
         private void OnRolePropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)

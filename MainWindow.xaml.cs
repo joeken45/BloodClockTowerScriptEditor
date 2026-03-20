@@ -227,6 +227,12 @@ namespace BloodClockTowerScriptEditor
             }
         }
 
+        private void NightOrder_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter && sender is TextBox tb)
+                tb.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
+        }
+
         /// <summary>
         /// 統一處理提示標記的新增/刪除
         /// Tag 格式: "Add|Normal" / "Add|Global" / "Remove|Normal" / "Remove|Global"
@@ -1377,6 +1383,24 @@ namespace BloodClockTowerScriptEditor
                     vm.StatusMessage = "已刪除特殊功能";
                 }
             }
+        }
+
+        private void MoveSelected_Up_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is not MainViewModel vm || vm.SelectedRole == null) return;
+            var tab = MainTabControl.SelectedIndex;
+            if (tab == 0) vm.MoveRoleInTeamUp(vm.SelectedRole);
+            else if (tab == 1) vm.MoveRoleUp(vm.SelectedRole, isFirstNight: true);
+            else if (tab == 2) vm.MoveRoleUp(vm.SelectedRole, isFirstNight: false);
+        }
+
+        private void MoveSelected_Down_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is not MainViewModel vm || vm.SelectedRole == null) return;
+            var tab = MainTabControl.SelectedIndex;
+            if (tab == 0) vm.MoveRoleInTeamDown(vm.SelectedRole);
+            else if (tab == 1) vm.MoveRoleDown(vm.SelectedRole, isFirstNight: true);
+            else if (tab == 2) vm.MoveRoleDown(vm.SelectedRole, isFirstNight: false);
         }
     }
 }
