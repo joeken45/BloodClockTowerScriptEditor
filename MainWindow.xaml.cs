@@ -64,58 +64,84 @@ namespace BloodClockTowerScriptEditor
         }
         /// <summary>
         /// 同步 JSON 資源到程式資料夾並匯入資料庫
+        /// 若本機檔案已存在但內容與內嵌資源不同，會詢問使用者是否更新
         /// </summary>
         private static async Task<int> SyncResourceToFolderAsync(
             string resourceFileName,
             string embeddedResourceName,
-            Func<string, Task<int>> importAction)
+            Func<string, Task<int>> importAction,
+            string updateItemLabel)
         {
             try
             {
                 string appFolder = AppDomain.CurrentDomain.BaseDirectory;
                 string filePath = Path.Combine(appFolder, resourceFileName);
 
+                string embeddedContent = LoadEmbeddedResource(embeddedResourceName);
+
                 if (!File.Exists(filePath))
                 {
-                    string embeddedContent = LoadEmbeddedResource(embeddedResourceName);
-
-                    if (string.IsNullOrEmpty(embeddedContent))
+                    // 第一次執行：直接寫入
+                    if (!string.IsNullOrEmpty(embeddedContent))
                     {
-                        return 0;
+                        await File.WriteAllTextAsync(filePath, embeddedContent);
                     }
+                }
+                else if (!string.IsNullOrEmpty(embeddedContent))
+                {
+                    // 檔案已存在：比對內容是否有更新
+                    string existingContent = await File.ReadAllTextAsync(filePath);
 
-                    await File.WriteAllTextAsync(filePath, embeddedContent);
+                    if (!ContentEquals(existingContent, embeddedContent))
+                    {
+                        var result = MessageBox.Show(
+                            $"偵測到「{updateItemLabel}」資料有新版本，是否要更新？\n（更新後將覆蓋目前的 {resourceFileName}）",
+                            "資料更新確認",
+                            MessageBoxButton.YesNo,
+                            MessageBoxImage.Question);
+
+                        if (result == MessageBoxResult.Yes)
+                        {
+                            await File.WriteAllTextAsync(filePath, embeddedContent);
+                        }
+                    }
                 }
 
                 // 執行匯入動作
-                int count = await importAction(filePath);
-                
-                return count;
+                return await importAction(filePath);
             }
-            catch 
+            catch
             {
                 return 0;
             }
         }
 
-        // 然後原本的方法改成：
+        /// <summary>
+        /// 比較兩份 JSON 內容是否相同（忽略換行符號差異）
+        /// </summary>
+        private static bool ContentEquals(string a, string b)
+        {
+            static string Normalize(string s) => s.Replace("\r\n", "\n").Trim();
+            return Normalize(a) == Normalize(b);
+        }
+
         private static async Task InitializeDefaultRolesAsync()
         {
-            var importService = new RoleImportService();
             await SyncResourceToFolderAsync(
                 "角色總表.json",
                 "BloodClockTowerScriptEditor.Resources.角色總表.json",
-                path => RoleImportService.ImportFromJsonAsync(path, true)
+                path => RoleImportService.ImportFromJsonAsync(path, true),
+                "角色總表"
             );
         }
 
         private static async Task InitializeJinxRulesAsync()
         {
-            var importService = new RoleImportService();
             await SyncResourceToFolderAsync(
                 "相剋規則.json",
                 "BloodClockTowerScriptEditor.Resources.相剋規則.json",
-                RoleImportService.ImportJinxRulesFromJsonAsync
+                RoleImportService.ImportJinxRulesFromJsonAsync,
+                "相剋規則"
             );
         }
 
@@ -202,7 +228,7 @@ namespace BloodClockTowerScriptEditor
         {
             MessageBox.Show(
                 "Blood on the Clocktower 劇本編輯器\n\n" +
-                "版本: 0.0.9 \n",
+                "版本: 0.0.10 \n",
                 "關於",
                 MessageBoxButton.OK,
                 MessageBoxImage.Information
