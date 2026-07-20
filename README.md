@@ -1,4 +1,4 @@
-![版本](https://img.shields.io/badge/version-0.0.10-blue)
+![版本](https://img.shields.io/badge/version-0.0.11-blue)
 ![平台](https://img.shields.io/badge/platform-Windows-lightgrey)
 ![授權](https://img.shields.io/badge/license-MIT-green)
 
@@ -8,7 +8,7 @@
 
 前往 [Releases 頁面](https://github.com/joeken45/BloodClockTowerScriptEditor/releases) 下載最新版本。
 
-**最新版本：** [v0.0.10](https://github.com/joeken45/BloodClockTowerScriptEditor/releases/tag/v0.0.10)
+**最新版本：** [v0.0.11](https://github.com/joeken45/BloodClockTowerScriptEditor/releases/tag/v0.0.11)
 
 ## ✨ 功能特色
 
@@ -117,6 +117,10 @@
 ### v0.0.10 (2026-07-15)
 - 相剋規則.json 更新 
 - 角色總表.json 更新
+- 
+### v0.0.11 (2026-07-20)
+- 自訂角色視窗可編輯特殊功能
+- 自動檢查資料庫角色是否需要更新
 
 完整更新日誌請參考 [CHANGELOG.md](CHANGELOG.md)
 

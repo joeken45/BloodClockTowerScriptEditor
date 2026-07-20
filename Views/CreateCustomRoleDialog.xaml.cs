@@ -16,6 +16,7 @@ namespace BloodClockTowerScriptEditor.Views
         private RoleTemplate? _editingRole;
         private ObservableCollection<ReminderItem> _reminders = new();
         private ObservableCollection<ReminderItem> _remindersGlobal = new();
+        private ObservableCollection<Role.SpecialAbility> _specials = new();
 
         /// <summary>
         /// 建立的角色（供外部取用）
@@ -34,6 +35,7 @@ namespace BloodClockTowerScriptEditor.Views
             // 綁定標記列表
             remindersList.ItemsSource = _reminders;
             globalRemindersList.ItemsSource = _remindersGlobal;
+            specialItemsControl.ItemsSource = _specials;
         }
 
         /// <summary>
@@ -48,6 +50,7 @@ namespace BloodClockTowerScriptEditor.Views
             // 綁定標記列表
             remindersList.ItemsSource = _reminders;
             globalRemindersList.ItemsSource = _remindersGlobal;
+            specialItemsControl.ItemsSource = _specials;
 
             // 載入現有資料
             LoadRoleData(roleToEdit);
@@ -96,6 +99,14 @@ namespace BloodClockTowerScriptEditor.Views
                 {
                     _reminders.Add(new ReminderItem(reminder.ReminderText));
                 }
+            }
+
+            // 載入 Special
+            _specials.Clear();
+            if (role.Special != null)
+            {
+                foreach (var s in role.Special)
+                    _specials.Add(s);
             }
 
             ValidateForm(null, null);
@@ -183,6 +194,24 @@ namespace BloodClockTowerScriptEditor.Views
             }
         }
 
+        private void AddSpecial_Click(object sender, RoutedEventArgs e)
+        {
+            _specials.Add(new Role.SpecialAbility
+            {
+                Type = "selection",
+                Name = "grimoire",
+                Value = "",
+                Time = null,
+                Global = null
+            });
+        }
+
+        private void DeleteSpecial_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && button.Tag is Role.SpecialAbility special)
+                _specials.Remove(special);
+        }
+
         /// <summary>
         /// 儲存按鈕
         /// </summary>
@@ -250,6 +279,7 @@ namespace BloodClockTowerScriptEditor.Views
                         FirstNightReminder = string.IsNullOrEmpty(firstNightReminder) ? null : firstNightReminder,
                         OtherNightReminder = string.IsNullOrEmpty(otherNightReminder) ? null : otherNightReminder,
                         IsOfficial = false,
+                        Special = _specials.Count > 0 ? _specials.ToList() : null,
                         CreatedDate = DateTime.Now,
                         UpdatedDate = DateTime.Now
                     };
@@ -310,6 +340,7 @@ namespace BloodClockTowerScriptEditor.Views
                     roleToUpdate.FirstNightReminder = string.IsNullOrEmpty(firstNightReminder) ? null : firstNightReminder;
                     roleToUpdate.OtherNightReminder = string.IsNullOrEmpty(otherNightReminder) ? null : otherNightReminder;
                     roleToUpdate.UpdatedDate = DateTime.Now;
+                    roleToUpdate.Special = _specials.Count > 0 ? _specials.ToList() : null;
 
                     // 更新標記
                     roleToUpdate.Reminders.Clear();

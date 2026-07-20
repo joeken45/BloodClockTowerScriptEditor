@@ -381,6 +381,158 @@
 
                 <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Margin="0,10"/>
 
+                <!-- ⭐ 特殊功能編輯區塊 -->
+                <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Margin="0,8"/>
+
+                <TextBlock Text="⭐ 特殊功能 (Special)" 
+                           FontWeight="SemiBold" 
+                           FontSize="13" 
+                           Margin="0,8,0,8"/>
+
+                <Button Content="➕ 新增特殊功能" 
+                        Click="AddSpecial_Click"
+                        Margin="0,0,0,8" 
+                        Padding="8,4"
+                        HorizontalAlignment="Left"
+                        Background="#2196F3" 
+                        Foreground="White" 
+                        BorderThickness="0"/>
+
+                <ItemsControl x:Name="specialItemsControl" Margin="0,0,0,8">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="#E0E0E0" BorderThickness="1" CornerRadius="4"
+                                    Margin="0,0,0,8" Padding="10" Background="#FAFAFA">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="35"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Grid Grid.Row="0" Grid.Column="0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+
+                                        <!-- 第一行：Type 和 Name -->
+                                        <Grid Grid.Row="0" Margin="0,0,0,6">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="8"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <DockPanel Grid.Column="0">
+                                                <TextBlock Text="觸發時機" Width="65" DockPanel.Dock="Left"
+                                                           VerticalAlignment="Center" FontWeight="SemiBold"
+                                                           FontSize="11" Margin="0,0,6,0"/>
+                                                <ComboBox SelectedValue="{Binding Type, UpdateSourceTrigger=PropertyChanged}"
+                                                          SelectedValuePath="Tag" Padding="6,3"
+                                                          BorderBrush="#CCC" FontSize="11">
+                                                    <ComboBoxItem Content="角色選擇時 (selection)" Tag="selection"/>
+                                                    <ComboBoxItem Content="點擊標記時 (ability)" Tag="ability"/>
+                                                    <ComboBoxItem Content="夜晚訊號時 (signal)" Tag="signal"/>
+                                                    <ComboBoxItem Content="投票時 (vote)" Tag="vote"/>
+                                                    <ComboBoxItem Content="遊戲結束前 (reveal)" Tag="reveal"/>
+                                                    <ComboBoxItem Content="玩家主動觸發 (player)" Tag="player"/>
+                                                </ComboBox>
+                                            </DockPanel>
+
+                                            <DockPanel Grid.Column="2">
+                                                <TextBlock Text="功能類型" Width="65" DockPanel.Dock="Left"
+                                                           VerticalAlignment="Center" FontWeight="SemiBold"
+                                                           FontSize="11" Margin="0,0,6,0"/>
+                                                <ComboBox SelectedValue="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                                                          SelectedValuePath="Tag" Padding="6,3"
+                                                          BorderBrush="#CCC" FontSize="11">
+                                                    <ComboBoxItem Content="魔典相關 (grimoire)" Tag="grimoire"/>
+                                                    <ComboBoxItem Content="指定玩家 (pointing)" Tag="pointing"/>
+                                                    <ComboBoxItem Content="鬼魂投票 (ghost-votes)" Tag="ghost-votes"/>
+                                                    <ComboBoxItem Content="分發角色 (distribute-roles)" Tag="distribute-roles"/>
+                                                    <ComboBoxItem Content="禁用抽取 (bag-disabled)" Tag="bag-disabled"/>
+                                                    <ComboBoxItem Content="可重複 (bag-duplicate)" Tag="bag-duplicate"/>
+                                                    <ComboBoxItem Content="倍數效果 (multiplier)" Tag="multiplier"/>
+                                                    <ComboBoxItem Content="隱藏 (hidden)" Tag="hidden"/>
+                                                    <ComboBoxItem Content="替換角色 (replace-character)" Tag="replace-character"/>
+                                                    <ComboBoxItem Content="玩家能力 (player)" Tag="player"/>
+                                                    <ComboBoxItem Content="卡片提示 (card)" Tag="card"/>
+                                                    <ComboBoxItem Content="睜眼 (open-eyes)" Tag="open-eyes"/>
+                                                </ComboBox>
+                                            </DockPanel>
+                                        </Grid>
+
+                                        <!-- 第二行：Value、Time、Global -->
+                                        <Grid Grid.Row="1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="8"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="8"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <DockPanel Grid.Column="0">
+                                                <TextBlock Text="參數值" Width="50" DockPanel.Dock="Left"
+                                                           VerticalAlignment="Center" FontSize="11"
+                                                           Foreground="#666" Margin="0,0,6,0"/>
+                                                <TextBox Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}"
+                                                         Padding="4,2" BorderBrush="#CCC" BorderThickness="1" FontSize="11"/>
+                                            </DockPanel>
+
+                                            <DockPanel Grid.Column="2">
+                                                <TextBlock Text="階段" Width="40" DockPanel.Dock="Left"
+                                                           VerticalAlignment="Center" FontSize="11"
+                                                           Foreground="#666" Margin="0,0,6,0"/>
+                                                <ComboBox SelectedValue="{Binding Time, UpdateSourceTrigger=PropertyChanged}"
+                                                          SelectedValuePath="Tag" Padding="4,2"
+                                                          BorderBrush="#CCC" FontSize="11">
+                                                    <ComboBoxItem Content="(無)" Tag=""/>
+                                                    <ComboBoxItem Content="遊戲前 (pregame)" Tag="pregame"/>
+                                                    <ComboBoxItem Content="白天 (day)" Tag="day"/>
+                                                    <ComboBoxItem Content="夜晚 (night)" Tag="night"/>
+                                                    <ComboBoxItem Content="首夜 (firstNight)" Tag="firstNight"/>
+                                                    <ComboBoxItem Content="首日 (firstDay)" Tag="firstDay"/>
+                                                    <ComboBoxItem Content="其他夜 (otherNight)" Tag="otherNight"/>
+                                                    <ComboBoxItem Content="其他日 (otherDay)" Tag="otherDay"/>
+                                                </ComboBox>
+                                            </DockPanel>
+
+                                            <DockPanel Grid.Column="4">
+                                                <TextBlock Text="範圍" Width="40" DockPanel.Dock="Left"
+                                                           VerticalAlignment="Center" FontSize="11"
+                                                           Foreground="#666" Margin="0,0,6,0"/>
+                                                <ComboBox SelectedValue="{Binding Global, UpdateSourceTrigger=PropertyChanged}"
+                                                          SelectedValuePath="Tag" Padding="4,2"
+                                                          BorderBrush="#CCC" FontSize="11">
+                                                    <ComboBoxItem Content="(無)" Tag=""/>
+                                                    <ComboBoxItem Content="鎮民 (townsfolk)" Tag="townsfolk"/>
+                                                    <ComboBoxItem Content="外來者 (outsider)" Tag="outsider"/>
+                                                    <ComboBoxItem Content="爪牙 (minion)" Tag="minion"/>
+                                                    <ComboBoxItem Content="惡魔 (demon)" Tag="demon"/>
+                                                    <ComboBoxItem Content="旅行者 (traveller)" Tag="traveller"/>
+                                                    <ComboBoxItem Content="死者 (dead)" Tag="dead"/>
+                                                </ComboBox>
+                                            </DockPanel>
+                                        </Grid>
+                                    </Grid>
+
+                                    <!-- 刪除按鈕 -->
+                                    <Button Grid.Row="0" Grid.Column="1"
+                                            Content="🗑️" Click="DeleteSpecial_Click" Tag="{Binding}"
+                                            VerticalAlignment="Center" Padding="6,4" Width="30" Height="28"
+                                            Background="#FFEBEE" Foreground="#C62828"
+                                            BorderBrush="#E57373" BorderThickness="1" ToolTip="刪除" FontSize="11"/>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                
                 <!-- 備註 -->
                 <DockPanel Margin="0,8,0,0">
                     <TextBlock Text="備註" 
