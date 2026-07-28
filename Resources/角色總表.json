@@ -1225,7 +1225,16 @@
     "flavor": "實驗性角色、死後能力保留、處決、特殊勝利失敗條件、設定調整",
     "edition": "custom",
     "team": "townsfolk",
-    "special": [],
+    "special": [
+      {
+        "type": "selection",
+        "name": "good-duplicate"
+      },
+      {
+        "type": "selection",
+        "name": "evil-duplicate"
+      }
+    ],
     "officialId": "atheist"
   },
   {
@@ -2081,12 +2090,12 @@
     "team": "outsider",
     "special": [
       {
-        "type": "reveal",
-        "name": "replace-character"
-      },
-      {
         "type": "selection",
         "name": "bag-disabled"
+      },
+      {
+        "type": "reveal",
+        "name": "replace-character"
       }
     ],
     "officialId": "drunk"
@@ -2679,8 +2688,8 @@
     "team": "minion",
     "special": [
       {
-        "name": "grimoire",
         "type": "signal",
+        "name": "grimoire",
         "time": "night"
       }
     ],
@@ -2949,9 +2958,8 @@
     "team": "minion",
     "special": [
       {
-        "name": "hidden",
         "type": "vote",
-        "time": "day"
+        "name": "hidden"
       }
     ],
     "officialId": "organgrinder"
@@ -3052,12 +3060,12 @@
     "team": "minion",
     "special": [
       {
-        "type": "reveal",
-        "name": "replace-character"
-      },
-      {
         "type": "selection",
         "name": "bag-disabled"
+      },
+      {
+        "type": "reveal",
+        "name": "replace-character"
       }
     ],
     "officialId": "marionette"
@@ -3079,8 +3087,8 @@
     "team": "minion",
     "special": [
       {
-        "name": "open-eyes",
         "type": "player",
+        "name": "open-eyes",
         "time": "night"
       }
     ],
@@ -3185,8 +3193,8 @@
     "team": "minion",
     "special": [
       {
-        "name": "pointing",
         "type": "ability",
+        "name": "pointing",
         "time": "day"
       }
     ],
@@ -3799,8 +3807,12 @@
       {
         "type": "ability",
         "name": "pointing",
-        "global": "minion",
-        "time": "night"
+        "time": "night",
+        "global": "minion"
+      },
+      {
+        "type": "selection",
+        "name": "bag-disabled"
       }
     ],
     "officialId": "lilmonsta"
@@ -4164,7 +4176,13 @@
     "flavor": "任意遊戲、特殊勝利失敗條件、限次能力",
     "edition": "custom",
     "team": "fabled",
-    "special": [],
+    "special": [
+      {
+        "name": "pointing",
+        "type": "ability",
+        "time": "day"
+      }
+    ],
     "officialId": "fiddler"
   },
   {
@@ -4299,7 +4317,13 @@
     "flavor": "實驗性角色",
     "edition": "custom",
     "team": "fabled",
-    "special": [],
+    "special": [
+      {
+        "name": "ghost-votes",
+        "type": "ability",
+        "time": "day"
+      }
+    ],
     "officialId": "ferryman"
   },
   {
@@ -4413,7 +4437,16 @@
     "flavor": "奇遇角色、設置調整",
     "edition": "custom",
     "team": "loric",
-    "special": [],
+    "special": [
+      {
+        "type": "selection",
+        "name": "good-duplicate"
+      },
+      {
+        "type": "selection",
+        "name": "evil-duplicate"
+      }
+    ],
     "officialId": "pope"
   },
   {
@@ -4431,7 +4464,17 @@
     "flavor": "奇遇角色、投票",
     "edition": "custom",
     "team": "loric",
-    "special": [],
+    "special": [
+      {
+        "type": "vote",
+        "name": "multiplier",
+        "value": 2
+      },
+      {
+        "type": "reminder",
+        "name": "public"
+      }
+    ],
     "officialId": "godofug"
   },
   {
@@ -4543,7 +4586,13 @@
     "flavor": "奇遇角色",
     "edition": "custom",
     "team": "loric",
-    "special": [],
+    "special": [
+      {
+        "name": "distribute-roles",
+        "type": "ability",
+        "time": "pregame"
+      }
+    ],
     "officialId": "gardener"
   },
   {
@@ -4565,9 +4614,9 @@
     "team": "traveler",
     "special": [
       {
-        "name": "multiplier",
         "type": "vote",
-        "value": "3"
+        "name": "multiplier",
+        "value": 3
       }
     ],
     "officialId": "bureaucrat"
@@ -4627,9 +4676,9 @@
     "team": "traveler",
     "special": [
       {
-        "name": "multiplier",
         "type": "vote",
-        "value": "-1"
+        "name": "multiplier",
+        "value": -1
       }
     ],
     "officialId": "thief"
@@ -4725,7 +4774,13 @@
     "flavor": "黯月初升、獲得能力、進場能力",
     "edition": "custom",
     "team": "traveler",
-    "special": [],
+    "special": [
+      {
+        "type": "signal",
+        "name": "grimoire",
+        "time": "night"
+      }
+    ],
     "officialId": "apprentice"
   },
   {

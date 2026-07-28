@@ -440,6 +440,7 @@
                                                     <ComboBoxItem Content="投票時 (vote)" Tag="vote"/>
                                                     <ComboBoxItem Content="遊戲結束前 (reveal)" Tag="reveal"/>
                                                     <ComboBoxItem Content="玩家主動觸發 (player)" Tag="player"/>
+                                                    <ComboBoxItem Content="標記 (reminder)" Tag="reminder"/>
                                                 </ComboBox>
                                             </DockPanel>
 
@@ -462,6 +463,7 @@
                                                     <ComboBoxItem Content="玩家能力 (player)" Tag="player"/>
                                                     <ComboBoxItem Content="卡片提示 (card)" Tag="card"/>
                                                     <ComboBoxItem Content="睜眼 (open-eyes)" Tag="open-eyes"/>
+                                                    <ComboBoxItem Content="公開 (public)" Tag="public"/>
                                                 </ComboBox>
                                             </DockPanel>
                                         </Grid>

@@ -228,7 +228,7 @@ namespace BloodClockTowerScriptEditor
         {
             MessageBox.Show(
                 "Blood on the Clocktower 劇本編輯器\n\n" +
-                "版本: 0.0.11 \n",
+                "版本: 0.0.12 \n",
                 "關於",
                 MessageBoxButton.OK,
                 MessageBoxImage.Information
