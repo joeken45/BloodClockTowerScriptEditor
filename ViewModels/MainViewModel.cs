@@ -549,22 +549,28 @@ namespace BloodClockTowerScriptEditor.ViewModels
                                     }
                                 }
 
-                                // ✅ 步驟 2: 建立集石格式角色
-                                //var jinxRole = new Role
-                                //{
-                                //    Id = rule.Id,
-                                //    Name = rule.Name,
-                                //    Team = TeamType.Jinxed,
-                                //    Ability = rule.Ability ?? ""
-                                //};
-
-                                //if (role1 != null)
-                                //{
-                                //    jinxRole.Image = role1.Image;
-                                //}
-
-                                //CurrentScript.Roles.Add(jinxRole);
-                                //System.Diagnostics.Debug.WriteLine($"✅ 加入相剋規則: {jinxRole.Name}");
+                                // ✅ 步驟 2: 先建立集石格式角色，保留 & 順序
+                                if (role1 != null && role2 != null)
+                                {
+                                    string jinxId = $"{item.Role1Id}_{item.Role2Id}_meta";
+                                    string jinxName = $"{item.Role1Name}&{item.Role2Name}";
+                                    bool alreadyExists = CurrentScript.Roles.Any(r =>
+                                        r.Team == TeamType.Jinxed &&
+                                        (r.Name == jinxName || r.Name == $"{item.Role2Name}&{item.Role1Name}"));
+                                    if (!alreadyExists)
+                                    {
+                                        var jinxRole = new Role
+                                        {
+                                            Id = jinxId,
+                                            Name = jinxName,
+                                            Team = TeamType.Jinxed,
+                                            Ability = rule.Ability ?? "",
+                                            Image = role1.Image
+                                        };
+                                        CurrentScript.Roles.Add(jinxRole);
+                                        System.Diagnostics.Debug.WriteLine($"✅ 加入集石相剋規則: {jinxName}");
+                                    }
+                                }
                             }
                         }
 

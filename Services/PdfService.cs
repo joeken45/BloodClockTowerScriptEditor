@@ -96,7 +96,7 @@ namespace BloodClockTowerScriptEditor.Services
                         col.Item().Row(mainRow =>
                         {
                             // 左：首個夜晚（只顯示圖示）
-                            mainRow.ConstantItem(30).Column(nightCol =>
+                            mainRow.ConstantItem(26).Column(nightCol =>
                             {
                                 nightCol.Item().Text("首夜").Bold().FontSize(7)
                                     .FontColor(ColorHeader);
@@ -111,23 +111,23 @@ namespace BloodClockTowerScriptEditor.Services
                                 }
                             });
 
-                            mainRow.ConstantItem(6);
+                            mainRow.ConstantItem(4);
 
                             // 中：角色列表
                             mainRow.RelativeItem().Column(rolesCol =>
                             {
-                                RenderTeamSection(rolesCol, "善良陣營・鎮民", townsfolk, ColorTownsfolk);
-                                RenderTeamSection(rolesCol, "善良陣營・外來者", outsiders, ColorOutsider);
-                                RenderTeamSection(rolesCol, "邪惡陣營・爪牙", minions, ColorMinion);
-                                RenderTeamSection(rolesCol, "邪惡陣營・惡魔", demons, ColorDemon);
+                                RenderTeamSection(rolesCol, "善良陣營・鎮民", townsfolk, ColorTownsfolk, script);
+                                RenderTeamSection(rolesCol, "善良陣營・外來者", outsiders, ColorOutsider, script);
+                                RenderTeamSection(rolesCol, "邪惡陣營・爪牙", minions, ColorMinion, script);
+                                RenderTeamSection(rolesCol, "邪惡陣營・惡魔", demons, ColorDemon, script);
 
                                 RenderBottomSection(rolesCol, fabled, loric, script.Meta.Status);
                             });
 
-                            mainRow.ConstantItem(6);
+                            mainRow.ConstantItem(4);
 
                             // 右：其他夜晚（只顯示圖示）
-                            mainRow.ConstantItem(30).Column(nightCol =>
+                            mainRow.ConstantItem(26).Column(nightCol =>
                             {
                                 nightCol.Item().Text("其他夜").Bold().FontSize(7)
                                     .FontColor(ColorHeader);
@@ -155,35 +155,64 @@ namespace BloodClockTowerScriptEditor.Services
         }
 
         private void RenderTeamSection(ColumnDescriptor col, string header,
-            List<Role> roles, string color)
+            List<Role> roles, string color, Script script)
         {
             if (roles.Count == 0) return;
 
             col.Item().PaddingTop(4).Text(header).Bold().FontSize(7.5f).FontColor(color);
             col.Item().PaddingBottom(2).LineHorizontal(0.5f).LineColor(color);
 
-            col.Item().Table(table =>
+            // 左欄先排完再排右欄
+            int leftCount = (roles.Count + 1) / 2;
+            var leftRoles = roles.Take(leftCount).ToList();
+            var rightRoles = roles.Skip(leftCount).ToList();
+
+            col.Item().Row(twoCol =>
             {
-                table.ColumnsDefinition(c =>
+                // 左欄
+                twoCol.RelativeItem().Column(leftCol =>
                 {
-                    c.RelativeColumn();
-                    c.RelativeColumn();
+                    foreach (var role in leftRoles)
+                        RenderRoleCell(leftCol, role, color, script);
                 });
 
-                for (int i = 0; i < roles.Count; i++)
+                twoCol.ConstantItem(4);
+
+                // 右欄
+                twoCol.RelativeItem().Column(rightCol =>
                 {
-                    var role = roles[i];
-                    table.Cell().Row((uint)(i / 2 + 1)).Column((uint)(i % 2 + 1))
-                        .PaddingBottom(3).Row(r =>
-                        {
-                            RenderRoleIcon(r, role.ImageUrl, 22);
-                            r.RelativeItem().PaddingLeft(3).Column(rc =>
-                            {
-                                rc.Item().Text(role.Name ?? "").Bold().FontSize(7).FontColor(color);
-                                rc.Item().Text(role.Ability ?? "").FontSize(6).FontColor("#333333");
-                            });
-                        });
-                }
+                    foreach (var role in rightRoles)
+                        RenderRoleCell(rightCol, role, color, script);
+                });
+            });
+        }
+
+        private void RenderRoleCell(ColumnDescriptor col, Role role, string color, Script script)
+        {
+            col.Item().PaddingBottom(3).Row(r =>
+            {
+                RenderRoleIcon(r, role.ImageUrl, 22);
+                r.RelativeItem().PaddingLeft(3).Column(rc =>
+                {
+                    rc.Item().Text(role.Name ?? "").Bold().FontSize(7.5f).FontColor(color);
+                    rc.Item().Text(role.Ability ?? "").FontSize(6.5f).FontColor("#333333");
+
+                    var jinxedRules = script.Roles
+                        .Where(r2 => r2.Team == TeamType.Jinxed &&
+                                     r2.Name.StartsWith(role.Name + "&") &&
+                                     !string.IsNullOrWhiteSpace(r2.Ability))
+                        .ToList();
+
+                    foreach (var jinxedRule in jinxedRules)
+                    {
+                        var targetName = jinxedRule.Name.Substring(role.Name.Length + 1);
+                        rc.Item().PaddingTop(2f)
+                            .Background("#E0E0E0")
+                            .PaddingHorizontal(3f).PaddingVertical(2f)
+                            .Text($"⚠ {targetName}：{jinxedRule.Ability}")
+                            .FontSize(6f).FontColor("#555555").Italic();
+                    }
+                });
             });
         }
 

@@ -18,26 +18,39 @@ namespace BloodClockTowerScriptEditor.ViewModels
         /// </summary>
         public static void SyncFromAllBotcJinxes(Script script)
         {
-            // 1. 收集所有相剋關係（從每個角色的 Jinxes）
-            var jinxPairs = new HashSet<(string id1, string name1, string id2, string name2, string reason)>();
+            // 1. 收集所有相剋關係
+            // 優先從現有集石規則讀取順序（保留 & 順序），再補充 BOTC Jinxes 新增的
+            var jinxPairs = new List<(string id1, string name1, string id2, string name2, string reason)>();
+            var processedPairs = new HashSet<string>();
 
+            // 1a. 先從現有集石規則讀取，保留 & 順序
+            foreach (var jinxedRole in script.Roles.Where(r => r.Team == TeamType.Jinxed))
+            {
+                var parts = jinxedRole.Name.Split('&');
+                if (parts.Length != 2) continue;
+                string name1 = parts[0].Trim();
+                string name2 = parts[1].Trim();
+                var role1 = script.Roles.FirstOrDefault(r => r.Name == name1 && r.Team != TeamType.Jinxed);
+                var role2 = script.Roles.FirstOrDefault(r => r.Name == name2 && r.Team != TeamType.Jinxed);
+                if (role1 == null || role2 == null) continue;
+                string pairKey = $"{role1.Id}|{role2.Id}";
+                if (processedPairs.Contains(pairKey) || processedPairs.Contains($"{role2.Id}|{role1.Id}")) continue;
+                processedPairs.Add(pairKey);
+                jinxPairs.Add((role1.Id, role1.Name, role2.Id, role2.Name, jinxedRole.Ability));
+            }
+
+            // 1b. 再從 BOTC Jinxes 補充新增的（集石規則裡還沒有的）
             foreach (var role in script.Roles.Where(r => r.Team != TeamType.Jinxed))
             {
-                if (role.Jinxes == null || role.Jinxes.Count == 0)
-                    continue;
-
+                if (role.Jinxes == null || role.Jinxes.Count == 0) continue;
                 foreach (var jinx in role.Jinxes)
                 {
-                    // 找到目標角色
                     var targetRole = script.Roles.FirstOrDefault(r => r.Id == jinx.Id && r.Team != TeamType.Jinxed);
                     if (targetRole == null) continue;
-
-                    // 確保順序一致（字母排序，避免重複）
-                    var (id1, name1, id2, name2) = string.Compare(role.Id, targetRole.Id, StringComparison.Ordinal) < 0
-                        ? (role.Id, role.Name, targetRole.Id, targetRole.Name)
-                        : (targetRole.Id, targetRole.Name, role.Id, role.Name);
-
-                    jinxPairs.Add((id1, name1, id2, name2, jinx.Reason));
+                    string pairKey = $"{role.Id}|{targetRole.Id}";
+                    if (processedPairs.Contains(pairKey) || processedPairs.Contains($"{targetRole.Id}|{role.Id}")) continue;
+                    processedPairs.Add(pairKey);
+                    jinxPairs.Add((role.Id, role.Name, targetRole.Id, targetRole.Name, jinx.Reason));
                 }
             }
 
@@ -48,7 +61,9 @@ namespace BloodClockTowerScriptEditor.ViewModels
             var validJinxIds = new HashSet<string>();
             foreach (var (id1, name1, id2, name2, reason) in jinxPairs)
             {
+                // 兩個方向都加入，避免找不到舊有規則
                 validJinxIds.Add($"{id1}_{id2}_meta");
+                validJinxIds.Add($"{id2}_{id1}_meta");
             }
 
             foreach (var role in existingJinxedRoles)
@@ -86,7 +101,7 @@ namespace BloodClockTowerScriptEditor.ViewModels
                         Name = jinxName,
                         Team = TeamType.Jinxed,
                         Ability = reason,
-                        Image = targetRole == null ? []: targetRole.Image
+                        Image = targetRole == null ? [] : targetRole.Image
                     };
                     script.Roles.Add(newJinxRole);
                     System.Diagnostics.Debug.WriteLine($"✅ 加入集石相剋規則: {jinxName}");
