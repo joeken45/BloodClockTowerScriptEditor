@@ -206,11 +206,18 @@ namespace BloodClockTowerScriptEditor.Services
                     foreach (var jinxedRule in jinxedRules)
                     {
                         var targetName = jinxedRule.Name.Substring(role.Name.Length + 1);
+                        var targetRole = script.Roles.FirstOrDefault(r2 =>
+                            r2.Name == targetName && r2.Team != TeamType.Jinxed);
                         rc.Item().PaddingTop(2f)
                             .Background("#E0E0E0")
                             .PaddingHorizontal(3f).PaddingVertical(2f)
-                            .Text($"⚠ {targetName}：{jinxedRule.Ability}")
-                            .FontSize(6f).FontColor("#555555").Italic();
+                            .Row(jr =>
+                            {
+                                RenderRoleIcon(jr, targetRole?.ImageUrl, 12);
+                                jr.RelativeItem().PaddingLeft(2f)
+                                    .Text($"{targetName}：{jinxedRule.Ability}")
+                                    .FontSize(6f).FontColor("#555555").Italic();
+                            });
                     }
                 });
             });
