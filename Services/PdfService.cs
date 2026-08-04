@@ -96,17 +96,18 @@ namespace BloodClockTowerScriptEditor.Services
                         col.Item().Row(mainRow =>
                         {
                             // 左：首個夜晚（只顯示圖示）
-                            mainRow.ConstantItem(26).Column(nightCol =>
+                            mainRow.ConstantItem(24).Column(nightCol =>
                             {
-                                nightCol.Item().Text("首夜").Bold().FontSize(7)
+                                nightCol.Item().Height(90f).Svg(_ => "<svg/>");
+                                nightCol.Item().Text("首個\n夜晩").Bold().FontSize(7)
                                     .FontColor(ColorHeader);
-                                nightCol.Item().PaddingBottom(3).LineHorizontal(0.5f).LineColor("#aaaaaa");
+                                nightCol.Item().PaddingTop(2).PaddingBottom(3).LineHorizontal(0.5f).LineColor("#aaaaaa");
 
                                 foreach (var role in firstNightRoles)
                                 {
                                     nightCol.Item().PaddingBottom(2).Row(r =>
                                     {
-                                        RenderRoleIcon(r, role.ImageUrl, 22);
+                                        RenderRoleIcon(r, role.ImageUrl, 18);
                                     });
                                 }
                             });
@@ -127,17 +128,18 @@ namespace BloodClockTowerScriptEditor.Services
                             mainRow.ConstantItem(4);
 
                             // 右：其他夜晚（只顯示圖示）
-                            mainRow.ConstantItem(26).Column(nightCol =>
+                            mainRow.ConstantItem(24).Column(nightCol =>
                             {
-                                nightCol.Item().Text("其他夜").Bold().FontSize(7)
+                                nightCol.Item().Height(90f).Svg(_ => "<svg/>");
+                                nightCol.Item().Text("其他\n夜晩").Bold().FontSize(7)
                                     .FontColor(ColorHeader);
-                                nightCol.Item().PaddingBottom(3).LineHorizontal(0.5f).LineColor("#aaaaaa");
+                                nightCol.Item().PaddingTop(2).PaddingBottom(3).LineHorizontal(0.5f).LineColor("#aaaaaa");
 
                                 foreach (var role in otherNightRoles)
                                 {
                                     nightCol.Item().PaddingBottom(2).Row(r =>
                                     {
-                                        RenderRoleIcon(r, role.ImageUrl, 22);
+                                        RenderRoleIcon(r, role.ImageUrl, 18);
                                     });
                                 }
                             });
@@ -159,7 +161,7 @@ namespace BloodClockTowerScriptEditor.Services
         {
             if (roles.Count == 0) return;
 
-            col.Item().PaddingTop(4).Text(header).Bold().FontSize(7.5f).FontColor(color);
+            col.Item().PaddingTop(4).Text(header).Bold().FontSize(12f).FontColor(color);
             col.Item().PaddingBottom(2).LineHorizontal(0.5f).LineColor(color);
 
             // 左欄先排完再排右欄
@@ -189,13 +191,13 @@ namespace BloodClockTowerScriptEditor.Services
 
         private void RenderRoleCell(ColumnDescriptor col, Role role, string color, Script script)
         {
-            col.Item().PaddingBottom(3).Row(r =>
+            col.Item().PaddingBottom(5).Row(r =>
             {
-                RenderRoleIcon(r, role.ImageUrl, 22);
+                RenderRoleIcon(r, role.ImageUrl, 33);
                 r.RelativeItem().PaddingLeft(3).Column(rc =>
                 {
-                    rc.Item().Text(role.Name ?? "").Bold().FontSize(7.5f).FontColor(color);
-                    rc.Item().Text(role.Ability ?? "").FontSize(6.5f).FontColor("#333333");
+                    rc.Item().Text(role.Name ?? "").Bold().FontSize(10f).FontColor(color);
+                    rc.Item().Text(role.Ability ?? "").FontSize(8f).FontColor("#333333");
 
                     var jinxedRules = script.Roles
                         .Where(r2 => r2.Team == TeamType.Jinxed &&
@@ -213,10 +215,10 @@ namespace BloodClockTowerScriptEditor.Services
                             .PaddingHorizontal(3f).PaddingVertical(2f)
                             .Row(jr =>
                             {
-                                RenderRoleIcon(jr, targetRole?.ImageUrl, 12);
+                                RenderRoleIcon(jr, targetRole?.ImageUrl, 14);
                                 jr.RelativeItem().PaddingLeft(2f)
                                     .Text($"{targetName}：{jinxedRule.Ability}")
-                                    .FontSize(6f).FontColor("#555555").Italic();
+                                    .FontSize(6.5f).FontColor("#555555").Italic();
                             });
                     }
                 });

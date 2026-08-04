@@ -1,4 +1,4 @@
-![版本](https://img.shields.io/badge/version-0.0.12-blue)
+![版本](https://img.shields.io/badge/version-0.0.13-blue)
 ![平台](https://img.shields.io/badge/platform-Windows-lightgrey)
 ![授權](https://img.shields.io/badge/license-MIT-green)
 
@@ -8,7 +8,7 @@
 
 前往 [Releases 頁面](https://github.com/joeken45/BloodClockTowerScriptEditor/releases) 下載最新版本。
 
-**最新版本：** [v0.0.12](https://github.com/joeken45/BloodClockTowerScriptEditor/releases/tag/v0.0.12)
+**最新版本：** [v0.0.13](https://github.com/joeken45/BloodClockTowerScriptEditor/releases/tag/v0.0.13)
 
 ## ✨ 功能特色
 
@@ -126,6 +126,11 @@
 ### v0.0.12 (2026-07-28)
 - 特殊能力選項 標記 (reminder)、公開 (public)
 - 角色總表.json 特殊能力更新
+
+### v0.0.13 (2026-08-04)
+- PDF輸出相剋規則
+- 相剋規則的角色1順序修正
+- PDF輸出排版優化
 
 完整更新日誌請參考 [CHANGELOG.md](CHANGELOG.md)
 

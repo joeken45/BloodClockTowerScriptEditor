@@ -38,7 +38,7 @@ namespace BloodClockTowerScriptEditor
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             await InitializeDefaultRolesAsync();
-            await InitializeJinxRulesAsync();  
+            await InitializeJinxRulesAsync();
 
             // 🆕 為初始空白劇本加入爪牙/惡魔訊息
             if (DataContext is MainViewModel viewModel)
@@ -185,22 +185,36 @@ namespace BloodClockTowerScriptEditor
             var vm = DataContext as MainViewModel;
             if (vm?.CurrentScript == null) return;
 
+            var loadingPanel = new System.Windows.Controls.StackPanel
+            {
+                Margin = new Thickness(20),
+                VerticalAlignment = VerticalAlignment.Center
+            };
+            loadingPanel.Children.Add(new System.Windows.Controls.TextBlock
+            {
+                Text = "⏳ PDF 輸出中，請稍候...",
+                FontSize = 14,
+                FontFamily = new System.Windows.Media.FontFamily("Microsoft JhengHei"),
+                HorizontalAlignment = HorizontalAlignment.Center,
+                Margin = new Thickness(0, 0, 0, 12)
+            });
+            loadingPanel.Children.Add(new System.Windows.Controls.ProgressBar
+            {
+                IsIndeterminate = true,
+                Height = 8,
+                Width = 220
+            });
+
             var loadingWindow = new Window
             {
                 Title = "輸出中",
-                Width = 280,
-                Height = 100,
+                Width = 300,
+                Height = 130,
                 WindowStartupLocation = WindowStartupLocation.CenterOwner,
                 Owner = this,
                 ResizeMode = ResizeMode.NoResize,
-                WindowStyle = WindowStyle.None,
-                Content = new System.Windows.Controls.TextBlock
-                {
-                    Text = "⏳ PDF 輸出中，請稍候...",
-                    HorizontalAlignment = HorizontalAlignment.Center,
-                    VerticalAlignment = VerticalAlignment.Center,
-                    FontSize = 14
-                }
+                WindowStyle = WindowStyle.SingleBorderWindow,
+                Content = loadingPanel
             };
 
             loadingWindow.Show();
@@ -228,7 +242,7 @@ namespace BloodClockTowerScriptEditor
         {
             MessageBox.Show(
                 "Blood on the Clocktower 劇本編輯器\n\n" +
-                "版本: 0.0.12 \n",
+                "版本: 0.0.13 \n",
                 "關於",
                 MessageBoxButton.OK,
                 MessageBoxImage.Information
