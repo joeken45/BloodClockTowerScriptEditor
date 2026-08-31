@@ -207,7 +207,7 @@ namespace BloodClockTowerScriptEditor.Services
 
                     foreach (var jinxedRule in jinxedRules)
                     {
-                        var targetName = jinxedRule.Name.Substring(role.Name.Length + 1);
+                        var targetName = jinxedRule.Name[(role.Name!.Length + 1)..];
                         var targetRole = script.Roles.FirstOrDefault(r2 =>
                             r2.Name == targetName && r2.Team != TeamType.Jinxed);
                         rc.Item().PaddingTop(2f)

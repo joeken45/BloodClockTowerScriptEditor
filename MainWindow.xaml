@@ -958,7 +958,23 @@
                         <StackPanel x:Name="NormalRoleEditor" 
                              Margin="20">
                             <!-- 標題 -->
-                            <TextBlock Text="角色編輯" FontSize="20" FontWeight="Bold" Margin="0,0,0,8"/>
+                            <Grid Margin="0,0,0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="角色編輯" FontSize="20" FontWeight="Bold" VerticalAlignment="Center"/>
+                                <Button Grid.Column="1"
+                                    Content="💾 存入自創資料庫"
+                                    Click="SaveRoleToDatabase_Click"
+                                    Padding="8,4"
+                                    Background="#4A90E2"
+                                    Foreground="White"
+                                    BorderThickness="0"
+                                    FontSize="12"
+                                    VerticalAlignment="Center"
+                                    Cursor="Hand"/>
+                            </Grid>
                             <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Margin="0,0,0,12"/>
 
                             <!-- 角色名稱 + 角色類型 左右並排 -->

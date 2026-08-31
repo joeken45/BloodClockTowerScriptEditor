@@ -1,9 +1,12 @@
-﻿using BloodClockTowerScriptEditor.Models;
+﻿using BloodClockTowerScriptEditor.Data;
+using BloodClockTowerScriptEditor.Models;
 using BloodClockTowerScriptEditor.Services;
 using BloodClockTowerScriptEditor.ViewModels;
 using Microsoft.Win32;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
@@ -242,7 +245,7 @@ namespace BloodClockTowerScriptEditor
         {
             MessageBox.Show(
                 "Blood on the Clocktower 劇本編輯器\n\n" +
-                "版本: 0.0.13 \n",
+                "版本: 0.0.14 \n",
                 "關於",
                 MessageBoxButton.OK,
                 MessageBoxImage.Information
@@ -405,6 +408,68 @@ namespace BloodClockTowerScriptEditor
         private double _autoScrollDirection = 0;
         private const double AutoScrollThreshold = 40; // 距離邊緣多少像素開始捲動
         private const double AutoScrollSpeed = 5;      // 每次捲動的像素數
+
+        /// <summary>
+        /// 將目前選擇的角色存入自創角色資料庫
+        /// </summary>
+        private async void SaveRoleToDatabase_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is not MainViewModel vm || vm.SelectedRole is not Role role)
+                return;
+
+            using var context = new RoleTemplateContext();
+            var existing = await context.RoleTemplates
+                .Include(r => r.Reminders)
+                .FirstOrDefaultAsync(r => r.Id == role.Id);
+
+            if (existing != null)
+            {
+                // 有重複 ID → 開啟新增模式（預填資料，ID 可修改）
+                MessageBox.Show(
+                    $"資料庫中已有相同 ID「{role.Id}」的角色，請修改 ID 後再儲存。",
+                    "ID 重複", MessageBoxButton.OK, MessageBoxImage.Warning);
+
+                var dialog = new Views.CreateCustomRoleDialog(role) { Owner = this };
+                dialog.ShowDialog();
+            }
+            else
+            {
+                // 無重複 → 直接存入
+                var template = new RoleTemplate
+                {
+                    Id = role.Id,
+                    Name = role.Name,
+                    Team = role.Team.ToString().ToLower(),
+                    Ability = role.Ability,
+                    Image = role.Image.Count > 0 ? role.Image[0] : null,
+                    Edition = role.Edition ?? "custom",
+                    Flavor = role.Flavor,
+                    Setup = role.Setup,
+                    FirstNight = role.FirstNight,
+                    OtherNight = role.OtherNight,
+                    FirstNightReminder = role.FirstNightReminder,
+                    OtherNightReminder = role.OtherNightReminder,
+                    IsOfficial = false,
+                    OfficialId = role.OfficialId,
+                    SpecialJson = role.Special != null
+                        ? Newtonsoft.Json.JsonConvert.SerializeObject(role.Special)
+                        : null,
+                    CreatedDate = DateTime.Now,
+                    UpdatedDate = DateTime.Now,
+                };
+
+                foreach (var r in role.Reminders)
+                    template.Reminders.Add(new RoleReminder { RoleId = role.Id, ReminderText = r.Text, IsGlobal = false });
+                foreach (var r in role.RemindersGlobal)
+                    template.Reminders.Add(new RoleReminder { RoleId = role.Id, ReminderText = r.Text, IsGlobal = true });
+
+                context.RoleTemplates.Add(template);
+                await context.SaveChangesAsync();
+
+                MessageBox.Show($"已將「{role.Name}」存入自創資料庫！",
+                    "儲存成功", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
 
         // ==================== 圖片管理方法 ====================
 

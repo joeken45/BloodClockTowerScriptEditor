@@ -39,6 +39,52 @@ namespace BloodClockTowerScriptEditor.Views
         }
 
         /// <summary>
+        /// 從現有 Role 預填資料的新增模式（ID 可修改）
+        /// </summary>
+        public CreateCustomRoleDialog(Role roleToImport)
+        {
+            InitializeComponent();
+            Title = "新增自訂角色";
+            _editingRole = null; // 新增模式
+
+            remindersList.ItemsSource = _reminders;
+            globalRemindersList.ItemsSource = _remindersGlobal;
+            specialItemsControl.ItemsSource = _specials;
+
+            // 預填資料，但 ID 欄位保持可編輯
+            txtId.Text = roleToImport.Id;
+            txtName.Text = roleToImport.Name;
+            txtImage.Text = roleToImport.Image.Count > 0 ? roleToImport.Image[0] : "";
+            txtAbility.Text = roleToImport.Ability ?? "";
+            txtEdition.Text = roleToImport.Edition ?? "custom";
+            txtFirstNight.Text = roleToImport.FirstNight.ToString();
+            txtOtherNight.Text = roleToImport.OtherNight.ToString();
+            txtFirstNightReminder.Text = roleToImport.FirstNightReminder ?? "";
+            txtOtherNightReminder.Text = roleToImport.OtherNightReminder ?? "";
+            txtFlavor.Text = roleToImport.Flavor ?? "";
+            chkSetup.IsChecked = roleToImport.Setup;
+
+            string teamLower = roleToImport.Team.ToString().ToLower();
+            foreach (ComboBoxItem item in cmbTeam.Items)
+            {
+                if (item.Tag?.ToString() == teamLower)
+                {
+                    cmbTeam.SelectedItem = item;
+                    break;
+                }
+            }
+
+            foreach (var r in roleToImport.Reminders)
+                _reminders.Add(new ReminderItem(r.Text));
+            foreach (var r in roleToImport.RemindersGlobal)
+                _remindersGlobal.Add(new ReminderItem(r.Text));
+
+            if (roleToImport.Special != null)
+                foreach (var s in roleToImport.Special)
+                    _specials.Add(s);
+        }
+
+        /// <summary>
         /// 編輯模式
         /// </summary>
         public CreateCustomRoleDialog(RoleTemplate roleToEdit)
