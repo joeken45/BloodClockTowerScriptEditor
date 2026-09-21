@@ -82,6 +82,7 @@ namespace BloodClockTowerScriptEditor.Views
                 _allRoles = [.. roles
                     .OrderBy(r => r.IsOfficial ? 0 : 1)
                     .ThenBy(r => GetTeamOrder(r.Team))
+                    .ThenBy(r => GetSourceOrder(r.RoleSource))
                     .ThenBy(r => r.OriginalOrder)
                     .ThenBy(r => r.CreatedDate)];
 
@@ -99,6 +100,17 @@ namespace BloodClockTowerScriptEditor.Views
                 throw new Exception($"載入角色失敗: {ex.Message}", ex);
             }
         }
+        private static int GetSourceOrder(string? source)
+        {
+            return source?.ToLower() switch
+            {
+                "official" => 0,
+                "chinese" => 1,
+                "odyssey" => 2,
+                _ => 3   // custom
+            };
+        }
+
         private static int GetTeamOrder(string team)
         {
             return team?.ToLower() switch
@@ -109,8 +121,8 @@ namespace BloodClockTowerScriptEditor.Views
                 "demon" => 3,
                 "traveler" => 4,
                 "fabled" => 5,
-                "loric" => 6,    
-                _ => 7           
+                "loric" => 6,
+                _ => 7
             };
         }
 
@@ -134,11 +146,15 @@ namespace BloodClockTowerScriptEditor.Views
                 bool showLoric = chkLoric?.IsChecked ?? true;
 
                 // 來源篩選
-                bool? showOfficial = null;
+                string? filterSource = null;
                 if (rbOfficial?.IsChecked == true)
-                    showOfficial = true;
+                    filterSource = "official";
+                else if (rbChinese?.IsChecked == true)
+                    filterSource = "chinese";
+                else if (rbOdyssey?.IsChecked == true)
+                    filterSource = "odyssey";
                 else if (rbCustom?.IsChecked == true)
-                    showOfficial = false;
+                    filterSource = "custom";
 
                 string searchText = txtSearch?.Text?.ToLower()?.Trim() ?? "";
 
@@ -146,8 +162,17 @@ namespace BloodClockTowerScriptEditor.Views
                 _filteredRoles = [.. _allRoles.Where(r =>
                 {
                     // 來源篩選
-                    if (showOfficial.HasValue && r.IsOfficial != showOfficial.Value)
-                        return false;
+                    if (filterSource != null)
+                    {
+                        if (filterSource == "custom")
+                        {
+                            if (r.IsOfficial) return false;
+                        }
+                        else
+                        {
+                            if (r.RoleSource != filterSource) return false;
+                        }
+                    }
 
                     // 類型篩選
                     bool teamMatch = r.Team?.ToLower() switch

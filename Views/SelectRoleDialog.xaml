@@ -79,6 +79,10 @@
                                  Checked="Source_Changed" Margin="0,0,15,0" GroupName="Source"/>
                     <RadioButton x:Name="rbOfficial" Content="官方角色" 
                                  Checked="Source_Changed" Margin="0,0,15,0" GroupName="Source"/>
+                    <RadioButton x:Name="rbChinese" Content="國風角色" 
+                                 Checked="Source_Changed" Margin="0,0,15,0" GroupName="Source"/>
+                    <RadioButton x:Name="rbOdyssey" Content="奧德賽角色" 
+                                 Checked="Source_Changed" Margin="0,0,15,0" GroupName="Source"/>
                     <RadioButton x:Name="rbCustom" Content="自訂角色" 
                                  Checked="Source_Changed" GroupName="Source"/>
                 </StackPanel>
@@ -92,79 +96,79 @@
          SelectionMode="Multiple"
          ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <ListBox.ItemContainerStyle>
-                        <Style TargetType="ListBoxItem">
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                            <Setter Property="Padding" Value="0"/>
-                            <Setter Property="Margin" Value="0"/>
-                        </Style>
-                    </ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        <Setter Property="Padding" Value="0"/>
+                        <Setter Property="Margin" Value="0"/>
+                    </Style>
+                </ListBox.ItemContainerStyle>
 
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
                         <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Padding="10,8"
                                 MouseLeftButtonUp="RoleItem_MouseLeftButtonUp"
                                 Background="Transparent">
                             <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <!-- Checkbox -->
-                                        <ColumnDefinition Width="4"/>
-                                        <!-- 色塊 -->
-                                        <ColumnDefinition Width="10"/>
-                                        <!-- 間距 -->
-                                        <ColumnDefinition Width="120"/>
-                                        <!-- 名稱 -->
-                                        <ColumnDefinition Width="*"/>
-                                        <!-- 能力描述 -->
-                                        <ColumnDefinition Width="80"/>
-                                        <!-- 類型標籤 -->
-                                        <ColumnDefinition Width="Auto"/>
-                                        <!-- 操作按鈕 -->
-                                    </Grid.ColumnDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <!-- Checkbox -->
+                                    <ColumnDefinition Width="4"/>
+                                    <!-- 色塊 -->
+                                    <ColumnDefinition Width="10"/>
+                                    <!-- 間距 -->
+                                    <ColumnDefinition Width="120"/>
+                                    <!-- 名稱 -->
+                                    <ColumnDefinition Width="*"/>
+                                    <!-- 能力描述 -->
+                                    <ColumnDefinition Width="80"/>
+                                    <!-- 類型標籤 -->
+                                    <ColumnDefinition Width="Auto"/>
+                                    <!-- 操作按鈕 -->
+                                </Grid.ColumnDefinitions>
 
-                                    <!-- CheckBox -->
-                                    <CheckBox Grid.Column="0" 
+                                <!-- CheckBox -->
+                                <CheckBox Grid.Column="0" 
                                               IsChecked="{Binding IsSelected}"
                                               VerticalAlignment="Center"
                                               Margin="0,0,10,0"/>
 
-                                    <!-- 陣營色塊 -->
-                                    <Border Grid.Column="1" Width="4" Height="30" VerticalAlignment="Center">
-                                        <Border.Style>
-                                            <Style TargetType="Border">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Team}" Value="townsfolk">
-                                                        <Setter Property="Background" Value="{StaticResource TownsfolkBrush}"/>
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding Team}" Value="outsider">
-                                                        <Setter Property="Background" Value="{StaticResource OutsiderBrush}"/>
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding Team}" Value="minion">
-                                                        <Setter Property="Background" Value="{StaticResource MinionBrush}"/>
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding Team}" Value="demon">
-                                                        <Setter Property="Background" Value="{StaticResource DemonBrush}"/>
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding Team}" Value="traveler">
-                                                        <Setter Property="Background" Value="{StaticResource TravelerBrush}"/>
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding Team}" Value="fabled">
-                                                        <Setter Property="Background" Value="{StaticResource FabledBrush}"/>
+                                <!-- 陣營色塊 -->
+                                <Border Grid.Column="1" Width="4" Height="30" VerticalAlignment="Center">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Team}" Value="townsfolk">
+                                                    <Setter Property="Background" Value="{StaticResource TownsfolkBrush}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Team}" Value="outsider">
+                                                    <Setter Property="Background" Value="{StaticResource OutsiderBrush}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Team}" Value="minion">
+                                                    <Setter Property="Background" Value="{StaticResource MinionBrush}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Team}" Value="demon">
+                                                    <Setter Property="Background" Value="{StaticResource DemonBrush}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Team}" Value="traveler">
+                                                    <Setter Property="Background" Value="{StaticResource TravelerBrush}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Team}" Value="fabled">
+                                                    <Setter Property="Background" Value="{StaticResource FabledBrush}"/>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding Team}" Value="loric">
                                                     <Setter Property="Background" Value="{StaticResource LoricBrush}"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
-                                            </Style>
-                                        </Border.Style>
-                                    </Border>
+                                        </Style>
+                                    </Border.Style>
+                                </Border>
 
-                                    <!-- 角色名稱 -->
-                                    <StackPanel Grid.Column="3" VerticalAlignment="Center">
-                                        <TextBlock Text="{Binding Name}" 
+                                <!-- 角色名稱 -->
+                                <StackPanel Grid.Column="3" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding Name}" 
                                                    FontWeight="SemiBold" 
                                                    FontSize="13"/>
-                                    </StackPanel>
+                                </StackPanel>
 
                                 <!-- 能力描述 -->
                                 <TextBlock Grid.Column="4" 
@@ -177,34 +181,34 @@
            LineHeight="16"/>
 
                                 <!-- 類型標籤 -->
-                                    <Border Grid.Column="5" 
+                                <Border Grid.Column="5" 
                                             Background="#F0F0F0"
                                             CornerRadius="3"
                                             Padding="8,3"
                                             HorizontalAlignment="Right"
                                             VerticalAlignment="Center">
-                                        <TextBlock Text="{Binding TeamDisplayName}" 
+                                    <TextBlock Text="{Binding TeamDisplayName}" 
                                                    FontSize="11"
                                                    Foreground="#666"/>
-                                    </Border>
+                                </Border>
 
-                                    <!-- 操作按鈕（僅自訂角色顯示） -->
-                                    <StackPanel Grid.Column="6" 
+                                <!-- 操作按鈕（僅自訂角色顯示） -->
+                                <StackPanel Grid.Column="6" 
                                                 Orientation="Horizontal" 
                                                 Margin="10,0,0,0"
                                                 VerticalAlignment="Center">
-                                        <StackPanel.Style>
-                                            <Style TargetType="StackPanel">
-                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding IsOfficial}" Value="False">
-                                                        <Setter Property="Visibility" Value="Visible"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </StackPanel.Style>
+                                    <StackPanel.Style>
+                                        <Style TargetType="StackPanel">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsOfficial}" Value="False">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </StackPanel.Style>
 
-                                        <Button Content="✏️" 
+                                    <Button Content="✏️" 
                                                 Width="28" Height="28"
                                                 Margin="0,0,5,0"
                                                 ToolTip="編輯此角色"
@@ -215,7 +219,7 @@
                                                 BorderThickness="0"
                                                 Cursor="Hand"/>
 
-                                        <Button Content="🗑️" 
+                                    <Button Content="🗑️" 
                                                 Width="28" Height="28"
                                                 ToolTip="刪除此角色"
                                                 Tag="{Binding}"
@@ -224,12 +228,12 @@
                                                 Foreground="White"
                                                 BorderThickness="0"
                                                 Cursor="Hand"/>
-                                    </StackPanel>
-                                </Grid>
-                            </Border>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </Border>
 
         <!-- 底部按鈕區 -->
