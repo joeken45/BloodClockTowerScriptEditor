@@ -91,6 +91,13 @@ namespace BloodClockTowerScriptEditor.Data
         {
             using var context = new RoleTemplateContext();
             context.Database.EnsureCreated();
+
+            // 手動補欄位（相容舊版資料庫）
+            using var connection = new Microsoft.Data.Sqlite.SqliteConnection($"Data Source={DatabasePath}");
+            connection.Open();
+            var cmd = connection.CreateCommand();
+            cmd.CommandText = "ALTER TABLE RoleTemplates ADD COLUMN RoleSource TEXT NOT NULL DEFAULT 'official'";
+            try { cmd.ExecuteNonQuery(); } catch { /* 欄位已存在則忽略 */ }
         }
     }
 }

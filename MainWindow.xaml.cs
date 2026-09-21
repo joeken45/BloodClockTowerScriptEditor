@@ -131,10 +131,22 @@ namespace BloodClockTowerScriptEditor
         private static async Task InitializeDefaultRolesAsync()
         {
             await SyncResourceToFolderAsync(
-                "角色總表.json",
-                "BloodClockTowerScriptEditor.Resources.角色總表.json",
-                path => RoleImportService.ImportFromJsonAsync(path, true),
-                "角色總表"
+                "官方角色.json",
+                "BloodClockTowerScriptEditor.Resources.官方角色.json",
+                path => RoleImportService.ImportFromJsonAsync(path,  "official"),
+                "官方角色"
+            );
+            await SyncResourceToFolderAsync(
+                "國風角色.json",
+                "BloodClockTowerScriptEditor.Resources.國風角色.json",
+                path => RoleImportService.ImportFromJsonAsync(path,  "chinese"),
+                "國風角色"
+            );
+            await SyncResourceToFolderAsync(
+                "奧德賽角色.json",
+                "BloodClockTowerScriptEditor.Resources.奧德賽角色.json",
+                path => RoleImportService.ImportFromJsonAsync(path,  "odyssey"),
+                "奧德賽角色"
             );
         }
 

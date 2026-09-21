@@ -332,6 +332,22 @@ namespace BloodClockTowerScriptEditor.ViewModels
                 if (formatDialog.ShowDialog() != true)
                     return;
 
+                if (formatDialog.SelectedFormat == ExportFormat.BOTC)
+                {
+                    var blockedRoles = CurrentScript.Roles
+                        .Where(r => r.UseOfficialId
+                                 && !string.IsNullOrEmpty(r.OfficialId)
+                                 && (r.RoleSource == "chinese" || r.RoleSource == "odyssey"))
+                        .ToList();
+                    if (blockedRoles.Count > 0)
+                    {
+                        ShowError(
+                            $"檔案包含國風角色（{blockedRoles.Count} 個）官方ID，無法以 BOTC 官方格式輸出。",
+                            "無法輸出");
+                        return;
+                    }
+                }
+
                 _jsonService.SaveScript(CurrentScript, CurrentFilePath, formatDialog.SelectedFormat);
                 IsDirty = false; // 儲存後清除標記
                 StatusMessage = $"已儲存: {CurrentFilePath}";
@@ -372,6 +388,21 @@ namespace BloodClockTowerScriptEditor.ViewModels
 
                 if (dialog.ShowDialog() == true)
                 {
+                    if (formatDialog.SelectedFormat == ExportFormat.BOTC)
+                    {
+                        var blockedRoles = CurrentScript.Roles
+                            .Where(r => r.UseOfficialId
+                                     && !string.IsNullOrEmpty(r.OfficialId)
+                                     && (r.RoleSource == "chinese" || r.RoleSource == "odyssey"))
+                            .ToList();
+                        if (blockedRoles.Count > 0)
+                        {
+                            ShowError(
+                                $"檔案包含國風角色（{blockedRoles.Count} 個）官方ID，無法以 BOTC 官方格式輸出。",
+                                "無法輸出");
+                            return;
+                        }
+                    }
                     _jsonService.SaveScript(CurrentScript, dialog.FileName, formatDialog.SelectedFormat);
                     CurrentFilePath = dialog.FileName;
                     IsDirty = false; // 儲存後清除標記

@@ -87,6 +87,12 @@ namespace BloodClockTowerScriptEditor.Models
         public bool IsOfficial { get; set; } = true;
 
         /// <summary>
+        /// 角色來源（"official", "chinese", "odyssey", "custom"）
+        /// </summary>
+        [MaxLength(20)]
+        public string RoleSource { get; set; } = "official";
+
+        /// <summary>
         /// 官方角色 ID（用於簡化輸出）
         /// </summary>
         [Column("official_id")]
@@ -154,7 +160,7 @@ namespace BloodClockTowerScriptEditor.Models
                     "demon" => "惡魔",
                     "traveler" => "旅行者",
                     "fabled" => "傳奇",
-                    "loric" => "奇遇",  
+                    "loric" => "奇遇",
                     _ => "未知"
                 };
             }
@@ -200,6 +206,7 @@ namespace BloodClockTowerScriptEditor.Models
                 FirstNightReminder = this.FirstNightReminder,
                 OtherNightReminder = this.OtherNightReminder,
                 OfficialId = this.OfficialId,
+                RoleSource = this.RoleSource,
                 Special = this.Special != null ? new ObservableCollection<Role.SpecialAbility>(this.Special) : null
             };
 

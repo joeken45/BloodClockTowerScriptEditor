@@ -32,8 +32,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Resources\國風角色.json" />
+    <None Remove="Resources\奧德賽角色.json" />
+    <None Remove="Resources\官方角色.json" />
     <None Remove="Resources\相剋規則.json" />
-    <None Remove="Resources\角色總表.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -41,8 +43,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Resources\國風角色.json" />
+    <EmbeddedResource Include="Resources\奧德賽角色.json" />
     <EmbeddedResource Include="Resources\相剋規則.json" />
-    <EmbeddedResource Include="Resources\角色總表.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -54,6 +57,10 @@
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="QuestPDF" Version="2026.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\官方角色.json" />
   </ItemGroup>
 
   <ItemGroup>

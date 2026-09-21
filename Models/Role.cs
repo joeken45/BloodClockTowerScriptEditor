@@ -32,6 +32,7 @@ namespace BloodClockTowerScriptEditor.Models
         private ObservableCollection<SpecialAbility>? _special;
         private string? _officialId;
         private bool _useOfficialId;
+        private string _roleSource = "official";
 
         // UI 相關私有欄位
         private int _displayOrder;
@@ -257,6 +258,16 @@ namespace BloodClockTowerScriptEditor.Models
                     OnPropertyChanged(nameof(ShowOfficialIdCheckBox));
                 }
             }
+        }
+
+        /// <summary>
+        /// 角色來源（"official", "chinese", "odyssey", "custom"）
+        /// </summary>
+        [JsonIgnore]
+        public string RoleSource
+        {
+            get => _roleSource;
+            set => SetProperty(ref _roleSource, value);
         }
 
         /// <summary>

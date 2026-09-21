@@ -20,9 +20,8 @@ namespace BloodClockTowerScriptEditor.Services
         /// 從 JSON 檔案匯入角色到資料庫
         /// </summary>
         /// <param name="jsonFilePath">JSON 檔案路徑</param>
-        /// <param name="isOfficial">是否為官方角色</param>
         /// <returns>匯入的角色數量</returns>
-        public static async Task<int> ImportFromJsonAsync(string jsonFilePath, bool isOfficial = true)
+        public static async Task<int> ImportFromJsonAsync(string jsonFilePath,  string roleSource = "official")
         {
             if (!File.Exists(jsonFilePath))
             {
@@ -67,7 +66,7 @@ namespace BloodClockTowerScriptEditor.Services
                         string? name = item["name"]?.ToString();
 
                         // 基本驗證
-                        if (string.IsNullOrEmpty(officialId) || string.IsNullOrEmpty(name))
+                        if (/*string.IsNullOrEmpty(officialId) || */string.IsNullOrEmpty(name))
                         {
                             continue; // 跳過無效資料
                         }
@@ -87,7 +86,7 @@ namespace BloodClockTowerScriptEditor.Services
                                 // Id 變更：刪除舊記錄，建立新記錄
                                 context.RoleTemplates.Remove(existing);
 
-                                var roleTemplate = CreateRoleTemplate(item, isOfficial);
+                                var roleTemplate = CreateRoleTemplate(item, true, roleSource);
                                 roleTemplate.OriginalOrder = orderIndex++;
                                 context.RoleTemplates.Add(roleTemplate);
 
@@ -98,7 +97,7 @@ namespace BloodClockTowerScriptEditor.Services
                             {
                                 // Id 未變更：正常更新
                                 existing.OriginalOrder = orderIndex++;
-                                UpdateRoleTemplate(existing, item, isOfficial);
+                                UpdateRoleTemplate(existing, item, true, roleSource);
                                 updatedCount++;
                                 System.Diagnostics.Debug.WriteLine($"✏️ 更新角色: {name} ({officialId})");
                             }
@@ -106,7 +105,7 @@ namespace BloodClockTowerScriptEditor.Services
                         else
                         {
                             // ➕ 建立新角色
-                            var roleTemplate = CreateRoleTemplate(item, isOfficial);
+                            var roleTemplate = CreateRoleTemplate(item, true, roleSource);
                             roleTemplate.OriginalOrder = orderIndex++;
                             context.RoleTemplates.Add(roleTemplate);
                             addedCount++;
@@ -280,7 +279,7 @@ namespace BloodClockTowerScriptEditor.Services
         /// <summary>
         /// 建立新的 RoleTemplate（已更新使用 ParseNightOrder）
         /// </summary>
-        private static RoleTemplate CreateRoleTemplate(JToken item, bool isOfficial)
+        private static RoleTemplate CreateRoleTemplate(JToken item, bool isOfficial, string roleSource = "official")
         {
             var roleTemplate = new RoleTemplate
             {
@@ -297,6 +296,7 @@ namespace BloodClockTowerScriptEditor.Services
                 FirstNightReminder = item["firstNightReminder"]?.ToString(),
                 OtherNightReminder = item["otherNightReminder"]?.ToString(),
                 IsOfficial = isOfficial,
+                RoleSource = roleSource,
                 OfficialId = item["officialId"]?.ToString(),
                 SpecialJson = item["special"]?.ToString(Formatting.None),
                 CreatedDate = DateTime.Now,
@@ -312,7 +312,7 @@ namespace BloodClockTowerScriptEditor.Services
         /// <summary>
         /// 更新現有 RoleTemplate（已更新使用 ParseNightOrder）
         /// </summary>
-        private static void UpdateRoleTemplate(RoleTemplate existing, JToken item, bool isOfficial)
+        private static void UpdateRoleTemplate(RoleTemplate existing, JToken item, bool isOfficial, string roleSource = "official")
         {
             existing.Name = item["name"]?.ToString() ?? existing.Name;
             existing.Team = item["team"]?.ToString() ?? existing.Team;
@@ -328,6 +328,7 @@ namespace BloodClockTowerScriptEditor.Services
             existing.OfficialId = item["officialId"]?.ToString();
             existing.SpecialJson = item["special"]?.ToString(Formatting.None);
             existing.IsOfficial = isOfficial;
+            existing.RoleSource = roleSource;
             existing.UpdatedDate = DateTime.Now;
 
             // 使用新的 ProcessReminders 方法（清除現有標記）
