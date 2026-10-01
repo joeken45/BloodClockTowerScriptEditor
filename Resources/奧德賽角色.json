@@ -1,7 +1,7 @@
 [
   {
     "name": "畫家",
-    "id": "Painter_custom",
+    "id": "Paintercustom",
     "image": "https://user-images.klutzbanana.com/zoa4wo2chf1fh9muzyor7yaq.png",
     "ability": "在你的首個夜晚，你會得知一個在場角色。每個夜晚*，你要選擇一名玩家：如果他是你最近得知的角色，你會得知另一個在場角色。",
     "setup": false,
@@ -19,7 +19,7 @@
   },
   {
     "name": "獵魔人",
-    "id": "Witcher_custom",
+    "id": "Witchercustom",
     "image": "https://user-images.klutzbanana.com/e40s65uz3b15s98ktsfunrvx.png",
     "ability": "每局遊戲限一次，在夜晚時*，你可以選擇一名玩家：他死亡，且當晚惡魔不能攻擊。如果你殺死了惡魔，你和他交換角色和陣營。",
     "setup": false,
@@ -40,7 +40,7 @@
   },
   {
     "name": "治安官",
-    "id": "Constable_custom",
+    "id": "Constablecustom",
     "image": "https://user-images.klutzbanana.com/lc7l3pi3nwbxfqfl5mx5eckz.png",
     "ability": "在你的首個夜晚，你會得知一名善良玩家。如果外來者玩家數量異常，你改為得知一名邪惡玩家。[+0~1外來者]",
     "setup": true,
@@ -52,7 +52,7 @@
       "得知"
     ],
     "remindersGlobal": [],
-    "flavor": "奧德賽、設置調整、獲取資訊、死亡觸發能力",
+    "flavor": "奧德賽、設置調整、獲取資訊",
     "edition": "",
     "team": "townsfolk",
     "special": [],
@@ -60,7 +60,7 @@
   },
   {
     "name": "紋章官",
-    "id": "Herald_custom",
+    "id": "Heraldcustom",
     "image": "https://user-images.klutzbanana.com/k0w1gcog043pppq7n5c93fgj.png",
     "ability": "每局遊戲限一次，在夜晚時，你可以選擇一名其他玩家：你會得知兩名玩家。這三名玩家的角色類型各不相同。[+1外來者]",
     "setup": true,
@@ -80,7 +80,7 @@
   },
   {
     "name": "遊歌者",
-    "id": "Bard_custom",
+    "id": "Bardcustom",
     "image": "https://user-images.klutzbanana.com/ojllel5fxf3fep1a93hcntmb.png",
     "ability": "每個白天，你可以公開選擇任意名存活玩家：其中的鎮民會醉酒直到你再次選擇。當晚你會得知正因你醉酒的人數。",
     "setup": false,
@@ -104,7 +104,7 @@
   },
   {
     "name": "空中飛人",
-    "id": "Aerialist_custom",
+    "id": "Aerialistcustom",
     "image": "https://user-images.klutzbanana.com/lhk993hlta3k8p41azhte474.png",
     "ability": "你死亡的當晚會知所有角色類型的玩家各一名。你死於善良玩家發起的提名處決或能力時，你醉酒。",
     "setup": false,
@@ -124,7 +124,7 @@
   },
   {
     "name": "真心人",
-    "id": "Truelove_custom",
+    "id": "Truelovecustom",
     "image": "https://user-images.klutzbanana.com/xge6s0stejwrnyyhl7am89yw.png",
     "ability": "在你的首個白天，你可以邀請說書人見證你與一名玩家互通角色，隨後你會私下得知是否有人說謊。",
     "setup": false,
@@ -144,7 +144,7 @@
   },
   {
     "name": "浪人",
-    "id": "Ronin_custom",
+    "id": "Ronincustom",
     "image": "https://user-images.klutzbanana.com/o4aktsxmepqgvirohh8rekp6.png",
     "ability": "每局遊戲限一次，在夜晚時*，你可以選擇一名玩家：如果當晚他被惡魔攻擊，一名存活的邪惡玩家會代替他被攻擊，且你重獲能力。",
     "setup": false,
@@ -165,7 +165,7 @@
   },
   {
     "name": "月光騎士",
-    "id": "Lunar_Knight_custom",
+    "id": "LunarKnightcustom",
     "image": "https://user-images.klutzbanana.com/z9vmup9hfkj72i3rmp5vph5m.png",
     "ability": "每個夜晚*，如果當天無人死於處決，你會被喚醒並要選擇一名玩家：如果他是爪牙，他死亡。",
     "setup": false,
@@ -186,7 +186,7 @@
   },
   {
     "name": "湖中仙女",
-    "id": "Lady_of_the_Lake_custom",
+    "id": "LadyoftheLakecustom",
     "image": "https://user-images.klutzbanana.com/ukdh8qtwweffbua18jlvswf3.png",
     "ability": "每個夜晚，說書人會向你展示兩種能力，你可以選擇其中一種：它替代你的原能力。",
     "setup": false,
@@ -206,7 +206,7 @@
   },
   {
     "name": "送報童",
-    "id": "Paperboy_custom",
+    "id": "Paperboycustom",
     "image": "https://user-images.klutzbanana.com/r1s2cgq8fzo09inqb868jpfi.png",
     "ability": "每個白天，你可以從說書人處獲取一條新聞，如果你公開宣讀了該新聞，當晚你會得知它是否為事實。",
     "setup": false,
@@ -227,7 +227,7 @@
   },
   {
     "name": "調音師",
-    "id": "Tuner_custom",
+    "id": "Tunercustom",
     "image": "https://user-images.klutzbanana.com/au59mmp63z54c1usb0q5txay.png",
     "ability": "在你的首個夜晚，你會得知一個外來者角色和一個爪牙角色。其中有且只有一個角色在場。",
     "setup": false,
@@ -245,7 +245,7 @@
   },
   {
     "name": "調香師",
-    "id": "Perfumer_custom",
+    "id": "Perfumercustom",
     "image": "https://user-images.klutzbanana.com/ma3uhfa94k38s3k6hez0om0g.png",
     "ability": "每局遊戲限一次，在夜晚時，你可以選擇一名玩家或一個邪惡角色：他會得知調香師在場。",
     "setup": false,
@@ -265,7 +265,7 @@
   },
   {
     "name": "殉教少女",
-    "id": "Martyra_custom",
+    "id": "Martyracustom",
     "image": "https://user-images.klutzbanana.com/f5nvl46mpfmj7de4h21pwsgk.png",
     "ability": "如果爪牙死於處決，當晚你會死亡，且所有邪惡角色醉酒直到明天黃昏。",
     "setup": false,
@@ -286,7 +286,7 @@
   },
   {
     "name": "牛仔",
-    "id": "Cowboy_custom",
+    "id": "Cowboycustom",
     "image": "https://user-images.klutzbanana.com/p2k06fkiuhwoa9934fmxjtr1.png",
     "ability": "在首個夜晚，一名爪牙會得知牛仔在場。每當他發起提名，你會在當晚被喚醒。你們中首次被對方提名的玩家立即被處決。",
     "setup": false,
@@ -308,7 +308,7 @@
   },
   {
     "name": "貓貓探險隊",
-    "id": "The_Cat_Adventurers_custom",
+    "id": "TheCatAdventurerscustom",
     "image": "https://user-images.klutzbanana.com/iaw04l1gkxuq8y1l6636l4ni.png",
     "ability": "每個白天，一名未曾探險過的玩家可以公開申請探險。在當晚，如果他存活，你會得知一名與他陣營對立的玩家。",
     "setup": false,
@@ -332,7 +332,7 @@
   },
   {
     "name": "遊俠",
-    "id": "Ranger_custom",
+    "id": "Rangercustom",
     "image": "https://user-images.klutzbanana.com/qklb4xv1l24fgdo8mrzlrk4e.png",
     "ability": "每局遊戲限一次，在夜晚時*，你可以選擇一名其他玩家：如果他是爪牙，他死亡；如果他是鎮民，你死亡。",
     "setup": false,
@@ -353,7 +353,7 @@
   },
   {
     "name": "女武神",
-    "id": "Valkyrie_custom",
+    "id": "Valkyriecustom",
     "image": "https://user-images.klutzbanana.com/th5f8692k48z9gs5c0oiqogd.png",
     "ability": "每個夜晚*，死亡延遲到你同意死亡名單之後才會發生。如果你不同意，當晚有且只有你死亡。",
     "setup": false,
@@ -373,7 +373,7 @@
   },
   {
     "name": "倒吊人",
-    "id": "Hanged_Man_custom",
+    "id": "HangedMancustom",
     "image": "https://user-images.klutzbanana.com/m6b412kjz4crnz1ced44epim.png",
     "ability": "當遊戲結束時，如果你曾使用過投票標記投票，對調勝負結果。",
     "setup": false,
@@ -393,7 +393,7 @@
   },
   {
     "name": "王牌",
-    "id": "Joker_custom",
+    "id": "Jokercustom",
     "image": "https://user-images.klutzbanana.com/jllgi4qwgjtbl251ovocqq97.png",
     "ability": "每個夜晚，你要選擇一名其他玩家：你會得知他是什麼花色。四種花色秘密對應著四種角色類型。",
     "setup": false,
@@ -416,7 +416,7 @@
   },
   {
     "name": "木乃伊",
-    "id": "Mummy_custom",
+    "id": "Mummycustom",
     "image": "https://user-images.klutzbanana.com/p6o7rnuj596rzjgl1swewx5p.png",
     "ability": "如果你死於邪惡玩家發起的提名處決或能力，審判日降臨時，你復活。",
     "setup": false,
@@ -436,7 +436,7 @@
   },
   {
     "name": "船長",
-    "id": "Skipper_custom",
+    "id": "Skippercustom",
     "image": "https://user-images.klutzbanana.com/t7stn6qb66cvryc0ov0g7vp1.png",
     "ability": "每個夜晚*，你會得知惡魔更接近當天被處決玩家的左側還是右側。如果邪惡玩家被處決，你醉酒直到下個黎明。",
     "setup": false,
@@ -457,7 +457,7 @@
   },
   {
     "name": "靈媒",
-    "id": "Medium_custom",
+    "id": "Mediumcustom",
     "image": "https://user-images.klutzbanana.com/z4adqiqmnqjjjkfinvqyeag1.png",
     "ability": "如果鎮民死於你發起的提名處決，當晚他會得知靈媒在場。",
     "setup": false,
@@ -477,7 +477,7 @@
   },
   {
     "name": "巫女",
-    "id": "Miko_custom",
+    "id": "Mikocustom",
     "image": "https://user-images.klutzbanana.com/vq1x05ebacm32doyk41rlcff.png",
     "ability": "每個夜晚，你要選擇一對鄰座的其他玩家：你會得知他們之中是否有爪牙。",
     "setup": false,
@@ -495,7 +495,7 @@
   },
   {
     "name": "超感者",
-    "id": "Sensate_custom",
+    "id": "Sensatecustom",
     "image": "https://user-images.klutzbanana.com/l2vvqxvm7lekk959sf8p16vg.png",
     "ability": "每個夜晚，惡魔要選擇一名除你以外的存活玩家：惡魔和你會得知他是什麼角色。",
     "setup": false,
@@ -513,7 +513,7 @@
   },
   {
     "name": "陰陽師",
-    "id": "Onmyoji_custom",
+    "id": "Onmyojicustom",
     "image": "https://user-images.klutzbanana.com/kjy0o9mu8ffml3yrkj758rh0.png",
     "ability": "每個夜晚，你會得知一名玩家：他與你上個夜晚得知的玩家陣營不同。",
     "setup": false,
@@ -533,7 +533,7 @@
   },
   {
     "name": "德魯伊",
-    "id": "Druid_custom",
+    "id": "Druidcustom",
     "image": "https://user-images.klutzbanana.com/fvclt1xnc9ek6vzzodbzejeb.png",
     "ability": "如果與你鄰近的兩名存活玩家的陣營相同，惡魔只能攻擊他們。",
     "setup": false,
@@ -553,7 +553,7 @@
   },
   {
     "name": "見聞家",
-    "id": "Witness_custom",
+    "id": "Witnesscustom",
     "image": "https://user-images.klutzbanana.com/b8ddooyr1b496uilsqaedky1.png",
     "ability": "每個白天，你可以從說書人處得知一條正確資訊（關於某種角色類型）。如果該類型的玩家數量異常，你改為得知錯誤資訊。",
     "setup": false,
@@ -571,7 +571,7 @@
   },
   {
     "name": "謎語人",
-    "id": "Riddler_custom",
+    "id": "Riddlercustom",
     "image": "https://user-images.klutzbanana.com/qe3qzybbl9qdcyu19ub9ofd6.png",
     "ability": "每個白天，你可以從說書人處得知一條謎語。謎語的謎底指向一個在場角色。",
     "setup": false,
@@ -589,7 +589,7 @@
   },
   {
     "name": "海女",
-    "id": "Pearl_Diver_custom",
+    "id": "PearlDivercustom",
     "image": "https://user-images.klutzbanana.com/u5vgd14ixwhwveoc1ad5lhgm.png",
     "ability": "在你的首個夜晚，你會得知一名邪惡玩家與你的距離。",
     "setup": false,
@@ -607,7 +607,7 @@
   },
   {
     "name": "聖騎士",
-    "id": "Paladin _custom",
+    "id": "Paladin custom",
     "image": "https://user-images.klutzbanana.com/xqsvsqwal8kpb1q0y80f29uz.png",
     "ability": "每個夜晚，你會得知兩名玩家：他們要麼都不是爪牙，要麼都不是惡魔。兩類線索每夜交替。",
     "setup": false,
@@ -628,9 +628,9 @@
   },
   {
     "name": "酒娘",
-    "id": "Alewife_custom",
+    "id": "Alewifecustom",
     "image": "https://user-images.klutzbanana.com/hyf5ocnx4ajt8lsb4fwgui9x.png",
-    "ability": "爪牙被處決時，不會死亡但會醉酒。",
+    "ability": "爪牙即將死於處決時，他不會死亡，並永久醉酒。",
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
@@ -648,7 +648,7 @@
   },
   {
     "name": "邪術師",
-    "id": "Warlock_custom",
+    "id": "Warlockcustom",
     "image": "https://user-images.klutzbanana.com/n7xhsgxufw3yalr2m3hsd2bq.png",
     "ability": "如果惡魔殺死了你，此後的每個夜晚，你要選擇一名玩家：他死亡。",
     "setup": false,
@@ -669,15 +669,21 @@
   },
   {
     "name": "仲裁者",
-    "id": "Arbiter_custom",
+    "id": "Arbitercustom",
     "image": "https://user-images.klutzbanana.com/j7et96u6tx01n1es6nsote7y.png",
-    "ability": "其他善良玩家不會死於你發起的提名處決。",
+    "ability": "其他鎮民即將死於你發起的提名處決時，他不會死亡，並永久醉酒。",
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
     "otherNight": 0.0,
     "otherNightReminder": "",
-    "reminders": [],
+    "reminders": [
+      "永久醉酒",
+      "永久醉酒",
+      "永久醉酒",
+      "永久醉酒",
+      "永久醉酒"
+    ],
     "remindersGlobal": [],
     "flavor": "奧德賽、提名、處決、免死",
     "edition": "custom",
@@ -687,7 +693,7 @@
   },
   {
     "name": "忍者",
-    "id": "Ninja_custom",
+    "id": "Ninjacustom",
     "image": "https://user-images.klutzbanana.com/ngjp0nng867hf2rnyarz23zi.png",
     "ability": "每個白天，如果你是首位或末位發起提名的玩家，且被你提名的玩家是邪惡的，他會在當晚死亡。",
     "setup": false,
@@ -708,7 +714,7 @@
   },
   {
     "name": "近衛",
-    "id": "Vanguard_custom",
+    "id": "Vanguardcustom",
     "image": "https://user-images.klutzbanana.com/rphsabb6k05qcoxvqqq9xys9.png",
     "ability": "審判日降臨前的每個夜晚*，你要選擇：你當晚不會死亡；或與你鄰近的兩名存活玩家當晚不會死亡。",
     "setup": false,
@@ -728,9 +734,9 @@
   },
   {
     "name": "敲鐘人",
-    "id": "Bellringer_custom",
+    "id": "Bellringercustom",
     "image": "https://user-images.klutzbanana.com/l1k9k3egpklepm15pa8shzmr.png",
-    "ability": "在你首次發起提名時，你可以公開質問一次被提名的玩家他是否為某個角色：如果他說謊，你立即被處決。",
+    "ability": "在你首次被提名後，你可以公開聲稱一個角色：如果發起提名的玩家不是該角色，你立即被處決。",
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
@@ -748,7 +754,7 @@
   },
   {
     "name": "故障機器人",
-    "id": "FaultBot_custom",
+    "id": "FaultBotcustom",
     "image": "https://user-images.klutzbanana.com/h6hpjppgaumdhjueq806jdnz.png",
     "ability": "每個夜晚，你會得知當天其他鎮民玩家的能力是否均正常生效。",
     "setup": false,
@@ -768,7 +774,7 @@
   },
   {
     "name": "獵人",
-    "id": "Hunter_custom",
+    "id": "Huntercustom",
     "image": "https://user-images.klutzbanana.com/u3ow4f1t83ry202m79e8r6y3.png",
     "ability": "如果被你提名的玩家在當晚死亡，你會被喚醒且要選擇一名玩家：他死亡。",
     "setup": false,
@@ -789,7 +795,7 @@
   },
   {
     "name": "半人馬",
-    "id": "Centaur_custom",
+    "id": "Centaurcustom",
     "image": "https://user-images.klutzbanana.com/rg8xi8e0d153ejq255gsstyf.png",
     "ability": "每個夜晚，你要選擇一名其他玩家（與上個夜晚不同）：如果他的角色類型與你上個夜晚選擇的玩家相同，他死亡。",
     "setup": false,
@@ -810,7 +816,7 @@
   },
   {
     "name": "捕蟲少年",
-    "id": "Bug_Catcher_custom",
+    "id": "BugCatchercustom",
     "image": "https://user-images.klutzbanana.com/zzz20bz2abh16y1rc4mronii.png",
     "ability": "如果你提名了一名其他玩家，在當晚你會被喚醒並得知他是否為惡魔。",
     "setup": false,
@@ -830,7 +836,7 @@
   },
   {
     "name": "天平師",
-    "id": "Scalebearer_custom",
+    "id": "Scalebearercustom",
     "image": "https://user-images.klutzbanana.com/yl0z3624lt5tknqujtd0pft4.png",
     "ability": "在你的首個夜晚，你會得知一名玩家：他是邪惡玩家，或他與兩名邪惡玩家的距離相等。",
     "setup": false,
@@ -850,7 +856,7 @@
   },
   {
     "name": "女爵",
-    "id": "Dame_custom",
+    "id": "Damecustom",
     "image": "https://user-images.klutzbanana.com/vq83ubjp56vslj9n0chuh35j.png",
     "ability": "每個夜晚，你會得知一個在場的角色。當邪惡玩家死亡時，你醉酒。",
     "setup": false,
@@ -870,7 +876,7 @@
   },
   {
     "name": "公證人",
-    "id": "Notary_custom",
+    "id": "Notarycustom",
     "image": "https://user-images.klutzbanana.com/zkpt39ppzwwbol0rek64zj7u.png",
     "ability": "每個夜晚*，你會得知當天死於處決的玩家與提名他的玩家是否為同一陣營。",
     "setup": false,
@@ -891,7 +897,7 @@
   },
   {
     "name": "維京人",
-    "id": "Viking_custom",
+    "id": "Vikingcustom",
     "image": "https://user-images.klutzbanana.com/vxznxe4m8j08ahntntjvw3rk.png",
     "ability": "當你在死後首次投票時，當前被提名的玩家立即被處決。",
     "setup": false,
@@ -909,7 +915,7 @@
   },
   {
     "name": "藝伎",
-    "id": "Geisha_custom",
+    "id": "Geishacustom",
     "image": "https://user-images.klutzbanana.com/w8o3ph9jgzm3scni572glgvu.png",
     "ability": "在你存活與死亡的首個夜晚，你會分別得知一名存活玩家：他們的陣營對立。",
     "setup": false,
@@ -929,7 +935,7 @@
   },
   {
     "name": "美人魚",
-    "id": "Mermaid_custom",
+    "id": "Mermaidcustom",
     "image": "https://user-images.klutzbanana.com/p00np4m37ob9vrm41bzj86kn.png",
     "ability": "每個白天，你可以公開接受一名其他玩家對你的讚美：邪惡角色的能力對他無效，直到你接受了另一名玩家的讚美。",
     "setup": false,
@@ -949,9 +955,9 @@
   },
   {
     "name": "通靈師",
-    "id": "Psychic_custom",
+    "id": "Psychiccustom",
     "image": "https://user-images.klutzbanana.com/c0ztac3vhhryjqtxp4k6e4yy.png",
-    "ability": "每個夜晚*，你要選擇一名玩家：如果他已死亡，你會得知他的陣營。",
+    "ability": "每個夜晚*，你要選擇一名玩家：如果他已死亡，你會得知他的角色類型。",
     "setup": false,
     "firstNight": 0.0,
     "firstNightReminder": "",
@@ -967,7 +973,7 @@
   },
   {
     "name": "武僧",
-    "id": "MarMonk_custom",
+    "id": "MarMonkcustom",
     "image": "https://user-images.klutzbanana.com/gldmxry8u2r6u456ik4bmew3.png",
     "ability": "當惡魔攻擊你時，一名存活的邪惡玩家會替代你被攻擊。",
     "setup": false,
@@ -985,7 +991,7 @@
   },
   {
     "name": "皮匠",
-    "id": "Tanner_custom",
+    "id": "Tannercustom",
     "image": "https://user-images.klutzbanana.com/yfou11t8irmrnynzv240lq43.png",
     "ability": "在你的首個夜晚，你會得知一個距離你最近的爪牙角色。",
     "setup": false,
@@ -1003,7 +1009,7 @@
   },
   {
     "name": "死眠少女",
-    "id": "Somnmaid_custom",
+    "id": "Somnmaidcustom",
     "image": "https://user-images.klutzbanana.com/qutzdkju4p6s0j1ragbvsa3d.png",
     "ability": "當你首次被惡魔攻擊時，你不會死亡，並會得知該惡魔的角色。",
     "setup": false,
@@ -1023,7 +1029,7 @@
   },
   {
     "name": "神秘学家",
-    "id": "Occultist_custom",
+    "id": "Occultistcustom",
     "image": "https://oss.gstonegames.com/data_file/clocktower/upload/1699696080_197011_8705.png",
     "ability": "每個白天，你可以從說書人處得知一條正確資訊。如果因你的能力減少了外來者，你改為得知錯誤資訊。[-0~1外來者]",
     "setup": true,
@@ -1043,7 +1049,7 @@
   },
   {
     "name": "大小姐",
-    "id": "Heiress_custom",
+    "id": "Heiresscustom",
     "image": "https://user-images.klutzbanana.com/y13mb7cxv21y9ucij1fk2lzm.png",
     "ability": "當你首次即將死亡時，可能會有兩名存活玩家代替你死亡。",
     "setup": false,
@@ -1065,7 +1071,7 @@
   },
   {
     "name": "白騎士",
-    "id": "White_Knight_custom",
+    "id": "WhiteKnightcustom",
     "image": "https://user-images.klutzbanana.com/y7rjxbopzxmka6pgtfie5ow8.png",
     "ability": "每局遊戲限一次，瘋狂地想要存活的玩家在被處決時可能不會死亡。",
     "setup": false,
@@ -1085,7 +1091,7 @@
   },
   {
     "name": "雪怪",
-    "id": "Yeti_custom",
+    "id": "Yeticustom",
     "image": "https://user-images.klutzbanana.com/ba32w4se4x4d5jdrh5q9uo4s.png",
     "ability": "每局遊戲限一次，惡魔可以公開猜測你是雪怪，如果猜中，當天他被處決時你會代替他被處決。如果白天沒人被處決，你的陣營落敗。",
     "setup": false,
@@ -1106,7 +1112,7 @@
   },
   {
     "name": "狼孩",
-    "id": "Wolfboy_custom",
+    "id": "Wolfboycustom",
     "image": "https://user-images.klutzbanana.com/p0lgcotfe9ini6tntvir3cmg.png",
     "ability": "當其他狼孩均死亡時，你變成邪惡的不在場爪牙。[可能有多個外來者是狼孩]",
     "setup": true,
@@ -1124,7 +1130,7 @@
   },
   {
     "name": "地獄棄子",
-    "id": "Hells_Outcast_custom",
+    "id": "HellsOutcastcustom",
     "image": "https://user-images.klutzbanana.com/y2isa3v5ghwgs52ceigqfkkg.png",
     "ability": "每個白天提名開始前，爪牙可以公開擁立地獄棄子：你立即轉變為邪惡並與惡魔交換角色，然後他醉酒。",
     "setup": false,
@@ -1144,7 +1150,7 @@
   },
   {
     "name": "堂吉訶德",
-    "id": "Don_Quixote_custom",
+    "id": "DonQuixotecustom",
     "image": "https://user-images.klutzbanana.com/m8cczlaun20qj8y23zdf6oga.png",
     "ability": "一名玩家會被鎮民玩家的能力當做惡魔角色（風車），即使你已死亡。你可以從說書人處得知風車是誰，然後風車會改為另一名玩家。",
     "setup": false,
@@ -1164,7 +1170,7 @@
   },
   {
     "name": "貓貓合唱團",
-    "id": "The_Cat_Chorus_custom",
+    "id": "TheCatChoruscustom",
     "image": "https://user-images.klutzbanana.com/nu6is8zej5oihh15olehamz6.png",
     "ability": "一名玩家醉酒。在黃昏時，說書人可能會指定一首歌曲：如果玩家們成功合唱，所有鎮民不受中毒醉酒影響，直到下個黃昏。",
     "setup": false,
@@ -1185,7 +1191,7 @@
   },
   {
     "name": "養蜂人",
-    "id": "Beekeeper_custom",
+    "id": "Beekeepercustom",
     "image": "https://user-images.klutzbanana.com/l95nf0k8bb9yiifxn0sho0wm.png",
     "ability": "一名玩家中毒，即使你已死亡。每個夜晚，你要選擇一名玩家：如果他因你中毒，他恢復健康。",
     "setup": false,
@@ -1205,7 +1211,7 @@
   },
   {
     "name": "盜血者",
-    "id": "Blood_Thief_custom",
+    "id": "BloodThiefcustom",
     "image": "https://user-images.klutzbanana.com/hdd20d1zzxqlvlepioz0lox6.png",
     "ability": "審判日降臨前，唯一存活的邪惡玩家死亡時，你變成他的角色與陣營。",
     "setup": false,
@@ -1225,7 +1231,7 @@
   },
   {
     "name": "雙面人",
-    "id": "Two_Face_custom",
+    "id": "TwoFacecustom",
     "image": "https://user-images.klutzbanana.com/yl7f4ekl6gr81tixcw5yssvd.png",
     "ability": "審判日降臨前，如果有玩家死於處決，當晚你會轉變為與他對立的陣營。",
     "setup": false,
@@ -1245,7 +1251,7 @@
   },
   {
     "name": "黑幫律師",
-    "id": "Mob_lawyer_custom",
+    "id": "Moblawyercustom",
     "image": "https://user-images.klutzbanana.com/gy84y0sdsmowltclbgannq8q.png",
     "ability": "每個夜晚，你會得知一名玩家：下個白天，如果你和他中有人被處決，另一人可能會替代其被處決。",
     "setup": false,
@@ -1265,7 +1271,7 @@
   },
   {
     "name": "海貓王",
-    "id": "Pirate_Cat_King_custom",
+    "id": "PirateCatKingcustom",
     "image": "https://user-images.klutzbanana.com/dlv8cgmwpx6won55a6gw6ali.png",
     "ability": "死亡玩家可以上交投票標記成為尋寶人。審判日降臨時，如果你已經死亡，所有尋寶人平分12枚投票標記。",
     "setup": false,
@@ -1289,7 +1295,7 @@
   },
   {
     "name": "石像鬼",
-    "id": "Gargoyle_custom",
+    "id": "Gargoylecustom",
     "image": "https://user-images.klutzbanana.com/n8ufwpq3p0dd3liwr8kkt6v2.png",
     "ability": "當你首次被其他玩家提名時，他死亡。如果你殺死了邪惡玩家，你變成他的角色與陣營。",
     "setup": false,
@@ -1311,7 +1317,7 @@
   },
   {
     "name": "泰坦",
-    "id": "Titan_custom",
+    "id": "Titancustom",
     "image": "https://user-images.klutzbanana.com/gayzrb3of6waizd6j40oh7r7.png",
     "ability": "在首個夜晚，你轉變為邪惡，並獲得所有不在場爪牙的能力。[泰坦在配置時被當作爪牙]",
     "setup": true,
@@ -1329,7 +1335,7 @@
   },
   {
     "name": "蘑菇仔",
-    "id": "Myconid_custom",
+    "id": "Myconidcustom",
     "image": "https://user-images.klutzbanana.com/efz6djove6vu5hbnuxezg6kp.png",
     "ability": "你與爪牙會在死於處決後保留能力。",
     "setup": false,
@@ -1352,7 +1358,7 @@
   },
   {
     "name": "烏賊娘",
-    "id": "Squid_Girl_custom",
+    "id": "SquidGirlcustom",
     "image": "https://user-images.klutzbanana.com/i8tknq42btkz4kkmqosv8hk6.png",
     "ability": "當你首次即將死亡時，你可能不會死亡，但所有鎮民會醉酒直到明天黃昏。",
     "setup": false,
@@ -1373,7 +1379,7 @@
   },
   {
     "name": "稻草人",
-    "id": "Scarecrow_custom",
+    "id": "Scarecrowcustom",
     "image": "https://user-images.klutzbanana.com/xf0ebn45o0rxbodfpmdmcr1d.png",
     "ability": "你以為你是一個鎮民角色，但其實你不是。如果你死亡，下次處決不會造成死亡。",
     "setup": false,
@@ -1394,7 +1400,7 @@
   },
   {
     "name": "搗蛋鬼",
-    "id": "Rascal_custom",
+    "id": "Rascalcustom",
     "image": "https://user-images.klutzbanana.com/ef3j3a4gasr2h61dlnflbubr.png",
     "ability": "在你的首個夜晚與首個白天，鎮民玩家的能力一定會產生錯誤資訊。",
     "setup": false,
@@ -1414,7 +1420,7 @@
   },
   {
     "name": "殉情者",
-    "id": "Loverbound_custom",
+    "id": "Loverboundcustom",
     "image": "https://user-images.klutzbanana.com/m97ccgewdehusqmsww38bsgq.png",
     "ability": "在你的首個夜晚，你要選擇一名其他玩家：你或他死亡之後，另一人隨時可能死亡。",
     "setup": false,
@@ -1435,7 +1441,7 @@
   },
   {
     "name": "化妝師",
-    "id": "Visagiste_custom",
+    "id": "Visagistecustom",
     "image": "https://user-images.klutzbanana.com/qpflwh1v1ca6lz26ystn0ljs.png",
     "ability": "如果你被非鎮民玩家提名，當晚惡魔要選擇並變成不在場的角色，即使你當天死於處決。",
     "setup": false,
@@ -1455,7 +1461,7 @@
   },
   {
     "name": "河童",
-    "id": "Kappa_custom",
+    "id": "Kappacustom",
     "image": "https://user-images.klutzbanana.com/vxbtargu9trpgc33oe0m88l6.png",
     "ability": "在審判日，你可以從說書人處得知外來者玩家的數量。[任意數量外來者]",
     "setup": true,
@@ -1473,7 +1479,7 @@
   },
   {
     "name": "斯芬克斯",
-    "id": "Sphinx_custom",
+    "id": "Sphinxcustom",
     "image": "https://user-images.klutzbanana.com/py30fc9elkzsjsi4799aim17.png",
     "ability": "每個夜晚，你要選擇一個角色：下個白天，如果該角色在場，他會被公開詢問一個是非問題。沒有答對的玩家可能會被處決。",
     "setup": false,
@@ -1493,7 +1499,7 @@
   },
   {
     "name": "麻風侏儒",
-    "id": "Leper_Gnome_custom",
+    "id": "LeperGnomecustom",
     "image": "https://user-images.klutzbanana.com/ln2wnbmz203d8qv6osbqd0ch.png",
     "ability": "鎮民玩家使用自身能力選擇你時，會立即變成麻風侏儒，且你失去所有能力。你的勝負條件與邪惡玩家相同，即使你已死亡。",
     "setup": false,
@@ -1515,7 +1521,7 @@
   },
   {
     "name": "黑騎士",
-    "id": "Dark_Knight_custom",
+    "id": "DarkKnightcustom",
     "image": "https://user-images.klutzbanana.com/fw52tezyu3pejdu2i2ly4efj.png",
     "ability": "每個夜晚*，你會得知當天死亡的外來者玩家並要猜測他的角色：如果猜中，會有一名玩家死亡。[+1外來者]",
     "setup": true,
@@ -1536,7 +1542,7 @@
   },
   {
     "name": "麻醉師",
-    "id": "Narcotizer_custom",
+    "id": "Narcotizercustom",
     "image": "https://user-images.klutzbanana.com/ohxv3od1d5gyayuxyu27cheh.png",
     "ability": "每個夜晚，你要選擇一名玩家：他中毒直到你改變選擇。因你中毒的存活玩家恢復健康時，會得知麻醉師在場。",
     "setup": false,
@@ -1557,7 +1563,7 @@
   },
   {
     "name": "玩偶",
-    "id": "Doll_custom",
+    "id": "Dollcustom",
     "image": "https://user-images.klutzbanana.com/mnanyi9afkgq26piapx6bodb.png",
     "ability": "你以為你是一個善良角色，但其實你不是。如果你被惡魔殺死，惡魔要選擇一名玩家：他變成玩偶。[玩偶會與惡魔鄰座]",
     "setup": true,
@@ -1581,7 +1587,7 @@
   },
   {
     "name": "帕克",
-    "id": "Puck_custom",
+    "id": "Puckcustom",
     "image": "https://user-images.klutzbanana.com/ndmxqw6eogtcvgmbqla361od.png",
     "ability": "每局遊戲限一次，在夜晚時*，你可以選擇一個非惡魔角色：他死亡。如果該角色不在場，你要再選擇一名玩家：他變成該角色。",
     "setup": false,
@@ -1602,7 +1608,7 @@
   },
   {
     "name": "代號X",
-    "id": "CodeX_custom",
+    "id": "CodeXcustom",
     "image": "https://user-images.klutzbanana.com/dscx9f2uzdri5ln0bv77ib5d.png",
     "ability": "每局遊戲限一次，在你的第X個夜晚，你可以選擇任意玩家共X次：他們中毒直到下個黃昏。被多次選擇的玩家改為死亡。",
     "setup": false,
@@ -1629,7 +1635,7 @@
   },
   {
     "name": "獨眼巨人",
-    "id": "Cyclops_custom",
+    "id": "Cyclopscustom",
     "image": "https://user-images.klutzbanana.com/p9ov5j6imxkygwqr4s5qz22y.png",
     "ability": "每個夜晚，你要選擇一名玩家：你和惡魔會得知他是什麼角色。如果你選中了外來者，他會得知獨眼巨人在場。[+1外來者]",
     "setup": true,
@@ -1647,7 +1653,7 @@
   },
   {
     "name": "雙頭巨人",
-    "id": "Ettin_custom",
+    "id": "Ettincustom",
     "image": "https://user-images.klutzbanana.com/ke74vy68hyeui8ux0nab5ixm.png",
     "ability": "如果你死亡，其他雙頭巨人會在當晚死亡。只有所有雙頭巨人一起投票，他們的投票才有效。[+1雙頭巨人（你決定誰是）]",
     "setup": true,
@@ -1667,7 +1673,7 @@
   },
   {
     "name": "百臂巨人",
-    "id": "Hekatonkheires_custom",
+    "id": "Hekatonkheirescustom",
     "image": "https://user-images.klutzbanana.com/npg1b2nitseaptyahs0cvcrn.png",
     "ability": "如果你在死於處決後，立即公開聲明你是百臂巨人，你下一次投票的票數會記作你今天獲得的票數。",
     "setup": false,
@@ -1687,7 +1693,7 @@
   },
   {
     "name": "克隆",
-    "id": "Clone_custom",
+    "id": "Clonecustom",
     "image": "https://user-images.klutzbanana.com/pb08jt5nszp837m2k1mzyx67.png",
     "ability": "每局遊戲限一次，在夜晚時*，你可以選擇一名玩家：他死亡，且你變成他的角色。",
     "setup": false,
@@ -1708,7 +1714,7 @@
   },
   {
     "name": "巫醫",
-    "id": "Witch_Doctor_custom",
+    "id": "WitchDoctorcustom",
     "image": "https://user-images.klutzbanana.com/t0xq1wql6uuz4ymphso1rnng.png",
     "ability": "每個夜晚，你要選擇一名玩家：他中毒且死亡延遲，直到你改變選擇。",
     "setup": false,
@@ -1729,9 +1735,9 @@
   },
   {
     "name": "毒尾",
-    "id": "Venomtail_custom",
+    "id": "Venomtailcustom",
     "image": "https://user-images.klutzbanana.com/bmodp09eustqasipzf4ra6sz.png",
-    "ability": "你順時針方向上最近的1+X名鎮民中毒。[無外來者在場，X為因你減去的外來者數量]",
+    "ability": "你順時針方向上最近的1+X名鎮民永久中毒。[無外來者在場，X為因你減去的外來者數量]",
     "setup": true,
     "firstNight": 0.0,
     "firstNightReminder": "",
@@ -1753,7 +1759,7 @@
   },
   {
     "name": "雪女",
-    "id": "Yuki_onna_custom",
+    "id": "Yukionnacustom",
     "image": "https://user-images.klutzbanana.com/k94vj6m1i82s2ekhqhebfgwp.png",
     "ability": "在你存活與死亡的首個夜晚，你要分別選擇一名玩家：他中毒。",
     "setup": false,
@@ -1774,7 +1780,7 @@
   },
   {
     "name": "幻",
-    "id": "Illus_custom",
+    "id": "Illuscustom",
     "image": "https://user-images.klutzbanana.com/u1p9ye3gkheskczsu5qexc18.png",
     "ability": "如果與你鄰座的玩家都是存活的，鎮民玩家的能力一定會產生錯誤資訊。",
     "setup": false,
@@ -1794,7 +1800,7 @@
   },
   {
     "name": "薩滿",
-    "id": "Shaman_custom",
+    "id": "Shamancustom",
     "image": "https://user-images.klutzbanana.com/m1ypbbtj16u0b8abisxktj4g.png",
     "ability": "每局遊戲限一次，在夜晚時*，你可以選擇四個不同類型的角色：對每個不在場的角色，一名同類型的玩家會變成該角色。",
     "setup": false,
@@ -1814,7 +1820,7 @@
   },
   {
     "name": "騷客",
-    "id": "Versifier_custom",
+    "id": "Versifiercustom",
     "image": "https://user-images.klutzbanana.com/pu4zjtmlzdhjkfv4aq6j1vsm.png",
     "ability": "每個夜晚，你會得知一個字（均出自同一句詩詞）。首次有存活玩家吟誦這句詩詞時，他立即被處決，即使你已死亡。",
     "setup": false,
@@ -1834,7 +1840,7 @@
   },
   {
     "name": "逆蝶",
-    "id": "Crosswing_custom",
+    "id": "Crosswingcustom",
     "image": "https://user-images.klutzbanana.com/tqz3cj1pbgcrn7u61hlhqgr7.png",
     "ability": "在第X個夜晚，你要選擇是否令與你距離為X的玩家中毒直到下個黃昏。",
     "setup": false,
@@ -1855,7 +1861,7 @@
   },
   {
     "name": "曉",
-    "id": "Dawnyx_custom",
+    "id": "Dawnyxcustom",
     "image": "https://user-images.klutzbanana.com/omsw5uvwnnndwr82vnyyp0vc.png",
     "ability": "善良陣營在你存活時無法獲勝。死於處決的惡魔會在黎明時重獲能力。",
     "setup": false,
@@ -1875,7 +1881,7 @@
   },
   {
     "name": "狐妖",
-    "id": "Kitsune_custom",
+    "id": "Kitsunecustom",
     "image": "https://user-images.klutzbanana.com/s0sxwocdol2e2p255fw7j596.png",
     "ability": "每個夜晚*，你要選擇一名玩家和一個外來者角色：如果該角色不在場，他變成該角色。如果他是該角色，他死亡。[-1或+1外來者]",
     "setup": true,
@@ -1895,7 +1901,7 @@
   },
   {
     "name": "夜叉",
-    "id": "Yasha_custom",
+    "id": "Yashacustom",
     "image": "https://user-images.klutzbanana.com/kvf3b7pvfs227p6he8gjttkd.png",
     "ability": "每個夜晚*，你可以選擇一名當天被你提名或提名了你的玩家：他死亡。",
     "setup": false,
@@ -1917,7 +1923,7 @@
   },
   {
     "name": "毒爆",
-    "id": "Toxblast_custom",
+    "id": "Toxblastcustom",
     "image": "https://user-images.klutzbanana.com/dn1d9d6quh7ydmiklb799e21.png",
     "ability": "當有玩家被處決時，與他鄰近的兩名鎮民中毒直到明天黃昏。如果白天沒人被處決，所有鎮民中毒直到明天黃昏。",
     "setup": false,
@@ -1938,7 +1944,7 @@
   },
   {
     "name": "雙生花",
-    "id": "Twinflower_custom",
+    "id": "Twinflowercustom",
     "image": "https://user-images.klutzbanana.com/p32e6pg1m5wvp07js2j4iro8.png",
     "ability": "你以為你是一個鎮民角色，但其實你不是。[+1雙生花，兩名雙生花鄰座]",
     "setup": true,
@@ -1959,7 +1965,7 @@
   },
   {
     "name": "達摩",
-    "id": "Daruma_custom",
+    "id": "Darumacustom",
     "image": "https://user-images.klutzbanana.com/h2txwabau1tb7funs1sopxy5.png",
     "ability": "如果其他玩家回答了你的問題，他可能會死亡。如果你回答了其他玩家的問題，你可能會死亡。你不會死於其他原因。",
     "setup": false,
@@ -1979,7 +1985,7 @@
   },
   {
     "name": "刻耳柏洛斯",
-    "id": "Cerberus_custom",
+    "id": "Cerberuscustom",
     "image": "https://user-images.klutzbanana.com/m0mdbu85093avd9xt32imgtw.png",
     "ability": "每個夜晚*，你要選擇一名玩家，每當你選中邪惡玩家，你要再選一名玩家：他們死亡。被你殺死的爪牙會保留能力。",
     "setup": false,
@@ -2000,7 +2006,7 @@
   },
   {
     "name": "塞壬",
-    "id": "Siren_custom",
+    "id": "Sirencustom",
     "image": "https://user-images.klutzbanana.com/sygmvrfrt7m7e4rkylynzd0o.png",
     "ability": "每個夜晚*，你要選擇一名玩家：他死亡。鎮民玩家的能力一定會產生錯誤資訊，直到你攻擊了一名邪惡玩家。",
     "setup": false,
@@ -2021,7 +2027,7 @@
   },
   {
     "name": "亞瑟",
-    "id": "Arthur_custom",
+    "id": "Arthurcustom",
     "image": "https://user-images.klutzbanana.com/k569iq3ztb83ly4g7v2mzz5l.png",
     "ability": "每個夜晚*，你要選擇一名玩家：他死亡。當亞瑟首次攻擊爪牙時，亞瑟會與其交換角色，且兩名存活玩家代替其被攻擊。",
     "setup": false,
@@ -2043,7 +2049,7 @@
   },
   {
     "name": "惡墮",
-    "id": "Corruptus_custom",
+    "id": "Corruptuscustom",
     "image": "https://user-images.klutzbanana.com/bljv9hg11fm2zt9pyilzc8q2.png",
     "ability": "每個夜晚*，你要選擇一名玩家：他必死。死亡外來者的勝負條件與你相同，即使你已死亡。[1名或2名外來者在場]",
     "setup": true,
@@ -2063,7 +2069,7 @@
   },
   {
     "name": "大巫妖",
-    "id": "Archlich_custom",
+    "id": "Archlichcustom",
     "image": "https://user-images.klutzbanana.com/znsl7tpmb0q6x57c3669him4.png",
     "ability": "每個夜晚*，你可以選擇一名死亡玩家（未曾被大巫妖選擇過），他要選擇兩名玩家：他們死亡。否則，會有一名玩家死亡。",
     "setup": false,
@@ -2087,7 +2093,7 @@
   },
   {
     "name": "海德拉",
-    "id": "Hydra_custom",
+    "id": "Hydracustom",
     "image": "https://user-images.klutzbanana.com/x6yqhe6xjeakt2p4kqyy8zms.png",
     "ability": "每個夜晚*，你要選擇一名玩家：他死亡。如果你在審判日降臨前死於處決，一名善良玩家與一名邪惡玩家會變成海德拉。",
     "setup": false,
@@ -2112,7 +2118,7 @@
   },
   {
     "name": "奇美拉",
-    "id": "Chimera_custom",
+    "id": "Chimeracustom",
     "image": "https://user-images.klutzbanana.com/mi4t6qbeh1427ydh5bixh9x9.png",
     "ability": "每個夜晚*，你要選擇一個除奇美拉以外的惡魔角色（與前兩次的選擇均不同）：你獲得該角色的能力直到下個黃昏。[-1外來者]",
     "setup": true,
@@ -2132,7 +2138,7 @@
   },
   {
     "name": "骷髏王",
-    "id": "Skeleton_King_custom",
+    "id": "SkeletonKingcustom",
     "image": "https://user-images.klutzbanana.com/smf4hl25ay1lckoalbzlts2e.png",
     "ability": "每個夜晚*，你要選擇一名玩家：他死亡。當你以通常條件獲勝時，曾上交投票標記的鎮民也會獲勝。[+1外來者]",
     "setup": true,
@@ -2157,7 +2163,7 @@
   },
   {
     "name": "海之子",
-    "id": "The_Sea_born_custom",
+    "id": "TheSeaborncustom",
     "image": "https://user-images.klutzbanana.com/ncs6j05uxrb62avvwi6p5p3z.png",
     "ability": "每個夜晚*，你要選擇一名玩家：他死亡。說書人決定自己擁有哪些爪牙的能力，並會盡可能地幫助你獲勝。[無爪牙在場，任意數量外來者]",
     "setup": true,
@@ -2177,7 +2183,7 @@
   },
   {
     "name": "劣魔",
-    "id": "Dretch_custom",
+    "id": "Dretchcustom",
     "image": "https://user-images.klutzbanana.com/p91l6gbxe27vql8hgf5neeep.png",
     "ability": "每個夜晚*，會有一名玩家死亡。你可以在被提名後呼喚同伴：如果存活玩家中邪惡玩家更少，一名爪牙會變成劣魔。",
     "setup": false,
@@ -2200,7 +2206,7 @@
   },
   {
     "name": "奸奇",
-    "id": "Tzeentch_custom",
+    "id": "Tzeentchcustom",
     "image": "https://user-images.klutzbanana.com/upt7rqmnlgrjj2kspp467405.png",
     "ability": "每個夜晚*，你要選擇一名玩家：他死亡。當你得知惡魔資訊時，會有更多的偽裝，你要選擇其中一個：你獲得該角色的能力。",
     "setup": false,
@@ -2220,7 +2226,7 @@
   },
   {
     "name": "龍卷",
-    "id": "Tornado_custom",
+    "id": "Tornadocustom",
     "image": "https://user-images.klutzbanana.com/jn0wk1vyv0skuzvpl9mr59zf.png",
     "ability": "每個夜晚*，你要選擇一名玩家：他死亡。每個黃昏*，你會與你順時針方向上最近的存活爪牙交換角色。",
     "setup": false,
@@ -2240,7 +2246,7 @@
   },
   {
     "name": "迴響",
-    "id": "Echo_custom",
+    "id": "Echocustom",
     "image": "https://user-images.klutzbanana.com/yujirbr1i40x0kgimn1fsjqf.png",
     "ability": "每個夜晚*，你要選擇一個角色：他死亡。如果該角色不在場，下個夜晚你要額外選擇一個角色（可疊加）。",
     "setup": false,
@@ -2264,7 +2270,7 @@
   },
   {
     "name": "克拉肯",
-    "id": "Kraken_custom",
+    "id": "Krakencustom",
     "image": "https://user-images.klutzbanana.com/jmeiojk7awtvw1bdnzn0vkbu.png",
     "ability": "每個夜晚*，你要選擇一名玩家：他死亡。如果你在審判日降臨前死亡，改為你假死。你假死時只能殺死與你鄰近的存活玩家。",
     "setup": false,
@@ -2285,7 +2291,7 @@
   },
   {
     "name": "米諾陶",
-    "id": "Minotaur_custom",
+    "id": "Minotaurcustom",
     "image": "https://user-images.klutzbanana.com/puvum1yuz7r22kwq5u9oklhw.png",
     "ability": "每個夜晚*，你要選擇一名存活玩家：他死亡。審判日降臨前，如果所有邪惡玩家均死於處決，你的陣營獲勝。",
     "setup": false,
@@ -2305,7 +2311,7 @@
   },
   {
     "name": "納垢",
-    "id": "Nurgle_custom",
+    "id": "Nurglecustom",
     "image": "https://user-images.klutzbanana.com/zgxuoidou6g18ogoo9hqlls0.png",
     "ability": "每個夜晚*，你要選擇一對鄰座的玩家：其中一人中毒直到你再次選擇，另一人死亡。",
     "setup": false,
@@ -2326,7 +2332,7 @@
   },
   {
     "name": "恐虐",
-    "id": "Khorne_custom",
+    "id": "Khornecustom",
     "image": "https://user-images.klutzbanana.com/rssemf5g2rshezv6tth2qhym.png",
     "ability": "每個夜晚*，你要選擇兩名玩家：他們死亡。如果有善良玩家在白天死亡，當晚你選擇的其中一名玩家不會死亡。",
     "setup": false,
@@ -2348,7 +2354,7 @@
   },
   {
     "name": "色孽",
-    "id": "Slaanesh_custom",
+    "id": "Slaaneshcustom",
     "image": "https://user-images.klutzbanana.com/yoy1gzkyrybbckv4rwbdhudb.png",
     "ability": "每個夜晚*，你要選擇一名玩家：他死亡，且你可以讓他得知你是色孽。最近一名得知你是色孽的玩家勝負條件與你相同，即使你已死亡。",
     "setup": false,
@@ -2369,7 +2375,7 @@
   },
   {
     "name": "不朽",
-    "id": "Undying_custom",
+    "id": "Undyingcustom",
     "image": "https://i.postimg.cc/GhVQzdD2/bu-xiu.png",
     "ability": "每个夜晚*，你要选择一名玩家：他死亡。你被处决时，你不会死亡，但如果你的下次攻击没有杀死邪恶玩家，你的阵营落败。",
     "setup": false,
@@ -2390,7 +2396,7 @@
   },
   {
     "name": "探戈",
-    "id": "Tango_custom",
+    "id": "Tangocustom",
     "image": "https://user-images.klutzbanana.com/pb0dq7iuzz11e3gsb2hd82hc.png",
     "ability": "在初始設置時，說書人會公開指定一個角色：如果該角色在場，會增加或減少一個外來者。",
     "setup": true,
@@ -2408,7 +2414,7 @@
   },
   {
     "name": "病房監控",
-    "id": "Ward_Surveillance_custom",
+    "id": "WardSurveillancecustom",
     "image": "https://user-images.klutzbanana.com/kf3ljwr71ufl1vz2fqaqvfkx.png",
     "ability": "說書人可能會把任何關於瘋子的資訊透露給惡魔或爪牙玩家。瘋子可能會得知其他玩家是瘋子。",
     "setup": false,
@@ -2426,7 +2432,7 @@
   },
   {
     "name": "忘川",
-    "id": "Lethe_custom",
+    "id": "Lethecustom",
     "image": "https://user-images.klutzbanana.com/xg2cvfpxz6x098g34t3rwuhy.png",
     "ability": "可能出現：惡魔與爪牙會以為自己是善良角色，說書人會替代他們使用能力。有且只有所有邪惡玩家均死亡時，遊戲才會結束，所有玩家獲勝。",
     "setup": false,
@@ -2449,7 +2455,7 @@
   },
   {
     "name": "幸運星",
-    "id": "Lucky_Star_custom",
+    "id": "LuckyStarcustom",
     "image": "https://user-images.klutzbanana.com/qxoedmv3cb6bagfnuvw1akp8.png",
     "ability": "抽到此標記的玩家會得到一些“好處”且要再抽一個標記。[此標記會被額外加入配置]",
     "setup": true,
@@ -2467,7 +2473,7 @@
   },
   {
     "name": "地獄輪盤",
-    "id": "Hells_Roulette_custom",
+    "id": "HellsRoulettecustom",
     "image": "https://user-images.klutzbanana.com/wtj1hiphgtm2gqvta6kptp0m.png",
     "ability": "審判日降臨前，玩家在發起提名後要擲出一個六面骰：如果擲出的點數已存在，他死亡，並移除所有已擲的骰子。",
     "setup": false,
