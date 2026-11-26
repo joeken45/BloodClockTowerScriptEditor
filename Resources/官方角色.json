@@ -2075,7 +2075,7 @@
   },
   {
     "name": "麻臉巫婆",
-    "id": "pit-hagcustom",
+    "id": "pithagcustom",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/d/de/Pithag.png/200px-Pithag.png",
     "ability": "每個夜晚*，你要選擇一名玩家和一個角色，如果該角色不在場，他變成該角色。如果因此創造了一個惡魔，當晚的死亡由說書人決定。",
     "setup": false,
@@ -2089,7 +2089,7 @@
     "edition": "custom",
     "team": "minion",
     "special": [],
-    "officialId": "pit-hag"
+    "officialId": "pithag"
   },
   {
     "name": "哥布林",
@@ -2682,7 +2682,7 @@
   },
   {
     "name": "哈迪寂亞",
-    "id": "al-hadikhiacustom",
+    "id": "alhadikhiacustom",
     "image": "https://clocktower-wiki.gstonegames.com/images/thumb/0/09/Alhadikhia.png/200px-Alhadikhia.png",
     "ability": "每個夜晚*，你可以選擇三名玩家(所有玩家都會得知你選了誰)：他們分別秘密決定自己的生死，然後如果他們都存活則都死亡。",
     "setup": false,
@@ -2706,7 +2706,7 @@
     "edition": "custom",
     "team": "demon",
     "special": [],
-    "officialId": "al-hadikhia"
+    "officialId": "alhadikhia"
   },
   {
     "name": "軍團",
