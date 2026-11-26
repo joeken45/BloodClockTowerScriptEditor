@@ -1,4 +1,4 @@
-![版本](https://img.shields.io/badge/version-0.0.15-blue)
+![版本](https://img.shields.io/badge/version-0.0.16-blue)
 ![平台](https://img.shields.io/badge/platform-Windows-lightgrey)
 ![授權](https://img.shields.io/badge/license-MIT-green)
 
@@ -8,7 +8,7 @@
 
 前往 [Releases 頁面](https://github.com/joeken45/BloodClockTowerScriptEditor/releases) 下載最新版本。
 
-**最新版本：** [v0.0.15](https://github.com/joeken45/BloodClockTowerScriptEditor/releases/tag/v0.0.15)
+**最新版本：** [v0.0.16](https://github.com/joeken45/BloodClockTowerScriptEditor/releases/tag/v0.0.16)
 
 ## ✨ 功能特色
 
@@ -140,6 +140,10 @@
 - 取消角色總表.json改為官方角色.json、國風角色.json、奧德賽角色.json
 - 儲存BOTC格式時，檢查有無非官方角色使用官方ID，若有則不儲存並提示使用者
 - 依循BOTC官方程式去除所有id中包含"_"的字元
+
+### v0.0.16 (2026-11-26)
+- 奧德賽角色包更新
+- logo 欄位輸出優化：沒有劇本圖時不輸出 logo 欄位且連動隱藏標題欄位
 
 完整更新日誌請參考 [CHANGELOG.md](CHANGELOG.md)
 

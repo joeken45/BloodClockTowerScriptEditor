@@ -57,9 +57,18 @@ namespace BloodClockTowerScriptEditor.Views
             statusList.ItemsSource = _tempStatusList;
 
             // ✅ 監聽 Logo 網址變化
+            bool hadLogo = !string.IsNullOrWhiteSpace(meta.Logo);
             txtLogo.TextChanged += (s, e) =>
             {
                 UpdateImagePreview(txtLogo.Text, imgLogo);
+
+                // 劇本圖由空變有值時勾選隱藏標題，清空時取消
+                bool hasLogo = !string.IsNullOrWhiteSpace(txtLogo.Text);
+                if (hasLogo != hadLogo)
+                {
+                    chkHideTitle.IsChecked = hasLogo;
+                    hadLogo = hasLogo;
+                }
             };
 
             // ✅ 監聽背景圖片 URL 變化

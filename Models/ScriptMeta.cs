@@ -67,6 +67,9 @@ namespace BloodClockTowerScriptEditor.Models
             set => SetProperty(ref _logo, value);
         }
 
+        // 沒有劇本圖時不輸出 logo 欄位
+        public bool ShouldSerializeLogo() => !string.IsNullOrWhiteSpace(Logo);
+
         [JsonProperty("townsfolk")]
         public string Townsfolk
         {
